@@ -1,4 +1,4 @@
-# aegis
+# Aegis
 
 ```text
 Protect Your Secrets, Protect Your Business
