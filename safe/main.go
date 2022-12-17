@@ -15,6 +15,7 @@ import (
 
 func main() {
 
+	// use go-kit
 	// /healthz
 	// /readyz
 	// POST /v1/secret/podName:podLabel (only for admin)
