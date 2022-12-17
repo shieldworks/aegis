@@ -1,9 +1,3 @@
-![Aegis](assets/aegis-banner.png "Aegis")
-
-> Protect your secrets, protect your business.
-> 
-> Secure your sensitive data with **Aegis**.
-
 ```text
  .-'_.---._'-.
  ||####|(__)||   Protect your secrets, protect your business.
@@ -11,6 +5,8 @@
     \\ |#//                  <aegis.z2h.dev>
      .\_/.
 ```
+
+![Aegis](assets/aegis-banner.png "Aegis")
 
 ## Status of This Software
 
