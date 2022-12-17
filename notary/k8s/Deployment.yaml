@@ -1,0 +1,28 @@
+#
+# .-'_.---._'-.
+# ||####|(__)||   Protect your secrets, protect your business.
+#   \\()|##//       Secure your sensitive data with Aegis.
+#    \\ |#//                  <aegis.z2h.dev>
+#     .\_/.
+#
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aegis-notary
+  namespace: aegis-system
+  labels:
+    app: aegis-notary
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aegis-notary
+  template:
+    metadata:
+      labels:
+        app: aegis-notary
+    spec:
+      containers:
+        - name: main
+          image: localhost:5000/aegis-notary:0.5.0
