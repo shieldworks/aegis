@@ -27,3 +27,9 @@ spec:
           image: localhost:5000/aegis-demo-workload:0.5.0
         - name: sidecar
           image: localhost:5000/aegis-sidecar:0.5.0
+      volumeMounts:
+        - mountPath: /opt/aegis
+          name: aegis-secrets-volume
+      volumes:
+        - name: aegis-secrets-volume
+          emptyDir: { }

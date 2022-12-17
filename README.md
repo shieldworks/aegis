@@ -32,6 +32,15 @@ business and protect against data breaches.
 
 // TODO: explain the project’s folder structure.
 
+// TODO: comparison with vault.
+// much less moving parts
+// much simpler 
+// very little footprint
+// perfect for storing arbitrary configuration info
+// future plans include cloud KMS integration thanks to Mozilla sops.
+// simple api
+// extremely small attack surface.
+
 ## High-Level Conceptual Diagram
 
 // TODO: this diagram is outdated, update it.

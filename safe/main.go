@@ -14,6 +14,12 @@ import (
 )
 
 func main() {
+
+	// /healthz
+	// /readyz
+	// POST /v1/secret/podName:podLabel (only for admin)
+	// GET /v1/secret/podName:podLabel (mTLS: only for sidecar)
+
 	for {
 		fmt.Println("hello from safe!")
 		time.Sleep(5 * time.Second)
