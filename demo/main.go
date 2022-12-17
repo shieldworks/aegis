@@ -22,9 +22,10 @@ func main() {
 	for {
 		dat, err := os.ReadFile(secretFilePath)
 		if err != nil {
-			panic("Failed to read secrets file.")
+			fmt.Println("Failed to read the secrets file. Will retry in 5 seconds…")
+		} else {
+			fmt.Println(string(dat))
 		}
-		fmt.Print(string(dat))
 
 		time.Sleep(5 * time.Second)
 	}

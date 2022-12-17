@@ -7,9 +7,13 @@
 #
 
 build:
-	go build -o aegis-demo-appp
+	go build -o aegis-demo-workload
 
 run:
 	go run main.go
 
+bundle:
+	docker build . -t aegis-demo-workload:0.5.0
+
 all: build run
+
