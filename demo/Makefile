@@ -15,5 +15,7 @@ run:
 bundle:
 	docker build . -t aegis-demo-workload:0.5.0
 
-all: build run
+run-in-container:
+	docker run aegis-demo-workload:0.5.0
+
 
