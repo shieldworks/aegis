@@ -27,7 +27,7 @@ func Probes(r *mux.Router) {
 func AdminEndpoints(r *mux.Router, api *v1Network.Api) {
 	// Shall return an error if Safe is not bootstrapped.
 	// Only administrator can use this method.
-	r.Methods(http.MethodPut).Path("/v1/secret/{value}").Handler(api.SecretUpsert)
+	r.Methods(http.MethodPut).Path("/v1/secret").Handler(api.SecretUpsert)
 
 	// TODO: we probably don’t need this. If so, remove all trails.
 	//// to register workloads to notary.

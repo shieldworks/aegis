@@ -20,7 +20,6 @@ import (
 func MakeBootstrapEndpoint(svc service.ApiV1Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		r, ok := request.(reqres.BootstrapRequest)
-
 		if !ok {
 			return reqres.BootstrapResponse{
 				Err: "malformed payload",

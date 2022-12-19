@@ -1,5 +1,5 @@
 (A) complete `safe` tests. @▶️ +safe
-(A) `./safe/test-admin-api-upsert-secret.sh` +safe @▶️ 
+x 2022-12-19 `./safe/test-admin-api-upsert-secret.sh` pri:A +safe @▶️
 x 2022-12-19 `./safe/test-notary-api-bootstrap.sh` pri:A +safe @▶️
 (A) `./safe/test-notary-api-workload.sh`  +safe
 x 2022-12-19 `./safe/test-probe-api-healthz.sh` pri:A +safe @▶️

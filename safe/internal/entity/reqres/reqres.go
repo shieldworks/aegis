@@ -9,14 +9,14 @@
 package reqres
 
 type SecretUpsertRequest struct {
-	Key   string `json:"key"`
-	Value string `json:"value"`
-	Err   string `json:"err,omitempty"`
+	AdminToken string `json:"token"`
+	Key        string `json:"key"`
+	Value      string `json:"value"`
+	Err        string `json:"err,omitempty"`
 }
 
 type SecretUpsertResponse struct {
-	Token string `json:"token"`
-	Err   string `json:"err,omitempty"`
+	Err string `json:"err,omitempty"`
 }
 
 type BootstrapRequest struct {

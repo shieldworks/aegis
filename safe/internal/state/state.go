@@ -8,6 +8,8 @@
 
 package state
 
+import "sync"
+
 type Semaphore chan struct{}
 
 func NewSemaphore(size int) Semaphore {
@@ -86,10 +88,16 @@ func Bootstrapped() bool {
 	return len(adminToken) > 0
 }
 
-func NotaryToken() string {
+func NotaryAdminToken() string {
 	mutex.Lock()
 	defer mutex.Unlock()
 	return adminToken
+}
+
+func NotaryWorkloadToken() string {
+	mutex.Lock()
+	defer mutex.Unlock()
+	return workloadToken
 }
 
 func Bootstrap(newAdminToken, newWorkloadToken string) {
@@ -98,4 +106,19 @@ func Bootstrap(newAdminToken, newWorkloadToken string) {
 		adminToken = newAdminToken
 		workloadToken = newWorkloadToken
 	})
+}
+
+var secrets sync.Map
+
+func UpsertSecret(key, value string) {
+	secrets.Store(key, value)
+}
+
+func ReadSecret(key string) string {
+	result, ok := secrets.Load(key)
+	if !ok {
+		return ""
+	}
+
+	return result.(string)
 }

@@ -8,18 +8,21 @@
 
 package v1
 
-import "context"
+import (
+	"aegis-safe/internal/state"
+	"context"
+)
 
 func (a apiV1Service) SecretUpsert(
 	ctx context.Context, key, value string,
-) (string, error) {
-	//TODO implement me
-	panic("implement me")
+) error {
+	state.UpsertSecret(key, value)
+	return nil
 }
 
 func (a apiV1Service) SecretRead(
 	ctx context.Context, key string,
 ) (string, error) {
-	//TODO implement me
-	panic("implement me")
+	val := state.ReadSecret(key)
+	return val, nil
 }

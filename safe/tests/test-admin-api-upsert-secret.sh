@@ -17,4 +17,4 @@
 http PUT http://localhost:8017/v1/secret \
   token=SecureAdminToken \
   key=aegis-demo-workload \
-  secret:='{"username": "me@volkan.io", "password": "ToppyTopSecret"}'
+  value='{"username": "me@volkan.io", "password": "ToppyTopSecret"}'
