@@ -20,9 +20,10 @@ type SecretUpsertResponse struct {
 }
 
 type BootstrapRequest struct {
-	NotaryId string `json:"notaryId"`
-	Token    string `json:"token"`
-	Err      string `json:"err,omitempty"`
+	NotaryId      string `json:"id"`
+	WorkloadToken string `json:"workloadToken"`
+	AdminToken    string `json:"adminToken"`
+	Err           string `json:"err,omitempty"`
 }
 
 type BootstrapResponse struct {

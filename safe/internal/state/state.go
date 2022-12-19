@@ -77,23 +77,25 @@ var mutex = NewSemaphore(1)
 // can “in theory” read and write it concurrently because the /bootstrap
 // api can be called concurrently which spawns separate goroutines per
 // network connection (as per how http.Serve behaves).
-var token = ""
+var adminToken = ""
+var workloadToken = ""
 
 func Bootstrapped() bool {
 	mutex.Lock()
 	defer mutex.Unlock()
-	return len(token) > 0
+	return len(adminToken) > 0
 }
 
 func NotaryToken() string {
 	mutex.Lock()
 	defer mutex.Unlock()
-	return token
+	return adminToken
 }
 
-func SetNotaryToken(newToken string) {
+func Bootstrap(newAdminToken, newWorkloadToken string) {
 	// Ensure that the token is set only once.
 	once.Do(func() {
-		token = newToken
+		adminToken = newAdminToken
+		workloadToken = newWorkloadToken
 	})
 }
