@@ -1,9 +1,11 @@
 (A) complete `safe` tests. @▶️ +safe
 (A) `./safe/test-admin-api-upsert-secret.sh` +safe
-(A) `./safe/test-notary-api-bootstrap.sh` +safe
+(A) `./safe/test-notary-api-bootstrap.sh` +safe @▶️ 
 (A) `./safe/test-notary-api-workload.sh`  +safe
-(A) `./safe/test-probe-api-healthz.sh` +safe @▶️
-(A) `./safe/test-probe-api-readyz.sh` +safe @▶️
+x 2022-12-19 `./safe/test-probe-api-healthz.sh` pri:A +safe @▶️
+x 2022-12-19 `./safe/test-probe-api-readyz.sh` pri:A +safe @▶️
 (A) `./safe/test-workload-api-fetch-secrets.sh` +safe
 (B) Implement `notary` API. +notary 
 (B) Implement `sidecar` API. +sidecar
+(A) `./safe/test-notary-api-readyz--after-bootstrap.sh` +safe
+(C) Finalize `README.md`.
