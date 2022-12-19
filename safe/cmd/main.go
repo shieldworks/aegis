@@ -23,22 +23,33 @@ func main() {
 
 	r := mux.NewRouter()
 
-	// shall most of the time return success.
+	// Liveness endpoint.
 	r.Methods(http.MethodGet).Path("/healthz").HandlerFunc(probe.Health)
 
-	// shall return an error if safe is not bootstrapped.
+	// Readiness endpoint.
+	// Will fail if Safe is not bootstrapped.
 	r.Methods(http.MethodGet).Path("/readyz").HandlerFunc(probe.Ready)
 
 	// Shall return an error if Safe is not bootstrapped.
+	// Only administrator can use this method.
 	r.Methods(http.MethodPut).Path("/v1/secret/{value}").Handler(apiV1.SecretUpsert)
 
 	// TODO: only sidecar can read this with a proper token.
 	// shall return an error if safe is not bootstrapped.
 	r.Methods(http.MethodGet).Path("/v1/fetch").Handler(apiV1.SecretFetch)
 
+	// TODO: implement me.
 	// TODO: shall be triggered from notary. Safe is not ready until it is
 	// bootstrapped.
 	r.Methods(http.MethodPost).Path("/bootstrap")
+
+	// hook to register workload keys
+	// Only notary can call this; to call it needs the bootstrap key.
+	r.Methods(http.MethodPut).Path("/v1/workload")
+
+	// to register workloads to notary.
+	// requires bootstrap key.
+	r.Methods(http.MethodPut).Path("/v1/register")
 
 	port := ":8017"
 
