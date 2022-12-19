@@ -1,3 +1,9 @@
-(A) complete `safe` tests. @▶️ +safe 
-(A) Implement `notary` API. +notary 
-(A) Implement `sidecar` API. +sidecar 
+(A) complete `safe` tests. @▶️ +safe
+(A) `./safe/test-admin-api-upsert-secret.sh` +safe
+(A) `./safe/test-notary-api-bootstrap.sh` +safe
+(A) `./safe/test-notary-api-workload.sh`  +safe
+(A) `./safe/test-probe-api-healthz.sh` +safe @▶️
+(A) `./safe/test-probe-api-readyz.sh` +safe @▶️
+(A) `./safe/test-workload-api-fetch-secrets.sh` +safe
+(B) Implement `notary` API. +notary 
+(B) Implement `sidecar` API. +sidecar
