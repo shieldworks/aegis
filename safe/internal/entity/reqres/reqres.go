@@ -8,6 +8,17 @@
 
 package reqres
 
+type WorkloadRegisterRequest struct {
+	WorkloadToken  string `json:"token"`
+	WorkloadId     string `json:"workloadId"`
+	WorkloadSecret string `json:"workloadSecret"`
+	Err            string `json:"err,omitempty"`
+}
+
+type WorkloadRegisterResponse struct {
+	Err string `json:"err,omitempty"`
+}
+
 type SecretUpsertRequest struct {
 	AdminToken string `json:"token"`
 	Key        string `json:"key"`

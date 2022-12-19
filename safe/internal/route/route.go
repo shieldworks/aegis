@@ -49,5 +49,5 @@ func NotaryEndpoints(r *mux.Router, api *v1Network.Api) {
 
 	// hook to register workload keys
 	// Only notary can call this; to call, it needs the bootstrap token.
-	r.Methods(http.MethodPut).Path("/v1/workload")
+	r.Methods(http.MethodPut).Path("/v1/workload").Handler(api.WorkloadRegister)
 }

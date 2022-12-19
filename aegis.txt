@@ -1,12 +1,15 @@
 (A) complete `safe` tests. @▶️ +safe
 x 2022-12-19 `./safe/test-admin-api-upsert-secret.sh` pri:A +safe @▶️
 x 2022-12-19 `./safe/test-notary-api-bootstrap.sh` pri:A +safe @▶️
-(A) `./safe/test-notary-api-workload.sh`  +safe
+(A) `./safe/test-notary-api-workload.sh`  +safe @▶️ 
 x 2022-12-19 `./safe/test-probe-api-healthz.sh` pri:A +safe @▶️
 x 2022-12-19 `./safe/test-probe-api-readyz.sh` pri:A +safe @▶️
-(A) `./safe/test-workload-api-fetch-secrets.sh` +safe
+(A) `./safe/test-workload-api-fetch-secrets.sh` +safe @▶️ 
 (B) Implement `notary` API. +notary 
 (B) Implement `sidecar` API. +sidecar
 x 2022-12-19 `./safe/test-notary-api-readyz--after-bootstrap.sh` pri:A +safe
 (C) Finalize `README.md`.
 (D) Process `TODO:` items in the projects. +aegis 
+(B) Finalize diagrams. +aegis 
+(C) create a broad-brushstrokes roadmap.
+(D) the website needs some content +aegis 

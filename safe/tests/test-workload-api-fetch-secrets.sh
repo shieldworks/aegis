@@ -14,5 +14,5 @@
 # This shall deliver the secret that admin has created for this workload.
 http POST http://localhost:8017/v1/fetch \
   key=aegis-demo-workload \
-  id=WorkloadIdGivenByNotary \
-  secret=WorkloadSecretGivenByNotary
+  id=NotaryGeneratedRandomWorkloadId \
+  secret=NotaryGeneratedSecureWorkloadToken
