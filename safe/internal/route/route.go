@@ -29,9 +29,10 @@ func AdminEndpoints(r *mux.Router, api *v1Network.Api) {
 	// Only administrator can use this method.
 	r.Methods(http.MethodPut).Path("/v1/secret/{value}").Handler(api.SecretUpsert)
 
-	// to register workloads to notary.
-	// requires bootstrap key.
-	r.Methods(http.MethodPut).Path("/v1/register")
+	// TODO: we probably don’t need this. If so, remove all trails.
+	//// to register workloads to notary.
+	//// requires bootstrap token.
+	//r.Methods(http.MethodPut).Path("/v1/register")
 }
 
 func WorkloadEndpoints(r *mux.Router, api *v1Network.Api) {
@@ -47,6 +48,6 @@ func NotaryEndpoints(r *mux.Router, api *v1Network.Api) {
 	r.Methods(http.MethodPost).Path("/v1/bootstrap").Handler(api.Bootstrap)
 
 	// hook to register workload keys
-	// Only notary can call this; to call, it needs the bootstrap key.
+	// Only notary can call this; to call, it needs the bootstrap token.
 	r.Methods(http.MethodPut).Path("/v1/workload")
 }

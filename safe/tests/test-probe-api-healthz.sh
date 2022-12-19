@@ -8,6 +8,8 @@
 #     .\_/.
 #
 
+# (cluster internal)
+
 http http://localhost:8017/healthz
 
 # HTTP/1.1 200 OK

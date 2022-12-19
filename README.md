@@ -41,6 +41,20 @@ business and protect against data breaches.
 // simple api
 // extremely small attack surface.
 
+// TODO: talk about constraints as in:
+// * This is a Kubernetes-first Cloud Native project
+// * will start with a minimal API set.
+// * Initially, the configuration and integration options will be limited.
+// * There will be a timeline and a list of features that will be added.
+// * There will be a place to provide feedback and request more features.
+
+// TODO: talk about system requirements; where Aegis is tested and how.
+
+// TODO: Right now, there is only a single person behind this thing (yours truly)
+// that has its advantages (as me being the benevolent dictator) but also 
+// limitations (I work on Aegis on my **persona** time).
+
+
 ## Design Documents
 
 Note that this part is highly work-in-progress. Everything is under **a lot** of

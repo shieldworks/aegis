@@ -8,6 +8,8 @@
 #     .\_/.
 #
 
+# (cluster internal)
+
 http http://localhost:8017/readyz
 
 # HTTP/1.1 503 Service Unavailable

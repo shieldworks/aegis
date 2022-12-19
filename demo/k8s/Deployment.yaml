@@ -22,7 +22,11 @@ spec:
       labels:
         app: demo
       annotations:
-        aegis-workload: true
+        # To automatically inject sidecar instead of manually creating one.
+        aegis-inject-sidecar: false
+        # The name the workload will be referred.
+        # Admin API will use this name to register secrets for this workload.
+        aegis-workload-key: aegis-demo-workload
     spec:
       containers:
         - name: main
@@ -30,8 +34,15 @@ spec:
         - name: sidecar
           image: localhost:5000/aegis-sidecar:0.5.0
       volumeMounts:
+        # /opt/aegis/secrets.json is the place the secrets will be at.
+        # As of now, this is not configurable. Once the MVP is complete,
+        # we’ll work on making Aegis more flexible and add more configuration
+        # options.
         - mountPath: /opt/aegis
           name: aegis-secrets-volume
+      # A memory-backed volume is recommended (but not required) to keep
+      # the secrets. The secrets can be stored in any kind of volume.
       volumes:
         - name: aegis-secrets-volume
-          emptyDir: { }
+          emptyDir:
+            medium: Memory
