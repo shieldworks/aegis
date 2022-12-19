@@ -19,6 +19,16 @@ type SecretUpsertResponse struct {
 	Err   string `json:"err,omitempty"`
 }
 
+type BootstrapRequest struct {
+	NotaryId string `json:"notaryId"`
+	Token    string `json:"token"`
+	Err      string `json:"err,omitempty"`
+}
+
+type BootstrapResponse struct {
+	Err string `json:"err,omitempty"`
+}
+
 type SecretReadRequest struct {
 	Err string `json:"err,omitempty"`
 }
