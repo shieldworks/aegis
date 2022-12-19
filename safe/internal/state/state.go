@@ -77,9 +77,6 @@ var mutex = NewSemaphore(1)
 // can “in theory” read and write it concurrently because the /bootstrap
 // api can be called concurrently which spawns separate goroutines per
 // network connection (as per how http.Serve behaves).
-// Synchronizing access to `token` using a `channel` will turn out to
-//
-// be much messier than using a mutex, so we’ll lock over `mux` instead.
 var token = ""
 
 func Bootstrapped() bool {
