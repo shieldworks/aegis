@@ -1,0 +1,8 @@
+## Tests
+
+test-admin-api-upsert-secret.sh     : [IN PROGRESS]
+test-notary-api-bootstrap.sh        : [IN PROGRESS]
+test-notary-api-workload.sh         : [IN PROGRESS]
+test-probe-api-healthz.sh           : [IN PROGRESS]
+test-probe-api-readyz.sh            : [IN PROGRESS]
+test-workload-api-fetch-secrets.sh  : [IN PROGRESS]
