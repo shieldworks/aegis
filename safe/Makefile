@@ -7,7 +7,7 @@
 #
 
 build:
-	go build -o aegis-safe
+	go build -o aegis-safe ./cmd/main.go
 
 run:
 	go run main.go
