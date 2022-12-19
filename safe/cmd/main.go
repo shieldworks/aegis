@@ -29,7 +29,7 @@ func main() {
 	// Bind other routes.
 	route.Probes(r)
 	route.AdminEndpoints(r, apiV1)
-	route.SidecarEndpoints(r, apiV1)
+	route.WorkloadEndpoints(r, apiV1)
 	route.NotaryEndpoints(r, apiV1)
 
 	p, a := env.Port(), env.AppName()
