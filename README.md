@@ -54,6 +54,11 @@ business and protect against data breaches.
 // that has its advantages (as me being the benevolent dictator) but also 
 // limitations (I work on Aegis on my **persona** time).
 
+// TODO: to docs: using a `todo.txt` format to track issues, as this is 
+// the fastest way to bootsrap a project. Will continue to do text-base
+// issue management until the project is either mature enough, or I start feeling
+// some pain. — maybe I won’t need to use GitHub issues “ever”, not sure.
+
 
 ## Design Documents
 
