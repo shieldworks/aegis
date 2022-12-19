@@ -41,8 +41,19 @@ business and protect against data breaches.
 // simple api
 // extremely small attack surface.
 
-## High-Level Conceptual Diagram
+## Design Documents
 
-// TODO: this diagram is outdated, update it.
+Note that this part is highly work-in-progress. Everything is under **a lot** of
+flux right now.
+
+### Aegis High-Level Architecture
 
 ![Aegis](assets/aegis-hla.png "Aegis High-Level Architecture")
+
+### Bootstrapping
+
+![Bootstrapping](assets/notary-state-handshake.png "Bootstrapping")
+
+### Sequence Diagram
+
+![Sequence Diagram](assets/sequence-diagram.png "Aegis High-Level Architecture")
