@@ -38,10 +38,10 @@ func main() {
 	// shall return an error if safe is not bootstrapped.
 	r.Methods(http.MethodGet).Path("/v1/fetch").Handler(apiV1.SecretFetch)
 
-	// TODO: implement me.
-	// TODO: shall be triggered from notary. Safe is not ready until it is
-	// bootstrapped.
-	r.Methods(http.MethodPost).Path("/bootstrap")
+	// This will be triggered from notary. The `AEGIS_NOTARY_ID` environment
+	// variable that is passed in the payload, should match the id that Safe
+	// is initialized with for the method to succeed.
+	r.Methods(http.MethodPost).Path("/bootstrap").Handler(apiV1.Bootstrap)
 
 	// hook to register workload keys
 	// Only notary can call this; to call it needs the bootstrap key.

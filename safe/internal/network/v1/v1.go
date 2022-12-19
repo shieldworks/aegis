@@ -12,8 +12,10 @@ import service "aegis-safe/internal/service/v1"
 
 type Api struct {
 	SecretHandlers
+	BootstrapHandlers
 }
 
 func Handlers(s *Api, svc service.ApiV1Service) {
 	DefineSecretHandlers(s, svc)
+	DefineBootstrapHandlers(s, svc)
 }
