@@ -18,7 +18,7 @@ import (
 
 type SecretHandlers struct {
 	SecretUpsert http.Handler
-	SecretRead   http.Handler
+	SecretFetch  http.Handler
 }
 
 func DefineSecretHandlers(s *Api, svc service.ApiV1Service) {

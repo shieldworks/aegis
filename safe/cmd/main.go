@@ -23,13 +23,22 @@ func main() {
 
 	r := mux.NewRouter()
 
+	// shall most of the time return success.
 	r.Methods(http.MethodGet).Path("/healthz").HandlerFunc(probe.Health)
+
+	// shall return an error if safe is not bootstrapped.
 	r.Methods(http.MethodGet).Path("/readyz").HandlerFunc(probe.Ready)
 
+	// Shall return an error if Safe is not bootstrapped.
 	r.Methods(http.MethodPut).Path("/v1/secret/{value}").Handler(apiV1.SecretUpsert)
 
-	// TODO: this shall only be reachable via the sidecar thru mTLS.
-	r.Methods(http.MethodGet).Path("/v1/secret/{value}").Handler(apiV1.SecretRead)
+	// TODO: only sidecar can read this with a proper token.
+	// shall return an error if safe is not bootstrapped.
+	r.Methods(http.MethodGet).Path("/v1/fetch").Handler(apiV1.SecretFetch)
+
+	// TODO: shall be triggered from notary. Safe is not ready until it is
+	// bootstrapped.
+	r.Methods(http.MethodPost).Path("/bootstrap")
 
 	port := ":8017"
 

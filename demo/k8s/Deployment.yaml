@@ -21,6 +21,8 @@ spec:
     metadata:
       labels:
         app: demo
+      annotations:
+        aegis-workload: true
     spec:
       containers:
         - name: main
