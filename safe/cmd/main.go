@@ -9,50 +9,30 @@
 package main
 
 import (
-	"aegis-safe/internal/network/probe"
+	"aegis-safe/internal/env"
 	v1Network "aegis-safe/internal/network/v1"
+	"aegis-safe/internal/route"
+	v1Service "aegis-safe/internal/service/v1"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 )
-
-const appName = "aegis-safe"
 
 func main() {
 	apiV1 := &v1Network.Api{}
 
 	r := mux.NewRouter()
 
-	// Liveness endpoint.
-	r.Methods(http.MethodGet).Path("/healthz").HandlerFunc(probe.Health)
+	// Bind handlers.
+	v1Network.Init(apiV1, v1Service.NewApiV1Service())
 
-	// Readiness endpoint.
-	// Will fail if Safe is not bootstrapped.
-	r.Methods(http.MethodGet).Path("/readyz").HandlerFunc(probe.Ready)
+	// Bind other routes.
+	route.Probes(r)
+	route.AdminEndpoints(r, apiV1)
+	route.SidecarEndpoints(r, apiV1)
+	route.NotaryEndpoints(r, apiV1)
 
-	// Shall return an error if Safe is not bootstrapped.
-	// Only administrator can use this method.
-	r.Methods(http.MethodPut).Path("/v1/secret/{value}").Handler(apiV1.SecretUpsert)
-
-	// TODO: only sidecar can read this with a proper token.
-	// shall return an error if safe is not bootstrapped.
-	r.Methods(http.MethodGet).Path("/v1/fetch").Handler(apiV1.SecretFetch)
-
-	// This will be triggered from notary. The `AEGIS_NOTARY_ID` environment
-	// variable that is passed in the payload, should match the id that Safe
-	// is initialized with for the method to succeed.
-	r.Methods(http.MethodPost).Path("/bootstrap").Handler(apiV1.Bootstrap)
-
-	// hook to register workload keys
-	// Only notary can call this; to call it needs the bootstrap key.
-	r.Methods(http.MethodPut).Path("/v1/workload")
-
-	// to register workloads to notary.
-	// requires bootstrap key.
-	r.Methods(http.MethodPut).Path("/v1/register")
-
-	port := ":8017"
-
-	log.Printf("[SAFE]: '%s' will listen at port '%s'.", appName, port)
-	log.Fatal(http.ListenAndServe(port, r))
+	p, a := env.Port(), env.AppName()
+	log.Printf("[SAFE]: '%s' will listen at port '%s'.", a, p)
+	log.Fatal(http.ListenAndServe(p, r))
 }

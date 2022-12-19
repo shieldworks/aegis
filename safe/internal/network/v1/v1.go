@@ -15,7 +15,7 @@ type Api struct {
 	BootstrapHandlers
 }
 
-func Handlers(s *Api, svc service.ApiV1Service) {
+func Init(s *Api, svc service.ApiV1Service) {
 	DefineSecretHandlers(s, svc)
 	DefineBootstrapHandlers(s, svc)
 }
