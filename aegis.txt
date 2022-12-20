@@ -17,3 +17,5 @@ x 2022-12-19 `./safe/test-notary-api-readyz--after-bootstrap.sh` pri:A +safe
 (E) there is almost no logging in fail cases, incrase logging +aegis 
 (E) right now everything is in memory; maybe provide other backing stores +aegis
 (B) note that the initial prototype stores things “in memory” without encryption; it might be nice to introduce `sops` next when things stabilize +aegis 
+(C) Add documentation to all publicly exported functions everywhere +aegis 
+(C) Code cleanup everywhere +aegis

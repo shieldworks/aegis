@@ -9,17 +9,12 @@
 package main
 
 import (
-	"fmt"
-	"os"
-	"time"
+	"aegis-demo-workload/internal/app"
+	"aegis-demo-workload/internal/sentry"
 )
 
 func main() {
-	id := os.Getenv("AEGIS_ID")
-	secret := os.Getenv("AEGIS_SECRET")
-
-	for {
-		fmt.Printf("[AEGIS-SIDECAR]: will fetch (%s) of (%s).\n", secret, id)
-		time.Sleep(5 * time.Second)
-	}
+	go app.Serve()
+	go sentry.Watch()
+	select {} // block forever
 }
