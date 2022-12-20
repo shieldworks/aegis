@@ -34,7 +34,7 @@ func MakeSecretUpsertEndpoint(svc service.ApiV1Service) endpoint.Endpoint {
 		// TODO: sanitize these
 		// also empty check.
 		adminToken := r.AdminToken
-		key := r.Key
+		key := r.WorkloadId
 		value := r.Value
 
 		if adminToken != state.NotaryAdminToken() {

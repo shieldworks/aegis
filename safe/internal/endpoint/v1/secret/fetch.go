@@ -32,15 +32,8 @@ func MakeSecretFetchEndpoint(svc service.ApiV1Service) endpoint.Endpoint {
 		}
 
 		// TODO: sanitization end empty check.
-		workloadToken := r.WorkloadToken
 		workloadId := r.WorkloadId
 		workloadKey := r.WorkloadKey
-
-		if workloadToken != state.NotaryWorkloadToken() {
-			return reqres.SecretFetchResponse{
-				Err: "I don’t know you, and it’s crazy…",
-			}, nil
-		}
 
 		// TODO: empty check
 		if state.WorkloadKeyFromId(workloadId) != workloadKey {

@@ -13,6 +13,5 @@
 # `SecureWorkloadToken` has been shared with the workload by `notary`.
 # This shall deliver the token that admin has created for this workload.
 http POST http://localhost:8017/v1/fetch \
-  token=NotaryGeneratedSecureWorkloadToken \
-  id=aegis-demo-workload \
-  key=NotaryGeneratedRandomWorkloadSecret
+  token=NotaryGeneratedRandomWorkloadSecret \
+  workload=aegis-demo-workload
