@@ -18,19 +18,3 @@ type BootstrapRequest struct {
 type BootstrapResponse struct {
 	Err string `json:"err,omitempty"`
 }
-
-type SecretReadRequest struct {
-	Err string `json:"err,omitempty"`
-}
-
-type SecretReadResponse struct {
-	Err string `json:"err,omitempty"`
-}
-
-type GenericRequest struct {
-	Err string `json:"err,omitempty"`
-}
-
-type GenericResponse struct {
-	Err string `json:"err,omitempty"`
-}

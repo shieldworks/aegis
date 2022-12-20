@@ -18,3 +18,11 @@ type SecretUpsertRequest struct {
 type SecretUpsertResponse struct {
 	Err string `json:"err,omitempty"`
 }
+
+type SecretReadRequest struct {
+	Err string `json:"err,omitempty"`
+}
+
+type SecretReadResponse struct {
+	Err string `json:"err,omitempty"`
+}
