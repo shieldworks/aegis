@@ -27,4 +27,10 @@ func DefineSecretHandlers(s *Api, svc service.ApiV1Service) {
 		transport.DecodeSecretUpsertRequest,
 		transport.EncodeResponse,
 	)
+
+	s.SecretFetch = coreHttp.Serve(
+		endpoint.MakeSecretFetchEndpoint(svc),
+		transport.DecodeSecretFetchRequest,
+		transport.EncodeResponse,
+	)
 }
