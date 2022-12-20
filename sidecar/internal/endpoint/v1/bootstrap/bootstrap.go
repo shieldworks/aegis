@@ -6,7 +6,7 @@
  *     .\_/.
  */
 
-package hook
+package bootstrap
 
 import (
 	service "aegis-sidecar/internal/service/v1"
@@ -14,7 +14,7 @@ import (
 	"github.com/go-kit/kit/endpoint"
 )
 
-func MakeHookEndpoint(svc service.ApiV1Service) endpoint.Endpoint {
+func MakeBootstrapEndpoint(svc service.ApiV1Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		return nil, nil
 	}

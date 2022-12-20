@@ -8,14 +8,10 @@
 
 package v1
 
-import service "aegis-sidecar/internal/service/v1"
-
-type Api struct {
-	HookHandlers
-	BootstrapHandlers
+type GenericRequest struct {
+	Err string `json:"err,omitempty"`
 }
 
-func Init(s *Api, svc service.ApiV1Service) {
-	DefineHookHandlers(s, svc)
-	DefineBootstrapHandlers(s, svc)
+type GenericResponse struct {
+	Err string `json:"err,omitempty"`
 }

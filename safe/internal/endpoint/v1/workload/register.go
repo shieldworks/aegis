@@ -9,7 +9,7 @@
 package workload
 
 import (
-	"aegis-safe/internal/entity/reqres"
+	reqres "aegis-safe/internal/entity/reqres/v1"
 	service "aegis-safe/internal/service/v1"
 	"aegis-safe/internal/state"
 	"context"
@@ -32,7 +32,7 @@ func MakeWorkloadRegisterEndpoint(svc service.ApiV1Service) endpoint.Endpoint {
 		}
 
 		// TODO: sanitization, empty check, etc.
-		workloadToken := r.WorkloadToken
+		workloadToken := r.NotaryToken
 		workloadId := r.WorkloadId
 		workloadSecret := r.WorkloadSecret
 

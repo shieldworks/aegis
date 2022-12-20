@@ -9,7 +9,7 @@
 package secret
 
 import (
-	"aegis-safe/internal/entity/reqres"
+	reqres "aegis-safe/internal/entity/reqres/v1"
 	service "aegis-safe/internal/service/v1"
 	"aegis-safe/internal/state"
 	"context"

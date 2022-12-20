@@ -6,7 +6,7 @@
  *     .\_/.
  */
 
-package reqres
+package v1
 
 type SecretUpsertRequest struct {
 	AdminToken string `json:"token"`
@@ -20,9 +20,9 @@ type SecretUpsertResponse struct {
 }
 
 type SecretFetchRequest struct {
-	WorkloadId  string `json:"workload"`
-	WorkloadKey string `json:"token"`
-	Err         string `json:"err,omitempty"`
+	WorkloadId     string `json:"workload"`
+	WorkloadSecret string `json:"secret"`
+	Err            string `json:"err,omitempty"`
 }
 
 type SecretFetchResponse struct {

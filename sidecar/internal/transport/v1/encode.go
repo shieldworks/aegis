@@ -10,6 +10,7 @@ package v1
 
 import (
 	coreHttp "aegis-sidecar/internal/core/http"
+	reqres "aegis-sidecar/internal/entity/reqres/v1"
 	"context"
 	"encoding/json"
 	"log"

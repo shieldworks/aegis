@@ -8,8 +8,16 @@
 
 package route
 
-import "net/http"
+import (
+	v1Network "aegis-sidecar/internal/network/v1"
+	"github.com/gorilla/mux"
+	"net/http"
+)
 
 func HookEndpoints(r *mux.Router, api *v1Network.Api) {
-	r.Methods(http.MethodPut).Path("/v1/hook").Handler(api.HookSync)
+	r.Methods(http.MethodPut).Path("/v1/hook").Handler(api.Hook)
+}
+
+func BootstrapEndpoints(r *mux.Router, api *v1Network.Api) {
+	r.Methods(http.MethodPut).Path("/v1/bootstrap").Handler(api.Bootstrap)
 }

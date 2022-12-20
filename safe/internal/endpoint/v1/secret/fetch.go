@@ -9,7 +9,7 @@
 package secret
 
 import (
-	"aegis-safe/internal/entity/reqres"
+	reqres "aegis-safe/internal/entity/reqres/v1"
 	service "aegis-safe/internal/service/v1"
 	"aegis-safe/internal/state"
 	"context"
@@ -33,7 +33,7 @@ func MakeSecretFetchEndpoint(svc service.ApiV1Service) endpoint.Endpoint {
 
 		// TODO: sanitization end empty check.
 		workloadId := r.WorkloadId
-		workloadKey := r.WorkloadKey
+		workloadKey := r.WorkloadSecret
 
 		// TODO: empty check
 		if state.WorkloadKeyFromId(workloadId) != workloadKey {

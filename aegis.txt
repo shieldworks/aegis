@@ -19,3 +19,9 @@ x 2022-12-19 `./safe/test-notary-api-readyz--after-bootstrap.sh` pri:A +safe
 (B) note that the initial prototype stores things “in memory” without encryption; it might be nice to introduce `sops` next when things stabilize +aegis 
 (C) Add documentation to all publicly exported functions everywhere +aegis 
 (C) Code cleanup everywhere +aegis
+(A) use `sops` and `age` in some way, shape or form +aegis +safe @mvp 
+(E) ability to rotate notaryId and safeId. +aegis 
+(D) idea: integration with `SPIRE`. If there is a SPIRE server that `aegis` can piggyback on, then let it manage the registration instead of all these token and secret exchange.
+(C) main goal is to keep things simple, usable, and cloud-native. I will most certainly assume some form of Kubernetes exists. +aegis 
+(C) main goal: be pragrmatic +aegis — find the right balance between convenience and security by default, and let people to opt in for more secure updates if they want/need to. — the in memory store is a very good example: if people want, they can opt in for sops, but keeping thing in memory is secure enough in itself, the inconvenience here will be losing secrets when safe goes down; some can tolerate it, and some might need to persist the secrets in an encrypted way.
+(D) exchange workload secrets and notary token regularly. +aegis 

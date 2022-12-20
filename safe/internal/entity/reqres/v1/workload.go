@@ -6,10 +6,10 @@
  *     .\_/.
  */
 
-package reqres
+package v1
 
 type WorkloadRegisterRequest struct {
-	WorkloadToken  string `json:"token"`
+	NotaryToken    string `json:"token"`
 	WorkloadId     string `json:"workloadId"`
 	WorkloadSecret string `json:"workloadSecret"`
 	Err            string `json:"err,omitempty"`

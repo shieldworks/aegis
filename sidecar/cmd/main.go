@@ -9,8 +9,8 @@
 package main
 
 import (
-	"aegis-demo-workload/internal/app"
-	"aegis-demo-workload/internal/sentry"
+	"aegis-sidecar/internal/app"
+	"aegis-sidecar/internal/sentry"
 )
 
 func main() {

@@ -6,13 +6,13 @@
  *     .\_/.
  */
 
-package reqres
+package v1
 
 type BootstrapRequest struct {
-	NotaryId      string `json:"id"`
-	WorkloadToken string `json:"workloadToken"`
-	AdminToken    string `json:"adminToken"`
-	Err           string `json:"err,omitempty"`
+	NotaryId    string `json:"id"`
+	NotaryToken string `json:"notaryToken"`
+	AdminToken  string `json:"adminToken"`
+	Err         string `json:"err,omitempty"`
 }
 
 type BootstrapResponse struct {

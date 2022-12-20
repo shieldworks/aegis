@@ -9,7 +9,7 @@
 package bootstrap
 
 import (
-	"aegis-safe/internal/entity/reqres"
+	reqres "aegis-safe/internal/entity/reqres/v1"
 	service "aegis-safe/internal/service/v1"
 	"aegis-safe/internal/state"
 	"context"
@@ -33,7 +33,7 @@ func MakeBootstrapEndpoint(svc service.ApiV1Service) endpoint.Endpoint {
 
 		// TODO: sanitize these.
 		notaryId := r.NotaryId
-		workloadToken := r.WorkloadToken
+		workloadToken := r.NotaryToken
 		adminToken := r.AdminToken
 		// TODO: empty check
 		envNotaryId := os.Getenv("AEGIS_NOTARY_ID")

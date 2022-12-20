@@ -6,12 +6,13 @@
  *     .\_/.
  */
 
-package reqres
+package v1
 
-type GenericRequest struct {
-	Err string `json:"err,omitempty"`
-}
+import "context"
 
-type GenericResponse struct {
-	Err string `json:"err,omitempty"`
+func (a apiV1Service) Bootstrap(
+	ctx context.Context, notarySecret, id, secret, safeApiRoot string,
+) error {
+	//TODO implement me
+	panic("implement me")
 }

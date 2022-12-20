@@ -9,22 +9,22 @@
 package v1
 
 import (
-	reqres "aegis-safe/internal/entity/reqres/v1"
+	reqres "aegis-sidecar/internal/entity/reqres/v1"
 	"context"
 	"encoding/json"
 	"log"
 	"net/http"
 )
 
-func DecodeWorkloadRegisterRequest(
+func DecodeBootstrapRequest(
 	_ context.Context, r *http.Request,
 ) (interface{}, error) {
-	var request reqres.WorkloadRegisterRequest
+	var request reqres.BootstrapRequest
 
 	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
-		log.Printf("DecodeWorkloadRegisterRequest: error decoding: %s\n", err.Error())
+		log.Printf("DecodeBootstrapRequest: error decoding: %s\n", err.Error())
 
-		request.Err = "DecodeWorkloadRegisterRequest: Problem decoding JSON."
+		request.Err = "DecodeBootstrapRequest: Problem decoding JSON."
 	}
 
 	return request, nil

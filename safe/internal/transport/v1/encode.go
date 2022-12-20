@@ -10,7 +10,7 @@ package v1
 
 import (
 	coreHttp "aegis-safe/internal/core/http"
-	"aegis-safe/internal/entity/reqres"
+	reqres "aegis-safe/internal/entity/reqres/v1"
 	"context"
 	"encoding/json"
 	"log"

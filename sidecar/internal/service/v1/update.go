@@ -8,14 +8,11 @@
 
 package v1
 
-import service "aegis-sidecar/internal/service/v1"
+import "context"
 
-type Api struct {
-	HookHandlers
-	BootstrapHandlers
-}
-
-func Init(s *Api, svc service.ApiV1Service) {
-	DefineHookHandlers(s, svc)
-	DefineBootstrapHandlers(s, svc)
+func (a apiV1Service) Update(
+	ctx context.Context, oldSecret, newId, newSecret, newSafeApiRoot string,
+) error {
+	//TODO implement me
+	panic("implement me")
 }
