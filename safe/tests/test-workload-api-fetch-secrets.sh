@@ -11,8 +11,8 @@
 # `workload` -> `safe`
 
 # `SecureWorkloadToken` has been shared with the workload by `notary`.
-# This shall deliver the secret that admin has created for this workload.
+# This shall deliver the token that admin has created for this workload.
 http POST http://localhost:8017/v1/fetch \
-  key=aegis-demo-workload \
-  id=NotaryGeneratedRandomWorkloadId \
-  secret=NotaryGeneratedSecureWorkloadToken
+  token=NotaryGeneratedSecureWorkloadToken \
+  id=aegis-demo-workload \
+  key=NotaryGeneratedRandomWorkloadSecret

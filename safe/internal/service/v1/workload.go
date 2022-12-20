@@ -13,7 +13,7 @@ import (
 	"context"
 )
 
-func (a apiV1Service) WorkloadRegister(ctx context.Context, id, secret string) error {
-	state.RegisterWorkload(id, secret)
+func (a apiV1Service) WorkloadRegister(ctx context.Context, id, key string) error {
+	state.RegisterWorkload(id, key)
 	return nil
 }

@@ -15,6 +15,6 @@
 # Admin retrieves secure admin token via a secure means after `notary`
 # bootstraps `safe`.
 http PUT http://localhost:8017/v1/secret \
-  token=SecureAdminToken \
+  token=NotaryGeneratedSecureAdminToken \
   key=aegis-demo-workload \
   value='{"username": "me@volkan.io", "password": "ToppyTopSecret"}'

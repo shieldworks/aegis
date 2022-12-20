@@ -19,10 +19,14 @@ type SecretUpsertResponse struct {
 	Err string `json:"err,omitempty"`
 }
 
-type SecretReadRequest struct {
-	Err string `json:"err,omitempty"`
+type SecretFetchRequest struct {
+	WorkloadToken string `json:"token"`
+	WorkloadId    string `json:"id"`
+	WorkloadKey   string `json:"key"`
+	Err           string `json:"err,omitempty"`
 }
 
-type SecretReadResponse struct {
-	Err string `json:"err,omitempty"`
+type SecretFetchResponse struct {
+	Data string `json:"data"`
+	Err  string `json:"err,omitempty"`
 }

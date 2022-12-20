@@ -110,8 +110,8 @@ func Bootstrap(newAdminToken, newWorkloadToken string) {
 
 var secrets sync.Map
 
-func UpsertSecret(key, value string) {
-	secrets.Store(key, value)
+func UpsertSecret(id, data string) {
+	secrets.Store(id, data)
 }
 
 func ReadSecret(key string) string {
@@ -125,11 +125,11 @@ func ReadSecret(key string) string {
 
 var workloads sync.Map
 
-func RegisterWorkload(id, secret string) {
-	workloads.Store(id, secret)
+func RegisterWorkload(id, key string) {
+	workloads.Store(id, key)
 }
 
-func WorkloadSecret(id string) string {
+func WorkloadKeyFromId(id string) string {
 	result, ok := workloads.Load(id)
 	if !ok {
 		return ""

@@ -14,15 +14,15 @@ import (
 )
 
 func (a apiV1Service) SecretUpsert(
-	ctx context.Context, key, value string,
+	ctx context.Context, id, data string,
 ) error {
-	state.UpsertSecret(key, value)
+	state.UpsertSecret(id, data)
 	return nil
 }
 
 func (a apiV1Service) SecretRead(
-	ctx context.Context, key string,
+	ctx context.Context, id string,
 ) (string, error) {
-	val := state.ReadSecret(key)
-	return val, nil
+	data := state.ReadSecret(id)
+	return data, nil
 }

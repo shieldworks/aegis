@@ -1,12 +1,12 @@
-(A) complete `safe` tests. @▶️ +safe
+x 2022-12-19 complete `safe` tests. pri:A +safe @▶️
 x 2022-12-19 `./safe/test-admin-api-upsert-secret.sh` pri:A +safe @▶️
 x 2022-12-19 `./safe/test-notary-api-bootstrap.sh` pri:A +safe @▶️
 x 2022-12-19 `./safe/test-notary-api-workload.sh` pri:A +safe @▶️
 x 2022-12-19 `./safe/test-probe-api-healthz.sh` pri:A +safe @▶️
 x 2022-12-19 `./safe/test-probe-api-readyz.sh` pri:A +safe @▶️
-(A) `./safe/test-workload-api-fetch-secrets.sh` +safe @▶️ 
+x 2022-12-19 `./safe/test-workload-api-fetch-secrets.sh` pri:A +safe @▶️
 (B) Implement `notary` API. +notary 
-(B) Implement `sidecar` API. +sidecar
+(A) Implement `sidecar` API. +sidecar @▶️ 
 x 2022-12-19 `./safe/test-notary-api-readyz--after-bootstrap.sh` pri:A +safe
 (C) Finalize `README.md`.
 (D) Process `TODO:` items in the projects. +aegis 
@@ -16,3 +16,4 @@ x 2022-12-19 `./safe/test-notary-api-readyz--after-bootstrap.sh` pri:A +safe
 (E) what about mTLS? Maybe offload it to a mesh and keep it out of scope and/or conditionally enable with a configuration flag. +aegis 
 (E) there is almost no logging in fail cases, incrase logging +aegis 
 (E) right now everything is in memory; maybe provide other backing stores +aegis
+(B) note that the initial prototype stores things “in memory” without encryption; it might be nice to introduce `sops` next when things stabilize +aegis 

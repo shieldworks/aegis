@@ -23,5 +23,5 @@
 # token only once for the admin to store safely.”
 http POST http://localhost:8017/v1/bootstrap \
   id=AegisRocks \
-  workloadToken=SecureWorkloadToken \
-  adminToken=SecureAdminToken
+  workloadToken=NotaryGeneratedSecureWorkloadToken \
+  adminToken=NotaryGeneratedSecureAdminToken

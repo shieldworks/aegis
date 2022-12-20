@@ -30,15 +30,15 @@ func DecodeSecretUpsertRequest(
 	return request, nil
 }
 
-func DecodeSecretReadRequest(
+func DecodeSecretFetchRequest(
 	_ context.Context, r *http.Request,
 ) (interface{}, error) {
-	var request reqres.SecretReadRequest
+	var request reqres.SecretFetchRequest
 
 	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
-		log.Printf("DecodeUpsertSecretRequest: error decoding: %s\n", err.Error())
+		log.Printf("DecodeSecretFetchRequest: error decoding: %s\n", err.Error())
 
-		request.Err = "DecodeUpsertSecretRequest: Problem decoding JSON."
+		request.Err = "DecodeSecretFetchRequest: Problem decoding JSON."
 	}
 
 	return request, nil
