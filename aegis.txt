@@ -1,7 +1,7 @@
 (A) complete `safe` tests. @▶️ +safe
 x 2022-12-19 `./safe/test-admin-api-upsert-secret.sh` pri:A +safe @▶️
 x 2022-12-19 `./safe/test-notary-api-bootstrap.sh` pri:A +safe @▶️
-(A) `./safe/test-notary-api-workload.sh`  +safe @▶️ 
+x 2022-12-19 `./safe/test-notary-api-workload.sh` pri:A +safe @▶️
 x 2022-12-19 `./safe/test-probe-api-healthz.sh` pri:A +safe @▶️
 x 2022-12-19 `./safe/test-probe-api-readyz.sh` pri:A +safe @▶️
 (A) `./safe/test-workload-api-fetch-secrets.sh` +safe @▶️ 
@@ -13,3 +13,6 @@ x 2022-12-19 `./safe/test-notary-api-readyz--after-bootstrap.sh` pri:A +safe
 (B) Finalize diagrams. +aegis 
 (C) create a broad-brushstrokes roadmap.
 (D) the website needs some content +aegis 
+(E) what about mTLS? Maybe offload it to a mesh and keep it out of scope and/or conditionally enable with a configuration flag. +aegis 
+(E) there is almost no logging in fail cases, incrase logging +aegis 
+(E) right now everything is in memory; maybe provide other backing stores +aegis

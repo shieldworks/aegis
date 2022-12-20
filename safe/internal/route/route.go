@@ -38,7 +38,7 @@ func AdminEndpoints(r *mux.Router, api *v1Network.Api) {
 func WorkloadEndpoints(r *mux.Router, api *v1Network.Api) {
 	// TODO: only sidecar can read this with a proper token.
 	// shall return an error if safe is not bootstrapped.
-	r.Methods(http.MethodGet).Path("/v1/fetch").Handler(api.SecretFetch)
+	r.Methods(http.MethodPost).Path("/v1/fetch").Handler(api.SecretFetch)
 }
 
 func NotaryEndpoints(r *mux.Router, api *v1Network.Api) {

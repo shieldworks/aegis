@@ -122,3 +122,18 @@ func ReadSecret(key string) string {
 
 	return result.(string)
 }
+
+var workloads sync.Map
+
+func RegisterWorkload(id, secret string) {
+	workloads.Store(id, secret)
+}
+
+func WorkloadSecret(id string) string {
+	result, ok := workloads.Load(id)
+	if !ok {
+		return ""
+	}
+
+	return result.(string)
+}
