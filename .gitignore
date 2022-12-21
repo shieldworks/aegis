@@ -26,3 +26,8 @@
 .idea
 .code
 .history
+
+vendor
+
+aegis-sidecar
+aegis-workload-demo

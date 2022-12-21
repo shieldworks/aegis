@@ -12,12 +12,13 @@ PACKAGE=aegis-sidecar
 REPO=z2hdev/aegis-sidecar
 
 build:
-	go build -o ${PACKAGE}
+	go build -o ${PACKAGE} ./cmd/main.go
 
 run:
-	go run main.go
+	go run ./cmd/main.go
 
 bundle:
+	go mod vendor
 	docker build . -t ${PACKAGE}:${VERSION}
 
 push:
