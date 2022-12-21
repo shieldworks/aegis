@@ -6,24 +6,29 @@
 #     .\_/.
 #
 
+VERSION=0.5.0
+PACKAGE=aegis-safe
+REPO=z2hdev/aegis-safe
+
+all: build bundle push deploy
+
 build:
-	go build -o aegis-safe ./cmd/main.go
+	go build -o ${PACKAGE} ./cmd/main.go
 
 run:
-	go run main.go
+	go run ./cmd/main.go
 
 bundle:
-	docker build . -t aegis-safe:0.5.0
+	go mod vendor
+	docker build . -t ${PACKAGE}:${VERSION}
 
 push:
-	docker build . -t aegis-safe:0.5.0
-	docker tag aegis-safe:0.5.0 localhost:5000/aegis-safe:0.5.0
-	docker push localhost:5000/aegis-safe:0.5.0
+	docker build . -t ${PACKAGE}:${VERSION}
+	docker tag ${PACKAGE}:${VERSION} ${REPO}:${VERSION}
+	docker push ${REPO}:${VERSION}
 
 deploy:
-	minikube kubectl -- apply -f ./k8s/Deployment.yaml
+	kubectl apply -f ./k8s/
 
 run-in-container:
-	docker run aegis-safe:0.5.0
-
-
+	docker run ${PACKAGE}:${VERSION}

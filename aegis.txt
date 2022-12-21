@@ -5,8 +5,8 @@ x 2022-12-19 `./safe/test-notary-api-workload.sh` pri:A +safe @▶️
 x 2022-12-19 `./safe/test-probe-api-healthz.sh` pri:A +safe @▶️
 x 2022-12-19 `./safe/test-probe-api-readyz.sh` pri:A +safe @▶️
 x 2022-12-19 `./safe/test-workload-api-fetch-secrets.sh` pri:A +safe @▶️
-(B) Implement `notary` API. +notary 
-(A) Implement `sidecar` API. +sidecar @▶️ 
+(A) Implement `notary` API. +notary 
+x 2022-12-21 Implement `sidecar` API. pri:A +sidecar @▶️
 x 2022-12-19 `./safe/test-notary-api-readyz--after-bootstrap.sh` pri:A +safe
 (C) Finalize `README.md`.
 (D) Process `TODO:` items in the projects. +aegis 
@@ -19,7 +19,7 @@ x 2022-12-19 `./safe/test-notary-api-readyz--after-bootstrap.sh` pri:A +safe
 (B) note that the initial prototype stores things “in memory” without encryption; it might be nice to introduce `sops` next when things stabilize +aegis 
 (C) Add documentation to all publicly exported functions everywhere +aegis 
 (C) Code cleanup everywhere +aegis
-(A) use `sops` and `age` in some way, shape or form +aegis +safe @mvp 
+(B) use `sops` and `age` in some way, shape or form +aegis +safe @mvp 
 (E) ability to rotate notaryId and safeId. +aegis 
 (D) idea: integration with `SPIRE`. If there is a SPIRE server that `aegis` can piggyback on, then let it manage the registration instead of all these token and secret exchange.
 (C) main goal is to keep things simple, usable, and cloud-native. I will most certainly assume some form of Kubernetes exists. +aegis 
@@ -28,3 +28,10 @@ x 2022-12-19 `./safe/test-notary-api-readyz--after-bootstrap.sh` pri:A +safe
 (C) audit logging on api actions +aegis 
 (C) none of the deployments have any limits; set some reasonable limits +aegis 
 (C) Create a service account instead of using the default one +aegis
+(E) sign the docker images and other artifacts that you distribute +aegis 
+(A) record a demo video +aegis 
+(A) tx renewal b4 29th @🚨 
+(B) convert minikube kubectl to kubectl in the deploy makefiles; maybe add a deploy-minikube as an alternative option +aegis 
+(B) add make all; make install; make clean -- those are typical things people expect in makefiles +aegis 
+(B) ensure that all `make` commands are working as expected +aegis 
+(B) create a top-level makefile that builds and deploys all the child projects +aegis

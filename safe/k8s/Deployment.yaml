@@ -28,3 +28,20 @@ spec:
           image: z2hdev/aegis-safe:0.5.0
           ports:
           - containerPort: 8017
+          env:
+          - name: AEGIS_APP_NAME
+            value: "aegis-safe"
+
+          # The port that `safe` API will be served.
+          # Right now, it is not configurable.
+          - name: AEGIS_PORT
+            value: ":8017"
+
+          # AEGIS_NOTARY_ID is a shared id that’s used only once during the
+          # bootstrapping process.
+          # For production use, change its value to something unique and
+          # hard to guess.
+          # It is recommended that you do not store this ID in source control
+          # and dynamically generate and inject it through your CI/CD pipeline.
+          - name: AEGIS_NOTARY_ID
+            value: "AegisRocks"

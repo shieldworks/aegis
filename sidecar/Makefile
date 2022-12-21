@@ -6,10 +6,11 @@
 #     .\_/.
 #
 
-
 VERSION=0.5.0
 PACKAGE=aegis-sidecar
 REPO=z2hdev/aegis-sidecar
+
+all: build bundle push
 
 build:
 	go build -o ${PACKAGE} ./cmd/main.go
@@ -25,9 +26,6 @@ push:
 	docker build . -t ${PACKAGE}:${VERSION}
 	docker tag ${PACKAGE}:${VERSION} ${REPO}:${VERSION}
 	docker push ${REPO}:${VERSION}
-
-deploy:
-	minikube kubectl -- apply -f ./k8s/
 
 run-in-container:
 	docker run ${PACKAGE}:${VERSION}

@@ -8,10 +8,6 @@
 #     .\_/.
 #
 
-# `workload` -> `safe`
-
-# `SecureWorkloadToken` has been shared with the workload by `notary`.
-# This shall deliver the token that admin has created for this workload.
-http POST http://localhost:8017/v1/fetch \
+http POST http://aegis-safe:8017/v1/fetch \
   secret=NotaryGeneratedRandomWorkloadSecret \
-  workload=aegis-demo-workload
+  workload=aegis-workload-demo

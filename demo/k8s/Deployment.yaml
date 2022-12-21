@@ -26,7 +26,7 @@ spec:
         aegis-inject-sidecar: "false"
         # The name the workload will be referred.
         # Admin API will use this name to register secrets for this workload.
-        aegis-workload-key: aegis-demo-workload
+        aegis-workload-key: aegis-workload-demo
     spec:
       containers:
         - name: main
@@ -34,15 +34,29 @@ spec:
           volumeMounts:
           - mountPath: /opt/aegis
             name: aegis-secrets-volume
+
         - name: sidecar
           image: z2hdev/aegis-sidecar:0.5.0
+          ports:
+          - containerPort: 8039
           volumeMounts:
+
           # /opt/aegis/secrets.json is the place the secrets will be at.
           # As of now, this is not configurable. Once the MVP is complete,
           # we’ll work on making Aegis more flexible and add more configuration
           # options.
           - mountPath: /opt/aegis
             name: aegis-secrets-volume
+
+          env:
+          - name: AEGIS_APP_NAME
+            value: "aegis-sidecar"
+
+          # The port that sidecar webhook is listening at.
+          # Right now, it is not configurable.
+          - name: AEGIS_PORT
+            value: ":8039"
+
       # A memory-backed volume is recommended (but not required) to keep
       # the secrets. The secrets can be stored in any kind of volume.
       volumes:

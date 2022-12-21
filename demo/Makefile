@@ -10,6 +10,8 @@ VERSION=0.5.0
 PACKAGE=aegis-workload-demo
 REPO=z2hdev/aegis-workload-demo
 
+all: build bundle push deploy
+
 build:
 	go build -o ${PACKAGE}
 
@@ -17,6 +19,7 @@ run:
 	go run main.go
 
 bundle:
+	go mod vendor
 	docker build . -t ${PACKAGE}:${VERSION}
 
 push:
@@ -25,7 +28,7 @@ push:
 	docker push ${REPO}:${VERSION}
 
 deploy:
-	minikube kubectl -- apply -f ./k8s/
+	kubectl apply -f ./k8s/
 
 run-in-container:
 	docker run ${PACKAGE}:${VERSION}

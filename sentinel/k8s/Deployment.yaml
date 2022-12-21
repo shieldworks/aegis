@@ -1,0 +1,30 @@
+#
+# .-'_.---._'-.
+# ||####|(__)||   Protect your secrets, protect your business.
+#   \\()|##//       Secure your sensitive data with Aegis.
+#    \\ |#//                  <aegis.z2h.dev>
+#     .\_/.
+#
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aegis-sentinel
+  namespace: aegis-system
+  labels:
+    app: aegis-sentinel
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aegis-sentinel
+  template:
+    metadata:
+      labels:
+        app: aegis-sentinel
+    spec:
+      containers:
+        - name: main
+          image: z2hdev/aegis-sentinel:0.5.0
+          command: [ "/bin/bash", "-c", "--" ]
+          args: [ "while true; do sleep 30; done;" ]

@@ -8,5 +8,7 @@
 
 FROM nicolaka/netshoot
 
+COPY tests /tests
+
 # Run ZSH
 CMD ["zsh"]

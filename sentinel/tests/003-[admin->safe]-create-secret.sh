@@ -8,13 +8,7 @@
 #     .\_/.
 #
 
-# `admin` -> `safe`
-
-# Keep the admin token safe; do not store it in source control.
-# An ideal place to store it is a password manager or an encrypted file.
-# Admin retrieves secure admin token via a secure means after `notary`
-# bootstraps `safe`.
-http PUT http://localhost:8017/v1/secret \
+http PUT http://aegis-safe:8017/v1/secret \
   token=NotaryGeneratedSecureAdminToken \
-  key=aegis-demo-workload \
+  key=aegis-workload-demo \
   value='{"username": "me@volkan.io", "password": "ToppyTopSecret"}'
