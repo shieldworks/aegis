@@ -10,5 +10,5 @@
 
 http PUT http://aegis-safe:8017/v1/workload \
   token=NotaryGeneratedSecureWorkloadToken \
-  workloadId=aegis-demo-workload \
+  workloadId=aegis-workload-demo \
   workloadSecret=NotaryGeneratedRandomWorkloadSecret

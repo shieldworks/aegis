@@ -75,7 +75,7 @@ func fetchSecrets() {
 
 	// TODO: save data to /opt/aegis/secrets.json
 	// TODO: make the filename configurable.
-	fmt.Println("data", data)
+	fmt.Println("data: '", data, "'")
 
 	saveData(data)
 }

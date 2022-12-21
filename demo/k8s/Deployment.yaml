@@ -31,13 +31,13 @@ spec:
     spec:
       containers:
         - name: main
-          image: z2hdev/aegis-workload-demo:0.5.2
+          image: z2hdev/aegis-workload-demo:0.5.3
           volumeMounts:
           - mountPath: /opt/aegis
             name: aegis-secrets-volume
 
         - name: sidecar
-          image: z2hdev/aegis-sidecar:0.5.2
+          image: z2hdev/aegis-sidecar:0.5.3
           ports:
           - containerPort: 8039
           volumeMounts:
@@ -57,6 +57,15 @@ spec:
           # Right now, it is not configurable.
           - name: AEGIS_PORT
             value: ":8039"
+
+            # AEGIS_NOTARY_ID is a shared id that’s used only once during the
+            # bootstrapping process.
+            # For production use, change its value to something unique and
+            # hard to guess.
+            # It is recommended that you do not store this ID in source control
+            # and dynamically generate and inject it through your CI/CD pipeline.
+          - name: AEGIS_NOTARY_ID
+            value: "AegisRocks"
 
       # A memory-backed volume is recommended (but not required) to keep
       # the secrets. The secrets can be stored in any kind of volume.

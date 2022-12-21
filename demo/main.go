@@ -22,7 +22,7 @@ func main() {
 		if err != nil {
 			fmt.Println("Failed to read the secrets file. Will retry in 5 seconds…")
 		} else {
-			fmt.Println(string(dat))
+			fmt.Println("secret: '", string(dat), "'")
 		}
 
 		time.Sleep(5 * time.Second)
