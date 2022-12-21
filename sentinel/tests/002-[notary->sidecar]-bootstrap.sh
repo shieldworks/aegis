@@ -8,9 +8,9 @@
 #     .\_/.
 #
 
-http PUT http://aegis-wokload-demo:8039/v1/hook \
+http PUT http://aegis-workload-demo.default.svc.cluster.local:8039/v1/hook \
   id=AegisRocks \
   notaryToken=NotaryGeneratedSecureWorkloadToken \
 	workloadId=aegis-workload-demo\
 	workloadSecret=NotaryGeneratedRandomWorkloadSecret \
-	safeApiRoot="http://aegis-safe:8017/"
+	safeApiRoot="http://aegis-safe.aegis-system.svc.cluster.local:8017/"

@@ -9,18 +9,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: demo
+  name: aegis-workload-demo
+  namespace: default
   labels:
-    app: demo
+    app: aegis-workload-demo
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: demo
+      app: aegis-workload-demo
   template:
     metadata:
       labels:
-        app: demo
+        app: aegis-workload-demo
       annotations:
         # To automatically inject sidecar instead of manually creating one.
         aegis-inject-sidecar: "false"
@@ -30,13 +31,13 @@ spec:
     spec:
       containers:
         - name: main
-          image: z2hdev/aegis-workload-demo:0.5.0
+          image: z2hdev/aegis-workload-demo:0.5.2
           volumeMounts:
           - mountPath: /opt/aegis
             name: aegis-secrets-volume
 
         - name: sidecar
-          image: z2hdev/aegis-sidecar:0.5.0
+          image: z2hdev/aegis-sidecar:0.5.2
           ports:
           - containerPort: 8039
           volumeMounts:

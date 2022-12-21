@@ -1,4 +1,25 @@
+#
+# .-'_.---._'-.
+# ||####|(__)||   Protect your secrets, protect your business.
+#   \\()|##//       Secure your sensitive data with Aegis.
+#    \\ |#//                  <aegis.z2h.dev>
+#     .\_/.
+#
 
-# This is for debugging purposes only.
+# !                                                         ! #
+# ! This Service is intended for debugging purposes only.   ! #
+# ! For production deployments, DO NOT create this Service. ! #
+# !                                                         ! #
 
-# aegis-workload-demo
+apiVersion: v1
+kind: Service
+metadata:
+  name: aegis-workload-demo
+  namespace: default
+spec:
+  selector:
+    app: aegis-workload-demo
+  ports:
+    - protocol: TCP
+      port: 8039
+      targetPort: 8039
