@@ -9,7 +9,8 @@
 package v1
 
 type HookRequest struct {
-	NotarySecret   string `json:"notarySecret"`
+	NotaryId       string `json:"id"`
+	NewNotaryId    string `json:"nextId"`
 	WorkloadId     string `json:"workloadId"`
 	WorkloadSecret string `json:"workloadSecret"`
 	SafeApiRoot    string `json:"safeApiRoot"`

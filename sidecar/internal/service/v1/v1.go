@@ -11,8 +11,7 @@ package v1
 import "context"
 
 type ApiV1Service interface {
-	Bootstrap(ctx context.Context, notarySecret, id, secret, safeApiRoot string) error
-	Update(ctx context.Context, oldSecret, newId, newSecret, newSafeApiRoot string) error
+	UpdateState(ctx context.Context, nextId, workloadId, workloadSecret, safeApiRoot string) error
 }
 
 type apiV1Service struct{}

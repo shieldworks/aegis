@@ -9,20 +9,24 @@
 package sentry
 
 import (
+	"aegis-sidecar/internal/state"
 	"fmt"
 	"time"
 )
 
+func fetchSecrets() {
+	fmt.Println(state.Id(), state.Secret(), state.SafeApiRoot())
+}
+
 // Watch synchronizes the internal state of the sidecar by talking to
 // `safe` regularly.
 func Watch() {
-
 	// TODO: make this configurable.
 	ticker := time.NewTicker(5 * time.Second)
 	for {
 		select {
-		case t := <-ticker.C:
-			fmt.Println("Tick at", t)
+		case <-ticker.C:
+			fetchSecrets()
 		}
 	}
 }

@@ -21,9 +21,6 @@ type HookHandlers struct {
 }
 
 func DefineHookHandlers(s *Api, svc service.ApiV1Service) {
-
-	// TODO: coreHttp is repeated between services,
-	// maybe move it to something like `aegis-core`.
 	s.Hook = coreHttp.Serve(
 		endpoint.MakeHookEndpoint(svc),
 		transport.DecodeHookRequest,

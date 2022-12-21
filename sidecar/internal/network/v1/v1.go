@@ -12,10 +12,8 @@ import service "aegis-sidecar/internal/service/v1"
 
 type Api struct {
 	HookHandlers
-	BootstrapHandlers
 }
 
 func Init(s *Api, svc service.ApiV1Service) {
 	DefineHookHandlers(s, svc)
-	DefineBootstrapHandlers(s, svc)
 }

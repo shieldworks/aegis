@@ -14,13 +14,21 @@ var mux = sync.Mutex{}
 var id = ""
 var secret = ""
 var safeApiRoot = ""
+var notaryId = ""
 
-func Bootstrap(newId, newSecret, newSafeApiRoot string) {
+func Update(newNotaryId, newId, newSecret, newSafeApiRoot string) {
 	mux.Lock()
 	defer mux.Unlock()
+	notaryId = newNotaryId
 	id = newId
 	secret = newSecret
 	safeApiRoot = newSafeApiRoot
+}
+
+func NotaryId() string {
+	mux.Lock()
+	defer mux.Unlock()
+	return notaryId
 }
 
 func Id() string {
@@ -39,4 +47,10 @@ func SafeApiRoot() string {
 	mux.Lock()
 	defer mux.Unlock()
 	return safeApiRoot
+}
+
+func Bootstrapped() bool {
+	mux.Lock()
+	defer mux.Unlock()
+	return id != ""
 }
