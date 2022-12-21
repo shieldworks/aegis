@@ -13,12 +13,12 @@ RUN mkdir /build
 ADD *.go /build/
 ADD go.mod /build/
 WORKDIR /build
-RUN CGO_ENABLED=0 GOOS=linux go build -a -o aegis-demo-workload .
+RUN CGO_ENABLED=0 GOOS=linux go build -a -o aegis-workload-demo .
 
 # generate clean, final image for end users
 FROM alpine:3.17
-COPY --from=builder /build/aegis-demo-workload .
+COPY --from=builder /build/aegis-workload-demo .
 
 # executable
-ENTRYPOINT [ "./aegis-demo-workload" ]
+ENTRYPOINT [ "./aegis-workload-demo" ]
 CMD [ "" ]

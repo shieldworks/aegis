@@ -1,3 +1,3 @@
-module aegis-demo-workload
+module aegis-workload-demo
 
 go 1.19
