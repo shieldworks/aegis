@@ -1,0 +1,20 @@
+#
+# .-'_.---._'-.
+# ||####|(__)||   Protect your secrets, protect your business.
+#   \\()|##//       Secure your sensitive data with Aegis.
+#    \\ |#//                  <aegis.z2h.dev>
+#     .\_/.
+#
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: aegis-safe
+  namespace: aegis-system
+spec:
+  selector:
+    app: aegis-safe
+  ports:
+    - protocol: TCP
+      port: 8017
+      targetPort: 8017

@@ -26,3 +26,5 @@ x 2022-12-19 `./safe/test-notary-api-readyz--after-bootstrap.sh` pri:A +safe
 (C) main goal: be pragrmatic +aegis — find the right balance between convenience and security by default, and let people to opt in for more secure updates if they want/need to. — the in memory store is a very good example: if people want, they can opt in for sops, but keeping thing in memory is secure enough in itself, the inconvenience here will be losing secrets when safe goes down; some can tolerate it, and some might need to persist the secrets in an encrypted way.
 (D) exchange workload secrets and notary token regularly. +aegis 
 (C) audit logging on api actions +aegis 
+(C) none of the deployments have any limits; set some reasonable limits +aegis 
+(C) Create a service account instead of using the default one +aegis

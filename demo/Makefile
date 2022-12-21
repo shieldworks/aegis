@@ -6,24 +6,26 @@
 #     .\_/.
 #
 
+VERSION=0.5.0
+PACKAGE=aegis-workload-demo
+REPO=z2hdev/aegis-workload-demo
+
 build:
-	go build -o aegis-demo-workload
+	go build -o ${PACKAGE}
 
 run:
 	go run main.go
 
 bundle:
-	docker build . -t aegis-demo-workload:0.5.0
+	docker build . -t ${PACKAGE}:${VERSION}
 
 push:
-	docker build . -t aegis-demo-workload:0.5.0
-	docker tag aegis-demo-workload:0.5.0 localhost:5000/aegis-demo-workload:0.5.0
-	docker push localhost:5000/aegis-demo-workload:0.5.0
+	docker build . -t ${PACKAGE}:${VERSION}
+	docker tag ${PACKAGE}:${VERSION} ${REPO}:${VERSION}
+	docker push ${REPO}:${VERSION}
 
 deploy:
-	minikube kubectl -- apply -f ./k8s/Deployment.yaml
+	minikube kubectl -- apply -f ./k8s/
 
 run-in-container:
-	docker run aegis-demo-workload:0.5.0
-
-
+	docker run ${PACKAGE}:${VERSION}

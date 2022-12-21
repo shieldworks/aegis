@@ -17,12 +17,14 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: demo
+      app: aegis-safe
   template:
     metadata:
       labels:
-        app: demo
+        app: aegis-safe
     spec:
       containers:
         - name: main
-          image: localhost:5000/aegis-safe:0.5.0
+          image: z2hdev/aegis-safe:0.5.0
+          ports:
+          - containerPort: 8017

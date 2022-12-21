@@ -14,11 +14,9 @@ import (
 	"time"
 )
 
+const secretFilePath = "/opt/aegis/secrets.json"
+
 func main() {
-	fmt.Println("Hello world, hello stars, hello universe!")
-
-	const secretFilePath = "/opt/aegis/secrets.json"
-
 	for {
 		dat, err := os.ReadFile(secretFilePath)
 		if err != nil {

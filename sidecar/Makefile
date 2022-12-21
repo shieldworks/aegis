@@ -6,22 +6,28 @@
 #     .\_/.
 #
 
+
+VERSION=0.5.0
+PACKAGE=aegis-sidecar
+REPO=z2hdev/aegis-sidecar
+
 build:
-	go build -o aegis-sidecar
+	go build -o ${PACKAGE}
 
 run:
 	go run main.go
 
 bundle:
-	docker build . -t aegis-sidecar:0.5.0
+	docker build . -t ${PACKAGE}:${VERSION}
 
 push:
-	docker build . -t aegis-sidecar:0.5.0
-	docker tag aegis-sidecar:0.5.0 localhost:5000/aegis-sidecar:0.5.0
-	docker push localhost:5000/aegis-sidecar:0.5.0
+	docker build . -t ${PACKAGE}:${VERSION}
+	docker tag ${PACKAGE}:${VERSION} ${REPO}:${VERSION}
+	docker push ${REPO}:${VERSION}
 
 deploy:
-	minikube kubectl -- apply -f ./k8s/Deployment.yaml
+	minikube kubectl -- apply -f ./k8s/
 
 run-in-container:
-	docker run aegis-sidecar:0.5.0
+	docker run ${PACKAGE}:${VERSION}
+
