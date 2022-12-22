@@ -8,4 +8,4 @@
 #     .\_/.
 #
 
-kubectl port-forward aegis-workload-demo-f74665784-mqmqp  8039:8039 -n default
+kubectl port-forward aegis-workload-demo-5dc6b56fbd-pmxct 8039:8039 -n default

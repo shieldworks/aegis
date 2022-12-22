@@ -29,7 +29,7 @@ func saveData(data string) {
 	}
 
 	w := bufio.NewWriter(f)
-	n, err := w.WriteString(data)
+	_, err = w.WriteString(data)
 	if err != nil {
 		// TODO: handle me
 		panic("poop!")

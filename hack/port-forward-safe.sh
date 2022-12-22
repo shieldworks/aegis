@@ -8,4 +8,4 @@
 #     .\_/.
 #
 
-kubectl port-forward aegis-safe-7d6977d57f-k6kwb 8017:8017 -n aegis-system
+kubectl port-forward aegis-safe-cc7fb4b56-g99r9 8017:8017 -n aegis-system

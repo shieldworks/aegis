@@ -133,6 +133,46 @@ pasting more random stuff to be organized.
 
 ```
 
+Securing the admin key
+
+you will need a private key and a public key;
+you will have to keep your private key “private”
+
+safe:
+PUT /v1/crypto/key { publicKey: key } will register your public key.
+
+GET /v1/admin/key => will return the admin key encrypted with your public key.
+
+you can use aegis-keygen command line utility to generate a key pair.
+you can again use aegis-keygen command line utility to decrypt your admin token
+
+if either safe or notary crashes and restarts (after a successful bootstrap),
+you'll have to provide your private key to safe to recover from last known
+state. your private key is never logged or stored on disk, and it will be
+wiped out from memory as soon as there is no more need for it.
+
+Key Rotation: to be done in the future; right now admin token, notary token, 
+and workload tokens are everlasting once they are dispatched.
+
+====
+
+Aegis is a word of Greek origin and is pronounced "EE-jiss." Not "AY-juss," and 
+**not "AY-giss"**. It was adopted into Latin eventually, and may have been 
+pronounced differently there, but "EE-jiss" is the only recognized English 
+pronunciation of the word.
+
+It has two definitions (from dictionary.com):
+1.) Classical Mythology. The shield or breastplate of Zeus or Athena, bearing at its center the head of the Gorgon.
+2.) Protection; support.
+
+YouTube pronunciation guide: http://www.youtube.com/watch?v=x4bUgXWdNfM
+
+Image of an aegis as depicted in Greek mythology: http://www.greekmythology.com/images/mythology/aegis_228.jpg
+
+update:
+apparently Merriam-Webster lists "AY-jiss" as a secondary pronunciation
+
+-----
 
 ## Design Documents
 
