@@ -11,7 +11,6 @@ package handler
 import (
 	"aegis-notary/internal/meta"
 	"aegis-notary/internal/registration"
-	"fmt"
 	apiCoreV1 "k8s.io/api/core/v1"
 	informersCoreV1 "k8s.io/client-go/informers/core/v1"
 	"k8s.io/client-go/tools/cache"
@@ -30,7 +29,7 @@ func ListenPodEvents(podInformer informersCoreV1.PodInformer, registrations chan
 				if !meta.AegisAnnotatedWorkload(p) {
 					return
 				}
-				fmt.Println("AAAA", p.Name)
+				// fmt.Println("AAAA", p.Name)
 				registration.TryRegisterWorkload(registrations, p)
 			},
 			UpdateFunc: func(oldPod interface{}, newPod interface{}) {

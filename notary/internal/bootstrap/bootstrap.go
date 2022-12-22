@@ -12,16 +12,15 @@ import (
 	reqres "aegis-notary/internal/entity/reqres/v1"
 	"aegis-notary/internal/upstream"
 	"context"
-	"fmt"
 	"sync"
 )
 
 func SafeWorkload(safeWorkloadUrl, notaryToken, workloadId, workloadSecret string) error {
-	fmt.Println("bootstrap.SafeWorkload",
-		"safeWorkloadUrl", safeWorkloadUrl,
-		"notaryToken", notaryToken,
-		"workloadId", workloadId,
-		"workloadSecret", workloadSecret)
+	//fmt.Println("bootstrap.SafeWorkload",
+	//	"safeWorkloadUrl", safeWorkloadUrl,
+	//	"notaryToken", notaryToken,
+	//	"workloadId", workloadId,
+	//	"workloadSecret", workloadSecret)
 
 	_, err := upstream.NewSafeWorkloadRegisterEndpoint(safeWorkloadUrl)(
 		context.Background(),
@@ -43,14 +42,14 @@ func SafeWorkload(safeWorkloadUrl, notaryToken, workloadId, workloadSecret strin
 }
 
 func Workload(workloadHookUrl, notaryId, newNotaryId, workloadId, workloadSecret, safeApiRoot string) error {
-	fmt.Println("bootstrap.Workload",
-		"url", workloadHookUrl,
-		"notaryId", notaryId,
-		"newNotaryId", newNotaryId,
-		"workloadId", workloadId,
-		"workloadSecret", workloadSecret,
-		"safeApiRoot", safeApiRoot,
-	)
+	//fmt.Println("bootstrap.Workload",
+	//	"url", workloadHookUrl,
+	//	"notaryId", notaryId,
+	//	"newNotaryId", newNotaryId,
+	//	"workloadId", workloadId,
+	//	"workloadSecret", workloadSecret,
+	//	"safeApiRoot", safeApiRoot,
+	//)
 
 	_, err := upstream.NewSidecarBootstrapEndpoint(workloadHookUrl)(
 		context.Background(),
@@ -80,11 +79,11 @@ var mux sync.Mutex
 var safeBootstrapped = false
 
 func Safe(safeBootStrapUrl, notaryId, notaryToken, adminToken string) error {
-	fmt.Println("bootstrap.Safe",
-		"url", safeBootStrapUrl,
-		"notaryId", notaryId,
-		"notaryToken", notaryToken,
-		"adminToken", adminToken)
+	//fmt.Println("bootstrap.Safe",
+	//	"url", safeBootStrapUrl,
+	//	"notaryId", notaryId,
+	//	"notaryToken", notaryToken,
+	//	"adminToken", adminToken)
 
 	mux.Lock()
 	if safeBootstrapped {

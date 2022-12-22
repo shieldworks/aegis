@@ -57,7 +57,7 @@ func Bootstrap(newAdminToken, newWorkloadToken string) {
 var secrets sync.Map
 
 func UpsertSecret(id, data string) {
-	log.Println("upsert secret", "id", id, "data", data)
+	// log.Println("upsert secret", "id", id, "data", data)
 	secrets.Store(id, data)
 }
 
@@ -73,7 +73,7 @@ func ReadSecret(key string) string {
 var workloads sync.Map
 
 func RegisterWorkload(id, key string) {
-	log.Println("RegisterWorkload", "id", id, "key", key)
+	// log.Println("RegisterWorkload", "id", id, "key", key)
 	workloads.Store(id, key)
 }
 

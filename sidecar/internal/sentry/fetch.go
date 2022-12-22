@@ -20,7 +20,7 @@ import (
 func saveData(data string) {
 	path := "/opt/aegis/secrets.json"
 
-	fmt.Println("path:", path)
+	// fmt.Println("path:", path)
 
 	f, err := os.Create(path)
 	if err != nil {
@@ -35,7 +35,7 @@ func saveData(data string) {
 		panic("poop!")
 	}
 
-	fmt.Println("wrote", n, "bytes.")
+	// fmt.Println("wrote", n, "bytes.")
 
 	err = w.Flush()
 	if err != nil {
@@ -75,7 +75,7 @@ func fetchSecrets() {
 
 	// TODO: save data to /opt/aegis/secrets.json
 	// TODO: make the filename configurable.
-	fmt.Println("data: '", data, "'")
+	// fmt.Println("data: '", data, "'")
 
 	saveData(data)
 }
