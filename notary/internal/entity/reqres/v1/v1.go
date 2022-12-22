@@ -31,3 +31,14 @@ type BootstrapRequest struct {
 type BootstrapResponse struct {
 	Err string `json:"err,omitempty"`
 }
+
+type WorkloadRegisterRequest struct {
+	NotaryToken    string `json:"token"`
+	WorkloadId     string `json:"workloadId"`
+	WorkloadSecret string `json:"workloadSecret"`
+	Err            string `json:"err,omitempty"`
+}
+
+type WorkloadRegisterResponse struct {
+	Err string `json:"err,omitempty"`
+}

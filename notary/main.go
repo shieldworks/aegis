@@ -22,7 +22,8 @@ import (
 )
 
 func main() {
-	registrations := make(chan registration.Payload)
+	// TODO: make initial buffer configurable.
+	registrations := make(chan registration.Payload, 8)
 	go registration.Process(registrations)
 
 	// TODO: this probably need to change for in-cluster deployment as an operator.

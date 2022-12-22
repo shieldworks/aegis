@@ -13,9 +13,11 @@ clean:
 	kubectl delete ns aegis-system
 	kubectl delete deployment aegis-workload-demo -n default
 
-clean-all: clean all
+clean-prepare-all: clean prepare-all
 
-all: prepare all-demo all-safe all-sidecar all-sentinel
+prepare-all: prepare all-demo all-safe all-sidecar all-sentinel
+
+all: all-demo all-safe all-sidecar all-sentinel
 
 all-demo:
 	cd demo && $(MAKE) all

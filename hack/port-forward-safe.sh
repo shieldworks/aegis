@@ -8,7 +8,4 @@
 #     .\_/.
 #
 
-http POST http://aegis-safe.aegis-system.svc.cluster.local:8017/v1/bootstrap \
-  id=AegisRocks \
-  notaryToken=NotaryGeneratedSecureWorkloadToken \
-  adminToken=NotaryGeneratedSecureAdminToken
+kubectl port-forward aegis-safe-7d6977d57f-k6kwb 8017:8017 -n aegis-system

@@ -38,3 +38,5 @@ x 2022-12-19 `./safe/test-notary-api-readyz--after-bootstrap.sh` pri:A +safe
 environment variable check before launching containers +aegis 
 (B) enable debug-level logging +aegis 
 (B) add list of technologies used in README, and also add licenses of those to the things that you bundle +aegis 
+(C) documentation: notary should be up and running first +safe — plus, it wouild be nice if safe for example can check the existence of notary
+(B) in this current implementation, sidecars are constantly polling safe even though they don't have any secrets registered; they should back off after a while exponentially +sidecar 

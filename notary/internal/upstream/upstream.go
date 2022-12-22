@@ -43,6 +43,7 @@ func NewSafeBootstrapEndpoint(safeBootstrapUrl string) endpoint.Endpoint {
 		// TODO: handle me
 		panic("handle me")
 	}
+	// TODO: this should be PUT for consistency.
 	return http.NewClient(
 		"POST", u, encodeRequest, decodeSafeBootstrapResponse,
 	).Endpoint()
@@ -63,6 +64,25 @@ func NewSidecarBootstrapEndpoint(workloadHookUrl string) endpoint.Endpoint {
 		panic("handle me")
 	}
 	return http.NewClient(
-		"POST", u, encodeRequest, decodeSidecarBootstrapResponse,
+		"PUT", u, encodeRequest, decodeSidecarBootstrapResponse,
+	).Endpoint()
+}
+
+func decodeWorkloadRegisterResponse(_ context.Context, r *nhttp.Response) (interface{}, error) {
+	var response reqres.WorkloadRegisterResponse
+	if err := json.NewDecoder(r.Body).Decode(&response); err != nil {
+		return nil, err
+	}
+	return response, nil
+}
+
+func NewSafeWorkloadRegisterEndpoint(workloadRegisterUrl string) endpoint.Endpoint {
+	u, err := url.Parse(workloadRegisterUrl)
+	if err != nil {
+		// TODO: handle me
+		panic("handle me")
+	}
+	return http.NewClient(
+		"PUT", u, encodeRequest, decodeWorkloadRegisterResponse,
 	).Endpoint()
 }

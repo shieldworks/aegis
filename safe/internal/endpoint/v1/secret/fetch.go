@@ -13,7 +13,6 @@ import (
 	service "aegis-safe/internal/service/v1"
 	"aegis-safe/internal/state"
 	"context"
-	"fmt"
 	"github.com/go-kit/kit/endpoint"
 )
 
@@ -38,7 +37,7 @@ func MakeSecretFetchEndpoint(svc service.ApiV1Service) endpoint.Endpoint {
 
 		// TODO: empty check
 
-		fmt.Println("key check", workloadKey, workloadId, state.WorkloadKeyFromId(workloadId))
+		// fmt.Println("key check", workloadKey, workloadId, state.WorkloadKeyFromId(workloadId))
 
 		if state.WorkloadKeyFromId(workloadId) != workloadKey {
 			return reqres.SecretFetchResponse{
