@@ -8,4 +8,4 @@
 #     .\_/.
 #
 
-http http://aegis-safe:8017/healthz
+http http://aegis-safe.aegis-system.svc.cluster.local:8017/healthz

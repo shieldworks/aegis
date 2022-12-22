@@ -110,6 +110,27 @@ pasting more random stuff to be organized.
 # `SecureWorkloadToken` has been shared with the workload by `notary`.
 # This shall deliver the token that admin has created for this workload.
 
+//reqres "aegis-sidecar/internal/entity/reqres/v1"
+//"aegis-sidecar/internal/state"
+//"bytes"
+//"context"
+//"encoding/json"
+//"github.com/go-kit/kit/endpoint"
+//"github.com/go-kit/kit/transport/http"
+//"io"
+//nhttp "net/http"
+//"net/url"
+
+//name := p.ObjectMeta.Name
+//namespace := p.ObjectMeta.Namespace
+//uid := p.ObjectMeta.UID
+//// aegis-workload-key: aegis-workload-demo
+//workloadKey, ok := p.Annotations["aegis-workload-key"]
+//
+//fmt.Println("added a pod")
+
+kubectl port-forward aegis-workload-demo-6d7858c7bd-l2nh7 8039:8039 -n default
+kubectl port-forward aegis-safe-5ff46447d8-hf89n 8017:8017 -n aegis system
 
 ```
 

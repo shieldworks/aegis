@@ -8,7 +8,7 @@
 #     .\_/.
 #
 
-http PUT http://aegis-safe:8017/v1/secret \
+http PUT http://aegis-safe.aegis-system.svc.cluster.local:8017/v1/secret \
   token=NotaryGeneratedSecureAdminToken \
   key=aegis-workload-demo \
   value='{"username": "me@volkan.io", "password": "ToppyTopSecret"}'

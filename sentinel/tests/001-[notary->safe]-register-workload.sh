@@ -8,7 +8,7 @@
 #     .\_/.
 #
 
-http PUT http://aegis-safe:8017/v1/workload \
+http PUT http://aegis-safe.aegis-system.svc.cluster.local:8017/v1/workload \
   token=NotaryGeneratedSecureWorkloadToken \
   workloadId=aegis-workload-demo \
   workloadSecret=NotaryGeneratedRandomWorkloadSecret

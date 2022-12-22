@@ -8,7 +8,10 @@
 
 package state
 
-import "sync"
+import (
+	"log"
+	"sync"
+)
 
 var once, mutex = NewOnce(), NewSemaphore(1)
 
@@ -42,6 +45,12 @@ func Bootstrap(newAdminToken, newWorkloadToken string) {
 	once.Do(func() {
 		adminToken = newAdminToken
 		workloadToken = newWorkloadToken
+
+		// TODO: this is temporary, and definitely NOT for production.
+		// Encrypt this with an actual Kubernetes secret
+		// limit access to that secret.
+		// we can store it in the file system and wrap a CLI around that too.
+		log.Println("[SAFE:BOOTSTRAP] token:", adminToken)
 	})
 }
 

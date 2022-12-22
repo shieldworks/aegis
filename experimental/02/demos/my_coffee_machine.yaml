@@ -1,6 +1,0 @@
-apiVersion: wbc.com/v1beta1
-kind: CoffeeMachine
-metadata:
-  name: coffee-machine-1
-spec:
-  port: "8080"

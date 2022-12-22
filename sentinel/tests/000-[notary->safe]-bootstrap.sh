@@ -8,7 +8,7 @@
 #     .\_/.
 #
 
-http POST http://aegis-safe:8017/v1/bootstrap \
+http POST http://aegis-safe.aegis-system.svc.cluster.local:8017/v1/bootstrap \
   id=AegisRocks \
   notaryToken=NotaryGeneratedSecureWorkloadToken \
   adminToken=NotaryGeneratedSecureAdminToken

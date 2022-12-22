@@ -36,3 +36,5 @@ x 2022-12-19 `./safe/test-notary-api-readyz--after-bootstrap.sh` pri:A +safe
 (B) ensure that all `make` commands are working as expected +aegis 
 (B) create a top-level makefile that builds and deploys all the child projects +aegis
 environment variable check before launching containers +aegis 
+(B) enable debug-level logging +aegis 
+(B) add list of technologies used in README, and also add licenses of those to the things that you bundle +aegis 

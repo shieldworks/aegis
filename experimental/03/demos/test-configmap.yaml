@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: test 
-  namespace: default
-  labels:
-    app: test
-data:
-  my_env_variable: wbc

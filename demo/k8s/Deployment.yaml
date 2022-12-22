@@ -24,6 +24,7 @@ spec:
         app: aegis-workload-demo
       annotations:
         # To automatically inject sidecar instead of manually creating one.
+        # TODO: implement this feature.
         aegis-inject-sidecar: "false"
         # The name the workload will be referred.
         # Admin API will use this name to register secrets for this workload.
@@ -31,13 +32,13 @@ spec:
     spec:
       containers:
         - name: main
-          image: z2hdev/aegis-workload-demo:0.5.3
+          image: z2hdev/aegis-workload-demo:0.5.4
           volumeMounts:
           - mountPath: /opt/aegis
             name: aegis-secrets-volume
 
         - name: sidecar
-          image: z2hdev/aegis-sidecar:0.5.3
+          image: z2hdev/aegis-sidecar:0.5.4
           ports:
           - containerPort: 8039
           volumeMounts:

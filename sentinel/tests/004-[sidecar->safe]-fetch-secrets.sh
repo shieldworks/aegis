@@ -8,6 +8,6 @@
 #     .\_/.
 #
 
-http POST http://aegis-safe:8017/v1/fetch \
+http POST http://aegis-safe.aegis-system.svc.cluster.local:8017/v1/fetch \
   secret=NotaryGeneratedRandomWorkloadSecret \
   workload=aegis-workload-demo
