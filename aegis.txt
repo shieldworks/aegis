@@ -5,7 +5,7 @@ x 2022-12-19 `./safe/test-notary-api-workload.sh` pri:A +safe @▶️
 x 2022-12-19 `./safe/test-probe-api-healthz.sh` pri:A +safe @▶️
 x 2022-12-19 `./safe/test-probe-api-readyz.sh` pri:A +safe @▶️
 x 2022-12-19 `./safe/test-workload-api-fetch-secrets.sh` pri:A +safe @▶️
-(A) Implement `notary` API. +notary 
+x 2022-12-22 Implement `notary` API. pri:A +notary
 x 2022-12-21 Implement `sidecar` API. pri:A +sidecar @▶️
 x 2022-12-19 `./safe/test-notary-api-readyz--after-bootstrap.sh` pri:A +safe
 (C) Finalize `README.md`.
@@ -40,3 +40,4 @@ environment variable check before launching containers +aegis
 (B) add list of technologies used in README, and also add licenses of those to the things that you bundle +aegis 
 (C) documentation: notary should be up and running first +safe — plus, it wouild be nice if safe for example can check the existence of notary
 (B) in this current implementation, sidecars are constantly polling safe even though they don't have any secrets registered; they should back off after a while exponentially +sidecar 
+(B) make notary deployable inside a cluster too. +aegis @mvp 
