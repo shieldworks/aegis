@@ -30,7 +30,7 @@ x 2022-12-19 `./safe/test-notary-api-readyz--after-bootstrap.sh` pri:A +safe
 (C) Create a service account instead of using the default one +aegis
 (E) sign the docker images and other artifacts that you distribute +aegis 
 (A) record a demo video +aegis @▶️ 
-(A) tx renewal b4 29th @🚨 
+x 2022-12-23 tx renewal b4 29th pri:A @🚨
 (B) convert minikube kubectl to kubectl in the deploy makefiles; maybe add a deploy-minikube as an alternative option +aegis 
 (B) add make all; make install; make clean -- those are typical things people expect in makefiles +aegis 
 (B) ensure that all `make` commands are working as expected +aegis 
@@ -41,3 +41,6 @@ environment variable check before launching containers +aegis
 (C) documentation: notary should be up and running first +safe — plus, it wouild be nice if safe for example can check the existence of notary
 (B) in this current implementation, sidecars are constantly polling safe even though they don't have any secrets registered; they should back off after a while exponentially +sidecar 
 (B) make notary deployable inside a cluster too. +aegis @mvp 
+(A) a mini operations manual on README.md +aegis 
+(E) you need a CONTRIBUTING.md +aegis 
+(B) A mini powerpoint presentation would be useful too. +aegis 
