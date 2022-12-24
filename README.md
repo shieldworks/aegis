@@ -123,6 +123,20 @@ architecture secure by default. We are slowly and steadily getting there.
 You can check out [aegis.txt](aegis.txt) for the overall progress of 
 what has been done and what is in progress.
 
+## Disaster Recovery and Fault Tolerance
+
+This is an feature that we are actively working on. 
+
+As of the current version recovering the secrets when a workload restarts is 
+automatic. However, if **Safe** or **Notary** pods are evicted for any reason,
+then the in-memory secrets are lost, and an administrator will have to
+delete and redeploy everything under the `aegis-system` namespace and 
+create secrets (*ideally, through a CI pipeline*).
+
+Yes, this can get annoying. And the future versions of **Aegis** will have
+preventative measures to mitigate this from happening so you as the ops
+person can `#sleepmore`.
+
 ## Where NOT To Use Aegis
 
 Aegis is **not** a Database, nor is it a distributed caching layer. Of course,
