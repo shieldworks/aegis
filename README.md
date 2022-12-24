@@ -134,8 +134,8 @@ delete and redeploy everything under the `aegis-system` namespace and
 create secrets (*ideally, through a CI pipeline*).
 
 Yes, this can get annoying. And the future versions of **Aegis** will have
-preventative measures to mitigate this from happening so you as the ops
-person can `#sleepmore`.
+measures to prevent this from happening so you, as the ops person,
+can `#sleepmore`.
 
 ## Where NOT To Use Aegis
 
