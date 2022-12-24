@@ -6,19 +6,18 @@
 #     .\_/.
 #
 
-prepare:
+clean:
+	@if kubectl get ns | grep aegis-system; then \
+		kubectl delete ns aegis-system; \
+		kubectl delete deployment aegis-workload-demo -n default; \
+	else \
+  		echo "Nothing to clean."; \
+	fi
+
+configure:
 	kubectl create ns aegis-system
 
-clean:
-	kubectl delete ns aegis-system
-	kubectl delete deployment aegis-workload-demo -n default
-
-install:
-	echo "Not implemented yet!"
-
-clean-prepare-all: clean prepare-all
-
-prepare-all: prepare all-demo all-safe all-sidecar all-sentinel
+install-all: install-demo install-safe install-sidecar install-sentinel
 
 all: all-demo all-safe all-sidecar all-sentinel
 
@@ -33,3 +32,15 @@ all-sidecar:
 
 all-sentinel:
 	cd sentinel && $(MAKE) all
+
+install-demo:
+	cd demo && $(MAKE) deploy
+
+install-safe:
+	cd safe && $(MAKE) deploy
+
+install-sidecar:
+	cd sidecar && echo "no-op"
+
+install-sentinel:
+	cd sentinel && $(MAKE) deploy

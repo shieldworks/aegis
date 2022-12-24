@@ -185,8 +185,22 @@ it using `make` as follows:
 ```bash 
 git clone https://github.com/zerotohero-dev/aegis.git
 cd aegis
-make install
+make clean 
+make configure
+make install-all
 ```
+
+To verify installation check out the `aegis-system` namespace:
+
+```bash
+kubectl get deployment -n aegis-system
+# Output:
+# NAME             READY   UP-TO-DATE   AVAILABLE
+# aegis-safe       1/1     1            1
+# aegis-sentinel   1/1     1            1
+# aegis-notary     1/1     1            1
+```
+
 
 ## Registering a Secret to a Workload
 
