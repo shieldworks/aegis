@@ -28,17 +28,17 @@ spec:
         aegis-inject-sidecar: "false"
         # The name the workload will be referred.
         # Admin API will use this name to register secrets for this workload.
-        aegis-workload-key: aegis-workload-demo
+        aegis-workload-id: aegis-workload-demo
     spec:
       containers:
         - name: main
-          image: z2hdev/aegis-workload-demo:0.5.7
+          image: z2hdev/aegis-workload-demo:0.5.8
           volumeMounts:
           - mountPath: /opt/aegis
             name: aegis-secrets-volume
 
         - name: sidecar
-          image: z2hdev/aegis-sidecar:0.5.7
+          image: z2hdev/aegis-sidecar:0.5.8
           ports:
           - containerPort: 8039
           volumeMounts:

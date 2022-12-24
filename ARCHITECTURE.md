@@ -82,7 +82,7 @@ at a high level:
 ![Notary Dispatch](assets/aegis-notary-dispatch.png "Notary Dispatch")
 
 The **id** provided to the workload is the **id** that is the value of
-`aegis-workload-key` annotation in its deployment template. **Notary** will not
+`aegis-workload-id` annotation in its deployment template. **Notary** will not
 dispatch secrets to pods that don’t have this annotation.
 
 ## Workload Fetching Secrets
