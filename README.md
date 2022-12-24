@@ -2,8 +2,8 @@
 
 ## Status of This Software
 
-This project is a work in progress and **not** ready for production consumption
-yet. Use it at your own risk.
+This project is a work in progress and has yet to be ready for production 
+consumption. Therefore, use it at your own risk.
 
 ## Before Anything… How Do I Pronounce “Aegis”?
 
@@ -27,8 +27,7 @@ Here’s an image of an aegis (*shield*) as depicted in Greek mythology:
 
 [Here is a six-minute video introduction to Aegis][aegis-demo-video].
 
-There is also [aegis.z2h.dev][aegis-website] that is the website of the project,
-which put documentation and use cases later down the line.
+There is also [aegis.z2h.dev][aegis-website], the project’s website.
 
 [aegis-website]: https://aegis.z2h.dev/ "Aegis webiste"
 [aegis-demo-video]: https://vimeo.com/v0lkan/aegis "Introducing Aegis: A Cloud Native Solution to Secure Your Sensitive Data"
@@ -40,40 +39,40 @@ central location and securely dispatching it to workloads.
 
 **Aegis** is a lightweight secrets management solution that keeps your secrets
 secret. With **Aegis**, you can rest assured that your sensitive data is 
-**secure** and **protected** at all times. 
+always **secure** and **protected**. 
 
 **Aegis** ensures that your secrets are only accessible to authorized workloads, 
 helping you safeguard your business and protect against data breaches.
 
 If you haven’t watched [this six-minute introductory video yet][aegis-demo-video],
-now might be a good time to do so 🙂.
+now might be a good time 🙂.
 
 Keeping *Aegis* **slim**, **secure**, and **boringly-easy** to install and 
 operate are the three pillars of the project. 
 
-To achieve these, we follow the **guidelines** outlined in the next few sections.
+We follow the **guidelines** outlined in the next few sections to achieve these.
 
 Since **Aegis** is still in development, some of these goals discussed in the 
-following sections may not have been fully implemented yet. Regardless, they 
-are the **guiding principles** that we steer towards while shaping the 
-future of **Aegis**.
+following sections may still need to be fully implemented. Regardless, 
+they are the **guiding principles** we steer towards while shaping the future 
+of **Aegis**.
 
 ### Be Cloud Native
 
-**Aegis** is designed to run on Kubernetes, and **only** on Kubernetes. 
+**Aegis** is designed to run on Kubernetes and **only** on Kubernetes. 
 That helps us leverage Kubernetes concepts like *Operators*, *Custom Resources*, 
 and *Controllers* to our advantage to simplify workflow and state management. 
 
-If you are looking for a solution that runs outside Kubernetes, or as a 
-standalone binary, then Aegis is not the Secrets Store that you’re looking for.
+If you are looking for a solution that runs outside Kubernetes or as a 
+standalone binary, then Aegis is not the Secrets Store you’re looking for.
 
 ### Do One Thing Well
 
-At a 5000-feet level, **Aegis** a secure Key-Value store. It can securely store
-arbitrary values that you, as an administrator, associate with keys. It does 
-that, and it does that well.
+At a 5000-feet level, **Aegis** is a secure Key-Value store. It can securely 
+store arbitrary values that you, as an administrator, associate with keys. It 
+does that, and it does that well.
 
-If you are searching a solution to create and store X.509 certificates, create
+If you are searching for a solution to create and store X.509 certificates, create
 dynamic secrets, automate your PKI infrastructure, federate your identities,
 use as an OTP generator, policy manager, in short, anything other than a
 secure key-value store, then Aegis is likely not the solution you are looking 
@@ -83,17 +82,17 @@ for.
 
 As an administrator, there is a limited set of API endpoints that you can 
 interact with **Aegis**. This makes **Aegis** easy to manage. In addition,
-minimal set of APIs means smaller attack surface, smaller footprint, and
-a codebase that is easy to understand, test, audit, and develop: All good things.
+a minimal set of APIs means a smaller attack surface, a smaller footprint, and
+a codebase that is easy to understand, test, audit, and develop; all good things.
 
 ### Be Practically Secure
 
 Corollary: Do not be annoyingly secure. Provide a delightful user experience
 while taking security seriously.
 
-**Aegis** is a solution that is secure, yet still delightful to operate. 
-You won’t have to jump over the hoops, or wake up in the middle of the night
-just to keep it up and running. **Aegis** will work seamlessly, as if it 
+**Aegis** is a secure solution, yet still delightful to operate. 
+You won’t have to jump over the hoops or wake up in the middle of the night
+to keep it up and running. Instead, **Aegis** will work seamlessly, as if it 
 doesn’t exist at all.
 
 ## Secure By Default
@@ -104,38 +103,38 @@ the entire jungle in your store; however, a couple of gigabytes of RAM can store
 a lot of plain text secrets in it, so it’s good enough for most practical 
 purposes. 
 
-More important than that, almost all modern instruction set architectures and 
-operating systems implement [*memory protection*][memory-protection]. The main 
+More importantly, almost all modern instruction set architectures and 
+operating systems implement [*memory protection*][memory-protection]. The primary 
 purpose of memory protection is to prevent a process from accessing memory that 
 has not been allocated to it. This prevents a bug or malware within a process 
-from affecting other processes, or the operating system itself.
+from affecting other processes or the operating system itself.
 
 [memory-protection]: https://en.wikipedia.org/wiki/Memory_protection "Memory Protection (Wikipedia)"
 
 Therefore, reading a variable’s value from a process’s memory is practically 
 impossible unless you attach a debugger to it.
 
-So, until, we implement ways to securely store a backup of the state data
-encrypted on disk, all the secrets **Aegis** has will be stored *in-memory* 
-only: Never persisted to disk, and never written or streamed to log files.
+So, until we implement ways to securely store a backup of the state data
+encrypted on disk, all the secrets **Aegis** has will be held in memory
+only: Never persisted to disk and never written or streamed to log files.
 
-There are other related works in progress to make **Aegis**’s system 
+Other related works are in progress to make **Aegis**’s system 
 architecture secure by default. We are slowly and steadily getting there.
-You can check out [aegis.txt](aegis.txt) for an overall progress of what
-has been done, and what is in progress. 
+You can check out [aegis.txt](aegis.txt) for the overall progress of 
+what has been done and what is in progress.
 
 ## Where NOT To Use Aegis
 
-Aegis is **not** a Database, nor it is a distributed caching layer. You may
-tweak it to act like one if you try hard enough; yet, that is generally not
-a good use of the tool.
+Aegis is **not** a Database, nor is it a distributed caching layer. Of course,
+you may tweak it to act like one if you try hard enough, yet, that is 
+generally not a good use of the tool.
 
-Aegis is good for storing secrets and dispatching them around; however, it
+Aegis is suitable for storing secrets and dispatching them; however, it
 is a *terrible* idea to use it as a centralized database to store everything
 but the kitchen sink.
 
-Use Aegis to store things like service keys, database credentials, 
-access tokens, and the like. **Do not** use Aegis to store the username and
+Use Aegis to store service keys, database credentials, access tokens, 
+etc. However, **do not** use Aegis to store the username and
 passwords of your 1000 customers: That’s what a database is for (*where you
 hopefully hash and salt the passwords before you store them*).
 
@@ -145,12 +144,12 @@ Right now, [there is a single text file](aegis.txt) that lists all the issues
 in [todo.txt format][todo-txt]. 
 
 This is the fastest way to bootstrap a project, and it is also the best way for 
-me to manage things as I am single person working on the project with a **very** 
-tight time budget. I literally do not have time to triage and label GitHub 
-issues.
+me to manage things as I am the only developer working on the project with a 
+**very** tight time budget. I literally do not have time to triage and label 
+GitHub issues.
 
 Once the project matures enough and I have a more maintainable development
-burden on my shoulders, I’ll start moving items on the [aegis.txt](aegis.txt)
+burden, I’ll move items on the [aegis.txt](aegis.txt)
 file to GitHub issues and GitHub projects.
 
 [todo-txt]: https://github.com/todotxt "todo.txt"
@@ -190,11 +189,11 @@ It would mean:
 ## **Notary** (`aegis-notary`)
 
 A [Kubernetes Controller][k8s-controller] that lets **Safe** and the **Sidecar**s 
-to securely communicate with each other.
+securely communicate with each other.
 
 ## **Sentinel** (`aegis-sentinel`) 
 
-**Sentinel** is a pod that you can shell in and do administrative tasks such as 
+**Sentinel** is a pod you can shell in and do administrative tasks such as 
 registering secrets for workloads. 
 
 **Sentinel** is a Swiss army knife that should **NOT** run on production. If you 
@@ -302,22 +301,22 @@ vim ./create.sh
 
 ## How Do I Get the Admin Token?
 
-Unfortunately, this is a work-in-progress at the moment ☹️.
+Unfortunately, this is a work in progress at the moment ☹️.
 
-As a temporary workaround the **Safe** pod displays the admin token in its logs
+As a temporary workaround, the **Safe** Pod displays the admin token in its logs
 during the bootstrapping process. Note that this is pretty insecure, and we
 will remove the log line once we establish a secure way to deliver the admin 
 token.
 
 ## Where Do I Store the Admin Token?
 
-Keep the admin token safe; **do not** store it in source control, do not store 
-it on disk as plain text. An ideal place to store it is a password manager, or 
-in an encrypted file that only the administrators know how to decrypt.
+Keep the admin token safe; **do not** store it in source control; **do not** 
+store it on disk as plain text. An ideal place to store it is a password manager 
+or an encrypted file that only the administrators know how to decrypt.
 
 ## Project Folder Structure
 
-**Aegis** is a monorepo. Here’s a brief overview of important files and folders:
+**Aegis** is a monorepo. Here’s a brief overview of essential files and folders:
 
 * `./Makefile`: This is the file to install and test things.
 * `README.md`: The very file that you are reading.
@@ -344,7 +343,7 @@ randomly generated admin token and notary token.
 
 ![Aegis Bootstrapping](assets/aegis-bootstrap.png "Bootstrapping")
 
-**Notary**, essentially, exchanges its token (*which is safe, but still known*)
+**Notary** exchanges its token (*which is safe, but still known*)
 with a more secure, unknown, randomly-generated token.
 
 Bootstrapping is automatically done by **Notary**. It does not need any manual
@@ -352,7 +351,7 @@ intervention. Without successful bootstrapping, almost nothing works in the
 system.
 
 Bootstrapping is only done **once**. Executing the bootstrap flow on **Safe** 
-more than once is a **noop**.
+more than once is a **no-op**.
 
 It is important to note that the notary id is **never** used anywhere in the
 system after a successful bootstrap, and the bootstrapping typically happens
@@ -361,7 +360,7 @@ blazing fast.
 ## Dispatching Workload Ids and Secrets
 
 **Notary** is also responsible for dispatching the workload ids and secrets to
-workloads, and also notifying **Safe** about those ids and secrets too, so that
+workloads and notifying **Safe** about those ids and secrets, so that
 workloads can communicate with **Safe** safely.
 
 After a successful bootstrap, here’s how **Notary** dispatches ids and secrets
@@ -375,7 +374,7 @@ dispatch secrets to pods that don’t have this annotation.
 
 ## Workload Fetching Secrets
 
-After having received their **id** and **secret**, the **Sidecar** will
+After receiving their **id** and **secret**, the **Sidecar** will
 periodically call **Safe** to fetch and update the Pod’s secrets (*see the
 bottom two line of the above sequence diagram*).
 
@@ -400,7 +399,7 @@ will depend on several factors, such as:
 * **Notary** refresh interval.
 * **Sidecar** poll frequency.
 
-We recommend you do your own benchmark with a realistic production-like 
+We recommend you benchmark with a realistic production-like 
 cluster and allocate your resources accordingly.
 
 ## Code Of Conduct
@@ -409,8 +408,8 @@ cluster and allocate your resources accordingly.
 
 ## Contributing
 
-It’s a bit chaotic around here, yet if you want to lend a hand
-[here is the contributing guidelines](CONTRIBUTING.md).
+It’s a bit chaotic around here, yet if you want to lend a hand,
+[here are the contributing guidelines](CONTRIBUTING.md).
 
 ## Maintainers
 
