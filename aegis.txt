@@ -40,13 +40,13 @@ environment variable check before launching containers +aegis
 (B) add list of technologies used in README, and also add licenses of those to the things that you bundle +aegis 
 (C) documentation: notary should be up and running first +safe — plus, it wouild be nice if safe for example can check the existence of notary
 (B) in this current implementation, sidecars are constantly polling safe even though they don't have any secrets registered; they should back off after a while exponentially +sidecar 
-(B) make notary deployable inside a cluster too. +aegis @mvp 
+(A) make notary deployable inside a cluster too. +aegis @mvp 
 x 2022-12-23 a mini operations manual on README.md pri:A due:2022-12-24 +aegis @▶️
 (E) you need a CONTRIBUTING.md +aegis 
 (B) A mini powerpoint presentation would be useful too. +aegis 
 (B) A second app that talks to Aegis over mTLS and can be used to unlock Safe if Safe gets evicted and restarted for whatever reason. This app will require to store the admin token in memory (to trigger the restore operation via the Safe APIs). It can be deployed in a HA setup so that if one of them crashes, it can resync with others. I would like to call them “Oracles” and keep it as a group of three.
 (B) implement secure component-to-component connectivity using either TLS or mTLS. —aegis-keygen can generate certs if needed +aegis 
-(A) make `make install` work for users with no write access to dockerhub. +aegis 
+x 2022-12-24 make `make install` work for users with no write access to dockerhub. pri:A +aegis @▶️
 (A) establish a secure way to deliver the admin token +aegis -- Securing the admin key you will need a private key and a public key; you will have to keep your private key “private”safe:PUT /v1/crypto/key { publicKey: key } will register your public key.GET /v1/admin/key => will return the admin key encrypted with your public key.you can use aegis-keygen command line utility to generate a key pair.you can again use aegis-keygen command line utility to decrypt your admin tokenif either safe or notary crashes and restarts (after a successful bootstrap),you'll have to provide your private key to safe to recover from last knownstate. your private key is never logged or stored on disk, and it will bewiped out from memory as soon as there is no more need for it.Key Rotation: to be done in the future; right now admin token, notary token, and workload tokens are everlasting once they are dispatched.
 (B) add license of nicolaka/netshoot to sentinel, since it is an almost item-by-item fork.
 (C) update the README files of the child projects too +aegis
