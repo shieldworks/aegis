@@ -344,7 +344,7 @@ randomly generated admin token and notary token.
 
 ![Aegis Bootstrapping](assets/aegis-bootstrap.png "Bootstrapping")
 
-**Notary**, essentially, exchanges its token (which is safe but still known)
+**Notary**, essentially, exchanges its token (*which is safe, but still known*)
 with a more secure, unknown, randomly-generated token.
 
 Bootstrapping is automatically done by **Notary**. It does not need any manual
