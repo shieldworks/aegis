@@ -20,7 +20,7 @@ pronunciation guide][pronounce].
 
 Here’s an image of an aegis (*shield*) as depicted in Greek mythology:
 
-![aegis](assets/aegis-shield.png "aegis")
+![aegis](assets/aegis-shield.jpg "aegis")
 
 ## A Video Is Worth a Lot of Thousands of Words
 
