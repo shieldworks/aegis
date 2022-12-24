@@ -181,7 +181,7 @@ It would mean:
 
 ### **Safe** (`aegis-safe`)
 
-**Safe stores secrets and dispatches them to workloads.
+**Safe** stores secrets and dispatches them to workloads.
 
 ### **Sidecar** (`aegis-sidecar`)
 
