@@ -255,7 +255,7 @@ As in any secrets management solution, your compute and memory requirements
 will depend on several factors, such as:
 
 * The number of workloads in the cluster
-* The number of secrets **Aegis** has to manage (*see [architecture details](ARCHITECTURE.md)*)
+* The number of secrets **Safe** has to manage (*see [architecture details](ARCHITECTURE.md)*)
 * **Notary** refresh interval (*see [architecture details](ARCHITECTURE.md)*)
 * **Sidecar** poll frequency (*see [architecture details](ARCHITECTURE.md)*)
 
