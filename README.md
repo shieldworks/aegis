@@ -186,12 +186,12 @@ It would mean:
 
 `aegis-sidecar` is a sidecar that facilitates delivering secrets to workloads.
 
-## **Notary** (`aegis-notary`)
+### **Notary** (`aegis-notary`)
 
 A [Kubernetes Controller][k8s-controller] that lets **Safe** and the **Sidecar**s 
 securely communicate with each other.
 
-## **Sentinel** (`aegis-sentinel`) 
+### **Sentinel** (`aegis-sentinel`) 
 
 **Sentinel** is a pod you can shell in and do administrative tasks such as 
 registering secrets for workloads. 
