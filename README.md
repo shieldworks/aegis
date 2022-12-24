@@ -232,13 +232,11 @@ Keep the admin token safe; **do not** store it in source control; **do not**
 store it on disk as plain text. An ideal place to store it is a password manager 
 or an encrypted file that only the administrators know how to decrypt.
 
-
-
 ## Architecture Details
 
 [Check out this document](ARCHITECTURE.md) for detailed information about
-**Aegis**’s system design, sequence diagrams, workflows, and internal
-operating principles.
+**Aegis**’s project folder structure, system design, sequence diagrams, 
+workflows, and internal operating principles.
 
 ## System Requirements
 
