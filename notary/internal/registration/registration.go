@@ -107,16 +107,16 @@ func TryRegisterWorkload(registrations chan<- (Payload), pod *apiCoreV1.Pod) {
 		return
 	}
 
-	workloadKey, ok := pod.Annotations["aegis-workload-key"]
+	wi, ok := pod.Annotations["aegis-workload-id"]
 	if !ok {
 		return
 	}
 
-	if workloadKey == "" {
+	if wi == "" {
 		return
 	}
 
-	workloadId := workloadKey // pod.ObjectMeta.Name
+	workloadId := wi // pod.ObjectMeta.Name
 	workloadSecret := token.New()
 	workloadNamespace := pod.ObjectMeta.Namespace
 	workloadName := pod.ObjectMeta.Name

@@ -54,7 +54,7 @@ x 2022-12-24 make `make install` work for users with no write access to dockerhu
 (C) create channels to provide feedback (maybe a discord group too; or maybe link z2h discord instaed +aegis )
 (C) maybe create helm templates to customize all these yaml files. +aegis 
 (C) automatic sidecar injection? +aegis 
-(A) replace aegis-workload-key with aegis-workload-id everywhere for consistency +aegis
+x 2022-12-24 replace aegis-workload-key with aegis-workload-id everywhere for consistency pri:A +aegis @▶️
 (E) we need an unregister flow for the deleted workloads too. -- or do we? not sure +aegis -- since the workload can revive, it might still be entitled to the same secrets.
 (A) create a mini powerpoint (like a pitch deck) +aegis 
 (B) age as an encryption tool https://github.com/FiloSottile/age +aegis @home 

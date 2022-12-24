@@ -15,10 +15,10 @@ func AegisAnnotatedWorkload(pod *apiCoreV1.Pod) bool {
 		return false
 	}
 
-	workloadKey, ok := pod.Annotations["aegis-workload-key"]
+	workloadId, ok := pod.Annotations["aegis-workload-id"]
 	if !ok {
 		return false
 	}
 
-	return workloadKey != ""
+	return workloadId != ""
 }
