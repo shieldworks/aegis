@@ -13,6 +13,9 @@ clean:
 	kubectl delete ns aegis-system
 	kubectl delete deployment aegis-workload-demo -n default
 
+install:
+	echo "Not implemented yet!"
+
 clean-prepare-all: clean prepare-all
 
 prepare-all: prepare all-demo all-safe all-sidecar all-sentinel
