@@ -201,7 +201,6 @@ kubectl get deployment -n aegis-system
 # aegis-notary     1/1     1            1
 ```
 
-
 ## Registering a Secret to a Workload
 
 [Here is a sample Kubernetes deployment descriptor](demo/k8s/Deployment.yaml) 
