@@ -174,8 +174,6 @@ It would mean:
 * It is a work in progress (`@▶️`).
 * It is guesstimated to be done by `2022-12-24`, with no promises.
 
-
-
 ## Installation
 
 You need a **Kubernetes** cluster and sufficient admin rights on that cluster to
@@ -234,27 +232,7 @@ Keep the admin token safe; **do not** store it in source control; **do not**
 store it on disk as plain text. An ideal place to store it is a password manager 
 or an encrypted file that only the administrators know how to decrypt.
 
-## Project Folder Structure
 
-**Aegis** is a monorepo. Here’s a brief overview of essential files and folders:
-
-* `./Makefile`: This is the file to install and test things.
-* `README.md`: The very file that you are reading.
-* `CONTRIBUTING.md`: Instructions about how to contribute to the project.
-* `CODE_OF_CONDUCT.md`: The document that tells everyone to be nice human beings.
-* `./demo`: A demo workload that can be used to test **Aegis**’s functionality.
-* `./notary`: Source code of **Notary** (`aegis-notary`) which is a Kubernetes
-  controller that acts as the mediator between **Safe** and workloads.
-* `./safe`: Source code of **Safe** (`aegis-safe`). **Safe** is where all the
-  secrets are stored, so you better keep it extra safe with proper RBAC. That is
-  true for all **Aegis** components, but extra-true for **Safe**.
-* `./sentinel`: Source code for **Sentinel**. **Sentinel** is a utility pod 
-  that you can diagnose the system and do administrative tasks.
-* `./sidecar`: Source code of **Sidecar** (`aegis-sidecar`), a sidecar that’s
-  injected to workloads to fetch secrets from **Safe**/
-
-Each folder also has their associated `README.md` files to provide further 
-details about each child project.
 
 ## Architecture Details
 
@@ -278,10 +256,10 @@ just fine.
 As in any secrets management solution, your compute and memory requirements 
 will depend on several factors, such as:
 
-* The number of workloads in the cluster.
-* The number of secrets **Aegis** has to manage.
-* **Notary** refresh interval.
-* **Sidecar** poll frequency.
+* The number of workloads in the cluster
+* The number of secrets **Aegis** has to manage (*see [architecture details](ARCHITECTURE.md)*)\
+* **Notary** refresh interval (*see [architecture details](ARCHITECTURE.md)*)
+* **Sidecar** poll frequency (*see [architecture details](ARCHITECTURE.md)*)
 
 We recommend you benchmark with a realistic production-like 
 cluster and allocate your resources accordingly.

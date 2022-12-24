@@ -1,3 +1,25 @@
+## Project Folder Structure
+
+**Aegis** is a monorepo. Here’s a brief overview of essential files and folders:
+
+* `./Makefile`: This is the file to install and test things.
+* `README.md`: The very file that you are reading.
+* `CONTRIBUTING.md`: Instructions about how to contribute to the project.
+* `CODE_OF_CONDUCT.md`: The document that tells everyone to be nice human beings.
+* `./demo`: A demo workload that can be used to test **Aegis**’s functionality.
+* `./notary`: Source code of **Notary** (`aegis-notary`) which is a Kubernetes
+  controller that acts as the mediator between **Safe** and workloads.
+* `./safe`: Source code of **Safe** (`aegis-safe`). **Safe** is where all the
+  secrets are stored, so you better keep it extra safe with proper RBAC. That is
+  true for all **Aegis** components, but extra-true for **Safe**.
+* `./sentinel`: Source code for **Sentinel**. **Sentinel** is a utility pod
+  that you can diagnose the system and do administrative tasks.
+* `./sidecar`: Source code of **Sidecar** (`aegis-sidecar`), a sidecar that’s
+  injected to workloads to fetch secrets from **Safe**/
+
+Each folder also has their associated `README.md` files to provide further
+details about each child project.
+
 ## Components of Aegis
 
 **Aegis**, as a system, has the following components.
