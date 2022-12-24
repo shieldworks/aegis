@@ -3,7 +3,7 @@
 ## Status of This Software
 
 This project is a work in progress and has yet to be ready for production 
-consumption. Therefore, use it at your own risk.
+consumption. Use it at your own risk.
 
 ## Before Anything… How Do I Pronounce “Aegis”?
 
