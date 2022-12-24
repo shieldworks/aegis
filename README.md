@@ -174,34 +174,7 @@ It would mean:
 * It is a work in progress (`@▶️`).
 * It is guesstimated to be done by `2022-12-24`, with no promises.
 
-## Components of Aegis
 
-**Aegis**, as a system, has the following components.
-
-### **Safe** (`aegis-safe`)
-
-**Safe** stores secrets and dispatches them to workloads.
-
-### **Sidecar** (`aegis-sidecar`)
-
-`aegis-sidecar` is a sidecar that facilitates delivering secrets to workloads.
-
-### **Notary** (`aegis-notary`)
-
-A [Kubernetes Controller][k8s-controller] that lets **Safe** and the **Sidecar**s 
-securely communicate with each other.
-
-### **Sentinel** (`aegis-sentinel`) 
-
-**Sentinel** is a pod you can shell in and do administrative tasks such as 
-registering secrets for workloads. 
-
-**Sentinel** is a Swiss army knife that should **NOT** run on production. If you 
-have to diagnose the production system using *Sentinel*, it is strongly 
-recommended that you *delete* Sentinel when you no longer need it—you have been 
-warned.
-
-[k8s-controller]: https://kubernetes.io/docs/concepts/architecture/controller/ "Kubernetes Controller"
 
 ## Installation
 
@@ -219,65 +192,12 @@ make install
 
 ## Registering a Secret to a Workload
 
-Here is a sample Kubernetes deployment descriptor for a workload that 
-**Aegis** can inject secrets:
-
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: aegis-workload-demo
-  namespace: default
-  labels:
-    app: aegis-workload-demo
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: aegis-workload-demo
-  template:
-    metadata:
-      labels:
-        app: aegis-workload-demo
-      annotations:
-        # Required for Aegis to identify the workload.
-        aegis-workload-key: aegis-workload-demo
-    spec:
-      containers:
-        - name: main
-          image: busybox:latest
-          volumeMounts:
-          - mountPath: /opt/aegis
-            name: aegis-secrets-volume
-        # We don’t have automatic sidecar injection yet, so you’ll need to
-        # manually add the sidecar.
-        - name: sidecar
-          image: z2hdev/aegis-sidecar:0.5.7
-          ports:
-          - containerPort: 8039
-          volumeMounts:
-          # This is where the secrets file will be written.
-          - mountPath: /opt/aegis
-            name: aegis-secrets-volume
-          env:
-          - name: AEGIS_APP_NAME
-            value: "aegis-sidecar"
-          - name: AEGIS_PORT
-            value: ":8039"
-          # Make this something random and unique.
-          # `aegis-notary` and `aegis-sidecar` must have the same environment
-          # variable, otherwise the bootstrapping will fail.
-          - name: AEGIS_NOTARY_ID
-            value: "AegisRocks"
-      volumes:
-        - name: aegis-secrets-volume
-          emptyDir:
-            medium: Memory
-```
+[Here is a sample Kubernetes deployment descriptor](demo/k8s/Deployment.yaml) 
+for a workload that **Aegis** can inject secrets:
 
 Assuming we have **Aegis** up and running, and the above workload deployed, 
-to register a secret, you can execute the following API call from the **Sentinel**
-(*or any other place that has a network route to **Safe**).
+to register a secret, you can execute the following API call from 
+the **Sentinel** (*or any other place that has a network route to **Safe**).
 
 ```bash
 http PUT http://aegis-safe.aegis-system.svc.cluster.local:8017/v1/secret \
@@ -333,50 +253,14 @@ or an encrypted file that only the administrators know how to decrypt.
 * `./sidecar`: Source code of **Sidecar** (`aegis-sidecar`), a sidecar that’s
   injected to workloads to fetch secrets from **Safe**/
 
-Each folder also has their associated `README.md` files to provide further details
-about each child project.
+Each folder also has their associated `README.md` files to provide further 
+details about each child project.
 
-## Safe’s Bootstrapping Process
+## Architecture Details
 
-Bootstrapping is when **Notary** talks to **Safe** to deliver secure and 
-randomly generated admin token and notary token.
-
-![Aegis Bootstrapping](assets/aegis-bootstrap.png "Bootstrapping")
-
-**Notary** exchanges its token (*which is safe, but still known*)
-with a more secure, unknown, randomly-generated token.
-
-Bootstrapping is automatically done by **Notary**. It does not need any manual
-intervention. Without successful bootstrapping, almost nothing works in the 
-system.
-
-Bootstrapping is only done **once**. Executing the bootstrap flow on **Safe** 
-more than once is a **no-op**.
-
-It is important to note that the notary id is **never** used anywhere in the
-system after a successful bootstrap, and the bootstrapping typically happens
-blazing fast.
-
-## Dispatching Workload Ids and Secrets
-
-**Notary** is also responsible for dispatching the workload ids and secrets to
-workloads and notifying **Safe** about those ids and secrets, so that
-workloads can communicate with **Safe** safely.
-
-After a successful bootstrap, here’s how **Notary** dispatches ids and secrets
-at a high level:
-
-![Notary Dispatch](assets/aegis-notary-dispatch.png "Notary Dispatch")
-
-The **id** provided to the workload is the **id** that is the value of 
-`aegis-workload-key` annotation in its deployment template. **Notary** will not
-dispatch secrets to pods that don’t have this annotation.
-
-## Workload Fetching Secrets
-
-After receiving their **id** and **secret**, the **Sidecar** will
-periodically call **Safe** to fetch and update the Pod’s secrets (*see the
-bottom two line of the above sequence diagram*).
+[Check out this document](ARCHITECTURE.md) for detailed information about
+**Aegis**’s system design, sequence diagrams, workflows, and internal
+operating principles.
 
 ## System Requirements
 
