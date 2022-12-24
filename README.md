@@ -7,8 +7,9 @@ yet. Use it at your own risk.
 
 ## Before Anything… How Do I Pronounce “Aegis”?
 
-“Aegis” is a word of Greek origin and is pronounced `EE-jiss`. [Here’s a YouTube
-pronunciation guide][pronounce].
+“Aegis” is a word of Greek origin and is pronounced `EE-jiss`. 
+
+[Here’s a YouTube pronunciation guide][pronounce].
 
 [pronounce]: http://www.youtube.com/watch?v=x4bUgXWdNfM
 
