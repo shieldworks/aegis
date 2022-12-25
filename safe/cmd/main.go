@@ -20,6 +20,8 @@ import (
 
 func main() {
 	panic(`
+TODO: convert these to actionable items in 2013!
+
 To create secrets of any kind, the administrator will require the admin token.
 
 To securely deliver the admin token to the administrator:
