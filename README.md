@@ -127,7 +127,7 @@ what has been done and what is in progress.
 
 This is an feature that we are actively working on. 
 
-As of the current version recovering the secrets when a workload restarts is 
+As of the current version, recovering the secrets when a workload restarts is 
 automatic. However, if **Safe** or **Notary** pods are evicted for any reason,
 then the in-memory secrets are lost, and an administrator will have to
 delete and redeploy everything under the `aegis-system` namespace and 
