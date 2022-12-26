@@ -20,6 +20,16 @@ import (
 
 func main() {
 	panic(`
+addon:
+it looks like leveraging SPIRE and go Spiffe
+will simplify a lot of the hassle:
+1. dispatching identities to workloads and safe and notary automatically.
+2. damn easy mtls over grpc between them
+3. no need for a notary token. svids replace that
+4. admin token is still needed but can be swapped with an IDM/OIDC
+5. grpc is faster, lighter
+6. etc.
+
 TODO: convert these to actionable items in 2013!
 
 To create secrets of any kind, the administrator will require the admin token.
