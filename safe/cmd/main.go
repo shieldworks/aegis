@@ -30,6 +30,9 @@ will simplify a lot of the hassle:
 5. grpc is faster, lighter
 6. etc.
 
+see https://github.com/spiffe/spire-controller-manager/blob/main/demo/config/greeter-client-id.yaml
+for a k8s nativr spire id assignment to a workload.
+
 TODO: convert these to actionable items in 2013!
 
 To create secrets of any kind, the administrator will require the admin token.
