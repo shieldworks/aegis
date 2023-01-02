@@ -1,0 +1,17 @@
+#
+# .-'_.---._'-.
+# ||####|(__)||   Protect your secrets, protect your business.
+#   \\()|##//       Secure your sensitive data with Aegis.
+#    \\ |#//                  <aegis.z2h.dev>
+#     .\_/.
+#
+
+apiVersion: spire.spiffe.io/v1alpha1
+kind: ClusterSPIFFEID
+metadata:
+  name: aegis-workload-demo
+spec:
+  spiffeIDTemplate: "spiffe://cluster.demo/ns/{{ .PodMeta.Namespace }}/sa/{{ .PodSpec.ServiceAccountName }}/n/{{ .PodMeta.Name }}"
+  podSelector:
+    matchLabels:
+      spire.spiffe.io/spiffeid: aegis-workload-demo

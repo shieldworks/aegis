@@ -200,7 +200,6 @@ it using `make` as follows:
 git clone https://github.com/zerotohero-dev/aegis.git
 cd aegis
 make clean 
-make configure
 make install-all
 ```
 
