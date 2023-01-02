@@ -21,12 +21,12 @@ There is also [aegis.z2h.dev][aegis-website], the project’s website.
 
 ## About Aegis
 
-**Aegis** is perfect for storing arbitrary configuration information at a 
-central location and securely dispatching it to workloads.
-
 **Aegis** is a lightweight secrets management solution that keeps your secrets
 secret. With **Aegis**, you can rest assured that your sensitive data is 
 always **secure** and **protected**. 
+
+**Aegis** is perfect for securely storing arbitrary configuration information at a 
+central location and securely dispatching it to workloads.
 
 **Aegis** ensures that your secrets are only accessible to authorized workloads, 
 helping you safeguard your business and protect against data breaches.
