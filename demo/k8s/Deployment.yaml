@@ -21,7 +21,11 @@ spec:
   template:
     metadata:
       labels:
+        # TODO: some of these selectors are redundant.
+        # use spiffe id and get rid of the redundant ones.
+        # note that, this means a hard dependency on SPIRE.
         app: aegis-workload-demo
+        spire.spiffe.io/spiffeid: aegis-workload-demo
       annotations:
         # To automatically inject sidecar instead of manually creating one.
         # TODO: implement this feature.

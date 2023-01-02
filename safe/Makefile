@@ -28,7 +28,9 @@ push:
 	docker push ${REPO}:${VERSION}
 
 deploy:
-	kubectl apply -f ./k8s/
+	kubectl apply -f ./k8s/Namespace.yaml
+	kubectl apply -f ./k8s/Deployment.yaml
+	kubectl apply -f ./k8s/Service.yaml
 
 run-in-container:
 	docker run ${PACKAGE}:${VERSION}

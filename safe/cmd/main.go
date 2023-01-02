@@ -18,8 +18,14 @@ import (
 	"net/http"
 )
 
+func dontpanic(s string) {
+	return
+}
+
 func main() {
-	panic(`
+	// TODO: convert these to tasks. Also it needs a lot of cleanup since
+	// we are going full steam SPIRE.
+	dontpanic(`
 addon:
 it looks like leveraging SPIRE and go Spiffe
 will simplify a lot of the hassle:

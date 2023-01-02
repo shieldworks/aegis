@@ -8,18 +8,25 @@
 
 clean:
 	@if kubectl get ns | grep aegis-system; then \
+		kubectl delete ns spire-system; \
 		kubectl delete ns aegis-system; \
 		kubectl delete deployment aegis-workload-demo -n default; \
+		kubectl delete ClusterSPIFFEID aegis-workload-demo -n default; \
 	else \
   		echo "Nothing to clean."; \
 	fi
 
-configure:
-	kubectl create ns aegis-system
+# Builds and installs everything.
+# You will need dockerhub write access for this task.
+all: spire all-demo all-safe all-sidecar all-sentinel
 
-install-all: install-demo install-safe install-sidecar install-sentinel
+# Installs without rebuilding apps.
+install-all: spire install-demo install-safe install-sidecar install-sentinel
 
-all: all-demo all-safe all-sidecar all-sentinel
+.PHONY: spire
+spire:
+	cd spire && $(MAKE) deploy
+	sleep 15 # give some time for spire to bring itself up.
 
 all-demo:
 	cd demo && $(MAKE) all
