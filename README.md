@@ -132,7 +132,7 @@ cluster and allocate your resources accordingly.
 
 Keeping *Aegis* **slim**, **secure**, and **boringly-easy** to install and
 operate are the three pillars of the project.
-[Check out our *Design Decisions*](DESIGN_DECISIONS.md) for a deeper discussion
+[Check out the *Design Decisions* document](DESIGN_DECISIONS.md) for a deeper discussion
 about how we maintain the architectural balance in **Aegis**.
 
 ## Where **NOT** To Use Aegis
