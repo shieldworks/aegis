@@ -2,6 +2,8 @@
 
 ```text
 TODO: this has changed and needs an update.
+Also, there are new(er) sequence diagrams, and the current diagrams
+here are outdated too.
 ```
 
 **Aegis** is a monorepo. Here’s a brief overview of essential files and folders:

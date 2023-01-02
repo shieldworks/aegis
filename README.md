@@ -34,6 +34,29 @@ helping you safeguard your business and protect against data breaches.
 If you haven’t watched [this six-minute introductory video yet][aegis-demo-video],
 now might be a good time 🙂.
 
+## System Requirements
+
+**Aegis** has been recently tested with the following Kubernetes version:
+
+```text
+Client Version: v1.26.0
+Kustomize Version: v4.5.7
+Server Version: v1.25.3
+```
+
+Although not explicitly tested, any recent Kubernetes installation will work
+just fine.
+
+As in any secrets management solution, your compute and memory requirements
+will depend on several factors, such as:
+
+* The number of workloads in the cluster
+* The number of secrets **Safe** has to manage (*see [architecture details](ARCHITECTURE.md)*)
+* **Sidecar** poll frequency (*see [architecture details](ARCHITECTURE.md)*)
+
+We recommend you benchmark with a realistic production-like
+cluster and allocate your resources accordingly.
+
 ## Installation
 
 You need a **Kubernetes** cluster and sufficient admin rights on that cluster to
@@ -104,36 +127,12 @@ Keep the admin token safe; **do not** store it in source control; **do not**
 store it on disk as plain text. An ideal place to store it is a password manager 
 or an encrypted file that only the administrators know how to decrypt.
 
-## System Requirements
-
-**Aegis** has been recently tested with the following Kubernetes version:
-
-```text
-Client Version: v1.26.0
-Kustomize Version: v4.5.7
-Server Version: v1.25.3
-```
-
-Although not explicitly tested, any recent Kubernetes installation will work 
-just fine.
-
-As in any secrets management solution, your compute and memory requirements 
-will depend on several factors, such as:
-
-* The number of workloads in the cluster
-* The number of secrets **Safe** has to manage (*see [architecture details](ARCHITECTURE.md)*)
-* **Notary** refresh interval (*see [architecture details](ARCHITECTURE.md)*)
-* **Sidecar** poll frequency (*see [architecture details](ARCHITECTURE.md)*)
-
-We recommend you benchmark with a realistic production-like 
-cluster and allocate your resources accordingly.
-
 ## Design Decisions
 
 Keeping *Aegis* **slim**, **secure**, and **boringly-easy** to install and
 operate are the three pillars of the project.
-[Check out the *Design Decisions* document](DESIGN_DECISIONS.md) for a deeper discussion
-about how we maintain the architectural balance in **Aegis**.
+[Check out the **Design Decisions** document](DESIGN_DECISIONS.md) for a 
+deeper discussion about how we maintain the architectural balance in **Aegis**.
 
 ## Where **NOT** To Use Aegis
 
@@ -152,9 +151,9 @@ hopefully hash and salt the passwords before you store them*).
 
 ## Architecture Details
 
-[Check out this document](ARCHITECTURE.md) for detailed information about
-**Aegis**’s project folder structure, system design, sequence diagrams,
-workflows, and internal operating principles.
+[Check out this **Architecture** document](ARCHITECTURE.md) for detailed i
+nformation about **Aegis**’s project folder structure, system design, sequence 
+diagrams, workflows, and internal operating principles.
 
 ## Umm… How Do I Pronounce “Aegis”?
 
