@@ -1,5 +1,9 @@
 ## Project Folder Structure
 
+```text
+TODO: this has changed and needs an update.
+```
+
 **Aegis** is a monorepo. Here’s a brief overview of essential files and folders:
 
 * `./Makefile`: This is the file to install and test things.

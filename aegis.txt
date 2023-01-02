@@ -19,7 +19,7 @@ x 2022-12-24 Finalize diagrams. pri:B +aegis
 (B) note that the initial prototype stores things “in memory” without encryption; it might be nice to introduce `sops` next when things stabilize +aegis 
 (C) Add documentation to all publicly exported functions everywhere +aegis 
 (C) Code cleanup everywhere +aegis
-(B) use `sops` and `age` in some way, shape or form +aegis +safe @mvp 
+x 2023-01-01 use `sops` and `age` in some way, shape or form pri:B +aegis +safe @mvp
 (E) ability to rotate notaryId and safeId. +aegis 
 (D) idea: integration with `SPIRE`. If there is a SPIRE server that `aegis` can piggyback on, then let it manage the registration instead of all these token and secret exchange.
 (C) main goal is to keep things simple, usable, and cloud-native. I will most certainly assume some form of Kubernetes exists. +aegis 
@@ -31,7 +31,7 @@ x 2022-12-24 Finalize diagrams. pri:B +aegis
 (E) sign the docker images and other artifacts that you distribute +aegis 
 x 2022-12-23 record a demo video pri:A +aegis @▶️
 x 2022-12-23 tx renewal b4 29th pri:A @🚨
-(B) convert minikube kubectl to kubectl in the deploy makefiles; maybe add a deploy-minikube as an alternative option +aegis 
+x 2023-01-01 convert minikube kubectl to kubectl in the deploy makefiles; maybe add a deploy-minikube as an alternative option pri:B +aegis
 (B) add make all; make install; make clean -- those are typical things people expect in makefiles +aegis 
 (B) ensure that all `make` commands are working as expected +aegis 
 (B) create a top-level makefile that builds and deploys all the child projects +aegis
@@ -40,7 +40,7 @@ x 2022-12-23 tx renewal b4 29th pri:A @🚨
 (B) add list of technologies used in README, and also add licenses of those to the things that you bundle +aegis 
 (C) documentation: notary should be up and running first +safe — plus, it wouild be nice if safe for example can check the existence of notary
 (B) in this current implementation, sidecars are constantly polling safe even though they don't have any secrets registered; they should back off after a while exponentially +sidecar 
-(A) make notary deployable inside a cluster too. +aegis @mvp 
+x 2023-01-01 make notary deployable inside a cluster too. pri:A +aegis @mvp
 x 2022-12-23 a mini operations manual on README.md pri:A due:2022-12-24 +aegis @▶️
 (E) you need a CONTRIBUTING.md +aegis 
 x 2023-01-01 A mini powerpoint presentation would be useful too. pri:B +aegis
@@ -56,10 +56,11 @@ x 2022-12-24 establish a secure way to deliver the admin token  -- Securing the 
 (C) automatic sidecar injection? +aegis 
 x 2022-12-24 replace aegis-workload-key with aegis-workload-id everywhere for consistency pri:A +aegis @▶️
 (E) we need an unregister flow for the deleted workloads too. -- or do we? not sure +aegis -- since the workload can revive, it might still be entitled to the same secrets.
-(A) create a mini powerpoint (like a pitch deck) +aegis @▶️ 
-(B) age as an encryption tool https://github.com/FiloSottile/age +aegis @home 
+create a mini powerpoint (like a pitch deck) pri:A +aegis @▶️
+x 2023-01-01 age as an encryption tool https://github.com/FiloSottile/age pri:B +aegis @home
 (C) enable automatic (and manual) rotation of tokens and secrets +aegis 
 (B) sealed secrets model with a twist: Sealed Secrets controller on the cluster, and the public key is available to the developers. This way, only the cluster can decrypt the secrets, and the developers can only encrypt them. -- so if the Notary has a persistent private key and it dispatches public key to Safe; then Safe can encrypt the admin token; it can send the encrypted admin token to Notary for validation. -- whatever the cluster operator enters as the token will be encrypted and sent to notary too. -- this way, safe can remain stateless, it does not have to know the admin token to restore its state; it only has to store an encrypted version of admin token on a persistent storage. ---- that solves the first part of the problem. -- the second part is restoring secrets when safe gets evicted -- the third part is rotation of the private keys and restoring the private key when notary gets evicted and --- but then we end up keeping the private key in the cluster -- even if we have a replicated setup if the private key is lost, access to the entire data is gone. -- so better to deliver a private key to administrator too; so if notary crashes the admin will have to provide the private key, and if vault crashes, everything is fine. -- then admin can manage the rotation of keys too by providing the private key that they have. -- private key  is NEVER stored on cluster disk, it will always be in memory. --- only encytped data will be stored on disk -- and this way we can also encrypt the kv pairs on disk using the public key too.
-(A) with SPIRE, `notary` becomes mostly redundant; remove it from the project. +aegis 
-(A) Safe should create and store admin token in memory -- 1. the admin token can only be retrieved from sentinel (SVID authentication) -- 2. the admin token can only be requested once. -- 3. For this phase we just return the token and the token is stored in memory, so if safe crashes the token is gone. -- 4. In upcoming phases there will be ways to persist the token in an encrypted way. +safe 
-(A) dispatch identities to `safe` and `sentinel` too. +aegis 
+x 2023-01-01 with SPIRE, `notary` becomes mostly redundant; remove it from the project. pri:A +aegis
+x 2023-01-01 Safe should create and store admin token in memory -- 1. the admin token can only be retrieved from sentinel (SVID authentication) -- 2. the admin token can only be requested once. -- 3. For this phase we just return the token and the token is stored in memory, so if safe crashes the token is gone. -- 4. In upcoming phases there will be ways to persist the token in an encrypted way. pri:A +safe
+x 2023-01-01 dispatch identities to `safe` and `sentinel` too. pri:A +aegis
+x 2023-01-01 use a simple CI tool (Ansible is as good as any) to fetch an admin token and generate some secrets for a workload. pri:A

@@ -2,26 +2,13 @@
 
 ## Status of This Software
 
-This project is a work in progress and has yet to be ready for production 
-consumption. Use it at your own risk.
+This project is a **work in progress** (*WIP*) and has yet to be ready for 
+production consumption. Use it at your own risk.
 
-## Before Anything… How Do I Pronounce “Aegis”?
-
-“Aegis” is a word of Greek origin and is pronounced `EE-jiss`. 
-
-[Here’s a YouTube pronunciation guide][pronounce].
-
-[pronounce]: http://www.youtube.com/watch?v=x4bUgXWdNfM
-
-**Aegis** has two definitions:
-
-1. (Classical Mythology) The shield or breastplate of Zeus or Athena, bearing 
-   at its center the head of the Gorgon. 
-2. Protection; support.
-
-Here’s an image of an aegis (*shield*) as depicted in Greek mythology:
-
-![aegis](assets/aegis-shield.jpg "aegis")
+```text
+TODO: some of the content in this file needs an update.
+Especially thing around **notary** since we don’t use notary anymore.
+```
 
 ## A Video Is Worth a Lot of Thousands of Words
 
@@ -46,147 +33,6 @@ helping you safeguard your business and protect against data breaches.
 
 If you haven’t watched [this six-minute introductory video yet][aegis-demo-video],
 now might be a good time 🙂.
-
-Keeping *Aegis* **slim**, **secure**, and **boringly-easy** to install and 
-operate are the three pillars of the project. 
-
-We follow the **guidelines** outlined in the next few sections to achieve these.
-
-Since **Aegis** is still in development, some of these goals discussed in the 
-following sections may still need to be fully implemented. Regardless, 
-they are the **guiding principles** we steer towards while shaping the future 
-of **Aegis**.
-
-### Be Cloud Native
-
-**Aegis** is designed to run on Kubernetes and **only** on Kubernetes. 
-That helps us leverage Kubernetes concepts like *Operators*, *Custom Resources*, 
-and *Controllers* to our advantage to simplify workflow and state management. 
-
-If you are looking for a solution that runs outside Kubernetes or as a 
-standalone binary, then Aegis is not the Secrets Store you’re looking for.
-
-### Do One Thing Well
-
-At a 5000-feet level, **Aegis** is a secure Key-Value store. It can securely 
-store arbitrary values that you, as an administrator, associate with keys. It 
-does that, and it does that well.
-
-If you are searching for a solution to create and store X.509 certificates, create
-dynamic secrets, automate your PKI infrastructure, federate your identities,
-use as an OTP generator, policy manager, in short, anything other than a
-secure key-value store, then Aegis is likely not the solution you are looking 
-for.
-
-### Have a Minimal and Intuitive API
-
-As an administrator, there is a limited set of API endpoints that you can 
-interact with **Aegis**. This makes **Aegis** easy to manage. In addition,
-a minimal set of APIs means a smaller attack surface, a smaller footprint, and
-a codebase that is easy to understand, test, audit, and develop; all good things.
-
-### Be Practically Secure
-
-Corollary: Do not be annoyingly secure. Provide a delightful user experience
-while taking security seriously.
-
-**Aegis** is a secure solution, yet still delightful to operate. 
-You won’t have to jump over the hoops or wake up in the middle of the night
-to keep it up and running. Instead, **Aegis** will work seamlessly, as if it 
-doesn’t exist at all.
-
-## Secure By Default
-
-**Aegis** stores your sensitive data in memory by default. Yes, that brings 
-up resource limitations since you cannot store a gorilla holding a banana and
-the entire jungle in your store; however, a couple of gigabytes of RAM can store
-a lot of plain text secrets in it, so it’s good enough for most practical 
-purposes. 
-
-More importantly, almost all modern instruction set architectures and 
-operating systems implement [*memory protection*][memory-protection]. The primary 
-purpose of memory protection is to prevent a process from accessing memory that 
-has not been allocated to it. This prevents a bug or malware within a process 
-from affecting other processes or the operating system itself.
-
-[memory-protection]: https://en.wikipedia.org/wiki/Memory_protection "Memory Protection (Wikipedia)"
-
-Therefore, reading a variable’s value from a process’s memory is practically 
-impossible unless you attach a debugger to it.
-
-So, until we implement ways to securely store a backup of the state data
-encrypted on disk, all the secrets **Aegis** has will be held in memory
-only: Never persisted to disk and never written or streamed to log files.
-
-Other related works are in progress to make **Aegis**’s system 
-architecture secure by default. We are slowly and steadily getting there.
-You can check out [aegis.txt](aegis.txt) for the overall progress of 
-what has been done and what is in progress.
-
-## Disaster Recovery and Fault Tolerance
-
-This is an feature that we are actively working on. 
-
-As of the current version, recovering the secrets when a workload restarts is 
-automatic. However, if **Safe** or **Notary** pods are evicted for any reason,
-then the in-memory secrets are lost, and an administrator will have to
-delete and redeploy everything under the `aegis-system` namespace and 
-create secrets (*ideally, through a CI pipeline*).
-
-Yes, this can get annoying. And the future versions of **Aegis** will have
-measures to prevent this from happening so you, as the ops person,
-can `#sleepmore`.
-
-## Where NOT To Use Aegis
-
-Aegis is **not** a Database, nor is it a distributed caching layer. Of course,
-you may tweak it to act like one if you try hard enough, yet, that is 
-generally not a good use of the tool.
-
-Aegis is suitable for storing secrets and dispatching them; however, it
-is a *terrible* idea to use it as a centralized database to store everything
-but the kitchen sink.
-
-Use Aegis to store service keys, database credentials, access tokens, 
-etc. However, **do not** use Aegis to store the username and
-passwords of your 1000 customers: That’s what a database is for (*where you
-hopefully hash and salt the passwords before you store them*).
-
-## Hey, Where Are the GitHub Issues?
-
-Right now, [there is a single text file](aegis.txt) that lists all the issues
-in [todo.txt format][todo-txt]. 
-
-This is the fastest way to bootstrap a project, and it is also the best way for 
-me to manage things as I am the only developer working on the project with a 
-**very** tight time budget. I literally do not have time to triage and label 
-GitHub issues.
-
-Once the project matures enough and I have a more maintainable development
-burden, I’ll move items on the [aegis.txt](aegis.txt)
-file to GitHub issues and GitHub projects.
-
-[todo-txt]: https://github.com/todotxt "todo.txt"
-
-## Project Timeline
-
-Check [aegis.txt](aegis.txt) for task prioritization and timeline information.
-
-For a quick guideline to parse that text file.
-
-Let’s say you see the following line in `aegis.txt`:
-
-```text 
-(A) a mini operations manual on README.md due:2022-12-24 +aegis @▶️
-```
-
-It would mean:
-
-* This is very important (`(A)`: *sorted alphabetically: 
-  `A` is the most important, `Z` is least important*)
-* It is associated with the `+aegis` projects.
-* It is a work in progress (`@▶️`).
-* It is guesstimated to be done by `2022-12-24`, with no promises.
 
 ## Installation
 
@@ -258,12 +104,6 @@ Keep the admin token safe; **do not** store it in source control; **do not**
 store it on disk as plain text. An ideal place to store it is a password manager 
 or an encrypted file that only the administrators know how to decrypt.
 
-## Architecture Details
-
-[Check out this document](ARCHITECTURE.md) for detailed information about
-**Aegis**’s project folder structure, system design, sequence diagrams, 
-workflows, and internal operating principles.
-
 ## System Requirements
 
 **Aegis** has been recently tested with the following Kubernetes version:
@@ -287,6 +127,71 @@ will depend on several factors, such as:
 
 We recommend you benchmark with a realistic production-like 
 cluster and allocate your resources accordingly.
+
+## Design Decisions
+
+Keeping *Aegis* **slim**, **secure**, and **boringly-easy** to install and
+operate are the three pillars of the project.
+[Check out our *Design Decisions*](DESIGN_DECISIONS.md) for a deeper discussion
+about how we maintain the architectural balance in **Aegis**.
+
+## Where **NOT** To Use Aegis
+
+Aegis is **not** a Database, nor is it a distributed caching layer. Of course,
+you may tweak it to act like one if you try hard enough, yet, that is
+generally not a good use of the tool.
+
+Aegis is suitable for storing secrets and dispatching them; however, it
+is a *terrible* idea to use it as a centralized database to store everything
+but the kitchen sink.
+
+Use Aegis to store service keys, database credentials, access tokens,
+etc. However, **do not** use Aegis to store the username and
+passwords of your 1000 customers: That’s what a database is for (*where you
+hopefully hash and salt the passwords before you store them*).
+
+## Architecture Details
+
+[Check out this document](ARCHITECTURE.md) for detailed information about
+**Aegis**’s project folder structure, system design, sequence diagrams,
+workflows, and internal operating principles.
+
+## Umm… How Do I Pronounce “Aegis”?
+
+“Aegis” is a word of Greek origin and is pronounced `EE-jiss`.
+
+[Here’s a YouTube pronunciation guide][pronounce].
+
+[pronounce]: http://www.youtube.com/watch?v=x4bUgXWdNfM
+
+**Aegis** has two definitions:
+
+1. (Classical Mythology) The shield or breastplate of Zeus or Athena, bearing
+   at its center the head of the Gorgon.
+2. Protection; support.
+
+Here’s an image of an aegis (*shield*) as depicted in Greek mythology:
+
+![aegis](assets/aegis-shield.jpg "aegis")
+
+## What’s Coming Up Next?
+
+You can see the project’s progress [in this **Aegis MDP** board][mdp].
+
+The board outlines what are the current outstanding work items, and what is
+currently being worked on.
+
+There is also [this **Aegis v1.0.0.** board][v100] that contains longer-term
+goals that we’ll start once the MDP board is mostly done.
+
+[mdp]: https://github.com/orgs/zerotohero-dev/projects/2/views/2
+[v100]: https://github.com/orgs/zerotohero-dev/projects/3/views/2
+
+There is also [a text file](aegis.txt) that is a more free-form list of
+issues. I sometimes jot things down there before creating more detailed GitHub
+issues.
+
+[todo-txt]: https://github.com/todotxt "todo.txt"
 
 ## Code Of Conduct
 
