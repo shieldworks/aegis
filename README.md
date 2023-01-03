@@ -31,7 +31,7 @@ central location and securely dispatching it to workloads.
 **Aegis** ensures that your secrets are only accessible to authorized workloads, 
 helping you safeguard your business and protect against data breaches.
 
-If you haven’t watched [this six-minute introductory video yet][aegis-demo-video],
+If you haven’t watched [this six-minute introductory video][aegis-demo-video] yet,
 now might be a good time 🙂.
 
 ## System Requirements
@@ -131,6 +131,7 @@ or an encrypted file that only the administrators know how to decrypt.
 
 Keeping *Aegis* **slim**, **secure**, and **boringly-easy** to install and
 operate are the three pillars of the project.
+
 [Check out the **Design Decisions** document](DESIGN_DECISIONS.md) for a 
 deeper discussion about how we maintain the architectural balance in **Aegis**.
 
@@ -145,14 +146,12 @@ is a *terrible* idea to use it as a centralized database to store everything
 but the kitchen sink.
 
 Use Aegis to store service keys, database credentials, access tokens,
-etc. However, **do not** use Aegis to store the username and
-passwords of your 1000 customers: That’s what a database is for (*where you
-hopefully hash and salt the passwords before you store them*).
+etc. 
 
 ## Architecture Details
 
-[Check out this **Architecture** document](ARCHITECTURE.md) for detailed i
-nformation about **Aegis**’s project folder structure, system design, sequence 
+[Check out this **Architecture** document](ARCHITECTURE.md) for detailed
+information about **Aegis**’s project folder structure, system design, sequence 
 diagrams, workflows, and internal operating principles.
 
 ## Umm… How Do I Pronounce “Aegis”?
@@ -180,7 +179,7 @@ You can see the project’s progress [in this **Aegis MDP** board][mdp].
 The board outlines what are the current outstanding work items, and what is
 currently being worked on.
 
-There is also [this **Aegis v1.0.0.** board][v100] that contains longer-term
+There is also [this **Aegis v1.0.0** board][v100] that contains longer-term
 goals that we’ll start once the MDP board is mostly done.
 
 [mdp]: https://github.com/orgs/zerotohero-dev/projects/2/views/2

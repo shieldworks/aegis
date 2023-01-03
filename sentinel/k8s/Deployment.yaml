@@ -12,16 +12,17 @@ metadata:
   name: aegis-sentinel
   namespace: aegis-system
   labels:
-    app: aegis-sentinel
+    app.kubernetes.io/name: aegis-sentinel
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: aegis-sentinel
+      app.kubernetes.io/name: aegis-sentinel
   template:
     metadata:
       labels:
-        app: aegis-sentinel
+        app.kubernetes.io/name: aegis-sentinel
+        app.kubernetes.io/part-of: aegis-system
     spec:
       containers:
         - name: main

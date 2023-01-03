@@ -12,27 +12,16 @@ metadata:
   name: aegis-workload-demo
   namespace: default
   labels:
-    app: aegis-workload-demo
+    app.kubernetes.io/name: aegis-workload-demo
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: aegis-workload-demo
+      app.kubernetes.io/name: aegis-workload-demo
   template:
     metadata:
       labels:
-        # TODO: some of these selectors are redundant.
-        # use spiffe id and get rid of the redundant ones.
-        # note that, this means a hard dependency on SPIRE.
-        app: aegis-workload-demo
-        spire.spiffe.io/spiffeid: aegis-workload-demo
-      annotations:
-        # To automatically inject sidecar instead of manually creating one.
-        # TODO: implement this feature.
-        aegis-inject-sidecar: "false"
-        # The name the workload will be referred.
-        # Admin API will use this name to register secrets for this workload.
-        aegis-workload-id: aegis-workload-demo
+        app.kubernetes.io/name: aegis-workload-demo
     spec:
       containers:
         - name: main
