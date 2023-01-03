@@ -22,4 +22,5 @@ push:
 
 deploy:
 	kubectl apply -f ./k8s/Namespace.yaml
+	kubectl apply -f ./k8s/Identity.yaml
 	kubectl apply -f ./k8s/Deployment.yaml

@@ -64,3 +64,6 @@ x 2023-01-01 with SPIRE, `notary` becomes mostly redundant; remove it from the p
 x 2023-01-01 Safe should create and store admin token in memory -- 1. the admin token can only be retrieved from sentinel (SVID authentication) -- 2. the admin token can only be requested once. -- 3. For this phase we just return the token and the token is stored in memory, so if safe crashes the token is gone. -- 4. In upcoming phases there will be ways to persist the token in an encrypted way. pri:A +safe
 x 2023-01-01 dispatch identities to `safe` and `sentinel` too. pri:A +aegis
 x 2023-01-01 use a simple CI tool (Ansible is as good as any) to fetch an admin token and generate some secrets for a workload. pri:A
+(B) Ability to use redis as a backing store +safe 
+(B) automate uploading the site to s3.
+(B) website is not responsive.

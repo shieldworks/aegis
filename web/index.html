@@ -1,28 +1,203 @@
-!<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Aegis: Keep your secrets.</title>
-    <style>
-        * { margin: 0; padding: 0}
-        body {background: #000F0F}
-        pre { font-size: 18px; background: #000606; color: #00ff00; padding: 2em;
-        max-width: 650px; overflow: auto; margin: 1em auto;border-radius:8px;}
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Aegis: Keep your secrets.</title>
+  <link rel="stylesheet" href="https://use.typekit.net/mkv3paq.css">
+  <style>
+      * {
+          margin: 0;
+          padding: 0
+      }
+
+      body {
+          background: #2b364a;
+          font-family: input-mono, Consolas, Monaco, "Andale Mono", "Ubuntu Mono", Liberation Mono, Lucida Console, monospace;
+          color: #ffffff;
+          padding: 2em 2em 2em 2em;
+          font-weight: 100;
+      }
+
+      strong {
+          font-weight: 700;
+          color: #7dc8c2;
+      }
+
+      em {
+          color: #7dc8c2;
+      }
+
+      html, body {
+          font-size: 18px;
+          line-height: 1.6;
+      }
+
+      h1 {
+          font-size: 4.25em;
+          line-height: 1.15em;
+          padding-top: 0.235em;
+          margin-bottom: 0.147em;
+      }
+
+      h2, h3 {
+          color: #c8fe4f;
+          font-weight: normal;
+          font-size: 1.63em;
+          line-height: 2.00em;
+          padding-top: 0.654em;
+          margin-bottom: 0.346em;
+      }
+
+      h2 strong, h3 strong {
+          color: #c8fe4f;
+      }
+
+      h4 {
+          font-size: 1.63em;
+          line-height: 2.00em;
+          padding-top: 0.654em;
+          margin-bottom: 0.346em;
+      }
+
+      p {
+          font-size: 1.00em;
+          line-height: 1.63em;
+          padding-top: 0.500em;
+          margin-bottom: 1.13em;
+      }
+
+      article {
+          max-width: 750px;
+          margin: 0 auto;
+          background: #0d1d3b;
+          padding: 1em 2em 4em 2em;
+          border-radius: 4px;
+          box-shadow: rgba(0, 0, 0, 0.55) 0px 14px 28px, rgba(0, 0, 0, 0.42) 0px 10px 10px;
+      }
+
+      pre {
+          font-family: input-mono, Consolas, Monaco, "Andale Mono", "Ubuntu Mono", Liberation Mono, Lucida Console, monospace;
+          background: #001337;
+          color: #c8fe4f;
+          padding: 1em;
+          border-radius: 4px;
+          overflow: auto;
+      }
+
+      a {
+          padding: 0.5em 0.25em;
+          display: inline-block;
+          transition: all ease-out 260ms;
+      }
+
+      a, a strong {
+          color: #FFDF4F;
+      }
+
+      a:hover, a:hover strong {
+          color: #001337;
+          background: #7dc8c2;
+          text-decoration: none;
+      }
+
+      ol {
+          margin: 2em;
+      }
+  </style>
 </head>
 <body>
-<pre>
+<article>
+  <div style="max-width:1080px;margin:10px auto;padding:10px">
+    <div style="padding:56.25% 0 0 0;position:relative;">
+      <iframe
+          src="https://player.vimeo.com/video/784008877?h=047bd66cfb&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+          frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen
+          style="position:absolute;top:0;left:0;width:100%;height:100%;"
+          title="Introducing Aegis: A Cloud Native Solution to Secure Your Sensitive Data"></iframe>
+    </div>
+    <script src="https://player.vimeo.com/api/player.js"></script>
+  </div>
+
+  <h2 id="about-aegis">Keep Your Secrets… Secret</h2>
+  <p><strong>Aegis</strong> is a lightweight secrets management solution that keeps your secrets secret. With <strong>Aegis</strong>,
+    you can rest assured that your sensitive data is always <strong>secure</strong> and <strong>protected</strong>.</p>
+  <p><strong>Aegis</strong> is perfect for securely storing arbitrary configuration information at a central location
+    and securely dispatching it to workloads.</p>
+  <p><strong>Aegis</strong> ensures that your secrets are only accessible to authorized workloads, helping you safeguard
+    your business and protect against data breaches.</p>
+  <p>If you haven’t watched <a href="https://vimeo.com/v0lkan/aegis"
+                               title="Introducing Aegis: A Cloud Native Solution to Secure Your Sensitive Data">this
+    six-minute introductory video</a> yet, now might be a good time 🙂.</p>
+
+  <h2 id="where-not-to-use-aegis">Where <strong>NOT</strong> To Use Aegis</h2>
+  <p>Aegis is <strong>not</strong> a Database, nor is it a distributed caching layer. Of course, you may tweak it to act
+    like one if you try hard enough, yet, that is generally not a good use of the tool.</p>
+  <p>Aegis is suitable for storing secrets and dispatching them; however, it is a <em>terrible</em> idea to use it as a
+    centralized database to store everything but the kitchen sink.</p>
+  <p>Use Aegis to store service keys, database credentials, access tokens, etc.</p>
+
+  <h2 id="architecture-details">Architecture Details</h2>
+  <p><a href="https://github.com/zerotohero-dev/aegis/blob/main/ARCHITECTURE.md">Check out this <strong>Architecture</strong> document</a> for detailed information about
+    <strong>Aegis</strong>’s project folder structure, system design, sequence diagrams, workflows, and internal
+    operating principles.</p>
+
+  <h2 id="installation">Installation</h2>
+  <p><a href="https://github.com/zerotohero-dev/aegis">Check out <strong>Aegis</strong>’ Git Repository</a> for
+  <strong>system requirements</strong> and <strong>installation instructions</strong>.</p>
+
+  <h2 id="design-decisions">Design Decisions</h2>
+  <p>Keeping <em>Aegis</em> <strong>slim</strong>, <strong>secure</strong>, and <strong>boringly-easy</strong> to
+    install and operate are the three pillars of the project.</p>
+
+  <p><a href="https://github.com/zerotohero-dev/aegis/blob/main/DESIGN_DECISIONS.md">Check out the <strong>Design
+      Decisions</strong> document</a> for a deeper discussion about how we maintain the architectural balance in
+    <strong>Aegis</strong>.</p>
+
+  <h2 id="umm-how-do-i-pronounce-aegis">Umm… How Do I Pronounce “Aegis”?</h2>
+  <p>“Aegis” is a word of Greek origin and is pronounced <code>EE-jiss</code>.</p>
+  <p><a href="http://www.youtube.com/watch?v=x4bUgXWdNfM">Here’s a YouTube pronunciation guide</a>.</p>
+  <p><strong>Aegis</strong> has two definitions:</p>
+  <ol type="1">
+    <li>(Classical Mythology) The shield or breastplate of Zeus or Athena, bearing at its center the head of the
+      Gorgon.
+    </li>
+    <li>Protection; support.</li>
+  </ol>
+
+  <h2 id="whats-coming-up-next">What’s Coming Up Next?</h2>
+  <p>You can see the project’s progress <a href="https://github.com/orgs/zerotohero-dev/projects/2/views/2">in this
+    <strong>Aegis MDP</strong> board</a>.</p>
+
+  <p>The board outlines what are the current outstanding work items, and what is currently being worked on.</p>
+
+  <p>There is also <a href="https://github.com/orgs/zerotohero-dev/projects/3/views/2">this <strong>Aegis
+    v1.0.0</strong> board</a> that contains longer-term goals that we’ll start once the MDP board is mostly done.</p>
+
+  <h2 id="code-of-conduct">Code Of Conduct</h2>
+  <p><a href="https://github.com/zerotohero-dev/aegis/blob/main/CODE_OF_CONDUCT.md">Be a nice citizen</a>.</p>
+
+  <h2 id="contributing">Contributing</h2>
+  <p>It’s a bit chaotic around here, yet if you want to lend a hand, <a href="https://github.com/zerotohero-dev/aegis/blob/main/CONTRIBUTING.md">here are the contributing
+    guidelines</a>.</p>
+
+  <h2 id="maintainers">Maintainers</h2>
+  <p>As of now, I, <a href="https://github.com/v0lkan" title="Volkan Özçelik">Volkan Özçelik</a>, am the sole maintainer
+    of <strong>Aegis</strong>.</p>
+  <p>Please send your feedback, suggestions, recommendations, and comments to <a
+      href="mailto:me@volkan.io">me@volkan.io</a>. I’d love to have them.</p>
+
+  <pre>
  .-'_.---._'-.
  ||####|(__)||   Protect your secrets, protect your business.
    \\()|##//       Secure your sensitive data with Aegis.
     \\ |#//                  &lt;aegis.z2h.dev&gt;
      .\_/.
 </pre>
-<div style="max-width:1080px;margin:10px auto;padding:10px">
-<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/784008877?h=047bd66cfb&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Introducing Aegis: A Cloud Native Solution to Secure Your Sensitive Data"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
-</div>
+
+</article>
+<p>&nbsp;</p>
 </body>
 </html>
