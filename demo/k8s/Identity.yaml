@@ -11,7 +11,7 @@ kind: ClusterSPIFFEID
 metadata:
   name: aegis-workload-demo
 spec:
-  spiffeIDTemplate: "spiffe://cluster.demo/ns/{{ .PodMeta.Namespace }}/sa/{{ .PodSpec.ServiceAccountName }}/n/{{ .PodMeta.Name }}"
+  spiffeIDTemplate: "spiffe://aegis.z2h.dev/ns/{{ .PodMeta.Namespace }}/sa/{{ .PodSpec.ServiceAccountName }}/n/{{ .PodMeta.Name }}"
   podSelector:
     matchLabels:
       app.kubernetes.io/name: aegis-workload-demo

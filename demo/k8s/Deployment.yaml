@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
         - name: main
-          image: z2hdev/aegis-workload-demo:0.5.11
+          image: z2hdev/aegis-workload-demo:0.5.14
 
           volumeMounts:
           # `main` shares this volume with `sidecar`.
@@ -33,7 +33,7 @@ spec:
             name: aegis-secrets-volume
 
         - name: sidecar
-          image: z2hdev/aegis-sidecar:0.5.11
+          image: z2hdev/aegis-sidecar:0.5.14
 
           volumeMounts:
           # /opt/aegis/secrets.json is the place the secrets will be at.
