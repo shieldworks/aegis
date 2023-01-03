@@ -15,5 +15,5 @@ type Api struct {
 }
 
 func Init(s *Api, svc service.ApiV1Service) {
-	DefineHookHandlers(s, svc)
+	// DefineHookHandlers(s, svc)
 }

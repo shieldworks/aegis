@@ -25,13 +25,13 @@ spec:
     spec:
       containers:
         - name: main
-          image: z2hdev/aegis-workload-demo:0.5.8
+          image: z2hdev/aegis-workload-demo:0.5.10
           volumeMounts:
           - mountPath: /opt/aegis
             name: aegis-secrets-volume
 
         - name: sidecar
-          image: z2hdev/aegis-sidecar:0.5.8
+          image: z2hdev/aegis-sidecar:0.5.10
           ports:
           - containerPort: 8039
           volumeMounts:

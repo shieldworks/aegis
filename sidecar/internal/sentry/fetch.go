@@ -9,11 +9,8 @@
 package sentry
 
 import (
-	reqres "aegis-sidecar/internal/entity/reqres/v1"
-	"aegis-sidecar/internal/state"
 	"bufio"
-	"context"
-	"fmt"
+	"log"
 	"os"
 )
 
@@ -45,37 +42,46 @@ func saveData(data string) {
 }
 
 func fetchSecrets() {
-	if !state.Bootstrapped() {
-		return
-	}
+	// TODO:
+	//
+	// 1. Fetch workload SVID + bundle from SPIRE
+	// 2. Get SafeSpiffeId from environment.
+	// 3. Send a GET request to Safe (safe can know who you are from your spiffeid)
+	// 4. parse and safe the returned data.
 
-	id := state.Id()
-	secret := state.Secret()
+	log.Println("WILL FETCH SECRETS!!!")
 
-	fmt.Println(state.Id(), state.Secret(), state.SafeApiRoot())
-
-	res, err := newSafeFetchEndpoint()(
-		context.Background(),
-		reqres.SecretFetchRequest{
-			WorkloadId:     id,
-			WorkloadSecret: secret,
-		})
-	if err != nil {
-		// TODO: handle me
-		panic("handle me")
-	}
-
-	sfr, ok := res.(reqres.SecretFetchResponse)
-	if !ok {
-		// TODO: handle me
-		panic("handle me!")
-	}
-
-	data := sfr.Data
-
-	// TODO: save data to /opt/aegis/secrets.json
-	// TODO: make the filename configurable.
-	// fmt.Println("data: '", data, "'")
-
-	saveData(data)
+	//if !state.Bootstrapped() {
+	//	return
+	//}
+	//
+	//id := state.Id()
+	//secret := state.Secret()
+	//
+	//fmt.Println(state.Id(), state.Secret(), state.SafeApiRoot())
+	//
+	//res, err := newSafeFetchEndpoint()(
+	//	context.Background(),
+	//	reqres.SecretFetchRequest{
+	//		WorkloadId:     id,
+	//		WorkloadSecret: secret,
+	//	})
+	//if err != nil {
+	//	// TODO: handle me
+	//	panic("handle me")
+	//}
+	//
+	//sfr, ok := res.(reqres.SecretFetchResponse)
+	//if !ok {
+	//	// TODO: handle me
+	//	panic("handle me!")
+	//}
+	//
+	//data := sfr.Data
+	//
+	//// TODO: save data to /opt/aegis/secrets.json
+	//// TODO: make the filename configurable.
+	//// fmt.Println("data: '", data, "'")
+	//
+	// saveData(data)
 }

@@ -49,8 +49,8 @@ func SafeApiRoot() string {
 	return safeApiRoot
 }
 
-func Bootstrapped() bool {
-	mux.Lock()
-	defer mux.Unlock()
-	return id != ""
-}
+//func Bootstrapped() bool {
+//	mux.Lock()
+//	defer mux.Unlock()
+//	return id != ""
+//}

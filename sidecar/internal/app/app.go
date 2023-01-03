@@ -12,7 +12,6 @@ import (
 	"aegis-sidecar/internal/env"
 	v1Network "aegis-sidecar/internal/network/v1"
 	"aegis-sidecar/internal/route"
-	v1Service "aegis-sidecar/internal/service/v1"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
@@ -27,7 +26,7 @@ func Serve() {
 	r := mux.NewRouter()
 
 	// Bind handlers.
-	v1Network.Init(apiV1, v1Service.NewApiV1Service())
+	// v1Network.Init(apiV1, v1Service.NewApiV1Service())
 
 	route.HookEndpoints(r, apiV1)
 

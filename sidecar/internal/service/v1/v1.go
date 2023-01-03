@@ -8,10 +8,8 @@
 
 package v1
 
-import "context"
-
 type ApiV1Service interface {
-	UpdateState(ctx context.Context, nextId, workloadId, workloadSecret, safeApiRoot string) error
+	// UpdateState(ctx context.Context, nextId, workloadId, workloadSecret, safeApiRoot string) error
 }
 
 type apiV1Service struct{}

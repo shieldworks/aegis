@@ -8,14 +8,9 @@
 
 package v1
 
-import (
-	"aegis-sidecar/internal/state"
-	"context"
-)
-
-func (a apiV1Service) UpdateState(
-	ctx context.Context, nextId, workloadId, workloadSecret, safeApiRoot string,
-) error {
-	state.Update(nextId, workloadId, workloadSecret, safeApiRoot)
-	return nil
-}
+//func (a apiV1Service) UpdateState(
+//	ctx context.Context, nextId, workloadId, workloadSecret, safeApiRoot string,
+//) error {
+//	state.Update(nextId, workloadId, workloadSecret, safeApiRoot)
+//	return nil
+//}

@@ -6,7 +6,7 @@
 #     .\_/.
 #
 
-VERSION=0.5.8
+VERSION=0.5.10
 PACKAGE=aegis-sidecar
 REPO=z2hdev/aegis-sidecar
 

@@ -26,6 +26,6 @@ spec:
     spec:
       containers:
         - name: main
-          image: z2hdev/aegis-sentinel:0.5.8
+          image: z2hdev/aegis-sentinel:0.5.10
           command: [ "/bin/bash", "-c", "--" ]
           args: [ "while true; do sleep 30; done;" ]
