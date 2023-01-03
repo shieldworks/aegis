@@ -26,23 +26,25 @@ spec:
     spec:
       containers:
         - name: main
-          image: z2hdev/aegis-safe:0.5.10
+          image: z2hdev/aegis-safe:0.5.11
           ports:
           - containerPort: 8017
+
+          volumeMounts:
+          # Volume mount for SPIRE unix domain socket.
+          - name: spire-agent-socket
+            mountPath: /spire-agent-socket
+            readOnly: true
+
           env:
-          - name: AEGIS_APP_NAME
-            value: "aegis-safe"
+          # Required to fetch SVIDs to establish mTLS.
+          # go-spiffe internally uses this.
+          - name: SPIFFE_ENDPOINT_SOCKET
+            value: unix:///spire-agent-socket/agent.sock
 
-          # The port that `safe` API will be served.
-          # Right now, it is not configurable.
-          - name: AEGIS_PORT
-            value: ":8017"
-
-          # AEGIS_NOTARY_ID is a shared id that’s used only once during the
-          # bootstrapping process.
-          # For production use, change its value to something unique and
-          # hard to guess.
-          # It is recommended that you do not store this ID in source control
-          # and dynamically generate and inject it through your CI/CD pipeline.
-          - name: AEGIS_NOTARY_ID
-            value: "AegisRocks"
+      volumes:
+      # SPIRE needs this.
+      - name: spire-agent-socket
+        hostPath:
+          path: /run/spire/sockets
+          type: Directory

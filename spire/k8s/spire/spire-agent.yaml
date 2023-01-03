@@ -179,10 +179,19 @@ spec:
                   path: spire-agent
                   expirationSeconds: 7200
                   audience: spire-server
+
         # This volume is used to share the workload api socket between the
         # CSI driver and SPIRE agent
+        # - name: spire-agent-socket-dir
+        #  emptyDir: {}
+
+        # Using this one for Minikube instead, since the above emptyDir had
+        # issues mounting to workloads.
         - name: spire-agent-socket-dir
-          emptyDir: {}
+          hostPath:
+            path: /run/spire/sockets
+            type: DirectoryOrCreate
+
         # This volume is where the socket for kubelet->driver communication lives
         - name: spiffe-csi-socket-dir
           hostPath:
