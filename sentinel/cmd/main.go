@@ -9,6 +9,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"net/url"
 	"strings"
 )
 
@@ -78,7 +79,13 @@ func main() {
 		},
 	}
 
-	r, err := client.Get(serverUrl)
+	p, err := url.JoinPath(serverUrl, "/v1/fetch")
+	if err != nil {
+		// TODO: handle this
+		return
+	}
+
+	r, err := client.Get(p)
 	if err != nil {
 		log.Fatalf("Error connecting to %q: %v", serverUrl, err)
 	}

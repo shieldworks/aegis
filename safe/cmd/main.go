@@ -13,6 +13,7 @@ import (
 	"errors"
 	"github.com/spiffe/go-spiffe/v2/spiffeid"
 	"github.com/spiffe/go-spiffe/v2/spiffetls/tlsconfig"
+	"github.com/spiffe/go-spiffe/v2/svid/x509svid"
 	"github.com/spiffe/go-spiffe/v2/workloadapi"
 	"io"
 	"log"
@@ -63,13 +64,41 @@ func main() {
 	// Set up a `/` resource handler
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		log.Println("Request received")
-		urls := r.URL.String()
-		log.Println("request.url '", urls, "' path '", r.URL.Path, "' uri '", r.URL.RequestURI(), "'")
 
-		// TODO: POST /v1/fetch  : sidecar to fetch secret
-		// TODO: POST /v1/secret : sentinel to upsert secret
+		if r == nil {
+			return
+		}
 
-		_, _ = io.WriteString(w, "Success!!!")
+		state := r.TLS
+
+		if len(state.PeerCertificates) == 0 {
+			log.Println("no peer certs :(")
+			return
+		}
+
+		id, err := x509svid.IDFromCert(state.PeerCertificates[0])
+		if err != nil {
+			log.Println("poop!")
+			return
+		}
+
+		log.Println("GOT svid:", id.String())
+
+		p := r.URL.Path
+
+		// sidecar -> safe : fetch secrets
+		if r.Method == http.MethodPost && p == "/v1/fetch" {
+			_, _ = io.WriteString(w, "{ your secret }")
+			return
+		}
+
+		// sentinel -> safe : put secrets
+		if r.Method == http.MethodPost && p == "/v1/secret" {
+			_, _ = io.WriteString(w, "saved")
+			return
+		}
+
+		_, _ = io.WriteString(w, "OK")
 	})
 
 	// TODO: ability to trust these matchers via Env.
