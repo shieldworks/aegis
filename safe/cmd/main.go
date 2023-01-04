@@ -9,7 +9,10 @@
 package main
 
 import (
+	v1 "aegis-safe/internal/entity/reqres/v1"
+	"aegis-safe/internal/state"
 	"context"
+	"encoding/json"
 	"errors"
 	"github.com/spiffe/go-spiffe/v2/spiffeid"
 	"github.com/spiffe/go-spiffe/v2/spiffetls/tlsconfig"
@@ -69,14 +72,14 @@ func main() {
 			return
 		}
 
-		state := r.TLS
+		tlsConnectionState := r.TLS
 
-		if len(state.PeerCertificates) == 0 {
+		if len(tlsConnectionState.PeerCertificates) == 0 {
 			log.Println("no peer certs :(")
 			return
 		}
 
-		id, err := x509svid.IDFromCert(state.PeerCertificates[0])
+		id, err := x509svid.IDFromCert(tlsConnectionState.PeerCertificates[0])
 		if err != nil {
 			log.Println("poop!")
 			return
@@ -88,6 +91,8 @@ func main() {
 
 		// sidecar -> safe : fetch secrets
 		if r.Method == http.MethodPost && p == "/v1/fetch" {
+			// TODO: svid validation too.
+
 			body, err := io.ReadAll(r.Body)
 			if err != nil {
 				// TODO: handle me.
@@ -99,14 +104,41 @@ func main() {
 				}
 			}(r.Body)
 
-			log.Println("body '", string(body), "'")
+			var sr v1.SecretFetchRequest
 
-			_, _ = io.WriteString(w, "{ your secret }")
+			err = json.Unmarshal(body, &sr)
+			if err != nil {
+				// TODO: handle me.
+				log.Println("error unmarshalling json")
+				return
+			}
+
+			// TODO: this shall be parsed from svid instead.
+			workloadId := "aegis-workload-demo"
+
+			value := state.ReadSecret(workloadId)
+
+			log.Println("upsert: key: '", workloadId, "' value: '", value, "'")
+			log.Println("read:", state.ReadSecret(workloadId))
+
+			sfr := v1.SecretFetchResponse{
+				Data: value,
+			}
+
+			resp, err := json.Marshal(sfr)
+			if err != nil {
+				// TODO: handle me
+				log.Println("poop!")
+			}
+
+			_, _ = io.WriteString(w, string(resp))
+
 			return
 		}
 
 		// sentinel -> safe : put secrets
 		if r.Method == http.MethodPost && p == "/v1/secret" {
+			// TODO: svid validation too.
 
 			body, err := io.ReadAll(r.Body)
 			if err != nil {
@@ -118,6 +150,23 @@ func main() {
 					// TODO: handle me.
 				}
 			}(r.Body)
+
+			var sr v1.SecretUpsertRequest
+
+			err = json.Unmarshal(body, &sr)
+			if err != nil {
+				// TODO: handle me.
+				log.Println("error unmarshalling json")
+				return
+			}
+
+			workloadId := sr.WorkloadId
+			value := sr.Value
+
+			state.UpsertSecret(workloadId, value)
+
+			log.Println("upsert: key: '", workloadId, "' value: '", value, "'")
+			log.Println("read:", state.ReadSecret(workloadId))
 
 			// 2023/01/04 18:33:59 GOT svid: spiffe://aegis.z2h.dev/ns/aegis-system/sa/aegis-sentinel/n/aegis-sentinel-66d445698d-x6m7m
 			// 2023/01/04 18:33:59 body ' {"key":"aegis-workload-demo","value":"{\"u\": \"root\", \"p\": \"toppyTopSecret\", \"realm\": \"narnia\"}"} '

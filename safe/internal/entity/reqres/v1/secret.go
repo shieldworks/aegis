@@ -9,7 +9,6 @@
 package v1
 
 type SecretUpsertRequest struct {
-	AdminToken string `json:"token"`
 	WorkloadId string `json:"key"`
 	Value      string `json:"value"`
 	Err        string `json:"err,omitempty"`
@@ -20,9 +19,7 @@ type SecretUpsertResponse struct {
 }
 
 type SecretFetchRequest struct {
-	WorkloadId     string `json:"workload"`
-	WorkloadSecret string `json:"secret"`
-	Err            string `json:"err,omitempty"`
+	Err string `json:"err,omitempty"`
 }
 
 type SecretFetchResponse struct {

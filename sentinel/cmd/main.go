@@ -23,12 +23,13 @@ const (
 )
 
 func main() {
-	// TODO:
+	// TODO: make this interactive
 	//
-	// 1. Fetch workload SVID + bundle from SPIRE
-	// 2. Get SafeSpiffeId from environment.
-	// 3. Send a GET request to Safe (safe can know who you are from your spiffeid)
-	// 4. parse and safe the returned data.
+	// aegis secret --workload "aegis-workload-demo" --secret '{"user":"me@volkan.io", "pass":"AegisRocks!"}'
+	// aegis help
+	// aegis --help
+	// aegis -h
+	// aegis s -w "a" -s "b"
 
 	log.Println("Welcome to sentinel")
 
@@ -113,6 +114,40 @@ func main() {
 		}
 	}(r.Body)
 	body, err := io.ReadAll(r.Body)
+	if err != nil {
+		log.Fatalf("Unable to read body: %v", err)
+	}
+
+	p, err = url.JoinPath(serverUrl, "/v1/fetch")
+	if err != nil {
+		// TODO: handle this
+		return
+	}
+
+	// This is only for testing and will normally be rejected due to svid mismatch.
+
+	sfr := v1.SecretFetchRequest{}
+
+	md, err = json.Marshal(sfr)
+	if err != nil {
+		// TODO: handle me
+		log.Println("handle me")
+		return
+	}
+
+	r, err = client.Post(p, "application/json", bytes.NewBuffer(md))
+	if err != nil {
+		log.Fatalf("Error connecting to %q: %v", serverUrl, err)
+	}
+
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+			// TODO: handle me.
+			log.Println("handle me")
+		}
+	}(r.Body)
+	body, err = io.ReadAll(r.Body)
 	if err != nil {
 		log.Fatalf("Unable to read body: %v", err)
 	}
