@@ -26,7 +26,7 @@ spec:
     spec:
       containers:
         - name: main
-          image: z2hdev/aegis-safe:0.5.14
+          image: z2hdev/aegis-safe:0.5.16
           ports:
           - containerPort: 8017
 

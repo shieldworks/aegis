@@ -9,8 +9,11 @@
 package main
 
 import (
+	"context"
 	"log"
 	"time"
+
+	"github.com/spiffe/go-spiffe/v2/workloadapi"
 )
 
 func dontpanic(s string) {
@@ -19,6 +22,28 @@ func dontpanic(s string) {
 
 func main() {
 	log.Println("Will initialize an mTLS Safe server")
+
+	// TODO: get this from environment.
+	const socketPath = "unix:///spire-agent-socket/agent.sock"
+
+	ctx := context.Background()
+
+	source, err := workloadapi.NewX509Source(
+		ctx, workloadapi.WithClientOptions(workloadapi.WithAddr(socketPath)),
+	)
+
+	if err != nil {
+		log.Println("Unable to create X509 source")
+	} else {
+		svid, err := source.GetX509SVID()
+		if err != nil {
+			// 2023/01/03 19:37:58 svid.id spiffe://aegis.z2h.dev/ns/default/sa/default/n/aegis-workload-demo-559877fd7d-92rcn
+			log.Println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! could not get svid")
+		}
+		log.Println("svid.id", svid.ID)
+
+		log.Println("Everything is awesome!", source)
+	}
 
 	// TODO:
 	//

@@ -70,3 +70,4 @@ x 2023-01-01 use a simple CI tool (Ansible is as good as any) to fetch an admin 
 (B) sentinel, but lighter and more secure (i.e. w/o a bash shell) +sentinel +aegis 
 (C) create a prodocution reference architecture +aegis 
 : @▶️ @🚨 @home @mvp 
+(C) instead of waiting for 15 secs; check spire server’s health using kubectl.

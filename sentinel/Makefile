@@ -6,13 +6,18 @@
 #     .\_/.
 #
 
-VERSION=0.5.14
+VERSION=0.5.16
 PACKAGE=aegis-sentinel
 REPO=z2hdev/aegis-sentinel
 
-all: bundle push deploy
+all: build bundle push deploy
+
+.PHONY: build
+build:
+	go build -o ${PACKAGE} ./cmd/main.go
 
 bundle:
+	go mod vendor
 	docker build . -t ${PACKAGE}:${VERSION}
 
 push:
