@@ -88,16 +88,47 @@ func main() {
 
 		// sidecar -> safe : fetch secrets
 		if r.Method == http.MethodPost && p == "/v1/fetch" {
+			body, err := io.ReadAll(r.Body)
+			if err != nil {
+				// TODO: handle me.
+			}
+			defer func(Body io.ReadCloser) {
+				err := Body.Close()
+				if err != nil {
+					// TODO: handle me.
+				}
+			}(r.Body)
+
+			log.Println("body '", string(body), "'")
+
 			_, _ = io.WriteString(w, "{ your secret }")
 			return
 		}
 
 		// sentinel -> safe : put secrets
 		if r.Method == http.MethodPost && p == "/v1/secret" {
-			_, _ = io.WriteString(w, "saved")
+
+			body, err := io.ReadAll(r.Body)
+			if err != nil {
+				// TODO: handle me.
+			}
+			defer func(Body io.ReadCloser) {
+				err := Body.Close()
+				if err != nil {
+					// TODO: handle me.
+				}
+			}(r.Body)
+
+			// 2023/01/04 18:33:59 GOT svid: spiffe://aegis.z2h.dev/ns/aegis-system/sa/aegis-sentinel/n/aegis-sentinel-66d445698d-x6m7m
+			// 2023/01/04 18:33:59 body ' {"key":"aegis-workload-demo","value":"{\"u\": \"root\", \"p\": \"toppyTopSecret\", \"realm\": \"narnia\"}"} '
+
+			log.Println("body '", string(body), "'")
+
+			_, _ = io.WriteString(w, "OK")
 			return
 		}
 
+		// TODO: return an error instead.
 		_, _ = io.WriteString(w, "OK")
 	})
 
