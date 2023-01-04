@@ -17,7 +17,11 @@ func main() {
 	// TODO: get this from environment.
 	const socketPath = "unix:///spire-agent-socket/agent.sock"
 
+	log.Println("Welcome to sentinel")
+
 	ctx := context.Background()
+
+	log.Println("will create svid")
 
 	source, err := workloadapi.NewX509Source(
 		ctx, workloadapi.WithClientOptions(workloadapi.WithAddr(socketPath)),

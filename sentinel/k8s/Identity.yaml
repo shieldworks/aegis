@@ -9,7 +9,7 @@
 apiVersion: spire.spiffe.io/v1alpha1
 kind: ClusterSPIFFEID
 metadata:
-  name: aegis-safe-spiffeid
+  name: aegis-sentinel
 spec:
   spiffeIDTemplate: "spiffe://aegis.z2h.dev/ns/{{ .PodMeta.Namespace }}/sa/{{ .PodSpec.ServiceAccountName }}/n/{{ .PodMeta.Name }}"
   podSelector:

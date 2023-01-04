@@ -6,11 +6,13 @@
 #     .\_/.
 #
 
-VERSION=0.5.16
+VERSION=0.5.17
 PACKAGE=aegis-sentinel
 REPO=z2hdev/aegis-sentinel
 
 all: build bundle push deploy
+
+build-and-push: build bundle push
 
 .PHONY: build
 build:
