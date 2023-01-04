@@ -1,7 +1,10 @@
 package main
 
 import (
+	v1 "aegis-sentinel/internal/entity/reqres/v1"
+	"bytes"
 	"context"
+	"encoding/json"
 	"errors"
 	"github.com/spiffe/go-spiffe/v2/spiffeid"
 	"github.com/spiffe/go-spiffe/v2/spiffetls/tlsconfig"
@@ -79,18 +82,36 @@ func main() {
 		},
 	}
 
-	p, err := url.JoinPath(serverUrl, "/v1/fetch")
+	p, err := url.JoinPath(serverUrl, "/v1/secret")
 	if err != nil {
 		// TODO: handle this
 		return
 	}
 
-	r, err := client.Get(p)
+	sr := v1.SecretUpsertRequest{
+		WorkloadId: "aegis-workload-demo",
+		Value:      `{"u": "root", "p": "toppyTopSecret", "realm": "narnia"}`,
+	}
+
+	md, err := json.Marshal(sr)
+	if err != nil {
+		// TODO: handle me
+		log.Println("handle me")
+		return
+	}
+
+	r, err := client.Post(p, "application/json", bytes.NewBuffer(md))
 	if err != nil {
 		log.Fatalf("Error connecting to %q: %v", serverUrl, err)
 	}
 
-	defer r.Body.Close()
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+			// TODO: handle me.
+			log.Println("handle me")
+		}
+	}(r.Body)
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		log.Fatalf("Unable to read body: %v", err)
