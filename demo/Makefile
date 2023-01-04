@@ -6,7 +6,7 @@
 #     .\_/.
 #
 
-VERSION=0.5.17
+VERSION=0.5.20
 PACKAGE=aegis-workload-demo
 REPO=z2hdev/aegis-workload-demo
 
@@ -28,7 +28,9 @@ push:
 	docker push ${REPO}:${VERSION}
 
 deploy:
-	kubectl apply -f ./k8s/
+	kubectl apply -f ./k8s/ServiceAccount.yaml
+	kubectl apply -f ./k8s/Deployment.yaml
+	kubectl apply -f ./k8s/Identity.yaml
 
 run-in-container:
 	docker run ${PACKAGE}:${VERSION}

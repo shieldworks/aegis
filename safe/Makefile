@@ -6,7 +6,7 @@
 #     .\_/.
 #
 
-VERSION=0.5.17
+VERSION=0.5.20
 PACKAGE=aegis-safe
 REPO=z2hdev/aegis-safe
 
@@ -29,6 +29,7 @@ push:
 
 deploy:
 	kubectl apply -f ./k8s/Namespace.yaml
+	kubectl apply -f ./k8s/ServiceAccount.yaml
 	kubectl apply -f ./k8s/Identity.yaml
 	kubectl apply -f ./k8s/Deployment.yaml
 	kubectl apply -f ./k8s/Service.yaml

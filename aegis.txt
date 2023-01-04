@@ -71,3 +71,5 @@ x 2023-01-01 use a simple CI tool (Ansible is as good as any) to fetch an admin 
 (C) create a prodocution reference architecture +aegis 
 : @▶️ @🚨 @home @mvp 
 (C) instead of waiting for 15 secs; check spire server’s health using kubectl.
+(B) Sign the docker images +aegis 
+(B) setup liveness, readiness, and startup probes +aegis 
