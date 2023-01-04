@@ -2,7 +2,10 @@ module aegis-sentinel
 
 go 1.19
 
-require github.com/spiffe/go-spiffe/v2 v2.1.1
+require (
+	github.com/akamensky/argparse v1.4.0
+	github.com/spiffe/go-spiffe/v2 v2.1.1
+)
 
 require (
 	github.com/Microsoft/go-winio v0.5.2 // indirect
