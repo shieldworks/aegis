@@ -11,9 +11,12 @@ kind: Service
 metadata:
   name: aegis-safe
   namespace: aegis-system
+  labels:
+    app.kubernetes.io/name: aegis-safe
+    app.kubernetes.io/part-of: aegis-system
 spec:
   selector:
-    app: aegis-safe
+    app.kubernetes.io/name: aegis-safe
   ports:
     - protocol: TCP
       port: 8443

@@ -2,8 +2,20 @@ package main
 
 import (
 	"context"
+	"errors"
+	"github.com/spiffe/go-spiffe/v2/spiffeid"
+	"github.com/spiffe/go-spiffe/v2/spiffetls/tlsconfig"
 	"github.com/spiffe/go-spiffe/v2/workloadapi"
+	"io"
 	"log"
+	"net/http"
+	"strings"
+)
+
+// TODO: get this from environment.
+const (
+	socketPath = "unix:///spire-agent-socket/agent.sock"
+	serverUrl  = "https://aegis-safe.aegis-system.svc.cluster.local:8443/"
 )
 
 func main() {
@@ -14,12 +26,10 @@ func main() {
 	// 3. Send a GET request to Safe (safe can know who you are from your spiffeid)
 	// 4. parse and safe the returned data.
 
-	// TODO: get this from environment.
-	const socketPath = "unix:///spire-agent-socket/agent.sock"
-
 	log.Println("Welcome to sentinel")
 
-	ctx := context.Background()
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
 
 	log.Println("will create svid")
 
@@ -39,4 +49,45 @@ func main() {
 
 		log.Println("Everything is awesome!", source)
 	}
+	defer func(source *workloadapi.X509Source) {
+		err := source.Close()
+		if err != nil {
+			// TODO: handle me
+		}
+	}(source)
+
+	// Allowed SPIFFE ID
+	// serverID := spiffeid.RequireFromString("spiffe://example.org/server")
+	// spiffe://aegis.z2h.dev/ns/{{ .PodMeta.Namespace }}/sa/{{ .PodSpec.ServiceAccountName }}/n/{{ .PodMeta.Name }}
+
+	authorizer := tlsconfig.AdaptMatcher(func(id spiffeid.ID) error {
+		ids := id.String()
+
+		if strings.HasPrefix(ids, "spiffe://aegis.z2h.dev/ns/aegis-system/sa/aegis-safe/n/") {
+			return nil
+		}
+
+		return errors.New("I don’t know you, and it’s crazy")
+	})
+
+	// Create a `tls.Config` to allow mTLS connections, and verify that presented certificate has SPIFFE ID `spiffe://example.org/server`
+	tlsConfig := tlsconfig.MTLSClientConfig(source, source, authorizer)
+	client := &http.Client{
+		Transport: &http.Transport{
+			TLSClientConfig: tlsConfig,
+		},
+	}
+
+	r, err := client.Get(serverUrl)
+	if err != nil {
+		log.Fatalf("Error connecting to %q: %v", serverUrl, err)
+	}
+
+	defer r.Body.Close()
+	body, err := io.ReadAll(r.Body)
+	if err != nil {
+		log.Fatalf("Unable to read body: %v", err)
+	}
+
+	log.Printf("%s", body)
 }

@@ -73,3 +73,5 @@ x 2023-01-01 use a simple CI tool (Ansible is as good as any) to fetch an admin 
 (C) instead of waiting for 15 secs; check spire server’s health using kubectl.
 (B) Sign the docker images +aegis 
 (B) setup liveness, readiness, and startup probes +aegis 
+(B) add instructions to uninstall to README too.
+(B) the makefiles should not deploy the sample workload by default +aegis 

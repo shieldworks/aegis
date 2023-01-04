@@ -77,8 +77,15 @@ func main() {
 		if strings.HasPrefix(id.String(), "spiffe://aegis.z2h.dev/workload/") {
 			return nil
 		}
-		return errors.New("TLS Config: I don’t know you, and it’s crazy")
+
+		if strings.HasPrefix(id.String(), "spiffe://aegis.z2h.dev/ns/aegis-system/sa/aegis-sentinel/n/") {
+			return nil
+		}
+
+		return errors.New("TLS Config: I don’t know you, and it’s crazy '" + id.String() + "'")
 	})
+
+	log.Println("Before creating tls config")
 
 	tlsConfig := tlsconfig.MTLSServerConfig(source, source, authorizer)
 	server := &http.Server{
@@ -86,7 +93,12 @@ func main() {
 		TLSConfig: tlsConfig,
 	}
 
+	log.Println("Created tls config")
+
 	if err := server.ListenAndServeTLS("", ""); err != nil {
 		log.Fatalf("Error on serve: %v", err)
 	}
+
+	// TODO: Probably never executes:
+	log.Println("Server started.")
 }
