@@ -77,3 +77,4 @@ x 2023-01-01 use a simple CI tool (Ansible is as good as any) to fetch an admin 
 (B) the makefiles should not deploy the sample workload by default +aegis 
 (B) add resource limits
 (C) audit logs for `safe` +safe
+(B) template transformation on secrets before persisting them.

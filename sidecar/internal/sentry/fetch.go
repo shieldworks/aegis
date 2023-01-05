@@ -9,18 +9,27 @@
 package sentry
 
 import (
+	v1 "aegis-sidecar/internal/entity/reqres/v1"
 	"bufio"
+	"bytes"
 	"context"
-	"log"
-	"os"
-
+	"encoding/json"
+	"errors"
+	"github.com/spiffe/go-spiffe/v2/spiffeid"
+	"github.com/spiffe/go-spiffe/v2/spiffetls/tlsconfig"
 	"github.com/spiffe/go-spiffe/v2/workloadapi"
+	"io"
+	"log"
+	"net/http"
+	"net/url"
+	"os"
+	"strings"
 )
 
 func saveData(data string) {
 	path := "/opt/aegis/secrets.json"
 
-	// fmt.Println("path:", path)
+	log.Println("saving data to path:", path)
 
 	f, err := os.Create(path)
 	if err != nil {
@@ -44,69 +53,136 @@ func saveData(data string) {
 	}
 }
 
+// TODO: get this from environment.
+const (
+	socketPath = "unix:///spire-agent-socket/agent.sock"
+	serverUrl  = "https://aegis-safe.aegis-system.svc.cluster.local:8443/"
+)
+
 func fetchSecrets() {
-	// TODO:
-	//
-	// 1. Fetch workload SVID + bundle from SPIRE
-	// 2. Get SafeSpiffeId from environment.
-	// 3. Send a GET request to Safe (safe can know who you are from your spiffeid)
-	// 4. parse and safe the returned data.
+	log.Println("fetching secrets…")
 
-	// TODO: get this from environment.
-	const socketPath = "unix:///spire-agent-socket/agent.sock"
-
-	ctx := context.Background()
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
 
 	source, err := workloadapi.NewX509Source(
 		ctx, workloadapi.WithClientOptions(workloadapi.WithAddr(socketPath)),
 	)
 
 	if err != nil {
-		log.Println("Unable to create X509 source")
-	} else {
-		svid, err := source.GetX509SVID()
-		if err != nil {
-			// 2023/01/03 19:37:58 svid.id spiffe://aegis.z2h.dev/ns/default/sa/default/n/aegis-workload-demo-559877fd7d-92rcn
-			log.Println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! could not get svid")
-		}
-		log.Println("svid.id", svid.ID)
-
-		log.Println("Everything is awesome!", source)
+		log.Println("Failed getting SVID Bundle from the SPIRE Workload API. Will retry.")
+		return
 	}
 
-	log.Println("WILL FETCH SECRETS!!!")
+	svid, err := source.GetX509SVID()
+	if err != nil {
+		log.Println("Malformed SVID. will try again.")
+		return
+	}
 
-	//if !state.Bootstrapped() {
-	//	return
-	//}
+	defer func(source *workloadapi.X509Source) {
+		if source == nil {
+			return
+		}
+		err := source.Close()
+		if err != nil {
+			log.Println("Problem closing the workload source.")
+		}
+	}(source)
+
+	// TODO: add this to technical specs markdown too.
 	//
-	//id := state.Id()
-	//secret := state.Secret()
+	// SPIFFE ID format:
+	//   spiffe://aegis.z2h.dev/workload/$workloadName/ns/{{ .PodMeta.Namespace }}
+	//   /sa/{{ .PodSpec.ServiceAccountName }}/n/{{ .PodMeta.Name }}
 	//
-	//fmt.Println(state.Id(), state.Secret(), state.SafeApiRoot())
+	// For aegis-system components $workloadName is:
+	// - aegis-safe
+	// - or aegis-system.
 	//
-	//res, err := newSafeFetchEndpoint()(
-	//	context.Background(),
-	//	reqres.SecretFetchRequest{
-	//		WorkloadId:     id,
-	//		WorkloadSecret: secret,
-	//	})
-	//if err != nil {
-	//	// TODO: handle me
-	//	panic("handle me")
-	//}
-	//
-	//sfr, ok := res.(reqres.SecretFetchResponse)
-	//if !ok {
-	//	// TODO: handle me
-	//	panic("handle me!")
-	//}
-	//
-	//data := sfr.Data
-	//
-	//// TODO: save data to /opt/aegis/secrets.json
-	//// TODO: make the filename configurable.
-	//// fmt.Println("data: '", data, "'")
-	//
-	// saveData(data)
+	// For the non-aegis-system workloads that `safe` injects secrets,
+	// $workloadName is determined by the workload's ClusterSPIFFEID CRD.
+
+	// Make sure that we are calling Safe from a workload that Aegis knows about.
+	if !strings.HasPrefix(
+		svid.ID.String(),
+		"spiffe://aegis.z2h.dev/workload/",
+	) {
+		log.Fatalf("Untrusted workload. Killing the container.")
+		return
+	}
+
+	log.Println("before authorizer…")
+
+	authorizer := tlsconfig.AdaptMatcher(func(id spiffeid.ID) error {
+		if strings.HasPrefix(
+			// Only `aegis-safe` can respond to this binary.
+			id.String(),
+			"spiffe://aegis.z2h.dev/workload/aegis-safe/ns/aegis-system/sa/aegis-safe/n/",
+		) {
+			return nil
+		}
+
+		return errors.New("I don’t know you, and it’s crazy: '" + id.String() + "'")
+	})
+
+	p, err := url.JoinPath(serverUrl, "/v1/fetch")
+
+	log.Println("will talk to:", p)
+
+	if err != nil {
+		log.Fatalf("Problem generating server url. Killing the container.")
+		return
+	}
+
+	log.Println("before tls config…")
+
+	tlsConfig := tlsconfig.MTLSClientConfig(source, source, authorizer)
+	client := &http.Client{
+		Transport: &http.Transport{
+			TLSClientConfig: tlsConfig,
+		},
+	}
+
+	sr := v1.SecretFetchRequest{}
+
+	md, err := json.Marshal(sr)
+	if err != nil {
+		log.Println("Trouble generating payload. Will try again.")
+		return
+	}
+
+	r, err := client.Post(p, "application/json", bytes.NewBuffer(md))
+	if err != nil {
+		log.Println("Problem connecting to Aegis Safe API endpoint URL. Will retry")
+		return
+	}
+
+	defer func(b io.ReadCloser) {
+		if b == nil {
+			return
+		}
+		err := b.Close()
+		if err != nil {
+			log.Println("Problem closing response body.")
+		}
+	}(r.Body)
+
+	body, err := io.ReadAll(r.Body)
+	if err != nil {
+		log.Println("Unable to read the response body from Aegis Safe. Will retry.")
+		return
+	}
+
+	var sfr v1.SecretFetchResponse
+
+	err = json.Unmarshal(body, &sfr)
+	if err != nil {
+		log.Println("Unable to deserialize the response body from Aegis Safe. Will retry.")
+		return
+	}
+
+	data := sfr.Data
+
+	saveData(data)
 }
