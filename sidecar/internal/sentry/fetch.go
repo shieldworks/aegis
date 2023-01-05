@@ -29,8 +29,6 @@ import (
 func saveData(data string) {
 	path := "/opt/aegis/secrets.json"
 
-	log.Println("saving data to path:", path)
-
 	f, err := os.Create(path)
 	if err != nil {
 		// TODO: handle me.
@@ -44,13 +42,13 @@ func saveData(data string) {
 		panic("poop!")
 	}
 
-	// fmt.Println("wrote", n, "bytes.")
-
 	err = w.Flush()
 	if err != nil {
 		// TODO: handle
 		panic("poop")
 	}
+
+	log.Println("saved secret:", path)
 }
 
 // TODO: get this from environment.
@@ -112,8 +110,6 @@ func fetchSecrets() {
 		return
 	}
 
-	log.Println("before authorizer…")
-
 	authorizer := tlsconfig.AdaptMatcher(func(id spiffeid.ID) error {
 		if strings.HasPrefix(
 			// Only `aegis-safe` can respond to this binary.
@@ -127,15 +123,10 @@ func fetchSecrets() {
 	})
 
 	p, err := url.JoinPath(serverUrl, "/v1/fetch")
-
-	log.Println("will talk to:", p)
-
 	if err != nil {
 		log.Fatalf("Problem generating server url. Killing the container.")
 		return
 	}
-
-	log.Println("before tls config…")
 
 	tlsConfig := tlsconfig.MTLSClientConfig(source, source, authorizer)
 	client := &http.Client{
@@ -183,6 +174,5 @@ func fetchSecrets() {
 	}
 
 	data := sfr.Data
-
 	saveData(data)
 }

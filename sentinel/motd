@@ -9,4 +9,7 @@
 
 type "aegis" (without the quotes) and press enter for help.
 
+Sample Usage:
+  aegis -w aegis-workload-demo -s '{"Aegis":"Rocks"}'
+
 _
