@@ -54,7 +54,7 @@ func main() {
 	svidId := svid.ID
 	validSpiffeId := strings.HasPrefix(
 		svidId.String(),
-		"spiffe://aegis.z2h.dev/ns/aegis-system/sa/aegis-safe/n/",
+		"spiffe://aegis.z2h.dev/workload/aegis-safe/ns/aegis-system/sa/aegis-safe/n/",
 	)
 	if !validSpiffeId {
 		log.Fatalf(

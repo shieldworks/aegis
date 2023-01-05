@@ -1,10 +1,22 @@
 package main
 
 import (
+	v1 "aegis-sentinel/internal/entity/reqres/v1"
+	"bytes"
+	"context"
+	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/akamensky/argparse"
+	"github.com/spiffe/go-spiffe/v2/spiffeid"
+	"github.com/spiffe/go-spiffe/v2/spiffetls/tlsconfig"
+	"github.com/spiffe/go-spiffe/v2/workloadapi"
+	"io"
 	"log"
+	"net/http"
+	"net/url"
 	"os"
+	"strings"
 )
 
 // TODO: get this from environment.
@@ -40,131 +52,135 @@ func main() {
 		fmt.Print(parser.Usage(err))
 	}
 
-	log.Println("workload", workload, "secret", secret)
+	if workload == nil || *workload == "" {
+		fmt.Println("Please provide a workload name.")
+		fmt.Println("")
+		fmt.Println("type `aegis -h` (without backticks) and press return for help.")
+		fmt.Println("")
+		return
+	}
 
-	//// Finally print the collected string
-	//fmt.Println("workload", workload, "secret", secret)
+	if secret == nil || *secret == "" {
+		fmt.Println("Please provide a secret.")
+		fmt.Println("")
+		fmt.Println("type `aegis -h` (without backticks) and press return for help.")
+		fmt.Println("")
+		return
+	}
+
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	source, err := workloadapi.NewX509Source(
+		ctx, workloadapi.WithClientOptions(workloadapi.WithAddr(socketPath)),
+	)
+
+	if err != nil {
+		fmt.Println("I cannot execute command because I cannot talk to SPIRE.")
+		fmt.Println("")
+		return
+	}
+
+	svid, err := source.GetX509SVID()
+	if err != nil {
+		fmt.Println("I am having trouble fetching your identity from SPIRE.")
+		fmt.Println("I won’t proceed until you put me in a secured container.")
+		fmt.Println("")
+		return
+	}
+
+	defer func(source *workloadapi.X509Source) {
+		err := source.Close()
+		if err != nil {
+			log.Println("Problem closing the workload source.")
+		}
+	}(source)
+
+	// SPIFFE ID format:
+	//   spiffe://aegis.z2h.dev/workload/$workloadName/ns/{{ .PodMeta.Namespace }}
+	//   /sa/{{ .PodSpec.ServiceAccountName }}/n/{{ .PodMeta.Name }}
 	//
-	//log.Println("Welcome to sentinel")
+	// For aegis-system components $workloadName is:
+	// - aegis-safe
+	// - or aegis-system.
 	//
-	//ctx, cancel := context.WithCancel(context.Background())
-	//defer cancel()
-	//
-	//log.Println("will create svid")
-	//
-	//source, err := workloadapi.NewX509Source(
-	//	ctx, workloadapi.WithClientOptions(workloadapi.WithAddr(socketPath)),
-	//)
-	//
-	//if err != nil {
-	//	log.Println("Unable to create X509 source")
-	//} else {
-	//	svid, err := source.GetX509SVID()
-	//	if err != nil {
-	//		// 2023/01/03 19:37:58 svid.id spiffe://aegis.z2h.dev/ns/default/sa/default/n/aegis-workload-demo-559877fd7d-92rcn
-	//		log.Println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! could not get svid")
-	//	}
-	//	log.Println("svid.id", svid.ID)
-	//
-	//	log.Println("Everything is awesome!", source)
-	//}
-	//defer func(source *workloadapi.X509Source) {
-	//	err := source.Close()
-	//	if err != nil {
-	//		// TODO: handle me
-	//	}
-	//}(source)
-	//
-	//// Allowed SPIFFE ID
-	//// serverID := spiffeid.RequireFromString("spiffe://example.org/server")
-	//// spiffe://aegis.z2h.dev/ns/{{ .PodMeta.Namespace }}/sa/{{ .PodSpec.ServiceAccountName }}/n/{{ .PodMeta.Name }}
-	//
-	//authorizer := tlsconfig.AdaptMatcher(func(id spiffeid.ID) error {
-	//	ids := id.String()
-	//
-	//	if strings.HasPrefix(ids, "spiffe://aegis.z2h.dev/ns/aegis-system/sa/aegis-safe/n/") {
-	//		return nil
-	//	}
-	//
-	//	return errors.New("I don’t know you, and it’s crazy")
-	//})
-	//
-	//// Create a `tls.Config` to allow mTLS connections, and verify that presented certificate has SPIFFE ID `spiffe://example.org/server`
-	//tlsConfig := tlsconfig.MTLSClientConfig(source, source, authorizer)
-	//client := &http.Client{
-	//	Transport: &http.Transport{
-	//		TLSClientConfig: tlsConfig,
-	//	},
-	//}
-	//
-	//p, err := url.JoinPath(serverUrl, "/v1/secret")
-	//if err != nil {
-	//	// TODO: handle this
-	//	return
-	//}
-	//
-	//sr := v1.SecretUpsertRequest{
-	//	WorkloadId: "aegis-workload-demo",
-	//	Value:      `{"u": "root", "p": "toppyTopSecret", "realm": "narnia"}`,
-	//}
-	//
-	//md, err := json.Marshal(sr)
-	//if err != nil {
-	//	// TODO: handle me
-	//	log.Println("handle me")
-	//	return
-	//}
-	//
-	//r, err := client.Post(p, "application/json", bytes.NewBuffer(md))
-	//if err != nil {
-	//	log.Fatalf("Error connecting to %q: %v", serverUrl, err)
-	//}
-	//
-	//defer func(Body io.ReadCloser) {
-	//	err := Body.Close()
-	//	if err != nil {
-	//		// TODO: handle me.
-	//		log.Println("handle me")
-	//	}
-	//}(r.Body)
-	//body, err := io.ReadAll(r.Body)
-	//if err != nil {
-	//	log.Fatalf("Unable to read body: %v", err)
-	//}
-	//
-	//p, err = url.JoinPath(serverUrl, "/v1/fetch")
-	//if err != nil {
-	//	// TODO: handle this
-	//	return
-	//}
-	//
-	//// This is only for testing and will normally be rejected due to svid mismatch.
-	//
-	//sfr := v1.SecretFetchRequest{}
-	//
-	//md, err = json.Marshal(sfr)
-	//if err != nil {
-	//	// TODO: handle me
-	//	log.Println("handle me")
-	//	return
-	//}
-	//
-	//r, err = client.Post(p, "application/json", bytes.NewBuffer(md))
-	//if err != nil {
-	//	log.Fatalf("Error connecting to %q: %v", serverUrl, err)
-	//}
-	//
-	//defer func(Body io.ReadCloser) {
-	//	err := Body.Close()
-	//	if err != nil {
-	//		// TODO: handle me.
-	//		log.Println("handle me")
-	//	}
-	//}(r.Body)
-	//body, err = io.ReadAll(r.Body)
-	//if err != nil {
-	//	log.Fatalf("Unable to read body: %v", err)
-	//}
-	//
-	//log.Printf("%s", body)
+	// For the non-aegis-system workloads that `safe` injects secrets,
+	// $workloadName is determined by the workload's ClusterSPIFFEID CRD.
+
+	// Make sure that the binary is enclosed in a Pod that we trust.
+	if !strings.HasPrefix(
+		svid.ID.String(),
+		"spiffe://aegis.z2h.dev/workload/aegis-sentinel/ns/aegis-system/sa/aegis-sentinel/n/",
+	) {
+		fmt.Println("I don’t know you, and it’s crazy: '" + svid.ID.String() + "'")
+		fmt.Println("`aegis` can only run from within the Sentinel container.")
+		fmt.Println("")
+		return
+	}
+
+	authorizer := tlsconfig.AdaptMatcher(func(id spiffeid.ID) error {
+		if strings.HasPrefix(
+			// Only `aegis-safe` can respond to this binary.
+			id.String(),
+			"spiffe://aegis.z2h.dev/workload/aegis-safe/ns/aegis-system/sa/aegis-safe/n/",
+		) {
+			return nil
+		}
+
+		return errors.New("I don’t know you, and it’s crazy: '" + id.String() + "'")
+	})
+
+	p, err := url.JoinPath(serverUrl, "/v1/secret")
+	if err != nil {
+		fmt.Println("I am having problem generating Aegis Safe secrets api endpoint URL.")
+		fmt.Println("")
+		return
+	}
+
+	tlsConfig := tlsconfig.MTLSClientConfig(source, source, authorizer)
+	client := &http.Client{
+		Transport: &http.Transport{
+			TLSClientConfig: tlsConfig,
+		},
+	}
+
+	sr := v1.SecretUpsertRequest{
+		WorkloadId: *workload,
+		Value:      *secret,
+	}
+
+	md, err := json.Marshal(sr)
+	if err != nil {
+		fmt.Println("Trouble generating payload.")
+		fmt.Println("")
+		return
+	}
+
+	r, err := client.Post(p, "application/json", bytes.NewBuffer(md))
+	if err != nil {
+		fmt.Println("Problem connecting to Aegis Safe API endpoint URL.")
+		fmt.Println("")
+		return
+	}
+
+	defer func(b io.ReadCloser) {
+		if b == nil {
+			return
+		}
+		err := b.Close()
+		if err != nil {
+			log.Println("Problem closing request body.")
+		}
+	}(r.Body)
+
+	body, err := io.ReadAll(r.Body)
+	if err != nil {
+		fmt.Println("Unable to read the response body from Aegis Safe.")
+		fmt.Println("")
+		return
+	}
+
+	fmt.Println("")
+	fmt.Println(string(body))
+	fmt.Println("")
 }
