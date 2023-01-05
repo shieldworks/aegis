@@ -9,12 +9,10 @@
 package main
 
 import (
-	"aegis-sidecar/internal/app"
 	"aegis-sidecar/internal/sentry"
 )
 
 func main() {
-	go app.Serve()
 	go sentry.Watch()
 	select {} // block forever
 }
