@@ -24,8 +24,25 @@ spec:
         app.kubernetes.io/name: aegis-sentinel
         app.kubernetes.io/part-of: aegis-system
     spec:
+      serviceAccountName: aegis-sentinel
       containers:
         - name: main
-          image: z2hdev/aegis-sentinel:0.5.8
+          image: z2hdev/aegis-sentinel:0.5.42
           command: [ "/bin/bash", "-c", "--" ]
           args: [ "while true; do sleep 30; done;" ]
+          volumeMounts:
+          # Volume mount for SPIRE unix domain socket.
+          - name: spire-agent-socket
+            mountPath: /spire-agent-socket
+            readOnly: true
+          env:
+          # Required to fetch SVIDs to establish mTLS.
+          # go-spiffe internally uses this.
+          - name: SPIFFE_ENDPOINT_SOCKET
+            value: unix:///spire-agent-socket/agent.sock
+      volumes:
+      # SPIRE needs this.
+      - name: spire-agent-socket
+        hostPath:
+          path: /run/spire/sockets
+          type: Directory

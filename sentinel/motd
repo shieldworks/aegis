@@ -7,5 +7,9 @@
 
          ### Welcome to Aegis Sentinel ###
 
-           cd /tests » scripts to test the system.
-vim /tests/create.sh » to create a secret for a workload.
+type "aegis" (without the quotes) and press enter for help.
+
+Sample Usage:
+  aegis -w aegis-workload-demo -s '{"Aegis":"Rocks"}'
+
+_

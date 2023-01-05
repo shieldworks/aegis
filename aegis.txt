@@ -56,7 +56,7 @@ x 2022-12-24 establish a secure way to deliver the admin token  -- Securing the 
 (C) automatic sidecar injection? +aegis 
 x 2022-12-24 replace aegis-workload-key with aegis-workload-id everywhere for consistency pri:A +aegis @▶️
 (E) we need an unregister flow for the deleted workloads too. -- or do we? not sure +aegis -- since the workload can revive, it might still be entitled to the same secrets.
-create a mini powerpoint (like a pitch deck) pri:A +aegis @▶️
+x 2023-01-03 create a mini powerpoint (like a pitch deck) pri:A +aegis @▶️
 x 2023-01-01 age as an encryption tool https://github.com/FiloSottile/age pri:B +aegis @home
 (C) enable automatic (and manual) rotation of tokens and secrets +aegis 
 (B) sealed secrets model with a twist: Sealed Secrets controller on the cluster, and the public key is available to the developers. This way, only the cluster can decrypt the secrets, and the developers can only encrypt them. -- so if the Notary has a persistent private key and it dispatches public key to Safe; then Safe can encrypt the admin token; it can send the encrypted admin token to Notary for validation. -- whatever the cluster operator enters as the token will be encrypted and sent to notary too. -- this way, safe can remain stateless, it does not have to know the admin token to restore its state; it only has to store an encrypted version of admin token on a persistent storage. ---- that solves the first part of the problem. -- the second part is restoring secrets when safe gets evicted -- the third part is rotation of the private keys and restoring the private key when notary gets evicted and --- but then we end up keeping the private key in the cluster -- even if we have a replicated setup if the private key is lost, access to the entire data is gone. -- so better to deliver a private key to administrator too; so if notary crashes the admin will have to provide the private key, and if vault crashes, everything is fine. -- then admin can manage the rotation of keys too by providing the private key that they have. -- private key  is NEVER stored on cluster disk, it will always be in memory. --- only encytped data will be stored on disk -- and this way we can also encrypt the kv pairs on disk using the public key too.
@@ -67,3 +67,14 @@ x 2023-01-01 use a simple CI tool (Ansible is as good as any) to fetch an admin 
 (B) Ability to use redis as a backing store +safe 
 (B) automate uploading the site to s3.
 (B) website is not responsive.
+(B) sentinel, but lighter and more secure (i.e. w/o a bash shell) +sentinel +aegis 
+(C) create a prodocution reference architecture +aegis 
+: @▶️ @🚨 @home @mvp 
+(C) instead of waiting for 15 secs; check spire server’s health using kubectl.
+(B) Sign the docker images +aegis 
+(B) setup liveness, readiness, and startup probes +aegis 
+(B) add instructions to uninstall to README too.
+(B) the makefiles should not deploy the sample workload by default +aegis 
+(B) add resource limits
+(C) audit logs for `safe` +safe
+(B) template transformation on secrets before persisting them.

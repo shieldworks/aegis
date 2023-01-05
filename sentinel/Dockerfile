@@ -11,6 +11,16 @@
 #
 # TODO: fix this when you have time.
 
+# builder image
+FROM golang:1.19.4-alpine3.17 as builder
+RUN mkdir /build
+COPY cmd /build/cmd
+COPY vendor /build/vendor
+COPY internal /build/internal
+COPY go.mod /build/go.mod
+WORKDIR /build
+RUN CGO_ENABLED=0 GOOS=linux go build -mod vendor -a -o aegis ./cmd/main.go
+
 FROM debian:stable-slim as fetcher
 COPY build/fetch_binaries.sh /tmp/fetch_binaries.sh
 
@@ -82,6 +92,9 @@ RUN set -ex \
     perl-crypt-ssleay \
     perl-net-ssleay
 
+# Copy the aegis binary
+COPY --from=builder /build/aegis /bin/aegis
+
 # Installing httpie ( https://httpie.io/docs#installation)
 RUN pip3 install --upgrade httpie
 
@@ -105,6 +118,7 @@ RUN git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.
 RUN git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 
 COPY zshrc .zshrc
+COPY bashrc .bashrc
 COPY motd motd
 COPY tests /tests
 

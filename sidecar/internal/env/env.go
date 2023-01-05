@@ -25,3 +25,11 @@ func Port() string {
 	}
 	return p
 }
+
+func SafeApiRoot() string {
+	p := os.Getenv("AEGIS_SAFE_API_ROOT")
+	if p == "" {
+		return "http://aegis-safe.aegis-system.svc.cluster.local:8017/"
+	}
+	return p
+}

@@ -15,7 +15,8 @@ ignoreNamespaces:
   - kube-public
   - spire-system
   - local-path-storage
-  - aegis-system
+  # - do not ignore aegis-system!
+  # - aegis-system
   - kube-node-lease
   - kube-public
   - kubernetes-dashboard

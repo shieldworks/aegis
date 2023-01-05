@@ -23,47 +23,40 @@ spec:
       labels:
         app.kubernetes.io/name: aegis-workload-demo
     spec:
+      serviceAccountName: aegis-workload-demo
       containers:
         - name: main
-          image: z2hdev/aegis-workload-demo:0.5.8
+          image: z2hdev/aegis-workload-demo:0.5.42
           volumeMounts:
+          # `main` shares this volume with `sidecar`.
           - mountPath: /opt/aegis
             name: aegis-secrets-volume
-
         - name: sidecar
-          image: z2hdev/aegis-sidecar:0.5.8
-          ports:
-          - containerPort: 8039
+          image: z2hdev/aegis-sidecar:0.5.42
           volumeMounts:
-
           # /opt/aegis/secrets.json is the place the secrets will be at.
           # As of now, this is not configurable. Once the MVP is complete,
           # we’ll work on making Aegis more flexible and add more configuration
           # options.
           - mountPath: /opt/aegis
             name: aegis-secrets-volume
-
+          # Volume mount for SPIRE unix domain socket.
+          - name: spire-agent-socket
+            mountPath: /spire-agent-socket
+            readOnly: true
           env:
-          - name: AEGIS_APP_NAME
-            value: "aegis-sidecar"
-
-          # The port that sidecar webhook is listening at.
-          # Right now, it is not configurable.
-          - name: AEGIS_PORT
-            value: ":8039"
-
-            # AEGIS_NOTARY_ID is a shared id that’s used only once during the
-            # bootstrapping process.
-            # For production use, change its value to something unique and
-            # hard to guess.
-            # It is recommended that you do not store this ID in source control
-            # and dynamically generate and inject it through your CI/CD pipeline.
-          - name: AEGIS_NOTARY_ID
-            value: "AegisRocks"
-
+          # Required to fetch SVIDs to establish mTLS.
+          # go-spiffe internally uses this.
+          - name: SPIFFE_ENDPOINT_SOCKET
+            value: unix:///spire-agent-socket/agent.sock
+      volumes:
       # A memory-backed volume is recommended (but not required) to keep
       # the secrets. The secrets can be stored in any kind of volume.
-      volumes:
-        - name: aegis-secrets-volume
-          emptyDir:
-            medium: Memory
+      - name: aegis-secrets-volume
+        emptyDir:
+          medium: Memory
+      # SPIRE needs this.
+      - name: spire-agent-socket
+        hostPath:
+          path: /run/spire/sockets
+          type: Directory

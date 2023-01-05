@@ -6,13 +6,20 @@
 #     .\_/.
 #
 
-VERSION=0.5.8
+VERSION=0.5.42
 PACKAGE=aegis-sentinel
 REPO=z2hdev/aegis-sentinel
 
-all: bundle push deploy
+all: build bundle push deploy
+
+build-and-push: build bundle push
+
+.PHONY: build
+build:
+	go build -o ${PACKAGE} ./cmd/main.go
 
 bundle:
+	go mod vendor
 	docker build . -t ${PACKAGE}:${VERSION}
 
 push:
@@ -22,5 +29,6 @@ push:
 
 deploy:
 	kubectl apply -f ./k8s/Namespace.yaml
+	kubectl apply -f ./k8s/ServiceAccount.yaml
 	kubectl apply -f ./k8s/Identity.yaml
 	kubectl apply -f ./k8s/Deployment.yaml

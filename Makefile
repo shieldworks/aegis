@@ -11,7 +11,9 @@ clean:
 		kubectl delete ns spire-system; \
 		kubectl delete ns aegis-system; \
 		kubectl delete deployment aegis-workload-demo -n default; \
-		kubectl delete ClusterSPIFFEID aegis-workload-demo -n default; \
+		kubectl delete ClusterSPIFFEID aegis-workload-demo; \
+		kubectl delete ClusterSPIFFEID aegis-sentinel; \
+		kubectl delete ClusterSPIFFEID aegis-safe; \
 	else \
   		echo "Nothing to clean."; \
 	fi
@@ -26,7 +28,7 @@ install-all: spire install-demo install-safe install-sidecar install-sentinel
 .PHONY: spire
 spire:
 	cd spire && $(MAKE) deploy
-	sleep 15 # give some time for spire to bring itself up.
+	sleep 15 # give some time for SPIRE to bring itself up.
 
 all-demo:
 	cd demo && $(MAKE) all

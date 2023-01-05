@@ -10,10 +10,18 @@ package v1
 
 // TODO: these entities are repeated, so they may go to a common library maybe.
 
+type SecretUpsertRequest struct {
+	WorkloadId string `json:"key"`
+	Value      string `json:"value"`
+	Err        string `json:"err,omitempty"`
+}
+
+type SecretUpsertResponse struct {
+	Err string `json:"err,omitempty"`
+}
+
 type SecretFetchRequest struct {
-	WorkloadId     string `json:"workload"`
-	WorkloadSecret string `json:"secret"`
-	Err            string `json:"err,omitempty"`
+	Err string `json:"err,omitempty"`
 }
 
 type SecretFetchResponse struct {
