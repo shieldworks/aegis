@@ -39,7 +39,12 @@
           font-size: 4.25em;
           line-height: 1.15em;
           padding-top: 0.235em;
-          margin-bottom: 0.147em;
+          margin-bottom: -0.337em;
+          font-weight: 100;
+      }
+
+      #keep-your-secrets {
+          color: #a0a0a0;
       }
 
       h2, h3 {
@@ -85,6 +90,7 @@
           padding: 1em;
           border-radius: 4px;
           overflow: auto;
+          margin: 4em -2em -4em;
       }
 
       a {
@@ -106,22 +112,52 @@
       ol {
           margin: 2em;
       }
+
+      @media screen and (max-width: 700px) {
+          body {
+              padding: 0;
+              font-size: 14px;
+          }
+
+          h1 {
+              font-size: 3.26em;
+              margin-bottom: -0.737em;
+          }
+
+          h2 {
+              font-size: 1.31em;
+              line-height: 1.24em;
+              padding-top: 0.286em;
+              margin-bottom: 0.452em;
+              margin-top: 1.9em;
+          }
+
+          a {
+              padding: inherit;
+              display: inline;
+          }
+
+          pre {
+              font-size: 1em;
+              margin-left: -2em;
+              margin-right: -2em;
+          }
+
+          #video-player {
+              display: none;
+          }
+      }
+
   </style>
 </head>
 <body>
 <article>
-  <div style="max-width:1080px;margin:10px auto;padding:10px">
-    <div style="padding:56.25% 0 0 0;position:relative;">
-      <iframe
-          src="https://player.vimeo.com/video/784008877?h=047bd66cfb&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-          frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen
-          style="position:absolute;top:0;left:0;width:100%;height:100%;"
-          title="Introducing Aegis: A Cloud Native Solution to Secure Your Sensitive Data"></iframe>
-    </div>
-    <script src="https://player.vimeo.com/api/player.js"></script>
-  </div>
+  <h1>Aegis</h1>
 
-  <h2 id="about-aegis">Keep Your Secrets… Secret</h2>
+  <h2 id="keep-your-secrets">Keep Your Secrets… Secret</h2>
+
+  <h2 id="about">About</h2>
+
   <p><strong>Aegis</strong> is a lightweight secrets management solution that keeps your secrets secret. With <strong>Aegis</strong>,
     you can rest assured that your sensitive data is always <strong>secure</strong> and <strong>protected</strong>.</p>
   <p><strong>Aegis</strong> is perfect for securely storing arbitrary configuration information at a central location
@@ -191,9 +227,9 @@
 
   <pre>
  .-'_.---._'-.
- ||####|(__)||   Protect your secrets, protect your business.
-   \\()|##//       Secure your sensitive data with Aegis.
-    \\ |#//                  &lt;aegis.z2h.dev&gt;
+ ||####|(__)||  Protect your secrets,
+   \\()|##//    protect your business.
+    \\ |#//        &lt;aegis.z2h.dev&gt;
      .\_/.
 </pre>
 
