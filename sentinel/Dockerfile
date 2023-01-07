@@ -8,8 +8,6 @@
 
 # Forked FROM nicolaka/netshoot because I’m having problem setting netshoot
 # as a base image, and I don’t have time to dig into that at the moment.
-#
-# TODO: fix this when you have time.
 
 # builder image
 FROM golang:1.19.4-alpine3.17 as builder

@@ -1,9 +1,8 @@
-```text
- .-'_.---._'-.
- ||####|(__)||   Protect your secrets, protect your business.
-   \\()|##//       Secure your sensitive data with Aegis.
-    \\ |#//                  <aegis.z2h.dev>
-     .\_/.
-```
+![Aegis](../assets/aegis-banner.png "Aegis")
 
-`sidecar` will be injected to the pods as a sidecar.
+## Aegis Sidecar
+
+**Sidecar** (`aegis-sidecar`) will be injected to the pods as a sidecar.
+
+**Sidecar** periodically polls **Safe** to update the secrets data on a shared
+volume.

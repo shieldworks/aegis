@@ -1,3 +1,5 @@
+![Aegis](assets/aegis-banner.png "Aegis")
+
 # Contributor Covenant Code of Conduct
 
 ## Our Pledge
