@@ -78,3 +78,10 @@ x 2023-01-01 use a simple CI tool (Ansible is as good as any) to fetch an admin 
 (B) add resource limits
 (C) audit logs for `safe` +safe
 (B) template transformation on secrets before persisting them.
+(A) Since this is a development deployment, I can execute a shell inside this sentinel; for production deployments, there will be a more hardened version of sentinel where you will be allowed to execute a binary that is only allowed to talk to SAFE and not fiddle with anything else on the pod’s system.
+(A): add links to technoligies used in the readme +aegis .
+(B) web a mini logo next to Aegis header + a favicon
+(B) various timeout should be configurable (like the polling interval of the sidecar.
+(C) Do a basic benchmark: How much CPU and memory does a typical Aegis setup requires; how much does it change when the number of workloads increase?
+(A) update the demo video link
+(A) ability to install Aegis when there already is an existing spire rollout. Would likely mean customizing the trust root etc.

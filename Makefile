@@ -18,12 +18,15 @@ clean:
   		echo "Nothing to clean."; \
 	fi
 
+# Installs without rebuilding apps.
+install: install-safe install-sidecar install-sentinel
+
+# Installs the demo app to play with.
+demo: install-demo
+
 # Builds and installs everything.
 # You will need dockerhub write access for this task.
-all: spire all-demo all-safe all-sidecar all-sentinel
-
-# Installs without rebuilding apps.
-install-all: spire install-demo install-safe install-sidecar install-sentinel
+build-and-install: spire all-demo all-safe all-sidecar all-sentinel
 
 .PHONY: spire
 spire:
