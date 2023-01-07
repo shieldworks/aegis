@@ -5,7 +5,8 @@
   <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Aegis: Keep your secrets.</title>
+  <title>Aegis: Keep your secrets… secret.</title>
+  <link rel="icon" type="image/x-icon" href="/assets/favicon.png">
   <link rel="stylesheet" href="https://use.typekit.net/mkv3paq.css">
   <style>
       * {
@@ -19,6 +20,13 @@
           color: #ffffff;
           padding: 2em 2em 2em 2em;
           font-weight: 100;
+      }
+
+      h1 {
+          background: url(/assets/aegis-icon.png) left center no-repeat;
+          background-size: contain;
+          padding-left: 1.25em;
+          padding-bottom: 0.1em;
       }
 
       strong {
@@ -45,6 +53,7 @@
 
       #keep-your-secrets {
           color: #a0a0a0;
+          margin-bottom: 1em;
       }
 
       h2, h3 {
@@ -147,22 +156,24 @@
           }
       }
 
+      .footer {
+          text-align: center;
+          padding: 1em;
+          margin-top: 2em;
+          font-weight: 100;
+      }
   </style>
 </head>
 <body>
 <article>
   <h1>Aegis</h1>
-
-  <h2 id="keep-your-secrets">Keep Your Secrets… Secret</h2>
+  <h2 id="keep-your-secrets">keep your secrets… secret</h2>
 
   <h2 id="about">About</h2>
 
-  <p><a href="https://github.com/zerotohero-dev/aegis"><strong>Aegis</strong></a> is a lightweight secrets management solution that keeps your secrets secret. With <strong>Aegis</strong>,
+  <p><a href="https://github.com/zerotohero-dev/aegis"><strong>Aegis</strong></a> is a Kubernetes-native, lightweight, secrets management solution that keeps your secrets secret. With <strong>Aegis</strong>,
     you can rest assured that your sensitive data is always <strong>secure</strong> and <strong>protected</strong>.
     <a href="https://github.com/zerotohero-dev/aegis">Check out <strong>Aegis</strong> on GitHub</a> for details.</p>
-
-  <p><strong>Aegis</strong> is a lightweight secrets management solution that keeps your secrets secret. With <strong>Aegis</strong>,
-    you can rest assured that your sensitive data is always <strong>secure</strong> and <strong>protected</strong>.</p>
 
   <p><strong>Aegis</strong> is perfect for securely storing arbitrary configuration information at a central location
     and securely dispatching it to workloads.</p>
@@ -171,7 +182,7 @@
     your business and protect against data breaches.</p>
   <p>If you haven’t watched <a href="https://vimeo.com/v0lkan/aegis"
                                title="Introducing Aegis: A Cloud Native Solution to Secure Your Sensitive Data">this
-    six-minute introductory video</a> yet, now might be a good time 🙂.</p>
+    introductory video</a> yet, now might be a good time 🙂.</p>
 
   <h2 id="where-not-to-use-aegis">Where <strong>NOT</strong> To Use Aegis</h2>
   <p>Aegis is <strong>not</strong> a Database, nor is it a distributed caching layer. Of course, you may tweak it to act
@@ -229,7 +240,6 @@
     of <strong>Aegis</strong>.</p>
   <p>Please send your feedback, suggestions, recommendations, and comments to <a
       href="mailto:me@volkan.io">me@volkan.io</a>. I’d love to have them.</p>
-
   <pre>
  .-'_.---._'-.
  ||####|(__)||  Protect your secrets,
@@ -237,8 +247,7 @@
     \\ |#//        &lt;aegis.z2h.dev&gt;
      .\_/.
 </pre>
-
 </article>
-<p>&nbsp;</p>
+<p class="footer">Made with ❤️ in California.</p>
 </body>
 </html>

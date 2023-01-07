@@ -3,27 +3,24 @@
 ## Status of This Software
 
 This project is a **work in progress** (*WIP*) and has yet to be ready for 
-production consumption. Use it at your own risk.
-
-```text
-TODO: some of the content in this file needs an update.
-Especially thing around **notary** since we don’t use notary anymore.
-```
+production consumption. **Use it at your own risk**.
 
 ## A Video Is Worth a Lot of Thousands of Words
 
-[Here is a six-minute video introduction to Aegis][aegis-demo-video].
+[Here is a short video introduction to Aegis][aegis-demo-video].
 
 There is also [aegis.z2h.dev][aegis-website], the project’s website.
 
 [aegis-website]: https://aegis.z2h.dev/ "Aegis webiste"
-[aegis-demo-video]: https://vimeo.com/v0lkan/aegis "Introducing Aegis: A Cloud Native Solution to Secure Your Sensitive Data"
+[aegis-demo-video]: https://vimeo.com/v0lkan/secrets "Aegis: Keep your secrets… Secret." 
 
 ## About Aegis
 
-**Aegis** is a lightweight secrets management solution that keeps your secrets
-secret. With **Aegis**, you can rest assured that your sensitive data is 
-always **secure** and **protected**. 
+**Aegis** is a Kubernetes-native, lightweight, secrets management solution that 
+keeps your secrets secret. 
+
+With **Aegis**, you can rest assured that your 
+sensitive data is always **secure** and **protected**. 
 
 **Aegis** is perfect for securely storing arbitrary configuration information at a 
 central location and securely dispatching it to workloads.
@@ -44,15 +41,17 @@ Kustomize Version: v4.5.7
 Server Version: v1.25.3
 ```
 
-Although not explicitly tested, any recent Kubernetes installation will work
-just fine.
+Although not explicitly tested, any recent Kubernetes installation will 
+likely work just fine.
 
 As in any secrets management solution, your compute and memory requirements
 will depend on several factors, such as:
 
 * The number of workloads in the cluster
-* The number of secrets **Safe** has to manage (*see [architecture details](ARCHITECTURE.md)*)
+* The number of secrets **Safe** (*Aegis’ Secrets Store*) has to manage (*see [architecture details](ARCHITECTURE.md)*)
+* The amount of workloads interacting with **Safe** (*see [architecture details](ARCHITECTURE.md)*)
 * **Sidecar** poll frequency (*see [architecture details](ARCHITECTURE.md)*)
+* etc.
 
 We recommend you benchmark with a realistic production-like
 cluster and allocate your resources accordingly.
@@ -66,10 +65,16 @@ As of now, the only installation option is to clone the project and install
 it using `make` as follows:
 
 ```bash 
+# Clone the repo and cd into it.
 git clone https://github.com/zerotohero-dev/aegis.git
 cd aegis
-make clean 
-make install-all
+# Deploy SPIRE as the identity plane.
+# If you already have SPIRE, you might need to reconfigure things.
+make spire
+# Install Safe and Sentinel
+make install
+# Optionally, install a demo workload to test the system.
+make demo
 ```
 
 To verify installation check out the `aegis-system` namespace:
@@ -80,62 +85,55 @@ kubectl get deployment -n aegis-system
 # NAME             READY   UP-TO-DATE   AVAILABLE
 # aegis-safe       1/1     1            1
 # aegis-sentinel   1/1     1            1
-# aegis-notary     1/1     1            1
 ```
 
 ## Registering a Secret to a Workload
 
-[Here is a sample Kubernetes deployment descriptor](demo/k8s/Deployment.yaml) 
-for a workload that **Aegis** can inject secrets:
-
-Assuming we have **Aegis** up and running, and the above workload deployed, 
-to register a secret, you can execute the following API call from 
-the **Sentinel** (*or any other place that has a network route to **Safe**).
+You can use **Sentinel** to add a secret to a workload:
 
 ```bash
-http PUT http://aegis-safe.aegis-system.svc.cluster.local:8017/v1/secret \
-  token=$ADMIN_TOKEN \
-  key=aegis-workload-demo \
-  value='{"username": "me@volkan.io", "password": "ToppyTopSecret"}'
+# Change `aegis-sentinel-aabbccdd11223344` with the name of the Sentinel
+# pod.
+kubectl exec -it aegis-sentinel-aabbccdd11223344 -n aegis-system \
+-- /bin/sentinel \ 
+-w demo-workload # Name of the workload \
+-s '{"username":"root@admin-db", \
+"password":"KeepYourSecrets!."}' # The secret to bind to the workload.
 ```
 
-Where `$ADMIN_TOKEN` is the token that you get using the **Sentinel**.
+**Sentinel** is the only entry point that an operator can register secrets
+to the system.
 
-You can also do the same using **Sentinel**:
+## How Do I Get the Root Token? Where Do I Store It?
 
-```bash 
-# replace aegis-sentinel-aabbccdd-11223344
-# with the pod name you have on the system.
-kubectl exec -it aegis-sentinel-aabbccdd-11223344 -n aegis-system -- /bin/zsh
-cd /tests
-vim ./create.sh
-./create.sh
-```
+Unlike some other secret vaults, you do not need an admin token
+to operate Aegis 🙂.
 
-## How Do I Get the Admin Token?
+Benefits of this approach is: It helps the Ops team `#sleepmore`, since 
+everything is automated, and you won’t have to manually unlock Aegis upon 
+a system crash, for example.
 
-Unfortunately, this is a work in progress at the moment ☹️.
+However, there’s no free lunch, and as the operator of a production system, 
+your homework is to secure access to **Sentinel**.
 
-As a temporary workaround, the **Safe** Pod displays the admin token in its logs
-during the bootstrapping process. Note that this is pretty insecure, and we
-will remove the log line once we establish a secure way to deliver the admin 
-token.
+**Aegis** leverages Kubernetes security primitives and modern cryptography 
+to secure access to secrets. And **Sentinel** is the **only** system part that 
+has direct write access to the secrets store. Therefore, once you secure your 
+access to**Sentinel** with proper RBAC and policies, you secure your access 
+to your secrets.
 
-## Where Do I Store the Admin Token?
-
-Keep the admin token safe; **do not** store it in source control; **do not** 
-store it on disk as plain text. An ideal place to store it is a password manager 
-or an encrypted file that only the administrators know how to decrypt.
+We believe that this approach is **Kubernetes-native**, convenient, simpler, 
+and delightfully secure (*as opposed to being “annoyingly secure”*).
 
 ## Design Decisions
 
-Keeping *Aegis* **slim**, **secure**, and **boringly-easy** to install and
-operate are the three pillars of the project.
+Keeping *Aegis*, **Kubernetes-native**, **slim**, **secure**, and 
+**boringly-easy** to install and operate are the pillars of the project.
 
 [Check out the **Design Decisions** document](DESIGN_DECISIONS.md) for a 
 deeper discussion about how we maintain the architectural balance in **Aegis**.
 
-## Where **NOT** To Use Aegis
+## Where **Not** To Use Aegis
 
 Aegis is **not** a Database, nor is it a distributed caching layer. Of course,
 you may tweak it to act like one if you try hard enough, yet, that is
@@ -148,13 +146,31 @@ but the kitchen sink.
 Use Aegis to store service keys, database credentials, access tokens,
 etc. 
 
+## Technologies Used
+
+Without these technologies, implementing **Aegis** would have been a very 
+hard, time-consuming, and error-prone endeavor. 
+
+* [SPIFFE and SPIRE][spire] for establishing an Identity Control Plane.
+* [Netshoot][netshoot] for creating the “development” version of **Sentinel**.
+* [Mozilla Sops][sops] (*in design phase*) to enable integration with cloud 
+  secrets stores, such as AWS KMS, GCP KMS, Azure KeyVault, and even HashiCorp 
+  Vault.
+* [Age Encryption][age] (*in design phase*) to enable out-of-memory encrypted 
+  backup of the secrets store for disaster recovery.
+
+[spire]: https://spiffe.io/ "SPIFFE: Secure Production Identity Framework for Everyone"
+[netshoot]: https://github.com/nicolaka/netshoot "Netshoot: A network troubleshooting Swiss army knife"
+[sops]: https://github.com/mozilla/sops "Sops: Simple and flexible tool for managing secrets"
+[age]: https://github.com/FiloSottile/age "Age: A secure and modern encryption tool"
+
 ## Architecture Details
 
 [Check out this **Architecture** document](ARCHITECTURE.md) for detailed
 information about **Aegis**’s project folder structure, system design, sequence 
 diagrams, workflows, and internal operating principles.
 
-## Umm… How Do I Pronounce “Aegis”?
+## One More Thing… How Do I Pronounce “Aegis”?
 
 “Aegis” is a word of Greek origin and is pronounced `EE-jiss`.
 
