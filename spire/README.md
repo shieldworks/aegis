@@ -1,5 +1,10 @@
-TODO: update me
+![Aegis](../assets/aegis-banner.png "Aegis")
 
-Copied thing over the official SPIRE manifests.
+## SPIRE
 
-I will add a more detailed README later.
+This folder contains Kubernetes deployment manifests for [SPIRE][spire].
+
+**Aegis** use **SPIRE** as an Identity Control Plane to establish secure
+mTLS connectivity between **Aegis** components and workloads.
+
+[spire]: https://spiffe.io "SPIFFE: Secure Production Identity Framework for Everyone"

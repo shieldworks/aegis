@@ -65,15 +65,16 @@ As of now, the only installation option is to clone the project and install
 it using `make` as follows:
 
 ```bash 
-# Clone the repo and cd into it.
+# Clone the repo and cd into it:
 git clone https://github.com/zerotohero-dev/aegis.git
-cd aegis
-# Deploy SPIRE as the identity plane.
-# If you already have SPIRE, you might need to reconfigure things.
-make spire
-# Install Safe and Sentinel
+
+# Clean former deployment, if any:
+make clean
+
+# Install SPIRE, Safe, and Sentinel:
 make install
-# Optionally, install a demo workload to test the system.
+
+# Optionally, install a demo workload to test the system:
 make demo
 ```
 
@@ -81,7 +82,9 @@ To verify installation check out the `aegis-system` namespace:
 
 ```bash
 kubectl get deployment -n aegis-system
+
 # Output:
+#
 # NAME             READY   UP-TO-DATE   AVAILABLE
 # aegis-safe       1/1     1            1
 # aegis-sentinel   1/1     1            1

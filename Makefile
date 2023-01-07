@@ -18,32 +18,22 @@ clean:
   		echo "Nothing to clean."; \
 	fi
 
-# Installs without rebuilding apps.
-install: install-safe install-sidecar install-sentinel
+# A shortcut to install SPIRE, Safe, and Sentinel
+install: spire aegis
 
-# Installs the demo app to play with.
-demo: install-demo
-
-# Builds and installs everything.
-# You will need dockerhub write access for this task.
-build-and-install: spire all-demo all-safe all-sidecar all-sentinel
-
+# SPIRE is required for Workload-to-Safe, Safe-to-Workload, Sentinel-to-Safe
+# and Safe-to-Sentinel communication. Better to install it first before
+# installing aegis.
 .PHONY: spire
 spire:
 	cd spire && $(MAKE) deploy
 	sleep 15 # give some time for SPIRE to bring itself up.
 
-all-demo:
-	cd demo && $(MAKE) all
+# Installs without rebuilding apps.
+aegis: install-safe install-sentinel
 
-all-safe:
-	cd safe && $(MAKE) all
-
-all-sidecar:
-	cd sidecar && $(MAKE) all
-
-all-sentinel:
-	cd sentinel && $(MAKE) all
+# Installs the demo app to play with.
+demo: install-demo
 
 install-demo:
 	cd demo && $(MAKE) deploy
@@ -51,8 +41,21 @@ install-demo:
 install-safe:
 	cd safe && $(MAKE) deploy
 
-install-sidecar:
-	cd sidecar && echo "no-op"
-
 install-sentinel:
 	cd sentinel && $(MAKE) deploy
+
+# Builds and installs everything.
+# You will need dockerhub write access for this task.
+build: spire build-demo build-safe build-sidecar build-sentinel
+
+build-demo:
+	cd demo && $(MAKE) all
+
+build-safe:
+	cd safe && $(MAKE) all
+
+build-sidecar:
+	cd sidecar && $(MAKE) all
+
+build-sentinel:
+	cd sentinel && $(MAKE) all

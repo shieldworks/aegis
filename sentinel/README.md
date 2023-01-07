@@ -6,8 +6,11 @@
      .\_/.
 ```
 
-## Aegis Probe
+## Aegis Sentinel
 
-This is a helper container to test the network from within. 
+**Sentinel** is the only pod that can directly talk to **Sidecar**.
 
-It is for development use only.
+[Watch this demo video][aegis-demo-video] to learn more about how **Sentinel**
+is used to register secrets to workloads.
+
+[aegis-demo-video]: https://vimeo.com/v0lkan/secrets "Aegis: Keep your secrets… Secret."
