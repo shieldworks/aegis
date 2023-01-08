@@ -72,3 +72,27 @@ to be updated.
 to **Safe**.
 
 ![Creating Secrets](assets/aegis-create-secrets.png "Creating Secrets")
+
+## Component and Workload SVID Schemas
+
+SPIFFE ID format wor workloads is as follows:
+
+```text
+spiffe://aegis.z2h.dev/workload/$workloadName/ns/{{ .PodMeta.Namespace }}
+/sa/{{ .PodSpec.ServiceAccountName }}/n/{{ .PodMeta.Name }}
+```
+
+For the non-aegis-system workloads that **Safe** injects secrets,
+`$workloadName` is determined by the workload’s `ClusterSPIFFEID` CRD.
+
+For `aegis-system` components we use `aegis-safe` and `aegis-sentinel` 
+for the `$workloadName`:
+
+```text
+spiffe://aegis.z2h.dev/workload/aegis-safe/ns/{{ .PodMeta.Namespace }}
+/sa/{{ .PodSpec.ServiceAccountName }}/n/{{ .PodMeta.Name }}
+
+```text
+spiffe://aegis.z2h.dev/workload/aegis-sentinel/ns/{{ .PodMeta.Namespace }}
+/sa/{{ .PodSpec.ServiceAccountName }}/n/{{ .PodMeta.Name }}
+```

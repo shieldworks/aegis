@@ -5,6 +5,7 @@ go 1.19
 require (
 	github.com/akamensky/argparse v1.4.0
 	github.com/spiffe/go-spiffe/v2 v2.1.1
+	github.com/zerotohero-dev/aegis-core v0.5.1
 )
 
 require (

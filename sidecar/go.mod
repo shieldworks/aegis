@@ -4,8 +4,8 @@ go 1.19
 
 require (
 	github.com/go-kit/kit v0.12.0
-	github.com/gorilla/mux v1.8.0
 	github.com/spiffe/go-spiffe/v2 v2.1.1
+	github.com/zerotohero-dev/aegis-core v0.5.1
 )
 
 require (

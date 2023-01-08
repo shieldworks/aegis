@@ -14,9 +14,9 @@ import (
 	"github.com/spiffe/go-spiffe/v2/spiffeid"
 	"github.com/spiffe/go-spiffe/v2/spiffetls/tlsconfig"
 	"github.com/spiffe/go-spiffe/v2/workloadapi"
+	"github.com/zerotohero-dev/aegis/core/validation"
 	"log"
 	"net/http"
-	"strings"
 )
 
 func Serve(source *workloadapi.X509Source) {
@@ -26,13 +26,8 @@ func Serve(source *workloadapi.X509Source) {
 
 	handle.InitializeRoutes()
 
-	// TODO: ability to trust these matchers via Env.
 	authorizer := tlsconfig.AdaptMatcher(func(id spiffeid.ID) error {
-		if strings.HasPrefix(id.String(), "spiffe://aegis.z2h.dev/workload/") {
-			return nil
-		}
-
-		if strings.HasPrefix(id.String(), "spiffe://aegis.z2h.dev/ns/aegis-system/sa/aegis-sentinel/n/") {
+		if validation.IsWorkload(id.String()) {
 			return nil
 		}
 

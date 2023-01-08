@@ -10,8 +10,8 @@ package validation
 
 import (
 	"github.com/spiffe/go-spiffe/v2/workloadapi"
+	"github.com/zerotohero-dev/aegis/core/validation"
 	"log"
-	"strings"
 )
 
 func EnsureSelfSPIFFEID(source *workloadapi.X509Source) {
@@ -25,11 +25,7 @@ func EnsureSelfSPIFFEID(source *workloadapi.X509Source) {
 	}
 
 	svidId := svid.ID
-	validSpiffeId := strings.HasPrefix(
-		svidId.String(),
-		"spiffe://aegis.z2h.dev/workload/aegis-safe/ns/aegis-system/sa/aegis-safe/n/",
-	)
-	if !validSpiffeId {
+	if !validation.IsSafe(svid.ID.String()) {
 		log.Fatalf(
 			"Svid check: I don’t know you, and it’s crazy: '%s'", svidId.String(),
 		)

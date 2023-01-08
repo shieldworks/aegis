@@ -19,12 +19,12 @@ import (
 	"github.com/spiffe/go-spiffe/v2/spiffeid"
 	"github.com/spiffe/go-spiffe/v2/spiffetls/tlsconfig"
 	"github.com/spiffe/go-spiffe/v2/workloadapi"
+	"github.com/zerotohero-dev/aegis-core/validation"
 	"io"
 	"log"
 	"net/http"
 	"net/url"
 	"os"
-	"strings"
 )
 
 func saveData(data string) {
@@ -83,34 +83,14 @@ func fetchSecrets() {
 		}
 	}(source)
 
-	// TODO: add this to technical specs markdown too.
-	//
-	// SPIFFE ID format:
-	//   spiffe://aegis.z2h.dev/workload/$workloadName/ns/{{ .PodMeta.Namespace }}
-	//   /sa/{{ .PodSpec.ServiceAccountName }}/n/{{ .PodMeta.Name }}
-	//
-	// For aegis-system components $workloadName is:
-	// - aegis-safe
-	// - or aegis-system.
-	//
-	// For the non-aegis-system workloads that `safe` injects secrets,
-	// $workloadName is determined by the workload's ClusterSPIFFEID CRD.
-
 	// Make sure that we are calling Safe from a workload that Aegis knows about.
-	if !strings.HasPrefix(
-		svid.ID.String(),
-		"spiffe://aegis.z2h.dev/workload/",
-	) {
+	if !validation.IsWorkload(svid.ID.String()) {
 		log.Fatalf("Untrusted workload. Killing the container.")
 		return
 	}
 
 	authorizer := tlsconfig.AdaptMatcher(func(id spiffeid.ID) error {
-		if strings.HasPrefix(
-			// Only `aegis-safe` can respond to this binary.
-			id.String(),
-			"spiffe://aegis.z2h.dev/workload/aegis-safe/ns/aegis-system/sa/aegis-safe/n/",
-		) {
+		if validation.IsSafe(id.String()) {
 			return nil
 		}
 
