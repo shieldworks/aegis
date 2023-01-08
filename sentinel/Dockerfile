@@ -23,16 +23,9 @@ COPY --from=builder /build/aegis /bin/aegis
 
 ENV HOSTNAME sentinel
 
-ARG USERNAME=sentinel
-ARG USER_UID=1000
-ARG USER_GID=$USER_UID
-
-# Create a non-root user.
-RUN groupadd --gid $USER_GID $USERNAME \
-    && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME
-
-# Set the default user.
-USER $USERNAME
+# Prevent root access.
+ENV USER nobody
+USER nobody
 
 # Keep the container alive.
 ENTRYPOINT ["/bin/sh","-c","sleep infinity"]

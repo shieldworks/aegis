@@ -18,6 +18,26 @@ clean:
   		echo "Nothing to clean."; \
 	fi
 
+all:
+	@echo ""
+	@echo "You can use the following commands based on your needs as follows:"
+	@echo ""
+	@echo "Clean former installations:"
+	@echo "    make clean"
+	@echo ""
+	@echo "If you do not have SPIRE set up:"
+	@echo "    make spire; make aegis"
+	@echo ""
+	@echo "If you do have SPIRE set up already:"
+	@echo "    make aegis"
+	@echo ""
+	@echo "If you want to run a demo workload to test things out:"
+	@echo "    make demo"
+	@echo ""
+	@echo "If you have dockerhub access:"
+	@echo "    make build"
+	@echo ""
+
 # A shortcut to install SPIRE, Safe, and Sentinel
 install: spire aegis
 
