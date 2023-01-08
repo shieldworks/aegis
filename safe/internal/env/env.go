@@ -10,18 +10,10 @@ package env
 
 import "os"
 
-func AppName() string {
-	p := os.Getenv("AEGIS_APP_NAME")
+func SpiffeSocketUrl() string {
+	p := os.Getenv("SPIFFE_ENDPOINT_SOCKET")
 	if p == "" {
-		return "aegis-safe"
-	}
-	return p
-}
-
-func Port() string {
-	p := os.Getenv("AEGIS_PORT")
-	if p == "" {
-		return ":8017"
+		p = "unix:///spire-agent-socket/agent.sock"
 	}
 	return p
 }

@@ -9,15 +9,13 @@
 package main
 
 import (
+	"aegis-safe/internal/env"
 	"aegis-safe/internal/server"
 	"aegis-safe/internal/validation"
 	"context"
 	"github.com/spiffe/go-spiffe/v2/workloadapi"
 	"log"
 )
-
-// TODO: get this from environment.
-const socketPath = "unix:///spire-agent-socket/agent.sock"
 
 func main() {
 	log.Println("Acquiring identity…")
@@ -26,11 +24,13 @@ func main() {
 	defer cancel()
 
 	source, err := workloadapi.NewX509Source(
-		ctx, workloadapi.WithClientOptions(workloadapi.WithAddr(socketPath)),
+		ctx, workloadapi.WithClientOptions(workloadapi.WithAddr(env.SpiffeSocketUrl())),
 	)
+
 	if err != nil {
 		log.Fatalf("Unable to fetch X.509 Bundle: %v", err)
 	}
+
 	defer func(source *workloadapi.X509Source) {
 		if source == nil {
 			return
