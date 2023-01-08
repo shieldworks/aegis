@@ -27,7 +27,7 @@ spec:
       serviceAccountName: aegis-sentinel
       containers:
         - name: main
-          image: z2hdev/aegis-sentinel:0.5.42
+          image: z2hdev/aegis-sentinel:0.6.0
           # command: [ "/bin/sh", "-c", "--" ]
           # args: [ "while true; do sleep 30; done;" ]
           volumeMounts:

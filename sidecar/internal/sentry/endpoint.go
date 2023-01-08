@@ -9,13 +9,13 @@
 package sentry
 
 import (
-	reqres "aegis-sidecar/internal/entity/reqres/v1"
 	"aegis-sidecar/internal/state"
 	"bytes"
 	"context"
 	"encoding/json"
 	"github.com/go-kit/kit/endpoint"
 	"github.com/go-kit/kit/transport/http"
+	reqres "github.com/zerotohero-dev/aegis/core/entity/reqres/v1"
 	"io"
 	nhttp "net/http"
 	"net/url"
