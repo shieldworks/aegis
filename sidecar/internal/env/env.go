@@ -8,7 +8,11 @@
 
 package env
 
-import "os"
+import (
+	"os"
+	"strconv"
+	"time"
+)
 
 func SpiffeSocketUrl() string {
 	p := os.Getenv("SPIFFE_ENDPOINT_SOCKET")
@@ -32,4 +36,16 @@ func SidecarSecretsPath() string {
 		p = "/opt/aegis/secrets.json"
 	}
 	return p
+}
+
+func SentryPollInterval() time.Duration {
+	p := os.Getenv("AEGIS_SIDECAR_POLL_INTERVAL")
+	if p == "" {
+		p = "20"
+	}
+	i, err := strconv.ParseInt(p, 10, 32)
+	if err != nil {
+		return 20 * time.Second
+	}
+	return time.Duration(i) * time.Second
 }

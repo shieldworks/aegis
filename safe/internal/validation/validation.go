@@ -10,7 +10,7 @@ package validation
 
 import (
 	"github.com/spiffe/go-spiffe/v2/workloadapi"
-	"github.com/zerotohero-dev/aegis/core/validation"
+	"github.com/zerotohero-dev/aegis-core/validation"
 	"log"
 )
 

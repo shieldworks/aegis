@@ -9,7 +9,6 @@
 package main
 
 import (
-	v1 "aegis-sentinel/internal/entity/reqres/v1"
 	"aegis-sentinel/internal/env"
 	"bytes"
 	"context"
@@ -20,6 +19,7 @@ import (
 	"github.com/spiffe/go-spiffe/v2/spiffeid"
 	"github.com/spiffe/go-spiffe/v2/spiffetls/tlsconfig"
 	"github.com/spiffe/go-spiffe/v2/workloadapi"
+	"github.com/zerotohero-dev/aegis-core/entity/reqres/v1"
 	"github.com/zerotohero-dev/aegis-core/validation"
 	"io"
 	"log"

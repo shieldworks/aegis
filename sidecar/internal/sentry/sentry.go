@@ -9,14 +9,14 @@
 package sentry
 
 import (
+	"aegis-sidecar/internal/env"
 	"time"
 )
 
 // Watch synchronizes the internal state of the sidecar by talking to
 // `safe` regularly.
 func Watch() {
-	// TODO: make this configurable.
-	ticker := time.NewTicker(5 * time.Second)
+	ticker := time.NewTicker(env.SentryPollInterval())
 	for {
 		select {
 		case <-ticker.C:

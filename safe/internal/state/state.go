@@ -15,7 +15,6 @@ import (
 var secrets sync.Map
 
 func UpsertSecret(id, data string) {
-	// log.Println("upsert secret", "id", id, "data", data)
 	secrets.Store(id, data)
 }
 

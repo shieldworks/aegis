@@ -28,8 +28,8 @@ spec:
       containers:
         - name: main
           image: z2hdev/aegis-sentinel:0.5.42
-          command: [ "/bin/bash", "-c", "--" ]
-          args: [ "while true; do sleep 30; done;" ]
+          # command: [ "/bin/sh", "-c", "--" ]
+          # args: [ "while true; do sleep 30; done;" ]
           volumeMounts:
           - name: spire-agent-socket
             mountPath: /spire-agent-socket

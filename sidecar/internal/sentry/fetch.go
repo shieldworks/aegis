@@ -9,7 +9,6 @@
 package sentry
 
 import (
-	v1 "aegis-sidecar/internal/entity/reqres/v1"
 	"aegis-sidecar/internal/env"
 	"bufio"
 	"bytes"
@@ -19,6 +18,7 @@ import (
 	"github.com/spiffe/go-spiffe/v2/spiffeid"
 	"github.com/spiffe/go-spiffe/v2/spiffetls/tlsconfig"
 	"github.com/spiffe/go-spiffe/v2/workloadapi"
+	"github.com/zerotohero-dev/aegis-core/entity/reqres/v1"
 	"github.com/zerotohero-dev/aegis-core/validation"
 	"io"
 	"log"
@@ -32,29 +32,25 @@ func saveData(data string) {
 
 	f, err := os.Create(path)
 	if err != nil {
-		// TODO: handle me.
-		panic("poop!")
+		log.Println("Error saving data. Will retry.")
+		return
 	}
 
 	w := bufio.NewWriter(f)
 	_, err = w.WriteString(data)
 	if err != nil {
-		// TODO: handle me
-		panic("poop!")
+		log.Println("Error saving data. Will retry.")
+		return
 	}
 
 	err = w.Flush()
 	if err != nil {
-		// TODO: handle
-		panic("poop")
+		log.Println("Error flushing writer. Will retry.")
+		return
 	}
-
-	log.Println("saved secret:", path)
 }
 
 func fetchSecrets() {
-	log.Println("fetching secrets…")
-
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
