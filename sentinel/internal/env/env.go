@@ -25,11 +25,3 @@ func SafeEndpointUrl() string {
 	}
 	return u
 }
-
-func SidecarSecretsPath() string {
-	p := os.Getenv("AEGIS_SIDECAR_SECRETS_PATH")
-	if p == "" {
-		p = "/opt/aegis/secrets.json"
-	}
-	return p
-}

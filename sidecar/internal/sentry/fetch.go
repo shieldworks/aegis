@@ -10,6 +10,7 @@ package sentry
 
 import (
 	v1 "aegis-sidecar/internal/entity/reqres/v1"
+	"aegis-sidecar/internal/env"
 	"bufio"
 	"bytes"
 	"context"
@@ -27,7 +28,7 @@ import (
 )
 
 func saveData(data string) {
-	path := "/opt/aegis/secrets.json"
+	path := env.SidecarSecretsPath()
 
 	f, err := os.Create(path)
 	if err != nil {
@@ -51,12 +52,6 @@ func saveData(data string) {
 	log.Println("saved secret:", path)
 }
 
-// TODO: get this from environment.
-const (
-	socketPath = "unix:///spire-agent-socket/agent.sock"
-	serverUrl  = "https://aegis-safe.aegis-system.svc.cluster.local:8443/"
-)
-
 func fetchSecrets() {
 	log.Println("fetching secrets…")
 
@@ -64,7 +59,7 @@ func fetchSecrets() {
 	defer cancel()
 
 	source, err := workloadapi.NewX509Source(
-		ctx, workloadapi.WithClientOptions(workloadapi.WithAddr(socketPath)),
+		ctx, workloadapi.WithClientOptions(workloadapi.WithAddr(env.SpiffeSocketUrl())),
 	)
 
 	if err != nil {
@@ -122,7 +117,7 @@ func fetchSecrets() {
 		return errors.New("I don’t know you, and it’s crazy: '" + id.String() + "'")
 	})
 
-	p, err := url.JoinPath(serverUrl, "/v1/fetch")
+	p, err := url.JoinPath(env.SafeEndpointUrl(), "/v1/fetch")
 	if err != nil {
 		log.Fatalf("Problem generating server url. Killing the container.")
 		return

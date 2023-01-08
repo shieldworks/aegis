@@ -1,7 +1,16 @@
+/*
+ * .-'_.---._'-.
+ * ||####|(__)||   Protect your secrets, protect your business.
+ *   \\()|##//       Secure your sensitive data with Aegis.
+ *    \\ |#//                  <aegis.z2h.dev>
+ *     .\_/.
+ */
+
 package main
 
 import (
 	v1 "aegis-sentinel/internal/entity/reqres/v1"
+	"aegis-sentinel/internal/env"
 	"bytes"
 	"context"
 	"encoding/json"
@@ -17,12 +26,6 @@ import (
 	"net/url"
 	"os"
 	"strings"
-)
-
-// TODO: get this from environment.
-const (
-	socketPath = "unix:///spire-agent-socket/agent.sock"
-	serverUrl  = "https://aegis-safe.aegis-system.svc.cluster.local:8443/"
 )
 
 func main() {
@@ -72,7 +75,7 @@ func main() {
 	defer cancel()
 
 	source, err := workloadapi.NewX509Source(
-		ctx, workloadapi.WithClientOptions(workloadapi.WithAddr(socketPath)),
+		ctx, workloadapi.WithClientOptions(workloadapi.WithAddr(env.SpiffeSocketUrl())),
 	)
 
 	if err != nil {
@@ -130,7 +133,7 @@ func main() {
 		return errors.New("I don’t know you, and it’s crazy: '" + id.String() + "'")
 	})
 
-	p, err := url.JoinPath(serverUrl, "/v1/secret")
+	p, err := url.JoinPath(env.SafeEndpointUrl(), "/v1/secret")
 	if err != nil {
 		fmt.Println("I am having problem generating Aegis Safe secrets api endpoint URL.")
 		fmt.Println("")
