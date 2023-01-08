@@ -24,17 +24,24 @@ func Fetch(w http.ResponseWriter, r *http.Request, svid string) {
 	}
 
 	if !strings.HasPrefix(svid, "spiffe://aegis.z2h.dev/workload/") {
-		// TODO: return an error response instead.
-		_, _ = io.WriteString(w, "")
+		w.WriteHeader(http.StatusBadRequest)
+		_, err := io.WriteString(w, "")
+		if err != nil {
+			log.Println("Problem sending response")
+		}
 		return
 	}
 
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
-		// TODO: return an error response instead.
-		_, _ = io.WriteString(w, "")
+		w.WriteHeader(http.StatusBadRequest)
+		_, err := io.WriteString(w, "")
+		if err != nil {
+			log.Println("Problem sending response")
+		}
 		return
 	}
+
 	defer func(b io.ReadCloser) {
 		if b == nil {
 			return
@@ -49,17 +56,22 @@ func Fetch(w http.ResponseWriter, r *http.Request, svid string) {
 
 	err = json.Unmarshal(body, &sr)
 	if err != nil {
-		// TODO: return an error response instead.
-		_, _ = io.WriteString(w, "")
+		w.WriteHeader(http.StatusBadRequest)
+		_, err := io.WriteString(w, "")
+		if err != nil {
+			log.Println("Problem sending response")
+		}
 		return
 	}
 
-	// TODO: this shall be parsed from svid instead.
 	tmp := strings.Replace(svid, "spiffe://aegis.z2h.dev/workload/", "", 1)
 	parts := strings.Split(tmp, "/")
 	if len(parts) == 0 {
-		// TODO: return an error response instead.
-		_, _ = io.WriteString(w, "")
+		w.WriteHeader(http.StatusBadRequest)
+		_, err := io.WriteString(w, "")
+		if err != nil {
+			log.Println("Problem sending response")
+		}
 		return
 	}
 
@@ -72,10 +84,16 @@ func Fetch(w http.ResponseWriter, r *http.Request, svid string) {
 
 	resp, err := json.Marshal(sfr)
 	if err != nil {
-		// TODO: return an error response instead.
-		_, _ = io.WriteString(w, "")
+		w.WriteHeader(http.StatusInternalServerError)
+		_, err := io.WriteString(w, "Problem unmarshaling response")
+		if err != nil {
+			log.Println("Problem sending response")
+		}
 		return
 	}
 
-	_, _ = io.WriteString(w, string(resp))
+	_, err = io.WriteString(w, string(resp))
+	if err != nil {
+		log.Println("Problem sending response")
+	}
 }
