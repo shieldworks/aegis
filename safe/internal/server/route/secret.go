@@ -25,15 +25,22 @@ func Secret(w http.ResponseWriter, r *http.Request, svid string) {
 
 	// TODO: move these validations to a common module.
 	if !strings.HasPrefix(svid, "spiffe://aegis.z2h.dev/workload/aegis-sentinel/ns/aegis-system/sa/aegis-sentinel/n/") {
-		// TODO: return an error response instead.
-		_, _ = io.WriteString(w, "")
+		w.WriteHeader(http.StatusBadRequest)
+		_, err := io.WriteString(w, "")
+		if err != nil {
+			log.Println("Problem sending response")
+		}
 		return
 	}
 
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
-		// TODO: return an error response instead.
-		_, _ = io.WriteString(w, "")
+		w.WriteHeader(http.StatusBadRequest)
+		_, err := io.WriteString(w, "")
+		if err != nil {
+			log.Println("Problem sending response")
+		}
+		return
 	}
 	defer func(b io.ReadCloser) {
 		if b == nil {
@@ -49,8 +56,11 @@ func Secret(w http.ResponseWriter, r *http.Request, svid string) {
 
 	err = json.Unmarshal(body, &sr)
 	if err != nil {
-		// TODO: return an error response instead.
-		_, _ = io.WriteString(w, "")
+		w.WriteHeader(http.StatusBadRequest)
+		_, err := io.WriteString(w, "")
+		if err != nil {
+			log.Println("Problem sending response")
+		}
 		return
 	}
 
@@ -59,6 +69,8 @@ func Secret(w http.ResponseWriter, r *http.Request, svid string) {
 
 	state.UpsertSecret(workloadId, value)
 
-	// TODO: handle these
-	_, _ = io.WriteString(w, "OK")
+	_, err = io.WriteString(w, "OK")
+	if err != nil {
+		log.Println("Problem sending response")
+	}
 }

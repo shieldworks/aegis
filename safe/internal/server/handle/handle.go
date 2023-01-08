@@ -28,6 +28,7 @@ func InitializeRoutes() {
 			log.Println("no peer certs. exiting.")
 			return
 		}
+
 		id, err := x509svid.IDFromCert(tlsConnectionState.PeerCertificates[0])
 		if err != nil {
 			log.Println("problem extracting svid. exiting.")
@@ -49,7 +50,11 @@ func InitializeRoutes() {
 			return
 		}
 
-		// TODO: return an error instead.
-		_, _ = io.WriteString(w, "OK")
+		w.WriteHeader(http.StatusBadRequest)
+		_, err = io.WriteString(w, "")
+		if err != nil {
+			log.Println("Problem writing response")
+			return
+		}
 	})
 }
