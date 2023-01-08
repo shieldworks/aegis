@@ -12,10 +12,10 @@ import (
 	v1 "aegis-safe/internal/entity/reqres/v1"
 	"aegis-safe/internal/state"
 	"encoding/json"
+	"github.com/zerotohero-dev/aegis/core/validation"
 	"io"
 	"log"
 	"net/http"
-	"strings"
 )
 
 func Secret(w http.ResponseWriter, r *http.Request, svid string) {
@@ -23,8 +23,7 @@ func Secret(w http.ResponseWriter, r *http.Request, svid string) {
 		return
 	}
 
-	// TODO: move these validations to a common module.
-	if !strings.HasPrefix(svid, "spiffe://aegis.z2h.dev/workload/aegis-sentinel/ns/aegis-system/sa/aegis-sentinel/n/") {
+	if !validation.IsSentinel(svid) {
 		w.WriteHeader(http.StatusBadRequest)
 		_, err := io.WriteString(w, "")
 		if err != nil {

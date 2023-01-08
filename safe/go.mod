@@ -3,15 +3,11 @@ module aegis-safe
 go 1.19
 
 require (
-	github.com/go-kit/kit v0.12.0
-	github.com/gorilla/mux v1.8.0
 	github.com/spiffe/go-spiffe/v2 v2.1.1
 )
 
 require (
 	github.com/Microsoft/go-winio v0.5.2 // indirect
-	github.com/go-kit/log v0.2.0 // indirect
-	github.com/go-logfmt/logfmt v0.5.1 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/zeebo/errs v1.2.2 // indirect
 	golang.org/x/crypto v0.0.0-20210915214749-c084706c2272 // indirect

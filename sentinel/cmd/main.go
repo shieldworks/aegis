@@ -20,12 +20,12 @@ import (
 	"github.com/spiffe/go-spiffe/v2/spiffeid"
 	"github.com/spiffe/go-spiffe/v2/spiffetls/tlsconfig"
 	"github.com/spiffe/go-spiffe/v2/workloadapi"
+	"github.com/zerotohero-dev/aegis-core/validation"
 	"io"
 	"log"
 	"net/http"
 	"net/url"
 	"os"
-	"strings"
 )
 
 func main() {
@@ -99,22 +99,8 @@ func main() {
 		}
 	}(source)
 
-	// SPIFFE ID format:
-	//   spiffe://aegis.z2h.dev/workload/$workloadName/ns/{{ .PodMeta.Namespace }}
-	//   /sa/{{ .PodSpec.ServiceAccountName }}/n/{{ .PodMeta.Name }}
-	//
-	// For aegis-system components $workloadName is:
-	// - aegis-safe
-	// - or aegis-system.
-	//
-	// For the non-aegis-system workloads that `safe` injects secrets,
-	// $workloadName is determined by the workload's ClusterSPIFFEID CRD.
-
 	// Make sure that the binary is enclosed in a Pod that we trust.
-	if !strings.HasPrefix(
-		svid.ID.String(),
-		"spiffe://aegis.z2h.dev/workload/aegis-sentinel/ns/aegis-system/sa/aegis-sentinel/n/",
-	) {
+	if !validation.IsSentinel(svid.ID.String()) {
 		fmt.Println("I don’t know you, and it’s crazy: '" + svid.ID.String() + "'")
 		fmt.Println("`aegis` can only run from within the Sentinel container.")
 		fmt.Println("")
@@ -122,11 +108,7 @@ func main() {
 	}
 
 	authorizer := tlsconfig.AdaptMatcher(func(id spiffeid.ID) error {
-		if strings.HasPrefix(
-			// Only `aegis-safe` can respond to this binary.
-			id.String(),
-			"spiffe://aegis.z2h.dev/workload/aegis-safe/ns/aegis-system/sa/aegis-safe/n/",
-		) {
+		if validation.IsSafe(id.String()) {
 			return nil
 		}
 

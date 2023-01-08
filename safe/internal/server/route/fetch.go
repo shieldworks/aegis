@@ -12,6 +12,7 @@ import (
 	v1 "aegis-safe/internal/entity/reqres/v1"
 	"aegis-safe/internal/state"
 	"encoding/json"
+	"github.com/zerotohero-dev/aegis/core/validation"
 	"io"
 	"log"
 	"net/http"
@@ -23,7 +24,7 @@ func Fetch(w http.ResponseWriter, r *http.Request, svid string) {
 		return
 	}
 
-	if !strings.HasPrefix(svid, "spiffe://aegis.z2h.dev/workload/") {
+	if !validation.IsWorkload(svid) {
 		w.WriteHeader(http.StatusBadRequest)
 		_, err := io.WriteString(w, "")
 		if err != nil {
