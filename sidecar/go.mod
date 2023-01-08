@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/go-kit/kit v0.12.0
 	github.com/spiffe/go-spiffe/v2 v2.1.1
-	github.com/zerotohero-dev/aegis-core v0.6.0
+	github.com/zerotohero-dev/aegis v0.5.99
 )
 
 require (
@@ -14,6 +14,7 @@ require (
 	github.com/go-logfmt/logfmt v0.5.1 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/zeebo/errs v1.2.2 // indirect
+	github.com/zerotohero-dev/aegis-core v0.6.0 // indirect
 	golang.org/x/crypto v0.0.0-20210915214749-c084706c2272 // indirect
 	golang.org/x/net v0.0.0-20210917221730-978cfadd31cf // indirect
 	golang.org/x/sys v0.0.0-20210917161153-d61c044b1678 // indirect

@@ -11,8 +11,8 @@ package route
 import (
 	"aegis-safe/internal/state"
 	"encoding/json"
-	"github.com/zerotohero-dev/aegis-core/entity/reqres/v1"
-	"github.com/zerotohero-dev/aegis-core/validation"
+	"github.com/zerotohero-dev/aegis/core/entity/reqres/v1"
+	"github.com/zerotohero-dev/aegis/core/validation"
 	"io"
 	"log"
 	"net/http"
