@@ -8,7 +8,6 @@
 #     .\_/.
 #
 
-VERSION=0.6.1
+make clean
+make build
 
-git tag -s v$VERSION
-git push origin --tags
