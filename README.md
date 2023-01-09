@@ -7,7 +7,7 @@ production consumption. **Use it at your own risk**.
 
 ## A Video Is Worth a Lot of Thousands of Words
 
-[![Watch the video](https://i.vimeocdn.com/video/1582072017-64f7ad574170c7fa65478e62f8f8808c7c4e903b1f7c3e5854547250571dc5ce-d_1920x1080?r=pad)](https://vimeo.com/v0lkan/secrets)
+[![Watch the video](https://github.com/zerotohero-dev/aegis/blob/main/assets/capture.png)](https://vimeo.com/v0lkan/secrets)
 
 There is also [aegis.z2h.dev][aegis-website], the project’s website.
 
