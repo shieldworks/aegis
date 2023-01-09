@@ -7,7 +7,7 @@ production consumption. **Use it at your own risk**.
 
 ## A Video Is Worth a Lot of Thousands of Words
 
-[Here is a short video introduction to Aegis][aegis-demo-video].
+https://vimeo.com/v0lkan/secrets
 
 There is also [aegis.z2h.dev][aegis-website], the project’s website.
 
