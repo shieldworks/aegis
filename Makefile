@@ -18,6 +18,33 @@ clean:
   		echo "Nothing to clean."; \
 	fi
 
+clone:
+	cd ..; git clone git@github.com:zerotohero-dev/aegis.git
+	cd ..; git clone git@github.com:zerotohero-dev/aegis-spire.git
+	cd ..; git clone git@github.com:zerotohero-dev/aegis-core.git
+	cd ..; git clone git@github.com:zerotohero-dev/aegis-sdk-go.git
+	cd ..; git clone git@github.com:zerotohero-dev/aegis-safe.git
+	cd ..; git clone git@github.com:zerotohero-dev/aegis-sentinel.git
+	cd ..; git clone git@github.com:zerotohero-dev/aegis-sidecar.git
+	cd ..; git clone git@github.com:zerotohero-dev/aegis-workload-demo-using-sidecar.git
+	cd ..; git clone git@github.com:zerotohero-dev/aegis-workload-demo-using-sdk.git
+	cd ..; git clone git@github.com:zerotohero-dev/aegis-web.git
+
+pull:
+	cd ../aegis-core
+	cd ../aegis-core; git stash; git checkout main; git pull;
+	cd ../aegis-sdk-go
+	cd ../aegis-sdk-go; git stash; git checkout main; git pull;
+	cd ../aegis-sentinel
+	cd ../aegis-sentinel; git stash; git checkout main; git pull;
+	cd ../aegis-sidecar
+	cd ../aegis-sidecar; git stash; git checkout main; git pull;
+	cd ../aegis-safe
+	cd ../aegis-web
+	cd ../aegis-web; git stash; git checkout main; git pull;
+	cd ../aegis-demo-workload-using-sidecar;
+	cd ../aegis-demo-workload-using-sdk;
+
 all:
 	@echo ""
 	@echo "You can use the following commands based on your needs as follows:"
@@ -46,7 +73,7 @@ install: spire aegis
 # installing aegis.
 .PHONY: spire
 spire:
-	cd spire && $(MAKE) deploy
+	cd ../aegis-spire && $(MAKE) deploy
 	sleep 15 # give some time for SPIRE to bring itself up.
 
 # Installs without rebuilding apps.
@@ -59,23 +86,25 @@ install-demo:
 	cd demo && $(MAKE) deploy
 
 install-safe:
-	cd safe && $(MAKE) deploy
+	cd ../aegis-safe && $(MAKE) deploy
 
 install-sentinel:
-	cd sentinel && $(MAKE) deploy
+	cd ../aegis-sentinel && $(MAKE) deploy
 
-# Builds and installs everything.
+# Fetches the recent changes.
+# Then, builds and installs everything.
 # You will need dockerhub write access for this task.
-build: spire build-demo build-safe build-sidecar build-sentinel
+# Also note that any uncommitted changes will be stashed.
+build: pull spire build-demo build-safe build-sidecar build-sentinel
 
 build-demo:
-	cd demo && $(MAKE) all
+	cd ../aegis-demo && $(MAKE) all
 
 build-safe:
-	cd safe && $(MAKE) all
+	cd ../aegis-safe && $(MAKE) all
 
 build-sidecar:
-	cd sidecar && $(MAKE) all
+	cd ../aegis-sidecar && $(MAKE) all
 
 build-sentinel:
-	cd sentinel && $(MAKE) all
+	cd ../aegis-sentinel && $(MAKE) all
