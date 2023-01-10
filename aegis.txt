@@ -87,3 +87,4 @@ x 2023-01-01 use a simple CI tool (Ansible is as good as any) to fetch an admin 
 (A) ability to install Aegis when there already is an existing spire rollout. Would likely mean customizing the trust root etc.
 e2e test with a different trust domain +aegis 
 (B) design a dev workflow with a local repo.
+(A) add some minimal documentation for aegis-sdk-go on how to use the SDK.

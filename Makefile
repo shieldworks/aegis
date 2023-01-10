@@ -18,8 +18,8 @@ clean:
   		echo "Nothing to clean."; \
 	fi
 
+# Clones all satellite repos into the workspace.
 clone:
-	cd ..; git clone git@github.com:zerotohero-dev/aegis.git
 	cd ..; git clone git@github.com:zerotohero-dev/aegis-spire.git
 	cd ..; git clone git@github.com:zerotohero-dev/aegis-core.git
 	cd ..; git clone git@github.com:zerotohero-dev/aegis-sdk-go.git
@@ -29,6 +29,19 @@ clone:
 	cd ..; git clone git@github.com:zerotohero-dev/aegis-workload-demo-using-sidecar.git
 	cd ..; git clone git@github.com:zerotohero-dev/aegis-workload-demo-using-sdk.git
 	cd ..; git clone git@github.com:zerotohero-dev/aegis-web.git
+
+# Destructively and irreversibly removes all the satellite repos
+# and all the local changes on them
+rimraf:
+	cd ..; rm -rf aegis-spire
+	cd ..; rm -rf aegis-core
+	cd ..; rm -rf aegis-sdk-go
+	cd ..; rm -rf aegis-safe
+	cd ..; rm -rf aegis-sentinel
+	cd ..; rm -rf aegis-sidecar
+	cd ..; rm -rf aegis-workload-demo-using-sidecar
+	cd ..; rm -rf aegis-workload-demo-using-sdk
+	cd ..; rm -rf aegis-web
 
 pull:
 	cd ../aegis-core
