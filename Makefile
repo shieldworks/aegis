@@ -6,6 +6,15 @@
 #     .\_/.
 #
 
+# Bump versions (to push new container images)
+bump:
+	./hack/bump-version.sh
+
+# Tag a new release when you are sure everything works.
+tag:
+	./hack/tag.sh
+
+# Cleans the former deployment.
 clean:
 	@if kubectl get ns | grep aegis-system; then \
 		kubectl delete ns spire-system; \
@@ -31,7 +40,7 @@ clone:
 	cd ..; git clone git@github.com:zerotohero-dev/aegis-web.git
 
 # Destructively and irreversibly removes all the satellite repos
-# and all the local changes on them
+# and all the local changes on them.
 rimraf:
 	cd ..; rm -rf aegis-spire
 	cd ..; rm -rf aegis-core
@@ -44,6 +53,8 @@ rimraf:
 	cd ..; rm -rf aegis-web
 
 pull:
+	cd ../aegis-spire;
+	cd ../aegis-spire; git stash; git checkout main; git pull;
 	cd ../aegis-core
 	cd ../aegis-core; git stash; git checkout main; git pull;
 	cd ../aegis-sdk-go
@@ -53,71 +64,51 @@ pull:
 	cd ../aegis-sidecar
 	cd ../aegis-sidecar; git stash; git checkout main; git pull;
 	cd ../aegis-safe
+	cd ../aegis-safe; git stash; git checkout main; git pull;
 	cd ../aegis-web
 	cd ../aegis-web; git stash; git checkout main; git pull;
-	cd ../aegis-demo-workload-using-sidecar;
-	cd ../aegis-demo-workload-using-sdk;
+	cd ../aegis-workload-demo-using-sidecar;
+	cd ../aegis-workload--demo-using-sidecar; git stash; git checkout main; git pull;
+	cd ../aegis-workload-demo-using-sdk;
+	cd ../aegis-workload-demo-using-sdk; git stash; git checkout main; git pull;
 
-all:
-	@echo ""
-	@echo "You can use the following commands based on your needs as follows:"
-	@echo ""
-	@echo "Clean former installations:"
-	@echo "    make clean"
-	@echo ""
-	@echo "If you do not have SPIRE set up:"
-	@echo "    make spire; make aegis"
-	@echo ""
-	@echo "If you do have SPIRE set up already:"
-	@echo "    make aegis"
-	@echo ""
-	@echo "If you want to run a demo workload to test things out:"
-	@echo "    make demo"
-	@echo ""
-	@echo "If you have dockerhub access:"
-	@echo "    make build"
-	@echo ""
+# For repo-admin-use only.
+build: pull build-demo build-safe build-sidecar build-sentinel
 
-# A shortcut to install SPIRE, Safe, and Sentinel
-install: spire aegis
+build-demo:
+	cd ../aegis-demo && $(MAKE) build && $(MAKE) bundle && $(MAKE) push
+
+build-safe:
+	cd ../aegis-safe && $(MAKE) build && $(MAKE) bundle && $(MAKE) push
+
+build-sidecar:
+	cd ../aegis-sidecar && $(MAKE) build && $(MAKE) bundle && $(MAKE) push
+
+build-sentinel:
+	cd ../aegis-sentinel && $(MAKE) build && $(MAKE) bundle && $(MAKE) push
+
+# Deploys Aegis to the cluster.
+deploy: spire safe sentinel
 
 # SPIRE is required for Workload-to-Safe, Safe-to-Workload, Sentinel-to-Safe
 # and Safe-to-Sentinel communication. Better to install it first before
 # installing aegis.
-.PHONY: spire
 spire:
 	cd ../aegis-spire && $(MAKE) deploy
 	sleep 15 # give some time for SPIRE to bring itself up.
 
-# Installs without rebuilding apps.
-aegis: install-safe install-sentinel
-
-# Installs the demo app to play with.
-demo: install-demo
-
-install-demo:
-	cd demo && $(MAKE) deploy
-
-install-safe:
-	cd ../aegis-safe && $(MAKE) deploy
-
-install-sentinel:
+# Sentinel acts as a bastion.
+sentinel:
 	cd ../aegis-sentinel && $(MAKE) deploy
 
-# Fetches the recent changes.
-# Then, builds and installs everything.
-# You will need dockerhub write access for this task.
-# Also note that any uncommitted changes will be stashed.
-build: pull spire build-demo build-safe build-sidecar build-sentinel
+# Safe is the secrets store.
+safe:
+	cd ../aegis-safe && $(MAKE) deploy
 
-build-demo:
-	cd ../aegis-demo && $(MAKE) all
+# Installs the demo app to play with.
+demo-sidecar:
+	cd ../aegis-workload-demo-using-sidecar && $(MAKE) deploy
 
-build-safe:
-	cd ../aegis-safe && $(MAKE) all
-
-build-sidecar:
-	cd ../aegis-sidecar && $(MAKE) all
-
-build-sentinel:
-	cd ../aegis-sentinel && $(MAKE) all
+# Installs the demo app to play with.
+demo-sdk:
+	cd ../aegis-workload-demo-using-sdk && $(MAKE) deploy
