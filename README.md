@@ -17,9 +17,10 @@ There is also [aegis.z2h.dev][aegis-website], the project’s website.
 [aegis-demo-video]: https://vimeo.com/v0lkan/secrets "Aegis: Keep your secrets… Secret." 
 
 ## About Aegis
-Aegis 
-**Aegis** is a Kubernetes-native, lightweight, secrets management solution that 
-keeps your secrets secret. 
+
+**Aegis** is a delightfully-secure Kubernetes-native secrets store.
+
+**Aegis** keeps your secrets secret. 
 
 With **Aegis**, you can rest assured that your 
 sensitive data is always **secure** and **protected**. 
@@ -32,6 +33,13 @@ helping you safeguard your business and protect against data breaches.
 
 If you haven’t watched [this six-minute introductory video][aegis-demo-video] yet,
 now might be a good time 🙂.
+
+## Community
+
+If you are a security enthusiast, [**join Aegis Slack Workspace**][slack-invite]
+and let us change the world together 🤘.
+
+[slack-invite]: https://join.slack.com/t/aegis-6n41813/shared_invite/zt-1myzqdi6t-jTvuRd1zDLbHX0gN8VkCqg "Join aegis.slack.com"
 
 ## System Requirements
 

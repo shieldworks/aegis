@@ -89,3 +89,5 @@ e2e test with a different trust domain +aegis
 (B) design a dev workflow with a local repo.
 (A) add some minimal documentation for aegis-sdk-go on how to use the SDK.
 (B) create a tutorial telling how to set things up from scratch with and without sdk.
+(B) customization test for trust domain change
+(C) have a place for the community to interact realtime (Slack or Discord etc). — Not urgent.
