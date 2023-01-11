@@ -8,7 +8,7 @@
 #     .\_/.
 #
 
-VERSION=0.7.0
+VERSION=0.7.3
 
 git tag -s v$VERSION
 git push origin --tags

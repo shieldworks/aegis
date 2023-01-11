@@ -13,7 +13,7 @@ Ensure you have merged all your changes.
 
 2.
 make clean
-make pull
+make pull (optionally skip depending on if this is a rebuild with local fixes)
 
 3.
 make bump

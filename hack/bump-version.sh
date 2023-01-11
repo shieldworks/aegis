@@ -8,8 +8,8 @@
 #     .\_/.
 #
 
-VERSION=0.7.0
-NEXT_VERSION=0.7.1
+VERSION=0.7.2
+NEXT_VERSION=0.7.3
 
 cd ../aegis-workload-demo-using-sidecar/k8s || exit
 sed -i "s/:$VERSION/:$NEXT_VERSION/" ./*.yaml
@@ -24,19 +24,19 @@ sed -i "s/=$VERSION/=$NEXT_VERSION/" Makefile
 cd ../aegis || exit
 
 
-cd ./aegis-safe/k8s || exit
+cd ../aegis-safe/k8s || exit
 sed -i "s/:$VERSION/:$NEXT_VERSION/" ./*.yaml
 cd ..
 sed -i "s/=$VERSION/=$NEXT_VERSION/" Makefile
 cd ../aegis || exit
 
-cd ./aegis-sentinel/k8s || exit
+cd ../aegis-sentinel/k8s || exit
 sed -i "s/:$VERSION/:$NEXT_VERSION/" ./*.yaml
 cd ..
 sed -i "s/=$VERSION/=$NEXT_VERSION/" Makefile
 cd ../aegis || exit
 
-cd ./aegis-sidecar || exit
+cd ../aegis-sidecar || exit
 sed -i "s/=$VERSION/=$NEXT_VERSION/" Makefile
 cd ../aegis || exit
 

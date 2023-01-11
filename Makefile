@@ -68,15 +68,18 @@ pull:
 	cd ../aegis-web
 	cd ../aegis-web; git stash; git checkout main; git pull;
 	cd ../aegis-workload-demo-using-sidecar;
-	cd ../aegis-workload--demo-using-sidecar; git stash; git checkout main; git pull;
+	cd ../aegis-workload-demo-using-sidecar; git stash; git checkout main; git pull;
 	cd ../aegis-workload-demo-using-sdk;
 	cd ../aegis-workload-demo-using-sdk; git stash; git checkout main; git pull;
 
 # For repo-admin-use only.
-build: pull build-demo build-safe build-sidecar build-sentinel
+build: build-demo-sidecar build-demo-sdk build-safe build-sidecar build-sentinel
 
-build-demo:
-	cd ../aegis-demo && $(MAKE) build && $(MAKE) bundle && $(MAKE) push
+build-demo-sidecar:
+	cd ../aegis-workload-demo-using-sidecar && $(MAKE) build && $(MAKE) bundle && $(MAKE) push
+
+build-demo-sdk:
+	cd ../aegis-workload-demo-using-sdk && $(MAKE) build && $(MAKE) bundle && $(MAKE) push
 
 build-safe:
 	cd ../aegis-safe && $(MAKE) build && $(MAKE) bundle && $(MAKE) push
