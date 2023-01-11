@@ -40,7 +40,7 @@ to contribute to the project.
   talk to `aegis-safe`.
 * [`aegis-demo-workload-using-sidecar`][demo-sidecar] has the source code of
   a demo workload that can consume secrets using [`aegis-sidecar`].
-* [`aegis-demo-workload-using-sdk][demo-sdk] has the source code of a demo
+* [`aegis-demo-workload-using-sdk`][demo-sdk] has the source code of a demo
   workload that can consume secrets directly, without a sidecar, using
   [`aegis-sdk-go`][aegis-sdk-go].
 * [`aegis-core`][aegis-core] contains common modules that are used across 
