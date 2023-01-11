@@ -106,7 +106,7 @@ to **Safe**.
 
 ![Creating Secrets](assets/aegis-create-secrets.png "Creating Secrets")
 
-## Component and Workload SVID Schemas
+### Component and Workload SVID Schemas
 
 SPIFFE ID format wor workloads is as follows:
 
