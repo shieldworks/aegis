@@ -16,7 +16,7 @@ x 2022-12-24 Finalize diagrams. pri:B +aegis
 (E) what about mTLS? Maybe offload it to a mesh and keep it out of scope and/or conditionally enable with a configuration flag. +aegis 
 (E) there is almost no logging in fail cases, incrase logging +aegis 
 (E) right now everything is in memory; maybe provide other backing stores +aegis
-(B) note that the initial prototype stores things “in memory” without encryption; it might be nice to introduce `sops` next when things stabilize +aegis 
+x 2023-01-10 note that the initial prototype stores things “in memory” without encryption; it might be nice to introduce `sops` next when things stabilize pri:B +aegis
 (C) Add documentation to all publicly exported functions everywhere +aegis 
 (C) Code cleanup everywhere +aegis
 x 2023-01-01 use `sops` and `age` in some way, shape or form pri:B +aegis +safe @mvp
@@ -32,12 +32,12 @@ x 2023-01-01 use `sops` and `age` in some way, shape or form pri:B +aegis +safe 
 x 2022-12-23 record a demo video pri:A +aegis @▶️
 x 2022-12-23 tx renewal b4 29th pri:A @🚨
 x 2023-01-01 convert minikube kubectl to kubectl in the deploy makefiles; maybe add a deploy-minikube as an alternative option pri:B +aegis
-(B) add make all; make install; make clean -- those are typical things people expect in makefiles +aegis 
-(B) ensure that all `make` commands are working as expected +aegis 
-(B) create a top-level makefile that builds and deploys all the child projects +aegis
-(B) environment variable check before launching containers +aegis 
-(B) enable debug-level logging +aegis 
-(B) add list of technologies used in README, and also add licenses of those to the things that you bundle +aegis 
+x 2023-01-10 add make all; make install; make clean -- those are typical things people expect in makefiles pri:B +aegis
+x 2023-01-10 ensure that all `make` commands are working as expected pri:B +aegis
+x 2023-01-10 create a top-level makefile that builds and deploys all the child projects pri:B +aegis
+x 2023-01-10 environment variable check before launching containers pri:B +aegis
+x 2023-01-10 enable debug-level logging pri:B +aegis
+x 2023-01-10 add list of technologies used in README, and also add licenses of those to the things that you bundle pri:B +aegis
 (C) documentation: notary should be up and running first +safe — plus, it wouild be nice if safe for example can check the existence of notary
 (B) in this current implementation, sidecars are constantly polling safe even though they don't have any secrets registered; they should back off after a while exponentially +sidecar 
 x 2023-01-01 make notary deployable inside a cluster too. pri:A +aegis @mvp
@@ -45,7 +45,7 @@ x 2022-12-23 a mini operations manual on README.md pri:A due:2022-12-24 +aegis @
 (E) you need a CONTRIBUTING.md +aegis 
 x 2023-01-01 A mini powerpoint presentation would be useful too. pri:B +aegis
 (B) A second app that talks to Aegis over mTLS and can be used to unlock Safe if Safe gets evicted and restarted for whatever reason. This app will require to store the admin token in memory (to trigger the restore operation via the Safe APIs). It can be deployed in a HA setup so that if one of them crashes, it can resync with others. I would like to call them “Oracles” and keep it as a group of three.
-(B) implement secure component-to-component connectivity using either TLS or mTLS. —aegis-keygen can generate certs if needed +aegis 
+x 2023-01-10 implement secure component-to-component connectivity using either TLS or mTLS. —aegis-keygen can generate certs if needed pri:B +aegis
 x 2022-12-24 make `make install` work for users with no write access to dockerhub. pri:A +aegis @▶️
 x 2022-12-24 establish a secure way to deliver the admin token  -- Securing the admin key you will need a private key and a public key; you will have to keep your private key “private”safe:PUT /v1/crypto/key { publicKey: key } will register your public key.GET /v1/admin/key => will return the admin key encrypted with your public key.you can use aegis-keygen command line utility to generate a key pair.you can again use aegis-keygen command line utility to decrypt your admin tokenif either safe or notary crashes and restarts (after a successful bootstrap),you'll have to provide your private key to safe to recover from last knownstate. your private key is never logged or stored on disk, and it will bewiped out from memory as soon as there is no more need for it.Key Rotation: to be done in the future; right now admin token, notary token, and workload tokens are everlasting once they are dispatched.    —  1Password model: The encryption key is generated when you create the account. The only feasible way for it to be compromised is if the user leaks/shares it. Users don’t pick the key, nor is it derived from the account password. — In our case `Save` can be used to return a private key, public key pair to the user; it will return the same pair only once; admin will store the keypair; and they will use the public key to retrieve an encrypted admin  token. The keygen endpoint will be locked after 10 consecutive uses. pri:B +aegis @🚨 @mvp
 (B) add license of nicolaka/netshoot to sentinel, since it is an almost item-by-item fork.
@@ -78,16 +78,16 @@ x 2023-01-01 use a simple CI tool (Ansible is as good as any) to fetch an admin 
 (B) add resource limits
 (C) audit logs for `safe` +safe
 (B) template transformation on secrets before persisting them.
-(A) Since this is a development deployment, I can execute a shell inside this sentinel; for production deployments, there will be a more hardened version of sentinel where you will be allowed to execute a binary that is only allowed to talk to SAFE and not fiddle with anything else on the pod’s system.
-(A): add links to technoligies used in the readme +aegis .
+x 2023-01-10 Since this is a development deployment, I can execute a shell inside this sentinel; for production deployments, there will be a more hardened version of sentinel where you will be allowed to execute a binary that is only allowed to talk to SAFE and not fiddle with anything else on the pod’s system. pri:A
+: add links to technoligies used in the readme  . pri:A +aegis
 (B) web a mini logo next to Aegis header + a favicon
 (B) various timeout should be configurable (like the polling interval of the sidecar.
 (C) Do a basic benchmark: How much CPU and memory does a typical Aegis setup requires; how much does it change when the number of workloads increase?
-(A) update the demo video link
-(A) ability to install Aegis when there already is an existing spire rollout. Would likely mean customizing the trust root etc.
+x 2023-01-10 update the demo video link pri:A
+x 2023-01-10 ability to install Aegis when there already is an existing spire rollout. Would likely mean customizing the trust root etc. pri:A
 e2e test with a different trust domain +aegis 
 (B) design a dev workflow with a local repo.
-(A) add some minimal documentation for aegis-sdk-go on how to use the SDK.
+x 2023-01-10 add some minimal documentation for aegis-sdk-go on how to use the SDK. pri:A
 (B) create a tutorial telling how to set things up from scratch with and without sdk.
 (B) customization test for trust domain change
 (C) have a place for the community to interact realtime (Slack or Discord etc). — Not urgent.
