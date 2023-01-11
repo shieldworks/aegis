@@ -41,31 +41,6 @@ and let us change the world together 🤘.
 
 [slack-invite]: https://join.slack.com/t/aegis-6n41813/shared_invite/zt-1myzqdi6t-jTvuRd1zDLbHX0gN8VkCqg "Join aegis.slack.com"
 
-## System Requirements
-
-**Aegis** has been recently tested with the following Kubernetes version:
-
-```text
-Client Version: v1.26.0
-Kustomize Version: v4.5.7
-Server Version: v1.25.3
-```
-
-Although not explicitly tested, any recent Kubernetes installation will 
-likely work just fine.
-
-As in any secrets management solution, your compute and memory requirements
-will depend on several factors, such as:
-
-* The number of workloads in the cluster
-* The number of secrets **Safe** (*Aegis’ Secrets Store*) has to manage (*see [architecture details](ARCHITECTURE.md)*)
-* The amount of workloads interacting with **Safe** (*see [architecture details](ARCHITECTURE.md)*)
-* **Sidecar** poll frequency (*see [architecture details](ARCHITECTURE.md)*)
-* etc.
-
-We recommend you benchmark with a realistic production-like
-cluster and allocate your resources accordingly.
-
 ## Installation
 
 You need a **Kubernetes** cluster and sufficient admin rights on that cluster to
@@ -137,6 +112,31 @@ to your secrets.
 
 We believe that this approach is **Kubernetes-native**, convenient, simpler, 
 and delightfully secure (*as opposed to being “annoyingly secure”*).
+
+## System Requirements
+
+**Aegis** has been recently tested with the following Kubernetes version:
+
+```text
+Client Version: v1.26.0
+Kustomize Version: v4.5.7
+Server Version: v1.25.3
+```
+
+Although not explicitly tested, any recent Kubernetes installation will
+likely work just fine.
+
+As in any secrets management solution, your compute and memory requirements
+will depend on several factors, such as:
+
+* The number of workloads in the cluster
+* The number of secrets **Safe** (*Aegis’ Secrets Store*) has to manage (*see [architecture details](ARCHITECTURE.md)*)
+* The amount of workloads interacting with **Safe** (*see [architecture details](ARCHITECTURE.md)*)
+* **Sidecar** poll frequency (*see [architecture details](ARCHITECTURE.md)*)
+* etc.
+
+We recommend you benchmark with a realistic production-like
+cluster and allocate your resources accordingly.
 
 ## Design Decisions
 
