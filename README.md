@@ -3,7 +3,9 @@
 ## Status of This Software
 
 This project is a **work in progress** (*WIP*) and has yet to be ready for 
-production consumption. **Use it at your own risk**.
+production consumption. 
+
+**Use it at your own risk**.
 
 ## A Video Is Worth a Lot of Thousands of Words
 
