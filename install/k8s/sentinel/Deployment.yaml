@@ -1,0 +1,44 @@
+#
+# .-'_.---._'-.
+# ||####|(__)||   Protect your secrets, protect your business.
+#   \\()|##//       Secure your sensitive data with Aegis.
+#    \\ |#//                  <aegis.z2h.dev>
+#     .\_/.
+#
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aegis-sentinel
+  namespace: aegis-system
+  labels:
+    app.kubernetes.io/name: aegis-sentinel
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: aegis-sentinel
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: aegis-sentinel
+        app.kubernetes.io/part-of: aegis-system
+    spec:
+      serviceAccountName: aegis-sentinel
+      containers:
+        - name: main
+          image: z2hdev/aegis-sentinel:0.7.0
+          # command: [ "/bin/sh", "-c", "--" ]
+          # args: [ "while true; do sleep 30; done;" ]
+          volumeMounts:
+          - name: spire-agent-socket
+            mountPath: /spire-agent-socket
+            readOnly: true
+          env:
+          - name: SPIFFE_ENDPOINT_SOCKET
+            value: unix:///spire-agent-socket/agent.sock
+      volumes:
+      - name: spire-agent-socket
+        hostPath:
+          path: /run/spire/sockets
+          type: Directory

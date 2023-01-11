@@ -1,0 +1,44 @@
+#
+# .-'_.---._'-.
+# ||####|(__)||   Protect your secrets, protect your business.
+#   \\()|##//       Secure your sensitive data with Aegis.
+#    \\ |#//                  <aegis.z2h.dev>
+#     .\_/.
+#
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aegis-safe
+  namespace: aegis-system
+  labels:
+    app.kubernetes.io/name: aegis-safe
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: aegis-safe
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: aegis-safe
+        app.kubernetes.io/part-of: aegis-system
+    spec:
+      serviceAccountName: aegis-safe
+      containers:
+        - name: main
+          image: z2hdev/aegis-safe:0.7.0
+          ports:
+          - containerPort: 8443
+          volumeMounts:
+          - name: spire-agent-socket
+            mountPath: /spire-agent-socket
+            readOnly: true
+          env:
+          - name: SPIFFE_ENDPOINT_SOCKET
+            value: unix:///spire-agent-socket/agent.sock
+      volumes:
+      - name: spire-agent-socket
+        hostPath:
+          path: /run/spire/sockets
+          type: Directory

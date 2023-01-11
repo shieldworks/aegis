@@ -1,0 +1,45 @@
+#
+# .-'_.---._'-.
+# ||####|(__)||   Protect your secrets, protect your business.
+#   \\()|##//       Secure your sensitive data with Aegis.
+#    \\ |#//                  <aegis.z2h.dev>
+#     .\_/.
+#
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aegis-workload-demo
+  namespace: default
+  labels:
+    app.kubernetes.io/name: aegis-workload-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: aegis-workload-demo
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: aegis-workload-demo
+    spec:
+      serviceAccountName: aegis-workload-demo
+      containers:
+        - name: main
+          image: z2hdev/aegis-workload-demo-using-sdk:0.7.0
+          volumeMounts:
+          # Volume mount for SPIRE unix domain socket.
+          - name: spire-agent-socket
+            mountPath: /spire-agent-socket
+            readOnly: true
+          env:
+          # Required to fetch SVIDs to establish mTLS.
+          # go-spiffe internally uses this.
+          - name: SPIFFE_ENDPOINT_SOCKET
+            value: unix:///spire-agent-socket/agent.sock
+      volumes:
+      # SPIRE needs this.
+      - name: spire-agent-socket
+        hostPath:
+          path: /run/spire/sockets
+          type: Directory

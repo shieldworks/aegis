@@ -91,3 +91,4 @@ e2e test with a different trust domain +aegis
 (B) create a tutorial telling how to set things up from scratch with and without sdk.
 (B) customization test for trust domain change
 (C) have a place for the community to interact realtime (Slack or Discord etc). — Not urgent.
+a mini build script to copy assets to aegies/install/k8s

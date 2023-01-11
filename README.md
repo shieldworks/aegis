@@ -71,30 +71,21 @@ cluster and allocate your resources accordingly.
 You need a **Kubernetes** cluster and sufficient admin rights on that cluster to
 install **Aegis**.
 
-As of now, the only installation option is to clone the project and install
-it using `make` as follows:
-
 ```bash 
-# Pick a workspace folder. Everything will be cloned here.
-cd $WORKSPACE
+cd ./install/k8s
+./install.sh
+```
 
-# Clone the repo and cd into it:
-git clone https://github.com/zerotohero-dev/aegis.git
+You can also deploy a demo workload to experiment with it:
 
-# Switch to aegis project where we’ll execute all other makefiles.
-cd aegis
+```bash
+# Demo workload that uses `aegis-sidecar` 
+cd ./install/k8s/demo-workload/using-sidecar
+kubectl apply -f .
 
-# Clean former deployment, if any:
-make clean
-
-# Install SPIRE, Safe, and Sentinel:
-make deploy
-
-# Optionally, install a demo workload to test the system:
-make demo-sidecar
-
-# Or try a demo workload that uses the Aegis Go SDK (w/o a sidecar):
-make demo-sdk
+# Demo workload that directly talks to `aegis-safe` using Aegis Go SDK
+cd ./install/k8s/demo-workload/using-sdk
+kubectl apply -f .
 ```
 
 To verify installation check out the `aegis-system` namespace:

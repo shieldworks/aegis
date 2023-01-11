@@ -1,0 +1,17 @@
+#
+# .-'_.---._'-.
+# ||####|(__)||   Protect your secrets, protect your business.
+#   \\()|##//       Secure your sensitive data with Aegis.
+#    \\ |#//                  <aegis.z2h.dev>
+#     .\_/.
+#
+
+apiVersion: spire.spiffe.io/v1alpha1
+kind: ClusterSPIFFEID
+metadata:
+  name: aegis-safe
+spec:
+  spiffeIDTemplate: "spiffe://aegis.z2h.dev/workload/aegis-safe/ns/{{ .PodMeta.Namespace }}/sa/{{ .PodSpec.ServiceAccountName }}/n/{{ .PodMeta.Name }}"
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: aegis-safe

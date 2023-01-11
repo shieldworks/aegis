@@ -1,0 +1,23 @@
+#
+# .-'_.---._'-.
+# ||####|(__)||   Protect your secrets, protect your business.
+#   \\()|##//       Secure your sensitive data with Aegis.
+#    \\ |#//                  <aegis.z2h.dev>
+#     .\_/.
+#
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: aegis-safe
+  namespace: aegis-system
+  labels:
+    app.kubernetes.io/name: aegis-safe
+    app.kubernetes.io/part-of: aegis-system
+spec:
+  selector:
+    app.kubernetes.io/name: aegis-safe
+  ports:
+    - protocol: TCP
+      port: 8443
+      targetPort: 8443
