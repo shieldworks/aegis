@@ -8,6 +8,8 @@
 #     .\_/.
 #
 
+cd ./install/k8s || exit
+
 kubectl apply -k ./spire
 sleep 15
 

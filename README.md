@@ -47,20 +47,17 @@ You need a **Kubernetes** cluster and sufficient admin rights on that cluster to
 install **Aegis**.
 
 ```bash 
-cd ./install/k8s
-./install.sh
+./hack/install.sh
 ```
 
 You can also deploy a demo workload to experiment with it:
 
 ```bash
 # Demo workload that uses `aegis-sidecar` 
-cd ./install/k8s/demo-workload/using-sidecar
-kubectl apply -f .
+./hack/install-workload-using-sidecar.sh
 
 # Demo workload that directly talks to `aegis-safe` using Aegis Go SDK
-cd ./install/k8s/demo-workload/using-sdk
-kubectl apply -f .
+./hack/install-workload-using-sdk.sh
 ```
 
 To verify installation check out the `aegis-system` namespace:

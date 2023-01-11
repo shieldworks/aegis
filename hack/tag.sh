@@ -13,8 +13,6 @@ VERSION=0.7.3
 echo "aegis"
 git tag -s v$VERSION
 git push origin --tags
-
-
 gh release create
 
 echo "aegis-safe"
