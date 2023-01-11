@@ -36,7 +36,7 @@ now might be a good time 🙂.
 
 ## Community
 
-If you are a security enthusiast, [**join Aegis Slack Workspace**][slack-invite]
+If you are a security enthusiast, [**join Aegis’ Slack Workspace**][slack-invite]
 and let us change the world together 🤘.
 
 [slack-invite]: https://join.slack.com/t/aegis-6n41813/shared_invite/zt-1myzqdi6t-jTvuRd1zDLbHX0gN8VkCqg "Join aegis.slack.com"
