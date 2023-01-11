@@ -8,7 +8,7 @@
 #     .\_/.
 #
 
-VERSION=0.7.2
+VERSION=0.7.3
 NEXT_VERSION=0.7.3
 
 cd ../aegis-workload-demo-using-sidecar/k8s || exit
@@ -22,7 +22,6 @@ sed -i "s/:$VERSION/:$NEXT_VERSION/" ./*.yaml
 cd ..
 sed -i "s/=$VERSION/=$NEXT_VERSION/" Makefile
 cd ../aegis || exit
-
 
 cd ../aegis-safe/k8s || exit
 sed -i "s/:$VERSION/:$NEXT_VERSION/" ./*.yaml

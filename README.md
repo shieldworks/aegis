@@ -17,7 +17,7 @@ There is also [aegis.z2h.dev][aegis-website], the project’s website.
 [aegis-demo-video]: https://vimeo.com/v0lkan/secrets "Aegis: Keep your secrets… Secret." 
 
 ## About Aegis
-
+Aegis 
 **Aegis** is a Kubernetes-native, lightweight, secrets management solution that 
 keeps your secrets secret. 
 
@@ -101,32 +101,6 @@ kubectl get deployment -n aegis-system
 # aegis-sentinel   1/1     1            1
 ```
 
-## For Repo Admins
-
-```bash 
-# To clone repos into workspace:
-make clone
-
-# To reset the repos in the workspace:
-make rimraf
-make clone
-
-# Pull changes
-make pull
-
-# Version bump (to build new container images)
-make bump
-
-# Rest of the build process is similar:
-make build
-make deploy
-make demo-sidecar
-make demo-sdk
-
-# Tag a new release when you are sure everything works.
-make tag
-```
-
 ## Registering a Secret to a Workload
 
 You can use **Sentinel** to add a secret to a workload:
@@ -173,7 +147,7 @@ Keeping *Aegis*, **Kubernetes-native**, **slim**, **secure**, and
 [Check out the **Design Decisions** document](DESIGN_DECISIONS.md) for a 
 deeper discussion about how we maintain the architectural balance in **Aegis**.
 
-## Where **Not** To Use Aegis
+## Where **Not** to Use Aegis
 
 Aegis is **not** a Database, nor is it a distributed caching layer. Of course,
 you may tweak it to act like one if you try hard enough, yet, that is
@@ -192,7 +166,6 @@ Without these technologies, implementing **Aegis** would have been a very
 hard, time-consuming, and error-prone endeavor. 
 
 * [SPIFFE and SPIRE][spire] for establishing an Identity Control Plane.
-* [Netshoot][netshoot] for creating the “development” version of **Sentinel**.
 * [Mozilla Sops][sops] (*in design phase*) to enable integration with cloud 
   secrets stores, such as AWS KMS, GCP KMS, Azure KeyVault, and even HashiCorp 
   Vault.
@@ -200,7 +173,6 @@ hard, time-consuming, and error-prone endeavor.
   backup of the secrets store for disaster recovery.
 
 [spire]: https://spiffe.io/ "SPIFFE: Secure Production Identity Framework for Everyone"
-[netshoot]: https://github.com/nicolaka/netshoot "Netshoot: A network troubleshooting Swiss army knife"
 [sops]: https://github.com/mozilla/sops "Sops: Simple and flexible tool for managing secrets"
 [age]: https://github.com/FiloSottile/age "Age: A secure and modern encryption tool"
 
@@ -230,13 +202,10 @@ Here’s an image of an aegis (*shield*) as depicted in Greek mythology:
 
 ## What’s Coming Up Next?
 
-You can see the project’s progress [in this **Aegis MDP** board][mdp].
+You can see the project’s progress [in this **Aegis v1.0.0** board][mdp].
 
 The board outlines what are the current outstanding work items, and what is
 currently being worked on.
-
-There is also [this **Aegis v1.0.0** board][v100] that contains longer-term
-goals that we’ll start once the MDP board is mostly done.
 
 [mdp]: https://github.com/orgs/zerotohero-dev/projects/2/views/2
 [v100]: https://github.com/orgs/zerotohero-dev/projects/3/views/2

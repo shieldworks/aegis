@@ -12,19 +12,52 @@ to contribute to the project.
 **Aegis** is a monorepo. Here’s a brief overview of essential files and folders:
 
 * `./Makefile`: This is the file to install and test things.
-* `README.md`: The very file that you are reading.
-* `CONTRIBUTING.md`: Instructions about how to contribute to the project.
-* `CODE_OF_CONDUCT.md`: The document that tells everyone to be nice human beings.
-* `./demo`: A demo workload that can be used to test **Aegis**’s functionality.
-* `./spire`: Contains a [SPIFFE/SPIRE][spire] installation to be used as an
-  identity control plane.
-* `./safe`: Source code of **Safe** (`aegis-safe`). **Safe** is where all the
-  secrets are stored, so you better keep it extra safe with proper RBAC. That is
-  true for all **Aegis** components, but extra-true for **Safe**.
-* `./sentinel`: Source code for **Sentinel**. **Sentinel** is a utility pod
-  that you can diagnose the system and do administrative tasks.
-* `./sidecar`: Source code of **Sidecar** (`aegis-sidecar`), a sidecar that’s
-  injected to workloads to fetch secrets from **Safe**/
+* `./hack/*`: Contains various scritps that gets dirty stuff done.
+* `./README.md`: The very file that you are reading.
+* `./CONTRIBUTING.md`: Instructions about how to contribute to the project.
+* `./CODE_OF_CONDUCT.md`: The document that tells everyone to be nice human beings.
+* `./ARCHITECTURE.md`: This file that talks about the overall system architecture.
+* `./DESIGN_DECISIONS.md`: Discusses various high-level design decisions and
+  guiding principles we keep in mind while developing Aegis.
+* `./LICENSE`: Boring copyright stuff (standard MIT License).
+* `./runbook.txt`: A quick and dirty guideline to bump version etc for the 
+  organization admins.
+
+## Aegis Repositories
+
+**Aegis** is for composed of the following repos:
+
+* [`aegis`][aegis] is the repo you are looking at.
+* [`aegis-spire`][aegis-spire] is the Identity Control Plane for Aegis.
+* [`aegis-sentinel`][aegis-sentinel] is the bastion pod that you can shell
+  in and add secrets to the system.
+* [`aegis-sdk-go`][aegis-sdk-go]: Aegis Go SDK, for workloads to directly
+  talk to [`aegis-safe`][aegis-safe] instead of using
+  [`aegis-sidecar`][aegis-sidecar].
+* [`aegis-safe`][aegis-safe] does all the dirty works. It is “**the**” secrets
+  store.
+* [`aegis-sidecar`][aegis-sidecar] is what’s injected to workloads to let them
+  talk to `aegis-safe`.
+* [`aegis-demo-workload-using-sidecar`][demo-sidecar] has the source code of
+  a demo workload that can consume secrets using [`aegis-sidecar`].
+* [`aegis-demo-workload-using-sdk][demo-sdk] has the source code of a demo
+  workload that can consume secrets directly, without a sidecar, using
+  [`aegis-sdk-go`][aegis-sdk-go].
+* [`aegis-core`][aegis-core] contains common modules that are used across 
+  projects.
+* [`aegis-web`][aegis-web] has the code of https://aegis.z2h.dev/, 
+  the official website of **Aegis**.
+
+[aegis]: https://github.com/zerotohero-dev/aegis
+[aegis-spire]: https://github.com/zerotohero-dev/aegis-spire
+[aegis-core]: https://github.com/zerotohero-dev/aegis-core
+[aegis-sdk-go]: https://github.com/zerotohero-dev/aegis-sdk-go
+[aegis-safe]: https://github.com/zerotohero-dev/aegis-safe
+[aegis-sentinel]: https://github.com/zerotohero-dev/aegis-sentinel
+[aegis-sidecar]: https://github.com/zerotohero-dev/aegis-safe
+[aegis-web]: https://github.com/zerotohero-dev/aegis-web
+[demo-sidecar]: https://github.com/zerotohero-dev/aegis-workload-demo-using-sidecar
+[demo-sdk]: https://github.com/zerotohero-dev/aegis-workload-demo-using-sdk
 
 [spire]: https://spiffe.io/ "SPIFFE: Secure Production Identity Framework for Everyone"
 
