@@ -13,27 +13,27 @@ VERSION=0.7.3
 git tag -s v$VERSION
 git push origin --tags
 
-cd aegis-safe || exit
+cd ../aegis-safe || exit
 git tag -s v$VERSION
 git push origin --tags
 cd ..
 
-cd aegis-sentinel || exit
+cd ../aegis-sentinel || exit
 git tag -s v$VERSION
 git push origin --tags
-cd ..
+cd ../aegis || exit
 
-cd aegis-sidecar || exit
+cd ../aegis-sidecar || exit
 git tag -s v$VERSION
 git push origin --tags
-cd ..
+cd ../aegis || exit
 
-cd aegis-workload-demo-using-sidecar || exit
+cd ../aegis-workload-demo-using-sidecar || exit
 git tag -s v$VERSION
 git push origin --tags
-cd ..
+cd ../aegis || exit
 
-cd aegis-workload-demo-using-sdk || exit
+cd ../aegis-workload-demo-using-sdk || exit
 git tag -s v$VERSION
 git push origin --tags
-cd ..
+cd ../aegis || exit
