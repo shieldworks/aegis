@@ -8,30 +8,37 @@
 #     .\_/.
 #
 
-VERSION=0.6.0
-NEXT_VERSION=0.6.1
+VERSION=0.7.2
+NEXT_VERSION=0.7.3
 
-cd ./demo/k8s || exit
+cd ../aegis-workload-demo-using-sidecar/k8s || exit
 sed -i "s/:$VERSION/:$NEXT_VERSION/" ./*.yaml
 cd ..
 sed -i "s/=$VERSION/=$NEXT_VERSION/" Makefile
-cd ..
+cd ../aegis || exit
 
-cd ./safe/k8s || exit
+cd ../aegis-workload-demo-using-sdk/k8s || exit
 sed -i "s/:$VERSION/:$NEXT_VERSION/" ./*.yaml
 cd ..
 sed -i "s/=$VERSION/=$NEXT_VERSION/" Makefile
-cd ..
+cd ../aegis || exit
 
-cd ./sentinel/k8s || exit
+
+cd ../aegis-safe/k8s || exit
 sed -i "s/:$VERSION/:$NEXT_VERSION/" ./*.yaml
 cd ..
 sed -i "s/=$VERSION/=$NEXT_VERSION/" Makefile
-cd ..
+cd ../aegis || exit
 
-cd ./sidecar || exit
-sed -i "s/=$VERSION/=$NEXT_VERSION/" Makefile
+cd ../aegis-sentinel/k8s || exit
+sed -i "s/:$VERSION/:$NEXT_VERSION/" ./*.yaml
 cd ..
+sed -i "s/=$VERSION/=$NEXT_VERSION/" Makefile
+cd ../aegis || exit
+
+cd ../aegis-sidecar || exit
+sed -i "s/=$VERSION/=$NEXT_VERSION/" Makefile
+cd ../aegis || exit
 
 cd ./hack || exit
 sed -i "s/=$VERSION/=$NEXT_VERSION/" tag.sh

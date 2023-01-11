@@ -8,7 +8,32 @@
 #     .\_/.
 #
 
-VERSION=0.6.1
+VERSION=0.7.3
 
 git tag -s v$VERSION
 git push origin --tags
+
+cd ../aegis-safe || exit
+git tag -s v$VERSION
+git push origin --tags
+cd ..
+
+cd ../aegis-sentinel || exit
+git tag -s v$VERSION
+git push origin --tags
+cd ../aegis || exit
+
+cd ../aegis-sidecar || exit
+git tag -s v$VERSION
+git push origin --tags
+cd ../aegis || exit
+
+cd ../aegis-workload-demo-using-sidecar || exit
+git tag -s v$VERSION
+git push origin --tags
+cd ../aegis || exit
+
+cd ../aegis-workload-demo-using-sdk || exit
+git tag -s v$VERSION
+git push origin --tags
+cd ../aegis || exit

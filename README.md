@@ -65,17 +65,26 @@ As of now, the only installation option is to clone the project and install
 it using `make` as follows:
 
 ```bash 
+# Pick a workspace folder. Everything will be cloned here.
+cd $WORKSPACE
+
 # Clone the repo and cd into it:
 git clone https://github.com/zerotohero-dev/aegis.git
+
+# Switch to aegis project where we’ll execute all other makefiles.
+cd aegis
 
 # Clean former deployment, if any:
 make clean
 
 # Install SPIRE, Safe, and Sentinel:
-make install
+make deploy
 
 # Optionally, install a demo workload to test the system:
-make demo
+make demo-sidecar
+
+# Or try a demo workload that uses the Aegis Go SDK (w/o a sidecar):
+make demo-sdk
 ```
 
 To verify installation check out the `aegis-system` namespace:
@@ -88,6 +97,32 @@ kubectl get deployment -n aegis-system
 # NAME             READY   UP-TO-DATE   AVAILABLE
 # aegis-safe       1/1     1            1
 # aegis-sentinel   1/1     1            1
+```
+
+## For Repo Admins
+
+```bash 
+# To clone repos into workspace:
+make clone
+
+# To reset the repos in the workspace:
+make rimraf
+make clone
+
+# Pull changes
+make pull
+
+# Version bump (to build new container images)
+make bump
+
+# Rest of the build process is similar:
+make build
+make deploy
+make demo-sidecar
+make demo-sdk
+
+# Tag a new release when you are sure everything works.
+make tag
 ```
 
 ## Registering a Secret to a Workload
