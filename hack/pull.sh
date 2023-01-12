@@ -23,4 +23,5 @@ then
 	cd aegis-web || exit; git stash; git checkout main; git pull;
 	cd aegis-workload-demo-using-sidecar || exit; git stash; git checkout main; git pull;
 	cd aegis-workload-demo-using-sdk || exit; git stash; git checkout main; git pull;
+	echo "Everything is awesome!"
 fi

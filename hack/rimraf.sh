@@ -23,4 +23,5 @@ then
   rm -rf aegis-workload-demo-using-sidecar
   rm -rf aegis-workload-demo-using-sdk
   rm -rf aegis-web
+  echo "Everything is awesome!"
 fi
