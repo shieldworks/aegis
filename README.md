@@ -229,6 +229,12 @@ issues.
 It’s a bit chaotic around here, yet if you want to lend a hand,
 [here are the contributing guidelines](CONTRIBUTING.md).
 
+## Security
+
+We take security **very** seriously.
+
+[Follow the instructions here to report any security issue for Aegis or any of its sister projects](SECURITY.md).
+
 ## Maintainers
 
 As of now, I, [Volkan Özçelik][me], am the sole maintainer of **Aegis**.
