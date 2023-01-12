@@ -178,6 +178,14 @@ hard, time-consuming, and error-prone endeavor.
 information about **Aegis**’s project folder structure, system design, sequence 
 diagrams, workflows, and internal operating principles.
 
+## Uninstallation
+
+To uninstall Aegis from your cluster, execute the following script:
+
+```bash
+./hack/uninstall.sh
+```
+
 ## One More Thing… How Do I Pronounce “Aegis”?
 
 “Aegis” is a word of Greek origin and is pronounced `EE-jiss`.
