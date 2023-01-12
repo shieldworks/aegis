@@ -233,7 +233,7 @@ It’s a bit chaotic around here, yet if you want to lend a hand,
 
 We take security **very** seriously.
 
-[Follow the instructions here to report any security issues for Aegis or any of its sister projects](SECURITY.md).
+[Follow the instructions here to report any security issues for **Aegis** or any of its sister projects](SECURITY.md).
 
 ## Maintainers
 
