@@ -16,66 +16,20 @@ tag:
 
 # Cleans the former Aegis deployment.
 clean:
-	@if kubectl get ns | grep aegis-system; then \
-		kubectl delete ns spire-system; \
-		kubectl delete ns aegis-system; \
-		kubectl delete ClusterSPIFFEID aegis-workload-demo; \
-		kubectl delete ClusterSPIFFEID aegis-sentinel; \
-		kubectl delete ClusterSPIFFEID aegis-safe; \
-	else \
-  		echo "Nothing to clean."; \
-	fi
-	@if kubectl delete deployment aegis-workload-demo -n default; then \
-		echo "Deleted demo workload too."; \
-	else \
-		echo "No demo workload to delete?… No worries: That’s fine."; \
-	fi
-	@echo "Everything is awesome!"
+	./hack/uninstall.sh
 
 # Clones all satellite repos into the workspace.
 clone:
-	cd ..; git clone git@github.com:zerotohero-dev/aegis-spire.git
-	cd ..; git clone git@github.com:zerotohero-dev/aegis-core.git
-	cd ..; git clone git@github.com:zerotohero-dev/aegis-sdk-go.git
-	cd ..; git clone git@github.com:zerotohero-dev/aegis-safe.git
-	cd ..; git clone git@github.com:zerotohero-dev/aegis-sentinel.git
-	cd ..; git clone git@github.com:zerotohero-dev/aegis-sidecar.git
-	cd ..; git clone git@github.com:zerotohero-dev/aegis-workload-demo-using-sidecar.git
-	cd ..; git clone git@github.com:zerotohero-dev/aegis-workload-demo-using-sdk.git
-	cd ..; git clone git@github.com:zerotohero-dev/aegis-web.git
+	./hack/clone.sh
 
 # Destructively and irreversibly removes all the satellite repos
 # and all the local changes on them.
 rimraf:
-	cd ..; rm -rf aegis-spire
-	cd ..; rm -rf aegis-core
-	cd ..; rm -rf aegis-sdk-go
-	cd ..; rm -rf aegis-safe
-	cd ..; rm -rf aegis-sentinel
-	cd ..; rm -rf aegis-sidecar
-	cd ..; rm -rf aegis-workload-demo-using-sidecar
-	cd ..; rm -rf aegis-workload-demo-using-sdk
-	cd ..; rm -rf aegis-web
+	./hack/rimraf.sh
 
+# Switches to the `main` branches and pulls everything.
 pull:
-	cd ../aegis-spire;
-	cd ../aegis-spire; git stash; git checkout main; git pull;
-	cd ../aegis-core
-	cd ../aegis-core; git stash; git checkout main; git pull;
-	cd ../aegis-sdk-go
-	cd ../aegis-sdk-go; git stash; git checkout main; git pull;
-	cd ../aegis-sentinel
-	cd ../aegis-sentinel; git stash; git checkout main; git pull;
-	cd ../aegis-sidecar
-	cd ../aegis-sidecar; git stash; git checkout main; git pull;
-	cd ../aegis-safe
-	cd ../aegis-safe; git stash; git checkout main; git pull;
-	cd ../aegis-web
-	cd ../aegis-web; git stash; git checkout main; git pull;
-	cd ../aegis-workload-demo-using-sidecar;
-	cd ../aegis-workload-demo-using-sidecar; git stash; git checkout main; git pull;
-	cd ../aegis-workload-demo-using-sdk;
-	cd ../aegis-workload-demo-using-sdk; git stash; git checkout main; git pull;
+	./hack/pull.sh
 
 # For repo-admin-use only.
 build: build-demo-sidecar build-demo-sdk build-safe build-sidecar build-sentinel
