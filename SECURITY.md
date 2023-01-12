@@ -5,7 +5,7 @@
 Only the most recent version of **Aegis**
 is currently being supported with security updates.
 
-Note that, Aegis consists of more than a single project,
+Note that **Aegis** consists of more than a single project,
 and during a release cut, all projects are signed and tagged
 with the same version.
 
