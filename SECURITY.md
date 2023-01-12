@@ -3,7 +3,11 @@
 ## Supported Versions
 
 Only the most recent version of **Aegis**
-are currently being supported with security updates.
+is currently being supported with security updates.
+
+Note that, Aegis consists of more than a single project,
+and during a release cut, all projects are signed and tagged
+with the same version.
 
 Afer **Aegis** hits a major 1.0.0. version, this will change
 and we will also have a support plan various major versions.
