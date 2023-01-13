@@ -78,6 +78,7 @@ for the `$workloadName`:
 ```text
 spiffe://aegis.z2h.dev/workload/aegis-safe/ns/{{ .PodMeta.Namespace }}
 /sa/{{ .PodSpec.ServiceAccountName }}/n/{{ .PodMeta.Name }}
+```
 
 ```text
 spiffe://aegis.z2h.dev/workload/aegis-sentinel/ns/{{ .PodMeta.Namespace }}
