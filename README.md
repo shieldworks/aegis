@@ -34,6 +34,30 @@ helping you safeguard your business and protect against data breaches.
 If you haven’t watched [this six-minute introductory video][aegis-demo-video] yet,
 now might be a good time 🙂.
 
+## The Aegis Framework
+
+**Aegis** consists of the following sister projects:
+
+* [**Aegis Spire**][aegis-spire]: **Aegis** uses [SPIRE][spire] as its Identity Control Plane.
+* [**Aegis Safe**][aegis-safe]: **Safe** is the **secrets store** of **Aegis**.
+* [**Aegis Sentinel**][aegis-sentinel]: **Sentinel** acts as a bastion that an operator (or a CI) can register secrets to workloads.
+* [**Aegis Sidecar**][aegis-sidecar]: **Sidecar** is a utility that can help workloads retrieve secrets dynamically at runtime.
+* [**Aegis Go SDK**][aegis-sdk-go]: **Go SDK** is a library that workloads can use to directly talk to **Safe** (instead of using the **Sidecar**)
+* [**Aegis Core**][aegis-core]: Common modules that other projects share.
+* [**Aegis Demo Workload (using Go SDK)**][aegis-workload-demo-using-sdk]: A demo workload that uses the **Go SDK** to talk to **Safe**.
+* [**Aegis Demo Workload (using Aegis Sidecar)**][aegis-workload-demo-using-sidecar]: A demo workload dynamically injects secrets to itself using an **Aegis Sidecar**.
+* [**Aegis Web**][aegis-web]: The sourcecode of <https://aegis.z2h.dev>.
+
+[aegis-core]: https://github.com/zerotohero-dev/aegis-core
+[aegis-safe]: https://github.com/zerotohero-dev/aegis-safe
+[aegis-sdk-go]: https://github.com/zerotohero-dev/aegis-sdk-go
+[aegis-sentinel]: https://github.com/zerotohero-dev/aegis-sentinel
+[aegis-sidecar]: https://github.com/zerotohero-dev/aegis-sidecar
+[aegis-spire]: https://github.com/zerotohero-dev/aegis-spire
+[aegis-web]: https://github.com/zerotohero-dev/aegis-web
+[aegis-workload-demo-using-sdk]: https://github.com/zerotohero-dev/aegis-workload-demo-using-sdk
+[aegis-workload-demo-using-sidecar]: https://github.com/zerotohero-dev/aegis-workload-demo-using-sidecar
+
 ## Community
 
 If you are a security enthusiast, [**join Aegis’ Slack Workspace**][slack-invite]
