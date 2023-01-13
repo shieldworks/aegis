@@ -15,3 +15,6 @@ spec:
   podSelector:
     matchLabels:
       app.kubernetes.io/name: aegis-safe
+  workloadSelectorTemplates:
+    - "k8s:ns:{{ .PodMeta.Namespace }}"
+    - "k8s:sa:{{ .PodSpec.ServiceAccountName }}"

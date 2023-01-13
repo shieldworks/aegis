@@ -14,6 +14,7 @@ Ensure you have merged all your changes.
 2.
 make clean
 make pull (optionally skip depending on if this is a rebuild with local fixes)
+make sync (copies manifests over to project root)
 
 3.
 make bump

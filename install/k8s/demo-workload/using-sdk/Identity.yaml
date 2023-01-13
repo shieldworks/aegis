@@ -17,3 +17,6 @@ spec:
   podSelector:
     matchLabels:
       app.kubernetes.io/name: aegis-workload-demo
+  workloadSelectorTemplates:
+  - "k8s:ns:{{ .PodMeta.Namespace }}"
+  - "k8s:sa:{{ .PodSpec.ServiceAccountName }}"
