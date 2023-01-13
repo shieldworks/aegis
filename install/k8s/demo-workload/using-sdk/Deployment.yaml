@@ -38,12 +38,7 @@ spec:
           - name: SPIFFE_ENDPOINT_SOCKET
             value: unix:///spire-agent-socket/agent.sock
       volumes:
-      # SPIRE needs this.
-#      - name: spire-agent-socket
-#        hostPath:
-#          path: /run/spire/sockets
-#          type: Directory
-
+      # We need this to talk to the SPIRE Agent.
       - name: spire-agent-socket
         csi:
           driver: "csi.spiffe.io"
