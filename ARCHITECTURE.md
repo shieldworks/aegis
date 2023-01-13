@@ -13,15 +13,15 @@ to contribute to the project.
 
 ### SPIRE
 
-**SPIRE** is what makes communication within **Aegis** components and workloads
-possible. It dispatches x.509 SVID certificates to the required parties to make
+[`aegis-spire`][aegis-spire] is what makes communication within **Aegis** components and workloads
+possible. It dispatches **x.509 SVID Certificates** to the required parties to make
 secure mTLS communication possible.
 
-### **Safe** (`aegis-safe`)
+### Safe
 
 [`aegis-safe`][safe] stores secrets and dispatches them to workloads.
 
-### **Sidecar** (`aegis-sidecar`)
+### Sidecar
 
 [`aegis-sidecar`][sidecar] is a sidecar that facilitates delivering secrets to workloads.
 
@@ -30,6 +30,7 @@ secure mTLS communication possible.
 [`aegis-sentinel`][sentinel] is a pod you can shell in and do administrative tasks such as
 registering secrets for workloads.
 
+[aegis-spire]: https://github.com/zerotohero-dev/aegis-spire
 [safe]: https://github.com/zerotohero-dev/aegis-safe
 [sidecar]: https://github.com/zerotohero-dev/aegis-sidecar
 [sentinel]: https://github.com/zerotohero-dev/aegis-sentinel
