@@ -1,5 +1,7 @@
 ![Aegis](assets/aegis-banner.png "Aegis")
 
+[spire]: https://spiffe.io/ "SPIFFE: Secure Production Identity Framework for Everyone"
+
 ## Status of This Software
 
 This project is a **work in progress** (*WIP*) and has yet to be ready for 
