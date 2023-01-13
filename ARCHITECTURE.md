@@ -25,7 +25,7 @@ secure mTLS communication possible.
 
 [`aegis-sidecar`][sidecar] is a sidecar that facilitates delivering secrets to workloads.
 
-### **Sentinel** (`aegis-sentinel`)
+### Sentinel
 
 [`aegis-sentinel`][sentinel] is a pod you can shell in and do administrative tasks such as
 registering secrets for workloads.
