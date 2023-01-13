@@ -34,7 +34,7 @@ helping you safeguard your business and protect against data breaches.
 If you haven’t watched [this six-minute introductory video][aegis-demo-video] yet,
 now might be a good time 🙂.
 
-## The Aegis Framework
+## Projects
 
 **Aegis** consists of the following sister projects:
 
