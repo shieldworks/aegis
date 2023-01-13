@@ -42,7 +42,7 @@ now might be a good time 🙂.
 * [**Aegis Safe**][aegis-safe]: **Safe** is the **secrets store** of **Aegis**.
 * [**Aegis Sentinel**][aegis-sentinel]: **Sentinel** acts as a bastion that an operator (or a CI) can register secrets to workloads.
 * [**Aegis Sidecar**][aegis-sidecar]: **Sidecar** is a utility that can help workloads retrieve secrets dynamically at runtime.
-* [**Aegis Go SDK**][aegis-sdk-go]: **Go SDK** is a library that workloads can use to directly talk to **Safe** (instead of using the **Sidecar**)
+* [**Aegis Go SDK**][aegis-sdk-go]: **Go SDK** is a library that workloads can use to directly talk to **Safe** (instead of using the **Sidecar**).
 * [**Aegis Core**][aegis-core]: Common modules that other projects share.
 * [**Aegis Demo Workload (using Go SDK)**][aegis-workload-demo-using-sdk]: A demo workload that uses the **Go SDK** to talk to **Safe**.
 * [**Aegis Demo Workload (using Aegis Sidecar)**][aegis-workload-demo-using-sidecar]: A demo workload dynamically injects secrets to itself using an **Aegis Sidecar**.
