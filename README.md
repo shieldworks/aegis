@@ -38,7 +38,7 @@ now might be a good time 🙂.
 
 **Aegis** consists of the following sister projects:
 
-* [**Aegis Spire**][aegis-spire]: **Aegis** uses [SPIRE][spire] as its Identity Control Plane.
+* [**Aegis SPIRE**][aegis-spire]: **Aegis** uses [SPIRE][spire] as its Identity Control Plane.
 * [**Aegis Safe**][aegis-safe]: **Safe** is the **secrets store** of **Aegis**.
 * [**Aegis Sentinel**][aegis-sentinel]: **Sentinel** acts as a bastion that an operator (or a CI) can register secrets to workloads.
 * [**Aegis Sidecar**][aegis-sidecar]: **Sidecar** is a utility that can help workloads retrieve secrets dynamically at runtime.
