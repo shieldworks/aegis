@@ -19,16 +19,20 @@ secure mTLS communication possible.
 
 ### **Safe** (`aegis-safe`)
 
-**Safe** stores secrets and dispatches them to workloads.
+[`aegis-safe`][safe] stores secrets and dispatches them to workloads.
 
 ### **Sidecar** (`aegis-sidecar`)
 
-`aegis-sidecar` is a sidecar that facilitates delivering secrets to workloads.
+[`aegis-sidecar`][sidecar] is a sidecar that facilitates delivering secrets to workloads.
 
 ### **Sentinel** (`aegis-sentinel`)
 
-**Sentinel** is a pod you can shell in and do administrative tasks such as
+[`aegis-sentinel`][sentinel] is a pod you can shell in and do administrative tasks such as
 registering secrets for workloads.
+
+[safe]: https://github.com/zerotohero-dev/aegis-safe
+[sidecar]: https://github.com/zerotohero-dev/aegis-sidecar
+[sentinel]: https://github.com/zerotohero-dev/aegis-sentinel
 
 ## Projects
 
