@@ -55,8 +55,14 @@ spec:
       - name: aegis-secrets-volume
         emptyDir:
           medium: Memory
-      # SPIRE needs this.
+
+        # SPIRE needs this.
+        #      - name: spire-agent-socket
+        #        hostPath:
+        #          path: /run/spire/sockets
+        #          type: Directory
+
       - name: spire-agent-socket
-        hostPath:
-          path: /run/spire/sockets
-          type: Directory
+        csi:
+          driver: "csi.spiffe.io"
+          readOnly: true

@@ -11,7 +11,18 @@
 cd ./install/k8s || exit
 
 kubectl apply -k ./spire
-sleep 15
+
+while ! kubectl get po -n spire-system | grep spire-server | grep Running
+do
+    echo "waiting for spire server to be up."
+    sleep 2
+done
+
+while ! kubectl get po -n spire-system | grep spire-agent | grep Running
+do
+    echo "waiting for spire agent to be up."
+    sleep 2
+done
 
 cd safe || exit
 kubectl apply -f Namespace.yaml

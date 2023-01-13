@@ -54,7 +54,8 @@ build-sentinel:
 	cd ../aegis-sentinel && $(MAKE) build && $(MAKE) bundle && $(MAKE) push
 
 # Deploys Aegis to the cluster.
-deploy: spire safe sentinel
+deploy:
+	./hack/install.sh
 
 # SPIRE is required for Workload-to-Safe, Safe-to-Workload, Sentinel-to-Safe
 # and Safe-to-Sentinel communication. Better to install it first before
@@ -73,8 +74,8 @@ safe:
 
 # Installs the demo app to play with.
 demo-sidecar:
-	cd ../aegis-workload-demo-using-sidecar && $(MAKE) deploy
+	./hack/install-workload-using-sidecar.sh
 
 # Installs the demo app to play with.
 demo-sdk:
-	cd ../aegis-workload-demo-using-sdk && $(MAKE) deploy
+	./hack/install-workload-using-sdk.sh
