@@ -18,6 +18,7 @@ make sync (copies manifests over to project root)
 
 3.
 make bump
+make sync
 
 4.
 make build

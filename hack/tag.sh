@@ -8,7 +8,7 @@
 #     .\_/.
 #
 
-VERSION=0.7.4
+VERSION=0.7.5
 
 echo "aegis"
 git tag -s v$VERSION
