@@ -33,12 +33,28 @@ spec:
             mountPath: /spire-agent-socket
             readOnly: true
           env:
-          # Required to fetch SVIDs to establish mTLS.
-          # go-spiffe internally uses this.
+          # SPIFFE_ENDPOINT_SOCKET is required for Sentinel to talk to SPIRE.
+          # If not provided, it will default to "unix:///spire-agent-socket/agent.sock"
           - name: SPIFFE_ENDPOINT_SOCKET
             value: unix:///spire-agent-socket/agent.sock
+          # AEGIS_SAFE_ENDPOINT_URL is the REST API endpoint that Safe exposes from its
+          # Service. if not provided, it will default to:
+          # "https://aegis-safe.aegis-system.svc.cluster.local:8443/"
+          - name: AEGIS_SAFE_ENDPOINT_URL
+            value: https://aegis-safe.aegis-system.svc.cluster.local:8443
+          # AEGIS_SAFE_SVID_PREFIX is required for validation.
+          # If not provided, it will default to:
+          # "spiffe://aegis.z2h.dev/workload/aegis-safe/ns/aegis-system/sa/aegis-safe/n/"
+          - name: AEGIS_SAFE_SVID_PREFIX
+            value: spiffe://aegis.z2h.dev/workload/aegis-safe/ns/aegis-system/sa/aegis-safe/n/
+          # AEGIS_WORKLOAD_SVID_PREFIX is required for validation.
+          # If not provided, it will default to:
+          # "spiffe://aegis.z2h.dev/workload/"
+          - name: AEGIS_WORKLOAD_SVID_PREFIX
+            value: spiffe://aegis.z2h.dev/workload/
       volumes:
-      # We need this to talk to the SPIRE Agent.
+      # Using SPIFFE CSI Driver to bind to the SPIRE Agent Socket
+      # ref: https://github.com/spiffe/spiffe-csi
       - name: spire-agent-socket
         csi:
           driver: "csi.spiffe.io"

@@ -35,10 +35,34 @@ spec:
             mountPath: /spire-agent-socket
             readOnly: true
           env:
+            # SPIFFE_ENDPOINT_SOCKET is required for Sentinel to talk to SPIRE.
+            # If not provided, it will default to "unix:///spire-agent-socket/agent.sock"
           - name: SPIFFE_ENDPOINT_SOCKET
             value: unix:///spire-agent-socket/agent.sock
+            # AEGIS_WORKLOAD_SVID_PREFIX is required for validation.
+            # If not provided, it will default to:
+            # "spiffe://aegis.z2h.dev/workload/"
+          - name: AEGIS_WORKLOAD_SVID_PREFIX
+            value: spiffe://aegis.z2h.dev/workload/
+            # AEGIS_SENTINEL_SVID_PREFIX is required for validation.
+            # If not provided, it will default to:
+            # "spiffe://aegis.z2h.dev/workload/aegis-sentinel/ns/aegis-system/sa/aegis-sentinel/n/"
+          - name: AEGIS_SENTINEL_SVID_PREFIX
+            value: spiffe://aegis.z2h.dev/workload/aegis-sentinel/ns/aegis-system/sa/aegis-sentinel/n/
+            # AEGIS_SAFE_SVID_PREFIX is required for validation.
+            # If not provided, it will default to:
+            # "spiffe://aegis.z2h.dev/workload/aegis-safe/ns/aegis-system/sa/aegis-safe/n/"
+          - name: AEGIS_SAFE_SVID_PREFIX
+            value: spiffe://aegis.z2h.dev/workload/aegis-safe/ns/aegis-system/sa/aegis-safe/n/
+            # AEGIS_SAFE_ENDPOINT_URL is the REST API endpoint that Safe exposes from its
+            # Service. if not provided, it will default to:
+            # "https://aegis-safe.aegis-system.svc.cluster.local:8443/"
+          - name: AEGIS_SAFE_ENDPOINT_URL
+            value: https://aegis-safe.aegis-system.svc.cluster.local:8443/
       volumes:
+      # Using SPIFFE CSI Driver to bind to the SPIRE Agent Socket
+      # ref: https://github.com/spiffe/spiffe-csi
       - name: spire-agent-socket
-        hostPath:
-          path: /run/spire/sockets
-          type: Directory
+        csi:
+          driver: "csi.spiffe.io"
+          readOnly: true
