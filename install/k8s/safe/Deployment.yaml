@@ -26,39 +26,59 @@ spec:
     spec:
       serviceAccountName: aegis-safe
       containers:
-        - name: main
-          image: z2hdev/aegis-safe:0.7.7
-          ports:
-          - containerPort: 8443
-          volumeMounts:
-          - name: spire-agent-socket
-            mountPath: /spire-agent-socket
-            readOnly: true
-          env:
-            # SPIFFE_ENDPOINT_SOCKET is required for Sentinel to talk to SPIRE.
-            # If not provided, it will default to "unix:///spire-agent-socket/agent.sock"
-          - name: SPIFFE_ENDPOINT_SOCKET
-            value: unix:///spire-agent-socket/agent.sock
-            # AEGIS_WORKLOAD_SVID_PREFIX is required for validation.
-            # If not provided, it will default to:
-            # "spiffe://aegis.z2h.dev/workload/"
-          - name: AEGIS_WORKLOAD_SVID_PREFIX
-            value: spiffe://aegis.z2h.dev/workload/
-            # AEGIS_SENTINEL_SVID_PREFIX is required for validation.
-            # If not provided, it will default to:
-            # "spiffe://aegis.z2h.dev/workload/aegis-sentinel/ns/aegis-system/sa/aegis-sentinel/n/"
-          - name: AEGIS_SENTINEL_SVID_PREFIX
-            value: spiffe://aegis.z2h.dev/workload/aegis-sentinel/ns/aegis-system/sa/aegis-sentinel/n/
-            # AEGIS_SAFE_SVID_PREFIX is required for validation.
-            # If not provided, it will default to:
-            # "spiffe://aegis.z2h.dev/workload/aegis-safe/ns/aegis-system/sa/aegis-safe/n/"
-          - name: AEGIS_SAFE_SVID_PREFIX
-            value: spiffe://aegis.z2h.dev/workload/aegis-safe/ns/aegis-system/sa/aegis-safe/n/
-            # AEGIS_SAFE_ENDPOINT_URL is the REST API endpoint that Safe exposes from its
-            # Service. if not provided, it will default to:
-            # "https://aegis-safe.aegis-system.svc.cluster.local:8443/"
-          - name: AEGIS_SAFE_ENDPOINT_URL
-            value: https://aegis-safe.aegis-system.svc.cluster.local:8443/
+      - name: main
+        image: z2hdev/aegis-safe:0.8.1
+        ports:
+        - containerPort: 8443
+        volumeMounts:
+        - name: spire-agent-socket
+          mountPath: /spire-agent-socket
+          readOnly: true
+        env:
+        # SPIFFE_ENDPOINT_SOCKET is required for Sentinel to talk to SPIRE.
+        # If not provided, it will default to "unix:///spire-agent-socket/agent.sock"
+        - name: SPIFFE_ENDPOINT_SOCKET
+          value: unix:///spire-agent-socket/agent.sock
+        # AEGIS_WORKLOAD_SVID_PREFIX is required for validation.
+        # If not provided, it will default to:
+        # "spiffe://aegis.z2h.dev/workload/"
+        - name: AEGIS_WORKLOAD_SVID_PREFIX
+          value: spiffe://aegis.z2h.dev/workload/
+        # AEGIS_SENTINEL_SVID_PREFIX is required for validation.
+        # If not provided, it will default to:
+        # "spiffe://aegis.z2h.dev/workload/aegis-sentinel/ns/aegis-system/sa/aegis-sentinel/n/"
+        - name: AEGIS_SENTINEL_SVID_PREFIX
+          value: spiffe://aegis.z2h.dev/workload/aegis-sentinel/ns/aegis-system/sa/aegis-sentinel/n/
+        # AEGIS_SAFE_SVID_PREFIX is required for validation.
+        # If not provided, it will default to:
+        # "spiffe://aegis.z2h.dev/workload/aegis-safe/ns/aegis-system/sa/aegis-safe/n/"
+        - name: AEGIS_SAFE_SVID_PREFIX
+          value: spiffe://aegis.z2h.dev/workload/aegis-safe/ns/aegis-system/sa/aegis-safe/n/
+        # AEGIS_SAFE_ENDPOINT_URL is the REST API endpoint that Safe exposes from its
+        # Service. if not provided, it will default to:
+        # "https://aegis-safe.aegis-system.svc.cluster.local:8443/"
+        - name: AEGIS_SAFE_ENDPOINT_URL
+          value: https://aegis-safe.aegis-system.svc.cluster.local:8443/
+        # AEGIS_PROBE_LIVENESS_PORT is the port where the liveness probe
+        # will listen to. Defaults to `:8081`
+        - name: AEGIS_PROBE_LIVENESS_PORT
+          value: ":8081"
+        # AEGIS_PROBE_READINESS_PORT is the port where the readiness probe
+        # will listen to. Defaults to `:8082`
+        - name: AEGIS_PROBE_READINESS_PORT
+          value: ":8082"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8081
+          initialDelaySeconds: 1
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8082
+          initialDelaySeconds: 1
+          periodSeconds: 10
       volumes:
       # Using SPIFFE CSI Driver to bind to the SPIRE Agent Socket
       # ref: https://github.com/spiffe/spiffe-csi

@@ -27,7 +27,7 @@ spec:
       serviceAccountName: aegis-sentinel
       containers:
         - name: main
-          image: z2hdev/aegis-sentinel:0.7.7
+          image: z2hdev/aegis-sentinel:0.8.1
           volumeMounts:
           - name: spire-agent-socket
             mountPath: /spire-agent-socket
@@ -52,6 +52,16 @@ spec:
           # "https://aegis-safe.aegis-system.svc.cluster.local:8443/"
           - name: AEGIS_SAFE_ENDPOINT_URL
             value: https://aegis-safe.aegis-system.svc.cluster.local:8443/
+          # AEGIS_PROBE_LIVENESS_PORT is the port where the liveness probe
+          # will listen to. Defaults to `:8081`
+          - name: AEGIS_PROBE_LIVENESS_PORT
+            value: ":8081"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8081
+            initialDelaySeconds: 1
+            periodSeconds: 10
       volumes:
       # Using SPIFFE CSI Driver to bind to the SPIRE Agent Socket
       # ref: https://github.com/spiffe/spiffe-csi
