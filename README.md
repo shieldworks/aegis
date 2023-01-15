@@ -232,13 +232,12 @@ Here’s an image of an aegis (*shield*) as depicted in Greek mythology:
 
 ## What’s Coming Up Next?
 
-You can see the project’s progress [in this **Aegis v1.0.0** board][mdp].
+You can see the project’s progress [in these **Aegis** boards][mdp].
 
 The board outlines what are the current outstanding work items, and what is
 currently being worked on.
 
-[mdp]: https://github.com/orgs/zerotohero-dev/projects/2/views/2
-[v100]: https://github.com/orgs/zerotohero-dev/projects/3/views/2
+[mdp]: https://github.com/zerotohero-dev/aegis/projects?query=is%3Aopen
 
 There is also [a text file](aegis.txt) that is a more free-form list of
 issues. I sometimes jot things down there before creating more detailed GitHub
