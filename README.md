@@ -130,7 +130,7 @@ your homework is to secure access to **Sentinel**.
 **Aegis** leverages Kubernetes security primitives and modern cryptography 
 to secure access to secrets. And **Sentinel** is the **only** system part that 
 has direct write access to the secrets store. Therefore, once you secure your 
-access to**Sentinel** with proper RBAC and policies, you secure your access 
+access to **Sentinel** with proper RBAC and policies, you secure your access 
 to your secrets.
 
 We believe that this approach is **Kubernetes-native**, convenient, simpler, 
