@@ -9,8 +9,11 @@
 #
 
 if kubectl get ns | grep aegis-system; then
-  kubectl delete ns spire-system
+  # Order is important for SPIFFE SCI Driver to properly unmount volumes.
+  # ref: https://github.com/spiffe/spiffe-csi#failure-to-terminate-pods-when-driver-is-unhealthy-or-removed
   kubectl delete ns aegis-system
+  kubectl delete ns spire-system
+
   kubectl delete ClusterSPIFFEID aegis-workload-demo
   kubectl delete ClusterSPIFFEID aegis-sentinel
   kubectl delete ClusterSPIFFEID aegis-safe
