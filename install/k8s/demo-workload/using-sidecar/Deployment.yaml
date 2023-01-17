@@ -25,52 +25,86 @@ spec:
     spec:
       serviceAccountName: aegis-workload-demo
       containers:
-        - name: main
-          image: z2hdev/aegis-workload-demo-using-sidecar:0.8.1
-          volumeMounts:
-          # `main` shares this volume with `sidecar`.
-          - mountPath: /opt/aegis
-            name: aegis-secrets-volume
-        - name: sidecar
-          image: z2hdev/aegis-sidecar:0.8.1
-          volumeMounts:
-          # /opt/aegis/secrets.json is the place the secrets will be at.
-          # As of now, this is not configurable. Once the MVP is complete,
-          # we’ll work on making Aegis more flexible and add more configuration
-          # options.
-          - mountPath: /opt/aegis
-            name: aegis-secrets-volume
-          # Volume mount for SPIRE unix domain socket.
-          - name: spire-agent-socket
-            mountPath: /spire-agent-socket
-            readOnly: true
-          env:
-          # SPIFFE_ENDPOINT_SOCKET is required for Sentinel to talk to SPIRE.
-          # If not provided, it will default to "unix:///spire-agent-socket/agent.sock"
-          - name: SPIFFE_ENDPOINT_SOCKET
-            value: unix:///spire-agent-socket/agent.sock
-          # AEGIS_SAFE_ENDPOINT_URL is the REST API endpoint that Safe exposes from its
-          # Service. if not provided, it will default to:
-          # "https://aegis-safe.aegis-system.svc.cluster.local:8443/"
-          - name: AEGIS_SAFE_ENDPOINT_URL
-            value: https://aegis-safe.aegis-system.svc.cluster.local:8443
-          # AEGIS_SAFE_SVID_PREFIX is required for validation.
-          # If not provided, it will default to:
-          # "spiffe://aegis.z2h.dev/workload/aegis-safe/ns/aegis-system/sa/aegis-safe/n/"
-          - name: AEGIS_SAFE_SVID_PREFIX
-            value: spiffe://aegis.z2h.dev/workload/aegis-safe/ns/aegis-system/sa/aegis-safe/n/
-          # AEGIS_WORKLOAD_SVID_PREFIX is required for validation.
-          # If not provided, it will default to:
-          # "spiffe://aegis.z2h.dev/workload/"
-          - name: AEGIS_WORKLOAD_SVID_PREFIX
-            value: spiffe://aegis.z2h.dev/workload/
-          # AEGIS_SIDECAR_SECRETS_PATH os the path the secret that is fetched
-          # from Aegis Safe is persisted in `aegis-secrets-volume`.
-          # If not given, defaults to "/opt/aegis/secrets.json".
-          # If you change this environment variable, make sure to modify
-          # the `mountPath` of `aegis-secrets-volume` on this container too.
-          - name: AEGIS_SIDECAR_SECRETS_PATH
-            value: "/opt/aegis/secrets.json"
+      - name: main
+        image: z2hdev/aegis-workload-demo-using-sidecar:0.9.1
+        volumeMounts:
+        # `main` shares this volume with `sidecar`.
+        - mountPath: /opt/aegis
+          name: aegis-secrets-volume
+        #
+        # Resource allocation will highly-depend on the system.
+        # Benchmark your deployment, monitor your resource utilization, and
+        # adjust these values accordingly.
+        # resources:
+        #  requests:
+        #    memory: "128Mi"
+        #    cpu: "250m"
+        #  limits:
+        #    memory: "128Mi"
+        #    # We recommend “NOT” setting a CPU limit.
+        #    # As long as you have configured your CPU “requests” correctly,
+        #    # everything would work fine.
+        #
+      - name: sidecar
+        image: z2hdev/aegis-sidecar:0.9.1
+        volumeMounts:
+        # /opt/aegis/secrets.json is the place the secrets will be at.
+        # As of now, this is not configurable. Once the MVP is complete,
+        # we’ll work on making Aegis more flexible and add more configuration
+        # options.
+        - mountPath: /opt/aegis
+          name: aegis-secrets-volume
+        # Volume mount for SPIRE unix domain socket.
+        - name: spire-agent-socket
+          mountPath: /spire-agent-socket
+          readOnly: true
+        env:
+        # SPIFFE_ENDPOINT_SOCKET is required for Sentinel to talk to SPIRE.
+        # If not provided, it will default to "unix:///spire-agent-socket/agent.sock"
+        - name: SPIFFE_ENDPOINT_SOCKET
+          value: unix:///spire-agent-socket/agent.sock
+        # AEGIS_SAFE_ENDPOINT_URL is the REST API endpoint that Safe exposes from its
+        # Service. if not provided, it will default to:
+        # "https://aegis-safe.aegis-system.svc.cluster.local:8443/"
+        - name: AEGIS_SAFE_ENDPOINT_URL
+          value: https://aegis-safe.aegis-system.svc.cluster.local:8443
+        # AEGIS_SAFE_SVID_PREFIX is required for validation.
+        # If not provided, it will default to:
+        # "spiffe://aegis.z2h.dev/workload/aegis-safe/ns/aegis-system/sa/aegis-safe/n/"
+        - name: AEGIS_SAFE_SVID_PREFIX
+          value: spiffe://aegis.z2h.dev/workload/aegis-safe/ns/aegis-system/sa/aegis-safe/n/
+        # AEGIS_WORKLOAD_SVID_PREFIX is required for validation.
+        # If not provided, it will default to:
+        # "spiffe://aegis.z2h.dev/workload/"
+        - name: AEGIS_WORKLOAD_SVID_PREFIX
+          value: spiffe://aegis.z2h.dev/workload/
+        # AEGIS_SIDECAR_SECRETS_PATH os the path the secret that is fetched
+        # from Aegis Safe is persisted in `aegis-secrets-volume`.
+        # If not given, defaults to "/opt/aegis/secrets.json".
+        # If you change this environment variable, make sure to modify
+        # the `mountPath` of `aegis-secrets-volume` on this container too.
+        - name: AEGIS_SIDECAR_SECRETS_PATH
+          value: "/opt/aegis/secrets.json"
+        # How frequently the sidecar container asks for fresh data (in seconds).
+        # The default value is 20 seconds. The shorter the interval is, the
+        # more up-to-date the secrets will be; however, shorter intervals also
+        # mean more pressure on the Aegis Safe API.
+        - name: AEGIS_SIDECAR_POLL_INTERVAL
+          value: "30"
+        #
+        # Resource allocation will highly-depend on the system.
+        # Benchmark your deployment, monitor your resource utilization, and
+        # adjust these values accordingly.
+        # resources:
+        #  requests:
+        #    memory: "128Mi"
+        #    cpu: "250m"
+        #  limits:
+        #    memory: "128Mi"
+        #    # We recommend “NOT” setting a CPU limit.
+        #    # As long as you have configured your CPU “requests” correctly,
+        #    # everything would work fine.
+        #
       volumes:
       # A memory-backed volume is recommended (but not required) to keep
       # the secrets. The secrets can be stored in any kind of volume.

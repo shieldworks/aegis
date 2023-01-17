@@ -12,7 +12,7 @@ Before every release cut:
 Ensure you have merged all your changes.
 
 2.
-make clean
+make clean (removes SPIRE, aegis, and workloads from the cluster)
 make pull (optionally skip depending on if this is a rebuild with local fixes)
 make sync (copies manifests over to project root)
 

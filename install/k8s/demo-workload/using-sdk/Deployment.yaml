@@ -25,33 +25,47 @@ spec:
     spec:
       serviceAccountName: aegis-workload-demo
       containers:
-        - name: main
-          image: z2hdev/aegis-workload-demo-using-sdk:0.8.1
-          volumeMounts:
-          # Volume mount for SPIRE unix domain socket.
-          - name: spire-agent-socket
-            mountPath: /spire-agent-socket
-            readOnly: true
-          env:
-          # SPIFFE_ENDPOINT_SOCKET is required for Sentinel to talk to SPIRE.
-          # If not provided, it will default to "unix:///spire-agent-socket/agent.sock"
-          - name: SPIFFE_ENDPOINT_SOCKET
-            value: unix:///spire-agent-socket/agent.sock
-          # AEGIS_SAFE_ENDPOINT_URL is the REST API endpoint that Safe exposes from its
-          # Service. if not provided, it will default to:
-          # "https://aegis-safe.aegis-system.svc.cluster.local:8443/"
-          - name: AEGIS_SAFE_ENDPOINT_URL
-            value: https://aegis-safe.aegis-system.svc.cluster.local:8443
-          # AEGIS_SAFE_SVID_PREFIX is required for validation.
-          # If not provided, it will default to:
-          # "spiffe://aegis.z2h.dev/workload/aegis-safe/ns/aegis-system/sa/aegis-safe/n/"
-          - name: AEGIS_SAFE_SVID_PREFIX
-            value: spiffe://aegis.z2h.dev/workload/aegis-safe/ns/aegis-system/sa/aegis-safe/n/
-          # AEGIS_WORKLOAD_SVID_PREFIX is required for validation.
-          # If not provided, it will default to:
-          # "spiffe://aegis.z2h.dev/workload/"
-          - name: AEGIS_WORKLOAD_SVID_PREFIX
-            value: spiffe://aegis.z2h.dev/workload/
+      - name: main
+        image: z2hdev/aegis-workload-demo-using-sdk:0.9.1
+        volumeMounts:
+        # Volume mount for SPIRE unix domain socket.
+        - name: spire-agent-socket
+          mountPath: /spire-agent-socket
+          readOnly: true
+        env:
+        # SPIFFE_ENDPOINT_SOCKET is required for Sentinel to talk to SPIRE.
+        # If not provided, it will default to "unix:///spire-agent-socket/agent.sock"
+        - name: SPIFFE_ENDPOINT_SOCKET
+          value: unix:///spire-agent-socket/agent.sock
+        # AEGIS_SAFE_ENDPOINT_URL is the REST API endpoint that Safe exposes from its
+        # Service. if not provided, it will default to:
+        # "https://aegis-safe.aegis-system.svc.cluster.local:8443/"
+        - name: AEGIS_SAFE_ENDPOINT_URL
+          value: https://aegis-safe.aegis-system.svc.cluster.local:8443
+        # AEGIS_SAFE_SVID_PREFIX is required for validation.
+        # If not provided, it will default to:
+        # "spiffe://aegis.z2h.dev/workload/aegis-safe/ns/aegis-system/sa/aegis-safe/n/"
+        - name: AEGIS_SAFE_SVID_PREFIX
+          value: spiffe://aegis.z2h.dev/workload/aegis-safe/ns/aegis-system/sa/aegis-safe/n/
+        # AEGIS_WORKLOAD_SVID_PREFIX is required for validation.
+        # If not provided, it will default to:
+        # "spiffe://aegis.z2h.dev/workload/"
+        - name: AEGIS_WORKLOAD_SVID_PREFIX
+          value: spiffe://aegis.z2h.dev/workload/
+        #
+        # Resource allocation will highly-depend on the system.
+        # Benchmark your deployment, monitor your resource utilization, and
+        # adjust these values accordingly.
+        # resources:
+        #  requests:
+        #    memory: "128Mi"
+        #    cpu: "250m"
+        #  limits:
+        #    memory: "128Mi"
+        #    # We recommend “NOT” setting a CPU limit.
+        #    # As long as you have configured your CPU “requests” correctly,
+        #    # everything would work fine.
+        #
       volumes:
       # Using SPIFFE CSI Driver to bind to the SPIRE Agent Socket
       # ref: https://github.com/spiffe/spiffe-csi

@@ -27,7 +27,7 @@ spec:
       serviceAccountName: aegis-safe
       containers:
       - name: main
-        image: z2hdev/aegis-safe:0.8.1
+        image: z2hdev/aegis-safe:0.9.1
         ports:
         - containerPort: 8443
         volumeMounts:
@@ -67,6 +67,17 @@ spec:
         # will listen to. Defaults to `:8082`
         - name: AEGIS_PROBE_READINESS_PORT
           value: ":8082"
+        # AEGIS_SAFE_SVID_RETRIEVAL_TIMEOUT is how long (in seconds) Aegis Safe
+        # will wait (in seconds) for an SPIRE SVID before giving up and crashing.
+        # The default value is 30 seconds.
+        - name: AEGIS_SAFE_SVID_RETRIEVAL_TIMEOUT
+          value: "30"
+        # AEGIS_SAFE_TLS_PORT is the port that Safe serves its API endpoints.
+        # Defaults to ":8443"
+        - name: AEGIS_SAFE_TLS_PORT
+          value: ":8443"
+        # These probe values should match the associated
+        # environment variables above.
         livenessProbe:
           httpGet:
             path: /
@@ -79,6 +90,20 @@ spec:
             port: 8082
           initialDelaySeconds: 1
           periodSeconds: 10
+        #
+        # Resource allocation will highly-depend on the system.
+        # Benchmark your deployment, monitor your resource utilization, and
+        # adjust these values accordingly.
+        # resources:
+        #  requests:
+        #    memory: "128Mi"
+        #    cpu: "250m"
+        #  limits:
+        #    memory: "128Mi"
+        #    # We recommend “NOT” setting a CPU limit.
+        #    # As long as you have configured your CPU “requests” correctly,
+        #    # everything would work fine.
+        #
       volumes:
       # Using SPIFFE CSI Driver to bind to the SPIRE Agent Socket
       # ref: https://github.com/spiffe/spiffe-csi
