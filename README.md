@@ -115,6 +115,25 @@ kubectl exec -it aegis-sentinel-aabbccdd11223344 -n aegis-system \
 **Sentinel** is the only entry point that an operator can register secrets
 to the system.
 
+## Configuring Aegis Safe Using Sentinel
+
+Starting with `v0.9.1`, it is possible to use the Aegis API to dynamically 
+configure Aegis at runtime without having to restart the workloads:
+
+```bash 
+# Change the log level from WARN (3) default to ERROR (2):
+kubectl exec $sentinelPodName -it -- aegis -w "aegis-safe" -s '{"logLevel":2}'
+
+# Here are the possible values for `logLevel`:
+#   Off   = 1
+#   Error = 2
+#   Warn  = 3
+#   Info  = 4
+#   Debug = 5
+#   Trace = 6
+# The higher the level is, the more verbose will the logs be.
+```
+
 ## How Do I Get the Root Token? Where Do I Store It?
 
 Unlike some other secret vaults, you do not need an admin token
@@ -167,8 +186,10 @@ As in any secrets management solution, your compute and memory requirements
 will depend on several factors, such as:
 
 * The number of workloads in the cluster
-* The number of secrets **Safe** (*Aegis’ Secrets Store*) has to manage (*see [architecture details](ARCHITECTURE.md)*)
-* The amount of workloads interacting with **Safe** (*see [architecture details](ARCHITECTURE.md)*)
+* The number of secrets **Safe** (*Aegis’ Secrets Store*) has to manage
+  (*see [architecture details](ARCHITECTURE.md)*)
+* The amount of workloads interacting with **Safe**
+  (*see [architecture details](ARCHITECTURE.md)*)
 * **Sidecar** poll frequency (*see [architecture details](ARCHITECTURE.md)*)
 * etc.
 
@@ -272,7 +293,8 @@ It’s a bit chaotic around here, yet if you want to lend a hand,
 
 We take security **very** seriously.
 
-[Follow the instructions here to report any security issues for **Aegis** or any of its sister projects](SECURITY.md).
+[Follow the instructions here to report any security issues for **Aegis**
+or any of its sister projects](SECURITY.md).
 
 ## Maintainers
 
