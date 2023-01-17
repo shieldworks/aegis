@@ -303,4 +303,6 @@ As of now, I, [Volkan Özçelik][me], am the sole maintainer of **Aegis**.
 [me]: https://github.com/v0lkan "Volkan Özçelik"
 
 Please send your feedback, suggestions, recommendations, and comments to
-[me@volkan.io](mailto:me@volkan.io). I’d love to have them.
+[me@volkan.io](mailto:me@volkan.io). 
+
+I’d love to have them.
