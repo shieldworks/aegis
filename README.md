@@ -155,20 +155,6 @@ to your secrets.
 We believe that this approach is **Kubernetes-native**, convenient, simpler, 
 and delightfully secure (*as opposed to being “annoyingly secure”*).
 
-Here are the resource allocation reported by `kubectl top` for a demo setup
-on a single-node minikube cluster to give an idea:
-
-```text 
-NAMESPACE     WORKLOAD            CPU(cores) MEMORY(bytes)
-aegis-system  aegis-safe          1m         9Mi
-aegis-system  aegis-sentinel      1m         3Mi
-default       aegis-workload-demo 2m         7Mi
-spire-system  spire-agent         4m         35Mi
-spire-system  spire-server        6m         41Mi
-```
-
-Note that 1000m is 1 full CPU core.
-
 ## System Requirements
 
 **Aegis** has been recently tested with the following Kubernetes version:
@@ -195,6 +181,20 @@ will depend on several factors, such as:
 
 We recommend you benchmark with a realistic production-like
 cluster and allocate your resources accordingly.
+
+That bein said, here are the resource allocation reported by `kubectl top` 
+for a demo setup on a single-node minikube cluster to give an idea:
+
+```text 
+NAMESPACE     WORKLOAD            CPU(cores) MEMORY(bytes)
+aegis-system  aegis-safe          1m         9Mi
+aegis-system  aegis-sentinel      1m         3Mi
+default       aegis-workload-demo 2m         7Mi
+spire-system  spire-agent         4m         35Mi
+spire-system  spire-server        6m         41Mi
+```
+
+Note that 1000m is 1 full CPU core.
 
 ## Design Decisions
 
