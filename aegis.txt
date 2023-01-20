@@ -92,3 +92,6 @@ x 2023-01-10 create a tutorial telling how to set things up from scratch with an
 x 2023-01-10 customization test for trust domain change pri:B
 x 2023-01-10 have a place for the community to interact realtime (Slack or Discord etc). — Not urgent. pri:C
 a mini build script to copy assets to aegies/install/k8s
+add a section that describes all the environment variables that can be used to configure Aegis, in detail.
+Write a production guideline: what action needs to be taken for a production setup (hardening secrets, volumes etc)
+test the demo with and witout sidecar
