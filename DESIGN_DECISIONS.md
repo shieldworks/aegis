@@ -80,7 +80,7 @@ always be stored in memory.
 
 When an **Aegis** component crashes, or when an **Aegis** component is evicted, 
 the workloads can still function with the existing secrets they have without 
-having to rely on the existing of an active secrets store.
+having to rely on the existence of an active secrets store.
 
 When an **Aegis** component restarts, it will seamlessly recover its state from
 an encrypted backup without requiring any manual intervention.
