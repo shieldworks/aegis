@@ -50,7 +50,7 @@ install **Aegis**.
 
 ## Usage
 
-[This tutorial about “**Rgistering Secrets Using Aegis**”][register] covers
+[This tutorial about “**Registering Secrets Using Aegis**”][register] covers
 several usage scenarios.
 
 [register]: https://aegis.z2h.dev/docs/register/
