@@ -60,6 +60,8 @@ several usage scenarios.
 [Check out this **Aegis Deep Dive**][deep-dive] article for an overview
 of **Aegis** system design and how each component fits together.
 
+[deep-dive]: https://aegis.z2h.dev/docs/architecture/
+
 ## One More Thing… How Do I Pronounce “Aegis”?
 
 [We have an article for that too 🙂][pronounce].
