@@ -108,3 +108,4 @@ dockerhub readmes are all empty.
 reduce aegis log level before cutting a new release.
 top navigation: remove privacy, add community (there is a privacy link at the bottom of every page; that should be enough)
 Failed to open encrypted file no identity matched any of the recipientsthis happens when there is an encrypted file on disk but there is no key to decrypt it. decide what to do when that happens.
+check if the metrics server and friends are still working in the cluster -- write instructions to enable it on a pristine minikube.
