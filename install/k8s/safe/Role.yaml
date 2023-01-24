@@ -1,0 +1,36 @@
+#
+# .-'_.---._'-.
+# ||####|(__)||   Protect your secrets, protect your business.
+#   \\()|##//       Secure your sensitive data with Aegis.
+#    \\ |#//                  <aegis.z2h.dev>
+#     .\_/.
+#
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: secret-readwriter
+  namespace: aegis-system
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    resourceNames: ["safe-age-key"]
+    verbs: ["get", "watch", "list", "update"]
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: secret-readwriter-binding
+  namespace: aegis-system
+subjects:
+  - kind: ServiceAccount
+    name: aegis-safe
+    namespace: aegis-system
+roleRef:
+  kind: Role
+  name: secret-readwriter
+  apiGroup: rbac.authorization.k8s.io

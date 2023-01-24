@@ -103,3 +103,8 @@ version control secrets. -- if an operator updates a secret, store N older versi
 ability to opt-out from disk peristence: I am weird and I want everythign stored in memory
 "when not to use aegis" is missin on the website.
 clean up the repo readmes too.
+test usage in a meshed environment (such as istio)
+dockerhub readmes are all empty.
+reduce aegis log level before cutting a new release.
+top navigation: remove privacy, add community (there is a privacy link at the bottom of every page; that should be enough)
+Failed to open encrypted file no identity matched any of the recipientsthis happens when there is an encrypted file on disk but there is no key to decrypt it. decide what to do when that happens.
