@@ -95,3 +95,11 @@ a mini build script to copy assets to aegies/install/k8s
 add a section that describes all the environment variables that can be used to configure Aegis, in detail.
 Write a production guideline: what action needs to be taken for a production setup (hardening secrets, volumes etc)
 test the demo with and witout sidecar
+(A) getting certificate expiration email from letsencrypt. make sure certificates are in good condition +aegis +z2h
+(A) ability to delete secrets
+(A) check what happens if you have an encrypted file but a different encryption key that does not match
+(A) spell check all the documentation/tutorial/etc on the website.
+version control secrets. -- if an operator updates a secret, store N older versions on the drive too.
+ability to opt-out from disk peristence: I am weird and I want everythign stored in memory
+"when not to use aegis" is missin on the website.
+clean up the repo readmes too.
