@@ -79,33 +79,35 @@ x 2023-01-10 add resource limits pri:B
 x 2023-01-10 audit logs for `safe` pri:C +safe
 x 2023-01-10 template transformation on secrets before persisting them. pri:B
 x 2023-01-10 Since this is a development deployment, I can execute a shell inside this sentinel; for production deployments, there will be a more hardened version of sentinel where you will be allowed to execute a binary that is only allowed to talk to SAFE and not fiddle with anything else on the pod’s system. pri:A
-: add links to technoligies used in the readme  . pri:A +aegis
+x 2023-01-24 : add links to technoligies used in the readme  . pri:A +aegis
 x 2023-01-10 web a mini logo next to Aegis header + a favicon pri:B
 x 2023-01-10 various timeout should be configurable (like the polling interval of the sidecar. pri:B
 x 2023-01-10 Do a basic benchmark: How much CPU and memory does a typical Aegis setup requires; how much does it change when the number of workloads increase? pri:C
 x 2023-01-10 update the demo video link pri:A
 x 2023-01-10 ability to install Aegis when there already is an existing spire rollout. Would likely mean customizing the trust root etc. pri:A
-e2e test with a different trust domain +aegis 
+x 2023-01-24 e2e test with a different trust domain +aegis
 x 2023-01-10 design a dev workflow with a local repo. pri:B
 x 2023-01-10 add some minimal documentation for aegis-sdk-go on how to use the SDK. pri:A
 x 2023-01-10 create a tutorial telling how to set things up from scratch with and without sdk. pri:B
 x 2023-01-10 customization test for trust domain change pri:B
 x 2023-01-10 have a place for the community to interact realtime (Slack or Discord etc). — Not urgent. pri:C
-a mini build script to copy assets to aegies/install/k8s
-add a section that describes all the environment variables that can be used to configure Aegis, in detail.
-Write a production guideline: what action needs to be taken for a production setup (hardening secrets, volumes etc)
-test the demo with and witout sidecar
-(A) getting certificate expiration email from letsencrypt. make sure certificates are in good condition +aegis +z2h
-(A) ability to delete secrets
-(A) check what happens if you have an encrypted file but a different encryption key that does not match
-(A) spell check all the documentation/tutorial/etc on the website.
-version control secrets. -- if an operator updates a secret, store N older versions on the drive too.
-ability to opt-out from disk peristence: I am weird and I want everythign stored in memory
-"when not to use aegis" is missin on the website.
-clean up the repo readmes too.
-test usage in a meshed environment (such as istio)
-dockerhub readmes are all empty.
-reduce aegis log level before cutting a new release.
-top navigation: remove privacy, add community (there is a privacy link at the bottom of every page; that should be enough)
-Failed to open encrypted file no identity matched any of the recipientsthis happens when there is an encrypted file on disk but there is no key to decrypt it. decide what to do when that happens.
-check if the metrics server and friends are still working in the cluster -- write instructions to enable it on a pristine minikube.
+x 2023-01-24 a mini build script to copy assets to aegies/install/k8s
+x 2023-01-24 add a section that describes all the environment variables that can be used to configure Aegis, in detail.
+x 2023-01-24 Write a production guideline: what action needs to be taken for a production setup (hardening secrets, volumes etc)
+x 2023-01-24 test the demo with and witout sidecar
+x 2023-01-24 getting certificate expiration email from letsencrypt. make sure certificates are in good condition pri:A +aegis +z2h
+x 2023-01-24 ability to delete secrets pri:A
+x 2023-01-24 check what happens if you have an encrypted file but a different encryption key that does not match pri:A
+x 2023-01-24 spell check all the documentation/tutorial/etc on the website. pri:A
+x 2023-01-24 version control secrets. -- if an operator updates a secret, store N older versions on the drive too. N should be configurable.
+x 2023-01-24 ability to opt-out from disk peristence: I am weird and I want everythign stored in memory
+x 2023-01-24 "when not to use aegis" is missin on the website.
+x 2023-01-24 clean up the repo readmes too.
+x 2023-01-24 test usage in a meshed environment (such as istio)
+x 2023-01-24 dockerhub readmes are all empty.
+x 2023-01-24 reduce aegis log level before cutting a new release.
+x 2023-01-24 top navigation: remove privacy, add community (there is a privacy link at the bottom of every page; that should be enough)
+x 2023-01-24 Failed to open encrypted file no identity matched any of the recipientsthis happens when there is an encrypted file on disk but there is no key to decrypt it. decide what to do when that happens.
+x 2023-01-24 check if the metrics server and friends are still working in the cluster -- write instructions to enable it on a pristine minikube.
+x 2023-01-24 when you remove environment variables things stop working. try with a minimal/zero set of env vars and make sure defaults work. pri:A
+x 2023-01-24 multiline spiffe id template did not work; find what the problem with the format is (possible a newline in the template literal or something)

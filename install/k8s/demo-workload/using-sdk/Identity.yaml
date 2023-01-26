@@ -12,8 +12,12 @@ metadata:
   name: aegis-workload-demo
 spec:
   # SPIFFE ID `MUST` start with "spiffe://aegis.z2h.dev/workload/$workloadName/ns/"
-  # for `safe` to recognize the workload and dispatch secrets to it.
-  spiffeIDTemplate: "spiffe://aegis.z2h.dev/workload/aegis-workload-demo/ns/{{ .PodMeta.Namespace }}/sa/{{ .PodSpec.ServiceAccountName }}/n/{{ .PodMeta.Name }}"
+  # for `aegis-safe` to recognize the workload and dispatch secrets to it.
+  spiffeIDTemplate: "spiffe://aegis.z2h.dev\
+    /workload/aegis-workload-demo\
+    /ns/{{ .PodMeta.Namespace }}\
+    /sa/{{ .PodSpec.ServiceAccountName }}\
+    /n/{{ .PodMeta.Name }}"
   podSelector:
     matchLabels:
       app.kubernetes.io/name: aegis-workload-demo

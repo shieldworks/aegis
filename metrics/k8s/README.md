@@ -9,5 +9,5 @@ For minikube, the following commands may help too:
 
 ```bash 
 minikube addons list 
-minikube addons enable metric-sserver
+minikube addons enable metrics-server
 ```

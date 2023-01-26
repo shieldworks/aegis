@@ -33,6 +33,7 @@ make demo-sdk
 ensure that you can save a secret
 
 7.
+Push pending code (tag updated, version bumps etc).
 Tag a new release if everything so far looks good:
 make tag
 

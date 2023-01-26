@@ -27,7 +27,7 @@ spec:
       serviceAccountName: aegis-safe
       containers:
       - name: main
-        image: z2hdev/aegis-safe:0.9.34
+        image: z2hdev/aegis-safe:0.10.0
         ports:
         - containerPort: 8443
         volumeMounts:
@@ -39,64 +39,17 @@ spec:
         - name: aegis-age
           mountPath: /key
           readOnly: true
-        env:
-        # SPIFFE_ENDPOINT_SOCKET is required for Sentinel to talk to SPIRE.
-        # If not provided, it will default to "unix:///spire-agent-socket/agent.sock"
-        - name: SPIFFE_ENDPOINT_SOCKET
-          value: unix:///spire-agent-socket/agent.sock
-        # AEGIS_SAFE_LOG_LEVEL determines the verbosity of the logs.
-        # 1: logs are off, 6: highest verbosity.
-        # Off = 1, Error = 2, Warn = 3, Info = 4, Debug = 5, Trace = 6
-        - name: AEGIS_SAFE_LOG_LEVEL
-          value: "6"
-        # AEGIS_WORKLOAD_SVID_PREFIX is required for validation.
-        # If not provided, it will default to:
-        # "spiffe://aegis.z2h.dev/workload/"
-        - name: AEGIS_WORKLOAD_SVID_PREFIX
-          value: spiffe://aegis.z2h.dev/workload/
-        # AEGIS_SENTINEL_SVID_PREFIX is required for validation.
-        # If not provided, it will default to:
-        # "spiffe://aegis.z2h.dev/workload/aegis-sentinel/ns/aegis-system/sa/aegis-sentinel/n/"
-        - name: AEGIS_SENTINEL_SVID_PREFIX
-          value: spiffe://aegis.z2h.dev/workload/aegis-sentinel/ns/aegis-system/sa/aegis-sentinel/n/
-        # AEGIS_SAFE_SVID_PREFIX is required for validation.
-        # If not provided, it will default to:
-        # "spiffe://aegis.z2h.dev/workload/aegis-safe/ns/aegis-system/sa/aegis-safe/n/"
-        - name: AEGIS_SAFE_SVID_PREFIX
-          value: spiffe://aegis.z2h.dev/workload/aegis-safe/ns/aegis-system/sa/aegis-safe/n/
-        # AEGIS_SAFE_DATA_PATH is where the encrypted secrets are stored.
-        # If not given, defaults to "/data"
-        - name: AEGIS_SAFE_DATA_PATH
-          value: /data
-        # AEGIS_SAFE_AGE_KEY_PATH is where Aegis Safe will fetch the "key.txt"
-        # that contains the encryption keys. If not given, will default to
-        # "/key/key.txt"
-        - name: AEGIS_SAFE_AGE_KEY_PATH
-          value: /key/key.txt
-        # AEGIS_SAFE_ENDPOINT_URL is the REST API endpoint that Safe exposes from its
-        # Service. if not provided, it will default to:
-        # "https://aegis-safe.aegis-system.svc.cluster.local:8443/"
-        - name: AEGIS_SAFE_ENDPOINT_URL
-          value: https://aegis-safe.aegis-system.svc.cluster.local:8443/
-        # AEGIS_PROBE_LIVENESS_PORT is the port where the liveness probe
-        # will listen to. Defaults to `:8081`
-        - name: AEGIS_PROBE_LIVENESS_PORT
-          value: ":8081"
-        # AEGIS_PROBE_READINESS_PORT is the port where the readiness probe
-        # will listen to. Defaults to `:8082`
-        - name: AEGIS_PROBE_READINESS_PORT
-          value: ":8082"
-        # AEGIS_SAFE_SVID_RETRIEVAL_TIMEOUT is how long (in seconds) Aegis Safe
-        # will wait (in seconds) for an SPIRE SVID before giving up and crashing.
-        # The default value is 30 seconds.
-        - name: AEGIS_SAFE_SVID_RETRIEVAL_TIMEOUT
-          value: "30"
-        # AEGIS_SAFE_TLS_PORT is the port that Safe serves its API endpoints.
-        # Defaults to ":8443"
-        - name: AEGIS_SAFE_TLS_PORT
-          value: ":8443"
-        # These probe values should match the associated
-        # environment variables above.
+        #
+        # env:
+        #
+        # You can configure Aegis Safe by providing environment variables.
+        #
+        # See https://aegis.z2h.dev/docs/architecture for more information about
+        # these environment variables.
+        #
+        # When you don’t explicitly provide env vars here, Aegis Safe will assume
+        # the default values outlined in the given link above.
+        #
         livenessProbe:
           httpGet:
             path: /

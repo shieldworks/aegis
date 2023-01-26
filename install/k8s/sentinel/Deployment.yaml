@@ -27,36 +27,22 @@ spec:
       serviceAccountName: aegis-sentinel
       containers:
       - name: main
-        image: z2hdev/aegis-sentinel:0.9.34
+        image: z2hdev/aegis-sentinel:0.10.0
         volumeMounts:
         - name: spire-agent-socket
           mountPath: /spire-agent-socket
           readOnly: true
-        env:
-        # SPIFFE_ENDPOINT_SOCKET is required for Sentinel to talk to SPIRE.
-        # If not provided, it will default to "unix:///spire-agent-socket/agent.sock"
-        - name: SPIFFE_ENDPOINT_SOCKET
-          value: unix:///spire-agent-socket/agent.sock
-        # AEGIS_SENTINEL_SVID_PREFIX is required for validation.
-        # If not provided, it will default to:
-        # "spiffe://aegis.z2h.dev/workload/aegis-sentinel/ns/aegis-system/sa/aegis-sentinel/n/"
-        - name: AEGIS_SENTINEL_SVID_PREFIX
-          value: spiffe://aegis.z2h.dev/workload/aegis-sentinel/ns/aegis-system/sa/aegis-sentinel/n/
-        # AEGIS_SAFE_SVID_PREFIX is required for validation.
-        # If not provided, it will default to:
-        # "spiffe://aegis.z2h.dev/workload/aegis-safe/ns/aegis-system/sa/aegis-safe/n/"
-        - name: AEGIS_SAFE_SVID_PREFIX
-          value: spiffe://aegis.z2h.dev/workload/aegis-safe/ns/aegis-system/sa/aegis-safe/n/
-        # AEGIS_SAFE_ENDPOINT_URL is the REST API endpoint that Safe exposes from its
-        # Service. if not provided, it will default to:
-        # "https://aegis-safe.aegis-system.svc.cluster.local:8443/"
-        - name: AEGIS_SAFE_ENDPOINT_URL
-          value: https://aegis-safe.aegis-system.svc.cluster.local:8443/
-        # AEGIS_PROBE_LIVENESS_PORT is the port where the liveness probe
-        # will listen to. Defaults to `:8081`
-        - name: AEGIS_PROBE_LIVENESS_PORT
-          value: ":8081"
-        # This probe value should match the associated environment variable above.
+        #
+        # env:
+        #
+        # You can configure Aegis Sentinal by providing environment variables.
+        #
+        # See https://aegis.z2h.dev/docs/architecture for more information about
+        # these environment variables.
+        #
+        # When you don’t explicitly provide env vars here, Aegis Safe will assume
+        # the default values outlined in the given link above.
+        #
         livenessProbe:
           httpGet:
             path: /
