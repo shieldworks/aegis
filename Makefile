@@ -79,3 +79,7 @@ demo-sidecar:
 # Installs the demo app to play with.
 demo-sdk:
 	./hack/install-workload-using-sdk.sh
+
+# Publishes the website:
+web:
+	./hack/publish-web.sh
