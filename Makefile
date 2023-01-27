@@ -80,6 +80,10 @@ demo-sidecar:
 demo-sdk:
 	./hack/install-workload-using-sdk.sh
 
-# Publishes the website:
+# Publishes the website.
 web:
 	./hack/publish-web.sh
+
+# Push all the things.
+commit:
+	./hack/commit.sh
