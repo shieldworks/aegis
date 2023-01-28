@@ -9,7 +9,7 @@ This project is in **active development**.
 The code that have been officially signed and released is stable
 and can be used in a production environment.
 
-Howeever, semantically-speaking **Aegis** is still an **alpha** software.
+Howeever—semantically-speaking—**Aegis** is still an **alpha** software.
 Meaning, until **Aegis** reaches `v1.0.0`, nothing is backwards compatible 
 and anything can change with or without notice.
 
