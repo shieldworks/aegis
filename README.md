@@ -4,10 +4,14 @@
 
 ## Status of This Software
 
-This project is a **work in progress** (*WIP*) and has yet to be ready for 
-production consumption. 
+This project is in **active development**.
 
-**Use it at your own risk**.
+The code that have been officially signed and released is stable
+and can be used in a production environment.
+
+Howeever, semantically-speaking **Aegis** is still an **alpha** software.
+Meaning, until **Aegis** reaches `v1.0.0`, nothing is backwards compatible 
+and anything can change with or without notice.
 
 ## A Tour Of Aegis
 
