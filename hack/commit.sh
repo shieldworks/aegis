@@ -32,5 +32,8 @@ then
 	cd ../aegis-workload-demo-using-sidecar || exit; git add .; git commit -m "bump"; git push origin main;
 	echo "aegis-workload-demo-using-sdk"
 	cd ../aegis-workload-demo-using-sdk     || exit; git add .; git commit -m "bump"; git push origin main;
+	echo "aegis"
+	cd ../aegis                             || exit; git add .; git commit -m "bump"; git push origin main;
 	echo "Everything is awesome!"
+
 fi

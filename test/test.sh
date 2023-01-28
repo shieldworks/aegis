@@ -21,7 +21,7 @@ kubectl exec "$SENTINEL_POD_NAME" -n aegis-system -- aegis -w "aegis-workload-de
 echo "will wait for 30 seconds"
 sleep 30
 
-if kubectl logs "$WORKLOAD_POD_NAME" | grep -q "$SECRET"; then
+if kubectl logs "$WORKLOAD_POD_NAME" -n default | grep -q "$SECRET"; then
   echo "PASS \o/"
 else
   echo "FAIL :("
@@ -43,7 +43,7 @@ kubectl exec "$SENTINEL_POD_NAME" -n aegis-system -- aegis -w "aegis-workload-de
 echo "will wait for 30 seconds"
 sleep 30
 
-if kubectl logs "$WORKLOAD_POD_NAME" | grep -q "$SECRET"; then
+if kubectl logs "$WORKLOAD_POD_NAME" -n default | grep -q "$SECRET"; then
   echo "PASS \o/"
 else
   echo "FAIL :("

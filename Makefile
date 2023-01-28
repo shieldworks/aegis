@@ -87,3 +87,8 @@ web:
 # Push all the things.
 commit:
 	./hack/commit.sh
+
+# System test.
+.PHONY: test
+test:
+	./test/test.sh
