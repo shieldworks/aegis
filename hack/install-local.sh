@@ -36,13 +36,13 @@ fi
 kubectl apply -f ./ServiceAccount.yaml
 kubectl apply -f ./Identity.yaml
 kubectl apply -f ./Service.yaml
-kubectl apply -f ./Deployment.yaml
+kubectl apply -k .
 
 cd ..
 cd sentinel || exit
 kubectl apply -f Namespace.yaml
 kubectl apply -f Identity.yaml
 kubectl apply -f ServiceAccount.yaml
-kubectl apply -f Deployment.yaml
+kubectl apply -k .
 
 echo "Everything is awesome!"
