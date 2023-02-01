@@ -15,4 +15,5 @@ minikube start \
     --extra-config=apiserver.service-account-key-file=/var/lib/minikube/certs/sa.pub \
     --extra-config=apiserver.service-account-issuer=api \
     --extra-config=apiserver.api-audiences=api,spire-server \
-    --extra-config=apiserver.authorization-mode=Node,RBAC
+    --extra-config=apiserver.authorization-mode=Node,RBAC \
+    --insecure-registry "10.0.0.0/24"

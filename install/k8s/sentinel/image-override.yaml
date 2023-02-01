@@ -1,0 +1,19 @@
+#
+# .-'_.---._'-.
+# ||####|(__)||   Protect your secrets, protect your business.
+#   \\()|##//       Secure your sensitive data with Aegis.
+#    \\ |#//                  <aegis.z2h.dev>
+#     .\_/.
+#
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aegis-safe
+  namespace: aegis-system
+spec:
+  template:
+    spec:
+      containers:
+      - name: main
+        image: localhost:5000/aegis-sentinel:0.11.3
