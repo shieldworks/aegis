@@ -9,7 +9,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: aegis-safe
+  name: aegis-sentinel
   namespace: aegis-system
 spec:
   template:

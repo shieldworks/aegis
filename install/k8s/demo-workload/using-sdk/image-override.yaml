@@ -9,8 +9,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: aegis-safe
-  namespace: aegis-system
+  name: aegis-workload-demo
+  namespace: aegis-default
 spec:
   template:
     spec:

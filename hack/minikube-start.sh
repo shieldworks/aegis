@@ -19,6 +19,3 @@ minikube start \
     --insecure-registry "10.0.0.0/24"
 
 minikube addons enable registry
-
-# If you don't see a registry pod in `docker ps`
-# kubectl port-forward --namespace kube-system service/registry 5000:80
