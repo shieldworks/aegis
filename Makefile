@@ -118,3 +118,7 @@ commit:
 .PHONY: test
 test:
 	./test/test.sh
+
+.PHONY: test
+test-local:
+	./test/test-local.sh
