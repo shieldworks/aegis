@@ -23,6 +23,7 @@ clone_and_update_repo() {
   git checkout main
   git pull
   cd ..
+  echo ""
 }
 
 cd ..
