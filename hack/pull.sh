@@ -10,6 +10,9 @@
 
 clone_and_update_repo() {
   local REPO="$1"
+  echo ""
+  pwd
+  echo ""
   if [ -d "$REPO" ] && [ ! -L "$REPO" ]; then
     git clone "https://github.com/zerotohero-dev/$REPO.git"
   fi
