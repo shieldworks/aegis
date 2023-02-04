@@ -10,8 +10,7 @@
 
 clone_and_update_repo() {
   local REPO="$1"
-  echo ""
-  pwd
+  echo "$(pwd)/$REPO"
   echo ""
   if [ -d "$REPO" ] && [ ! -L "$REPO" ]; then
     echo "$REPO folder already exists. Not going to clone it."
