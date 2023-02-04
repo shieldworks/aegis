@@ -15,6 +15,8 @@ clone_and_update_repo() {
   echo ""
   if [ -d "$REPO" ] && [ ! -L "$REPO" ]; then
     git clone "https://github.com/zerotohero-dev/$REPO.git"
+  else
+    mkdir -p "$REPO"
   fi
   cd "$REPO" || exit
   git stash
