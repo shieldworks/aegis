@@ -20,6 +20,7 @@ clone_and_update_repo() {
   git stash
   git checkout main
   git pull
+  cd ..
 }
 
 cd ..
