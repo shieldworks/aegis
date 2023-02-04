@@ -8,38 +8,32 @@
 #     .\_/.
 #
 
+clone_and_update_repo() {
+  local REPO="$1"
+  if [ -d "$REPO" ] && [ ! -L "$REPO" ]; then
+    git clone "https://github.com/zerotohero-dev/$REPO.git"
+  fi
+  cd "$REPO" || exit
+  git stash
+  git checkout main
+  git pull
+}
+
 cd ..
 echo "This will stash all your uncommitted changes EVERYWHERE."
 read -p "Are you sure? " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
-  echo "aegis-spire"
-  mkdir -p aegis-spire
-	cd aegis-spire || exit; git stash; git checkout main; git pull;
-	echo "aegis-core"
-	mkdir -p ../aegis-core
-	cd ../aegis-core || exit; git stash; git checkout main; git pull;
-	echo "aegis-sdk-go"
-	mkdir -p ../aegis-sdk-go
-	cd ../aegis-sdk-go || exit; git stash; git checkout main; git pull;
-	echo "aegis-sentinel"
-	mkdir -p ../aegis-sentinel
-	cd ../aegis-sentinel || exit; git stash; git checkout main; git pull;
-	echo "aegis-sidecar"
-	mkdir -p ../aegis-sidecar
-	cd ../aegis-sidecar || exit; git stash; git checkout main; git pull;
-	echo "aegis-safe"
-	mkdir -p ../aegis-safe
-	cd ../aegis-safe || exit; git stash; git checkout main; git pull;
-	echo "aegis-web"
-	mkdir -p ../aegis-web
-	cd ../aegis-web || exit; git stash; git checkout main; git pull;
-	echo "aegis-workload-demo-using-sidecar"
-	mkdir -p ../aegis-workload-demo-using-sidecar
-	cd ../aegis-workload-demo-using-sidecar || exit; git stash; git checkout main; git pull;
-	echo "aegis-workload-demo-using-sdk"
-	mkdir -p ../aegis-workload-demo-using-sdk
-	cd ../aegis-workload-demo-using-sdk || exit; git stash; git checkout main; git pull;
-	echo "Everything is awesome!"
+  clone_and_update_repo "aegis-spire"
+  clone_and_update_repo "aegis-core"
+  clone_and_update_repo "aegis-sdk-go"
+  clone_and_update_repo "aegis-sentinel"
+  clone_and_update_repo "aegis-sidecar"
+  clone_and_update_repo "aegis-safe"
+  clone_and_update_repo "aegis-web"
+  clone_and_update_repo "aegis-workload-demo-using-sidecar"
+  clone_and_update_repo "aegis-workload-demo-using-sdk"
+
+  echo "Everything is awesome!"
 fi
