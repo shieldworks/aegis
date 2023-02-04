@@ -7,7 +7,8 @@
 This project is in **active development**.
 
 The code that have been officially signed and released is stable
-and can be used in a production environment.
+and can (*typically*) be used in a production environment 
+(*at your own risk—see [LICENSE](LICENSE)*).
 
 Howeever—semantically-speaking—**Aegis** is still an **alpha** software.
 Meaning, until **Aegis** reaches `v1.0.0`, nothing is backwards compatible 
