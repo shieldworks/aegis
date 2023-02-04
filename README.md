@@ -6,7 +6,8 @@
 
 This project is in **active development**.
 
-The code that have been officially signed and released is stable
+The code that have been officially signed and released is stable,
+has passed integration tests,
 and can (*typically*) be used in a production environment 
 (*at your own risk—see [LICENSE](LICENSE)*).
 
