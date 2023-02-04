@@ -14,9 +14,9 @@ clone_and_update_repo() {
   pwd
   echo ""
   if [ -d "$REPO" ] && [ ! -L "$REPO" ]; then
-    git clone "https://github.com/zerotohero-dev/$REPO.git"
+    echo "$REPO folder already exists. Not going to clone it."
   else
-    mkdir -p "$REPO"
+    git clone "https://github.com/zerotohero-dev/$REPO.git"
   fi
   cd "$REPO" || exit
   git stash
