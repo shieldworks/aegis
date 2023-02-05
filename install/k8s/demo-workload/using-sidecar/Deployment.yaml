@@ -26,7 +26,7 @@ spec:
       serviceAccountName: aegis-workload-demo
       containers:
       - name: main
-        image: z2hdev/aegis-workload-demo-using-sidecar:0.12.0
+        image: z2hdev/aegis-workload-demo-using-sidecar:0.12.10
         volumeMounts:
         # `main` shares this volume with `sidecar`.
         - mountPath: /opt/aegis
@@ -46,7 +46,7 @@ spec:
         #    # everything would work fine.
         #
       - name: sidecar
-        image: z2hdev/aegis-sidecar:0.12.0
+        image: z2hdev/aegis-sidecar:0.12.10
         volumeMounts:
         # /opt/aegis/secrets.json is the place the secrets will be at.
         # As of now, this is not configurable. Once the MVP is complete,
