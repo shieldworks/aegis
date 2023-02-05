@@ -8,7 +8,7 @@
 #     .\_/.
 #
 
-VERSION=0.11.20
+VERSION=0.12.0
 
 echo ""
 echo "--------"
