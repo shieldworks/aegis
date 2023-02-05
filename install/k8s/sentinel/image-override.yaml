@@ -16,4 +16,4 @@ spec:
     spec:
       containers:
       - name: main
-        image: localhost:5000/aegis-sentinel:0.12.10
+        image: localhost:5000/aegis-sentinel:0.12.30
