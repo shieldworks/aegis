@@ -8,8 +8,8 @@
 #     .\_/.
 #
 
-VERSION=0.12.10
-NEXT_VERSION=0.12.11
+VERSION=0.12.30
+NEXT_VERSION=0.12.31
 
 cd ../aegis-workload-demo-using-sidecar/k8s || exit
 sed -i "s/:$VERSION/:$NEXT_VERSION/" ./*.yaml
