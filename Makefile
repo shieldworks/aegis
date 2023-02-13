@@ -31,9 +31,13 @@ rimraf:
 pull:
 	./hack/pull.sh
 
-# copies manifests over to the install folder for build.
+# Copies manifests over to the install folder for build.
 sync:
 	./hack/sync-manifests.sh
+
+# Git status of all of the related projects.
+status:
+	./hack/git-status.sh
 
 # For repo-admin-use only.
 build: build-demo-sidecar build-demo-sdk build-safe build-sidecar build-sentinel
