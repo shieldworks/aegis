@@ -18,4 +18,6 @@ minikube start \
     --extra-config=apiserver.authorization-mode=Node,RBAC \
     --insecure-registry "10.0.0.0/24"
 
+echo "waiting 10 secs before enabling registry"
+sleep 10
 minikube addons enable registry

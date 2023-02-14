@@ -16,4 +16,4 @@ spec:
     spec:
       containers:
       - name: main
-        image: localhost:5000/aegis-safe:0.12.30
+        image: localhost:5000/aegis-safe:0.12.50

@@ -13,11 +13,13 @@ metadata:
   namespace: aegis-system
   labels:
     app.kubernetes.io/name: aegis-sentinel
+    app.kubernetes.io/part-of: aegis-system
 spec:
   replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: aegis-sentinel
+      app.kubernetes.io/part-of: aegis-system
   template:
     metadata:
       labels:
@@ -27,21 +29,19 @@ spec:
       serviceAccountName: aegis-sentinel
       containers:
       - name: main
-        image: z2hdev/aegis-sentinel:0.12.30
+        image: z2hdev/aegis-sentinel:0.12.51
         volumeMounts:
         - name: spire-agent-socket
           mountPath: /spire-agent-socket
           readOnly: true
-        #
-        # env:
         #
         # You can configure Aegis Sentinel by providing environment variables.
         #
         # See https://aegis.z2h.dev/docs/configuration for more information about
         # these environment variables.
         #
-        # When you don’t explicitly provide env vars here, Aegis Safe will assume
-        # the default values outlined in the given link above.
+        # When you don’t explicitly provide env vars here, Aegis Sentinel will 
+        # assume the default values outlined in the given link above.
         #
         env:
         - name: SPIFFE_ENDPOINT_SOCKET

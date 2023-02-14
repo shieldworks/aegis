@@ -26,7 +26,7 @@ spec:
       serviceAccountName: aegis-workload-demo
       containers:
       - name: main
-        image: z2hdev/aegis-workload-demo-using-sdk:0.12.30
+        image: z2hdev/aegis-workload-demo-using-sdk:0.12.50
         volumeMounts:
         # Volume mount for SPIRE unix domain socket.
         - name: spire-agent-socket
@@ -47,7 +47,7 @@ spec:
         - name: SPIFFE_ENDPOINT_SOCKET
           value: "unix:///spire-agent-socket/agent.sock"
         - name: AEGIS_LOG_LEVEL
-          value: "3"
+          value: "6"
         - name: AEGIS_WORKLOAD_SVID_PREFIX
           value: "spiffe://aegis.z2h.dev/workload/"
         - name: AEGIS_SAFE_SVID_PREFIX
