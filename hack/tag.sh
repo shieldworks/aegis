@@ -53,6 +53,17 @@ cd ../aegis || exit
 
 echo ""
 echo "--------"
+echo "aegis-init-container"
+cd ../aegis-init-container || exit
+if git tag -s v$VERSION; then
+  git push origin --tags
+  gh release create
+  docker trust sign z2hdev/aegis-init-container:$VERSION
+fi
+cd ../aegis || exit
+
+echo ""
+echo "--------"
 echo "aegis-workload-demo-using-sidecar"
 cd ../aegis-workload-demo-using-sidecar || exit
 if git tag -s v$VERSION; then

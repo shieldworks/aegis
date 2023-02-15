@@ -16,6 +16,7 @@ git clone git@github.com:zerotohero-dev/aegis-sdk-go.git
 git clone git@github.com:zerotohero-dev/aegis-safe.git
 git clone git@github.com:zerotohero-dev/aegis-sentinel.git
 git clone git@github.com:zerotohero-dev/aegis-sidecar.git
+git clone git@github.com:zerotohero-dev/aegis-init-container.git
 git clone git@github.com:zerotohero-dev/aegis-workload-demo-using-sidecar.git
 git clone git@github.com:zerotohero-dev/aegis-workload-demo-using-sdk.git
 git clone git@github.com:zerotohero-dev/aegis-web.git

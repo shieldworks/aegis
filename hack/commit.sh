@@ -24,6 +24,8 @@ then
 	cd ../aegis-sentinel                    || exit; git add .; git commit -m "bump"; git push origin main;
 	echo "aegis-sidecar"
 	cd ../aegis-sidecar                     || exit; git add .; git commit -m "bump"; git push origin main;
+	echo "aegis-init-container"
+	cd ../aegis-init-container              || exit; git add .; git commit -m "bump"; git push origin main;
 	echo "aegis-safe"
 	cd ../aegis-safe                        || exit; git add .; git commit -m "bump"; git push origin main;
 	echo "aegis-web"

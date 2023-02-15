@@ -32,6 +32,10 @@ echo "aegis-sidecar"
 cd aegis-sidecar || exit; git status -s
 cd ..
 
+echo "aegis-init-container"
+cd aegis-init-container || exit; git status -s
+cd ..
+
 echo "aegis-spire"
 cd aegis-spire || exit; git status -s
 cd ..

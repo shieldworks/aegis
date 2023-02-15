@@ -36,6 +36,7 @@ then
   clone_and_update_repo "aegis-sdk-go"
   clone_and_update_repo "aegis-sentinel"
   clone_and_update_repo "aegis-sidecar"
+  clone_and_update_repo "aegis-init-container"
   clone_and_update_repo "aegis-safe"
   clone_and_update_repo "aegis-web"
   clone_and_update_repo "aegis-workload-demo-using-sidecar"

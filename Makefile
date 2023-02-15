@@ -53,9 +53,9 @@ status:
 	./hack/git-status.sh
 
 # For repo-admin-use only.
-build: build-demo-sidecar build-demo-sdk build-safe build-sidecar build-sentinel
+build: build-demo-sidecar build-demo-sdk build-safe build-sidecar build-sentinel build-init-container
 
-build-local: build-demo-sidecar-local build-demo-sdk-local build-safe-local build-sidecar-local build-sentinel-local
+build-local: build-demo-sidecar-local build-demo-sdk-local build-safe-local build-sidecar-local build-sentinel-local build-init-container-local
 
 build-demo-sidecar:
 	cd ../aegis-workload-demo-using-sidecar && $(MAKE) build && $(MAKE) bundle && $(MAKE) push
@@ -68,6 +68,9 @@ build-safe:
 
 build-sidecar:
 	cd ../aegis-sidecar && $(MAKE) build && $(MAKE) bundle && $(MAKE) push
+
+build-init-container:
+	cd ../aegis-init-container && $(MAKE) build && $(MAKE) bundle && $(MAKE) push
 
 build-sentinel:
 	cd ../aegis-sentinel && $(MAKE) build && $(MAKE) bundle && $(MAKE) push
@@ -86,6 +89,9 @@ build-sidecar-local:
 
 build-sentinel-local:
 	cd ../aegis-sentinel && $(MAKE) build && $(MAKE) bundle && $(MAKE) push-local
+
+build-init-container-local:
+	cd ../aegis-init-container && $(MAKE) build && $(MAKE) bundle && $(MAKE) push-local
 
 # Deploys Aegis to the cluster.
 deploy:

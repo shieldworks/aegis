@@ -39,6 +39,10 @@ cd ../aegis-sidecar || exit
 sed -i "s/=$VERSION/=$NEXT_VERSION/" Makefile
 cd ../aegis || exit
 
+cd ../aegis-init-container || exit
+sed -i "s/=$VERSION/=$NEXT_VERSION/" Makefile
+cd ../aegis || exit
+
 cd ./hack || exit
 sed -i "s/=$VERSION/=$NEXT_VERSION/" tag.sh
 
