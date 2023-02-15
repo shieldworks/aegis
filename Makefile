@@ -8,7 +8,7 @@
 
 help:
 	@echo "Docker Host: ${DOCKER_HOST}."
-	@echo "make start-k8s;make clean;make sync;make build-local;make deploy-local"
+	@echo "make delete-k8s;make start-k8s;make clean;make sync;make build-local;make deploy-local;make test-local"
 
 start-k8s:
 	./hack/minikube-start.sh

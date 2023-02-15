@@ -22,9 +22,13 @@ echo "will wait for 30 seconds"
 sleep 30
 
 if kubectl logs "$WORKLOAD_POD_NAME" -n default | grep -q "$SECRET"; then
+  echo ""
   echo "PASS \o/"
+  echo ""
 else
+  echo ""
   echo "FAIL :("
+  echo ""
   exit 1
 fi
 
@@ -44,9 +48,13 @@ echo "will wait for 30 seconds"
 sleep 30
 
 if kubectl logs "$WORKLOAD_POD_NAME" -n default | grep -q "$SECRET"; then
+  echo ""
   echo "PASS \o/"
+  echo ""
 else
+  echo ""
   echo "FAIL :("
+  echo ""
   exit 1
 fi
 

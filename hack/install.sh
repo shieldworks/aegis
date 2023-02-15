@@ -14,13 +14,13 @@ kubectl apply -k ./spire
 
 while ! kubectl get po -n spire-system | grep spire-server | grep Running
 do
-    echo "waiting for spire server to be up."
+    echo "waiting for SPIRE server to be up."
     sleep 5
 done
 
 while ! kubectl get po -n spire-system | grep spire-agent | grep Running
 do
-    echo "waiting for spire agent to be up."
+    echo "waiting for SPIRE agent to be up."
     sleep 5
 done
 
