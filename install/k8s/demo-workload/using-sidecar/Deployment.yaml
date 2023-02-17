@@ -26,32 +26,15 @@ spec:
       serviceAccountName: aegis-workload-demo
       containers:
       - name: main
-        image: z2hdev/aegis-workload-demo-using-sidecar:0.12.55
+        image: z2hdev/aegis-workload-demo-using-sidecar:0.12.60
         volumeMounts:
         # `main` shares this volume with `sidecar`.
         - mountPath: /opt/aegis
           name: aegis-secrets-volume
-        #
-        # Resource allocation will highly-depend on the system.
-        # Benchmark your deployment, monitor your resource utilization, and
-        # adjust these values accordingly.
-        # resources:
-        #  requests:
-        #    memory: "128Mi"
-        #    cpu: "250m"
-        #  limits:
-        #    memory: "128Mi"
-        #    # We recommend “NOT” setting a CPU limit.
-        #    # As long as you have configured your CPU “requests” correctly,
-        #    # everything would work fine.
-        #
       - name: sidecar
-        image: z2hdev/aegis-sidecar:0.12.55
+        image: z2hdev/aegis-sidecar:0.12.60
         volumeMounts:
         # /opt/aegis/secrets.json is the place the secrets will be at.
-        # As of now, this is not configurable. Once the MVP is complete,
-        # we’ll work on making Aegis more flexible and add more configuration
-        # options.
         - mountPath: /opt/aegis
           name: aegis-secrets-volume
         # Volume mount for SPIRE unix domain socket.
@@ -86,21 +69,6 @@ spec:
           value: "3"
         - name: AEGIS_SIDECAR_ERROR_THRESHOLD
           value: "2"
-        #
-        # Resource allocation will highly-depend on the system.
-        # Benchmark your deployment, monitor your resource utilization, and
-        # adjust these values accordingly.
-        #
-        # resources:
-        #  requests:
-        #    memory: "128Mi"
-        #    cpu: "250m"
-        #  limits:
-        #    memory: "128Mi"
-        #    # We recommend “NOT” setting a CPU limit.
-        #    # As long as you have configured your CPU “requests” correctly,
-        #    # everything would work fine.
-        #
       volumes:
       # A memory-backed volume is recommended (but not required) to keep
       # the secrets. The secrets can be stored in any kind of volume.

@@ -29,7 +29,7 @@ spec:
       serviceAccountName: aegis-sentinel
       containers:
       - name: main
-        image: z2hdev/aegis-sentinel:0.12.55
+        image: z2hdev/aegis-sentinel:0.12.60
         volumeMounts:
         - name: spire-agent-socket
           mountPath: /spire-agent-socket
@@ -58,20 +58,6 @@ spec:
             port: 8081
           initialDelaySeconds: 1
           periodSeconds: 10
-        #
-        # Resource allocation will highly-depend on the system.
-        # Benchmark your deployment, monitor your resource utilization, and
-        # adjust these values accordingly.
-        # resources:
-        #  requests:
-        #    memory: "128Mi"
-        #    cpu: "250m"
-        #  limits:
-        #    memory: "128Mi"
-        #    # We recommend “NOT” setting a CPU limit.
-        #    # As long as you have configured your CPU “requests” correctly,
-        #    # everything would work fine.
-        #
       volumes:
       # Using SPIFFE CSI Driver to bind to the SPIRE Agent Socket
       # ref: https://github.com/spiffe/spiffe-csi
