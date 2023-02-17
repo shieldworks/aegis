@@ -29,7 +29,7 @@ spec:
       serviceAccountName: aegis-sentinel
       containers:
       - name: main
-        image: z2hdev/aegis-sentinel:0.12.60
+        image: z2hdev/aegis-sentinel:0.12.70
         volumeMounts:
         - name: spire-agent-socket
           mountPath: /spire-agent-socket

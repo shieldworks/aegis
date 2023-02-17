@@ -53,15 +53,18 @@ status:
 	./hack/git-status.sh
 
 # For repo-admin-use only.
-build: build-demo-sidecar build-demo-sdk build-safe build-sidecar build-sentinel build-init-container
+build: build-demo-sidecar build-demo-sdk build-demo-init-container build-safe build-sidecar build-sentinel build-init-container
 
-build-local: build-demo-sidecar-local build-demo-sdk-local build-safe-local build-sidecar-local build-sentinel-local build-init-container-local
+build-local: build-demo-sidecar-local build-demo-sdk-local build-demo-init-container-local build-safe-local build-sidecar-local build-sentinel-local build-init-container-local
 
 build-demo-sidecar:
 	cd ../aegis-workload-demo-using-sidecar && $(MAKE) build && $(MAKE) bundle && $(MAKE) push
 
 build-demo-sdk:
 	cd ../aegis-workload-demo-using-sdk && $(MAKE) build && $(MAKE) bundle && $(MAKE) push
+
+build-demo-init-container:
+	cd ../aegis-workload-demo-using-init-container && $(MAKE) build && $(MAKE) bundle && $(MAKE) push
 
 build-safe:
 	cd ../aegis-safe && $(MAKE) build && $(MAKE) bundle && $(MAKE) push
@@ -80,6 +83,9 @@ build-demo-sidecar-local:
 
 build-demo-sdk-local:
 	cd ../aegis-workload-demo-using-sdk && $(MAKE) build && $(MAKE) bundle && $(MAKE) push-local
+
+build-demo-init-container-local:
+	cd ../aegis-workload-demo-using-init-container && $(MAKE) build && $(MAKE) bundle && $(MAKE) push-local
 
 build-safe-local:
 	cd ../aegis-safe && $(MAKE) build && $(MAKE) bundle && $(MAKE) push-local

@@ -8,7 +8,7 @@
 #     .\_/.
 #
 
-VERSION=0.12.55
+VERSION=0.12.70
 
 echo ""
 echo "--------"
@@ -81,6 +81,17 @@ if git tag -s v$VERSION; then
   git push origin --tags
   gh release create
   docker trust sign z2hdev/aegis-workload-demo-using-sdk:$VERSION
+fi
+cd ../aegis || exit
+
+echo ""
+echo "--------"
+echo "aegis-workload-demo-using-init-container"
+cd ../aegis-workload-demo-using-init-container || exit
+if git tag -s v$VERSION; then
+  git push origin --tags
+  gh release create
+  docker trust sign z2hdev/aegis-workload-demo-using-init-container:$VERSION
 fi
 cd ../aegis || exit
 
