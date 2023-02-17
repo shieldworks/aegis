@@ -98,7 +98,7 @@ spec:
         csi:
           driver: "csi.spiffe.io"
           readOnly: true
-      # `aegis-data` is used to persist the encrypted backups of the secrets.    
+      # `aegis-data` is used to persist the encrypted backups of the secrets.
       - name: aegis-data
         hostPath:
           path: /var/local/aegis/data
