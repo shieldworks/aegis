@@ -41,6 +41,7 @@ then
   clone_and_update_repo "aegis-web"
   clone_and_update_repo "aegis-workload-demo-using-sidecar"
   clone_and_update_repo "aegis-workload-demo-using-sdk"
+  clone_and_update_repo "aegis-workload-demo-using-init-container"
 
   echo "Everything is awesome!"
 fi
