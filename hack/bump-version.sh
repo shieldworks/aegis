@@ -23,6 +23,12 @@ cd ..
 sed -i "s/=$VERSION/=$NEXT_VERSION/" Makefile
 cd ../aegis || exit
 
+cd ../aegis-workload-demo-using-init-container/k8s || exit
+sed -i "s/:$VERSION/:$NEXT_VERSION/" ./*.yaml
+cd ..
+sed -i "s/=$VERSION/=$NEXT_VERSION/" Makefile
+cd ../aegis || exit
+
 cd ../aegis-safe/k8s || exit
 sed -i "s/:$VERSION/:$NEXT_VERSION/" ./*.yaml
 cd ..

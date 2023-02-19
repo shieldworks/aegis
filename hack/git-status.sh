@@ -51,3 +51,7 @@ cd ..
 echo "aegis-workload-demo-using-sidecar"
 cd aegis-workload-demo-using-sidecar || exit; git status -s
 cd ..
+
+echo "aegis-workload-demo-using-init-container"
+cd aegis-workload-demo-using-init-container || exit; git status -s
+cd ..
