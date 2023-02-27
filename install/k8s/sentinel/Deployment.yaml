@@ -2,7 +2,7 @@
 # .-'_.---._'-.
 # ||####|(__)||   Protect your secrets, protect your business.
 #   \\()|##//       Secure your sensitive data with Aegis.
-#    \\ |#//                  <aegis.z2h.dev>
+#    \\ |#//                  <aegis.ist>
 #     .\_/.
 #
 
@@ -37,7 +37,7 @@ spec:
         #
         # You can configure Aegis Sentinel by providing environment variables.
         #
-        # See https://aegis.z2h.dev/docs/configuration for more information about
+        # See https://aegis.ist/docs/configuration for more information about
         # these environment variables.
         #
         # When you don’t explicitly provide env vars here, Aegis Sentinel will 
@@ -47,9 +47,9 @@ spec:
         - name: SPIFFE_ENDPOINT_SOCKET
           value: "unix:///spire-agent-socket/agent.sock"
         - name: AEGIS_SENTINEL_SVID_PREFIX
-          value: "spiffe://aegis.z2h.dev/workload/aegis-sentinel/ns/aegis-system/sa/aegis-sentinel/n/"
+          value: "spiffe://aegis.ist/workload/aegis-sentinel/ns/aegis-system/sa/aegis-sentinel/n/"
         - name: AEGIS_SAFE_SVID_PREFIX
-          value: "spiffe://aegis.z2h.dev/workload/aegis-safe/ns/aegis-system/sa/aegis-safe/n/"
+          value: "spiffe://aegis.ist/workload/aegis-safe/ns/aegis-system/sa/aegis-safe/n/"
         - name: AEGIS_PROBE_LIVENESS_PORT
           value: ":8081"
         livenessProbe:

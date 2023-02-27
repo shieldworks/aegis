@@ -23,7 +23,7 @@ and anything can change with or without notice.
 
 [Check out this quickstart guide][quickstart] for an overview of **Aegis**.
 
-[quickstart]: https://aegis.z2h.dev/docs/
+[quickstart]: https://aegis.ist/docs/
 
 ## About Aegis
 
@@ -39,7 +39,7 @@ central location and securely dispatching it to workloads.
 
 [Check out **Aegis**’s website][aegis-web] for more information.
 
-[aegis-web]: https://aegis.z2h.dev/
+[aegis-web]: https://aegis.ist/
 
 ## Community
 
@@ -53,7 +53,7 @@ and let us change the world together 🤘.
 [Check out this quickstart guide][quickstart] for an overview of **Aegis**,
 which also covers **installation** and **uninstallation** instructions.
 
-[quickstart]: https://aegis.z2h.dev/docs/
+[quickstart]: https://aegis.ist/docs/
 
 You need a **Kubernetes** cluster and sufficient admin rights on that cluster to
 install **Aegis**.
@@ -63,20 +63,20 @@ install **Aegis**.
 [This tutorial about “**Registering Secrets Using Aegis**”][register] covers
 several usage scenarios.
 
-[register]: https://aegis.z2h.dev/docs/register/
+[register]: https://aegis.ist/docs/register/
 
 ## Architecture Details
 
 [Check out this **Aegis Deep Dive**][deep-dive] article for an overview
 of **Aegis** system design and how each component fits together.
 
-[deep-dive]: https://aegis.z2h.dev/docs/architecture/
+[deep-dive]: https://aegis.ist/docs/architecture/
 
 ## One More Thing… How Do I Pronounce “Aegis”?
 
 [We have an article for that too 🙂][pronounce].
 
-[pronounce]: https://aegis.z2h.dev/docs/pronunciation/
+[pronounce]: https://aegis.ist/docs/pronunciation/
 
 ## What’s Coming Up Next?
 

@@ -2,7 +2,7 @@
 # .-'_.---._'-.
 # ||####|(__)||   Protect your secrets, protect your business.
 #   \\()|##//       Secure your sensitive data with Aegis.
-#    \\ |#//                  <aegis.z2h.dev>
+#    \\ |#//                  <aegis.ist>
 #     .\_/.
 #
 
@@ -11,9 +11,9 @@ kind: ClusterSPIFFEID
 metadata:
   name: aegis-workload-demo
 spec:
-  # SPIFFE ID `MUST` start with "spiffe://aegis.z2h.dev/workload/$workloadName/ns/"
+  # SPIFFE ID `MUST` start with "spiffe://aegis.ist/workload/$workloadName/ns/"
   # for `aegis-safe` to recognize the workload and dispatch secrets to it.
-  spiffeIDTemplate: "spiffe://aegis.z2h.dev\
+  spiffeIDTemplate: "spiffe://aegis.ist\
     /workload/aegis-workload-demo\
     /ns/{{ .PodMeta.Namespace }}\
     /sa/{{ .PodSpec.ServiceAccountName }}\

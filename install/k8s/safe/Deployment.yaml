@@ -2,7 +2,7 @@
 # .-'_.---._'-.
 # ||####|(__)||   Protect your secrets, protect your business.
 #   \\()|##//       Secure your sensitive data with Aegis.
-#    \\ |#//                  <aegis.z2h.dev>
+#    \\ |#//                  <aegis.ist>
 #     .\_/.
 #
 
@@ -44,7 +44,7 @@ spec:
         #
         # You can configure Aegis Safe by providing environment variables.
         #
-        # See https://aegis.z2h.dev/docs/configuration for more information about
+        # See https://aegis.ist/docs/configuration for more information about
         # these environment variables.
         #
         # When you don’t explicitly provide env vars here, Aegis Safe will assume
@@ -56,11 +56,11 @@ spec:
         - name: AEGIS_LOG_LEVEL
           value: "6"
         - name: AEGIS_WORKLOAD_SVID_PREFIX
-          value: "spiffe://aegis.z2h.dev/workload/"
+          value: "spiffe://aegis.ist/workload/"
         - name: AEGIS_SENTINEL_SVID_PREFIX
-          value: "spiffe://aegis.z2h.dev/workload/aegis-sentinel/ns/aegis-system/sa/aegis-sentinel/n/"
+          value: "spiffe://aegis.ist/workload/aegis-sentinel/ns/aegis-system/sa/aegis-sentinel/n/"
         - name: AEGIS_SAFE_SVID_PREFIX
-          value: "spiffe://aegis.z2h.dev/workload/aegis-safe/ns/aegis-system/sa/aegis-safe/n/"
+          value: "spiffe://aegis.ist/workload/aegis-safe/ns/aegis-system/sa/aegis-safe/n/"
         - name: AEGIS_SAFE_DATA_PATH
           value: "/data"
         - name: AEGIS_SAFE_AGE_KEY_PATH

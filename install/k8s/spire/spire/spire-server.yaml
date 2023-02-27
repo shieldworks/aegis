@@ -102,7 +102,7 @@ data:
     server {
       bind_address = "0.0.0.0"
       bind_port = "8081"
-      trust_domain = "aegis.z2h.dev"
+      trust_domain = "aegis.ist"
       data_dir = "/run/spire/server/data"
       log_level = "DEBUG"
       federation {
