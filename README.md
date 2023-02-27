@@ -78,6 +78,11 @@ of **Aegis** system design and how each component fits together.
 
 [pronounce]: https://aegis.ist/docs/pronunciation/
 
+## Changelog
+
+You can find the changelog, and migration/upgrade instructions (*if any*)
+on [Aegis’ Changelog Page](https://aegis.ist/changelog/).
+
 ## What’s Coming Up Next?
 
 You can see the project’s progress [in these **Aegis** boards][mdp].
@@ -116,6 +121,6 @@ As of now, I, [Volkan Özçelik][me], am the sole maintainer of **Aegis**.
 [me]: https://github.com/v0lkan "Volkan Özçelik"
 
 Please send your feedback, suggestions, recommendations, and comments to
-[me@volkan.io](mailto:me@volkan.io). 
+[feedback@aegis.ist](mailto:feedback@aegis.ist). 
 
 I’d love to have them.
