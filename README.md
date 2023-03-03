@@ -11,13 +11,23 @@ keep your secrets… secret
 This project is in **active development**.
 
 The code that have been officially signed and released is stable,
-has passed integration tests,
-and can (*typically*) be used in a production environment 
-(*at your own risk—see [LICENSE](LICENSE)*).
+has passed integration tests, and can be used in a production 
+environment (*at your own risk—[see LICENSE](LICENSE)*).
 
-Howeever—semantically-speaking—**Aegis** is still an **alpha** software.
+However—semantically-speaking—**Aegis** is still an **alpha** software.
 Meaning, until **Aegis** reaches `v1.0.0`, nothing is backwards compatible 
 and anything can change with or without notice.
+
+## Links
+
+* **Homepage**: <https://aegis.ist>
+* **Documentation**: <https://aegis.ist/docs/>
+* **Changelog**: <https://aegis.ist/changelog/>
+* **Community**: [Join Aegis’ Slack Workspace][slack-invite]
+* **Contact**: <https://aegis.ist/contact/>
+* **Media Kit**: <https://aegist.ist/media/>
+
+[slack-invite]: https://join.slack.com/t/aegis-6n41813/shared_invite/zt-1myzqdi6t-jTvuRd1zDLbHX0gN8VkCqg "Join aegis.slack.com"
 
 ## A Tour Of Aegis
 
@@ -45,8 +55,6 @@ central location and securely dispatching it to workloads.
 
 If you are a security enthusiast, [**join Aegis’ Slack Workspace**][slack-invite]
 and let us change the world together 🤘.
-
-[slack-invite]: https://join.slack.com/t/aegis-6n41813/shared_invite/zt-1myzqdi6t-jTvuRd1zDLbHX0gN8VkCqg "Join aegis.slack.com"
 
 ## Installation
 
@@ -124,3 +132,8 @@ Please send your feedback, suggestions, recommendations, and comments to
 [feedback@aegis.ist](mailto:feedback@aegis.ist). 
 
 I’d love to have them.
+
+## License
+
+[MIT License](LICENSE).
+
