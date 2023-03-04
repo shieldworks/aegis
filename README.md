@@ -136,4 +136,3 @@ I’d love to have them.
 ## License
 
 [MIT License](LICENSE).
-
