@@ -26,13 +26,13 @@ spec:
       serviceAccountName: aegis-workload-demo
       containers:
       - name: main
-        image: z2hdev/aegis-workload-demo-using-sidecar:0.12.70
+        image: z2hdev/aegis-workload-demo-using-sidecar:0.13.0
         volumeMounts:
         # `main` shares this volume with `sidecar`.
         - mountPath: /opt/aegis
           name: aegis-secrets-volume
       - name: sidecar
-        image: z2hdev/aegis-sidecar:0.12.70
+        image: z2hdev/aegis-sidecar:0.13.0
         volumeMounts:
         # /opt/aegis/secrets.json is the place the secrets will be at.
         - mountPath: /opt/aegis
