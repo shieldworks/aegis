@@ -2,7 +2,7 @@
 # .-'_.---._'-.
 # ||####|(__)||   Protect your secrets, protect your business.
 #   \\()|##//       Secure your sensitive data with Aegis.
-#    \\ |#//                  <aegis.ist>
+#    \\ |#//                    <aegis.ist>
 #     .\_/.
 #
 
