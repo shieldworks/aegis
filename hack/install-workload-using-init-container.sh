@@ -8,9 +8,7 @@
 #     .\_/.
 #
 
-SENTINEL=aegis-sentinel-58f6478b79-6g242
+# Demo workload that uses `aegis-init-container`
+cd ./install/k8s/demo-workload/using-init-container || exit
+kubectl apply -f .
 
-kubectl exec -it $SENTINEL \
--n aegis-system -- aegis \
--w aegis-workload-demo \
--s '{"username": "pepsi", "password": "cola"}'

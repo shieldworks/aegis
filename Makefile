@@ -125,15 +125,22 @@ safe:
 demo-sidecar:
 	./hack/install-workload-using-sidecar.sh
 
+demo-sidecar-local:
+	./hack/install-workload-using-sidecar-local.sh
+
 # Installs the demo app to play with.
 demo-sdk:
 	./hack/install-workload-using-sdk.sh
 
-demo-sidecar-local:
-	./hack/install-workload-using-sidecar-local.sh
-
 demo-sdk-local:
 	./hack/install-workload-using-sdk-local.sh
+
+# Install the demo app that uses init container.
+demo-init-container:
+	./hack/install-workload-using-init-container.sh
+
+demo-init-container-local:
+	./hack/install-workload-using-init-container-local.sh
 
 # Publishes the website.
 web:
