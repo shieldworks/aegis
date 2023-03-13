@@ -7,8 +7,16 @@
 #
 
 help:
-	@echo "Docker Host: ${DOCKER_HOST}."
-	@echo "make delete-k8s;make start-k8s;make clean;make sync;make build-local;make deploy-local;make test-local;make bump;make build;make tag"
+	@echo ""
+	@echo "                         ---------------------------------------------------"
+	@echo "            Docker Host: ${DOCKER_HOST}"
+	@echo "Minikube Active dockerd: ${MINIKUBE_ACTIVE_DOCKERD}"
+	@echo "                         ---------------------------------------------------"
+	@echo "                   PREP: make delete-k8s;make start-k8s;make clean;make sync;\n\
+                   TEST: make build-local;make deploy-local;make test-local;\n\
+                RELEASE: make bump;make build;make tag"
+	@echo "                         ---------------------------------------------------"
+	@echo ""
 
 start-k8s:
 	./hack/minikube-start.sh
@@ -53,51 +61,106 @@ status:
 	./hack/git-status.sh
 
 # For repo-admin-use only.
-build: build-demo-sidecar build-demo-sdk build-demo-init-container build-safe build-sidecar build-sentinel build-init-container
+build: \
+	build-demo-sidecar \
+	build-demo-sdk \
+	build-demo-init-container \
+	build-safe \
+	build-sidecar \
+	build-sentinel build-init-container
 
-build-local: build-demo-sidecar-local build-demo-sdk-local build-demo-init-container-local build-safe-local build-sidecar-local build-sentinel-local build-init-container-local
+build-local: \
+	build-demo-sidecar-local \
+	build-demo-sdk-local \
+	build-demo-init-container-local \
+	build-safe-local \
+	build-sidecar-local \
+	build-sentinel-local \
+	build-init-container-local
 
 build-demo-sidecar:
-	cd ../aegis-workload-demo-using-sidecar && $(MAKE) build && $(MAKE) bundle && $(MAKE) push
+	cd ../aegis-workload-demo-using-sidecar && \
+		$(MAKE) build && \
+		$(MAKE) bundle && \
+		$(MAKE) push
 
 build-demo-sdk:
-	cd ../aegis-workload-demo-using-sdk && $(MAKE) build && $(MAKE) bundle && $(MAKE) push
+	cd ../aegis-workload-demo-using-sdk && \
+		$(MAKE) build && \
+		$(MAKE) bundle && \
+		$(MAKE) push
 
 build-demo-init-container:
-	cd ../aegis-workload-demo-using-init-container && $(MAKE) build && $(MAKE) bundle && $(MAKE) push
+	cd ../aegis-workload-demo-using-init-container && \
+		$(MAKE) build && \
+		$(MAKE) bundle && \
+		$(MAKE) push
 
 build-safe:
-	cd ../aegis-safe && $(MAKE) build && $(MAKE) bundle && $(MAKE) push
+	cd ../aegis-safe && \
+		$(MAKE) build && \
+		$(MAKE) bundle && \
+		$(MAKE) push
 
 build-sidecar:
-	cd ../aegis-sidecar && $(MAKE) build && $(MAKE) bundle && $(MAKE) push
+	cd ../aegis-sidecar && \
+		$(MAKE) build && \
+		$(MAKE) bundle && \
+		$(MAKE) push
 
 build-init-container:
-	cd ../aegis-init-container && $(MAKE) build && $(MAKE) bundle && $(MAKE) push
+	cd ../aegis-init-container && \
+		$(MAKE) build && \
+		$(MAKE) bundle && \
+		$(MAKE) push
 
 build-sentinel:
-	cd ../aegis-sentinel && $(MAKE) build && $(MAKE) bundle && $(MAKE) push
+	cd ../aegis-sentinel && \
+		$(MAKE) build && \
+		$(MAKE) bundle && \
+		$(MAKE) push
 
 build-demo-sidecar-local:
-	cd ../aegis-workload-demo-using-sidecar && $(MAKE) build && $(MAKE) bundle && $(MAKE) push-local
+	cd ../aegis-workload-demo-using-sidecar && \
+		$(MAKE) build && \
+		$(MAKE) bundle && \
+		$(MAKE) push-local
 
 build-demo-sdk-local:
-	cd ../aegis-workload-demo-using-sdk && $(MAKE) build && $(MAKE) bundle && $(MAKE) push-local
+	cd ../aegis-workload-demo-using-sdk && \
+		$(MAKE) build && \
+		$(MAKE) bundle && \
+		$(MAKE) push-local
 
 build-demo-init-container-local:
-	cd ../aegis-workload-demo-using-init-container && $(MAKE) build && $(MAKE) bundle && $(MAKE) push-local
+	cd ../aegis-workload-demo-using-init-container && \
+		$(MAKE) build && \
+		$(MAKE) bundle && \
+		$(MAKE) push-local
 
 build-safe-local:
-	cd ../aegis-safe && $(MAKE) build && $(MAKE) bundle && $(MAKE) push-local
+	cd ../aegis-safe && \
+		$(MAKE) build && \
+		$(MAKE) bundle && \
+		$(MAKE) push-local
 
 build-sidecar-local:
-	cd ../aegis-sidecar && $(MAKE) build && $(MAKE) bundle && $(MAKE) push-local
+	cd ../aegis-sidecar && \
+		$(MAKE) build && \
+		$(MAKE) bundle && \
+		$(MAKE) push-local
 
 build-sentinel-local:
-	cd ../aegis-sentinel && $(MAKE) build && $(MAKE) bundle && $(MAKE) push-local
+	cd ../aegis-sentinel && \
+		$(MAKE) build && \
+		$(MAKE) bundle && \
+		$(MAKE) push-local
 
 build-init-container-local:
-	cd ../aegis-init-container && $(MAKE) build && $(MAKE) bundle && $(MAKE) push-local
+	cd ../aegis-init-container && \
+		$(MAKE) build && \
+		$(MAKE) bundle && \
+		$(MAKE) push-local
 
 # Deploys Aegis to the cluster.
 deploy:
