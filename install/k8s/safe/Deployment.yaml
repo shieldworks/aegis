@@ -106,7 +106,7 @@ spec:
       # `aegis-age` stores the encryption keys to restore secrets from aegis-data.
       - name: aegis-age
         secret:
-          secretName: safe-age-key
+          secretName: aegis-safe-age-key
           items:
           - key: KEY_TXT
             path: key.txt

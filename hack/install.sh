@@ -27,8 +27,8 @@ done
 cd safe || exit
 kubectl apply -f ./Namespace.yaml
 kubectl apply -f ./Role.yaml
-if kubectl get secret -n aegis-system | grep safe-age-key; then
-  echo "!!! The secret 'safe-age-key' already exists; not going to override it."
+if kubectl get secret -n aegis-system | grep aegis-safe-age-key; then
+  echo "!!! The secret 'aegis-safe-age-key' already exists; not going to override it."
   echo "!!! If you want to modify it, make sure you back it up first."
 else
   kubectl apply -f ./Secret.yaml
