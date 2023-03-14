@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: main
-        image: localhost:5000/aegis-workload-demo-using-sidecar:0.13.0
+        image: localhost:5000/aegis-workload-demo-using-sidecar:0.13.5
       - name: sidecar
-        image: localhost:5000/aegis-sidecar:0.13.0
+        image: localhost:5000/aegis-sidecar:0.13.5

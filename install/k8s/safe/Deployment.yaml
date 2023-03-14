@@ -29,7 +29,7 @@ spec:
       serviceAccountName: aegis-safe
       containers:
       - name: main
-        image: z2hdev/aegis-safe:0.13.0
+        image: z2hdev/aegis-safe:0.13.5
         ports:
         - containerPort: 8443
         volumeMounts:
@@ -63,8 +63,12 @@ spec:
           value: "spiffe://aegis.ist/workload/aegis-safe/ns/aegis-system/sa/aegis-safe/n/"
         - name: AEGIS_SAFE_DATA_PATH
           value: "/data"
+        - name:  AEGIS_SAFE_AGE_KEY_SECRET_NAME
+          value: "aegis-safe-age-key"
         - name: AEGIS_SAFE_AGE_KEY_PATH
           value: "/key/key.txt"
+        - name: AEGIS_SAFE_SECRET_NAME_PREFIX
+          value: "aegis-secret-"          
         - name: AEGIS_PROBE_LIVENESS_PORT
           value: ":8081"
         - name: AEGIS_PROBE_READINESS_PORT
