@@ -18,6 +18,11 @@ However—semantically-speaking—**Aegis** is still an **alpha** software.
 Meaning, until **Aegis** reaches `v1.0.0`, nothing is backwards compatible 
 and anything can change with or without notice.
 
+## A Note on Security
+
+We take Aegis’ security seriously. If you believe you have found a vulnerability, 
+please responsibly disclose by contacting [security@aegis.ist](mailto:security@aegis.ist).
+
 ## Links
 
 * **Homepage**: <https://aegis.ist>
