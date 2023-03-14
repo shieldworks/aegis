@@ -13,7 +13,7 @@ INITIAL_IMAGE_COUNT=$(docker images | grep -c aegis)
 if [ "$INITIAL_IMAGE_COUNT" -eq 0 ]; then
     echo ""
     echo "There are no Aegis images in the registry."
-    echo "Are you sure using the minikube docker?"
+    echo "Are you sure you are using the minikube docker?"
     echo ""
     echo "Also make sure you have executed 'eval \"\$(minikube docker-env)\'"
     echo "before building images."
