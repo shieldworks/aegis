@@ -64,11 +64,11 @@ spec:
         - name: AEGIS_SAFE_DATA_PATH
           value: "/data"
         - name:  AEGIS_SAFE_AGE_KEY_SECRET_NAME
-          value: "aegis-safe-key"          
+          value: "aegis-safe-age-key"
         - name: AEGIS_SAFE_AGE_KEY_PATH
           value: "/key/key.txt"
         - name: AEGIS_SAFE_SECRET_NAME_PREFIX
-          value: "aegis-safe-secret-"          
+          value: "aegis-secret-"          
         - name: AEGIS_PROBE_LIVENESS_PORT
           value: ":8081"
         - name: AEGIS_PROBE_READINESS_PORT
