@@ -23,9 +23,15 @@ and anything can change with or without notice.
 We take **Aegis**’ security seriously. If you believe you have found a vulnerability, 
 please responsibly disclose by contacting [security@aegis.ist](mailto:security@aegis.ist).
 
+## Projects 
+
+[**Aegis** consists of the several sister projects][aegis-projects] that are
+managed from this [central repository][aegis-repo].
+
 ## Links
 
 * **Homepage**: <https://aegis.ist>
+* [**List of all Aegis Projects**][aegis-projects]
 * **Documentation**: <https://aegis.ist/docs/>
 * **Changelog**: <https://aegis.ist/changelog/>
 * **Community**: [Join Aegis’ Slack Workspace][slack-invite]
@@ -55,12 +61,6 @@ a central location and securely dispatching it to workloads.
 [Check out **Aegis**’s website][aegis-web] for more information.
 
 [aegis-web]: https://aegis.ist/
-
-## Projects 
-
-[**Aegis** consists of the several sister projects][aegis-projects] that is
-managed from a [central repository][aegis-repo]. This **README** you are
-reading right now is from that central repository.
 
 [aegis-projects]: https://aegis.ist/docs/architecture/#projects
 [aegis-repo]: https://github.com/zerotohero-dev/aegis
