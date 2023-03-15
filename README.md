@@ -49,12 +49,21 @@ please responsibly disclose by contacting [security@aegis.ist](mailto:security@a
 With **Aegis**, you can rest assured that your 
 sensitive data is always **secure** and **protected**. 
 
-**Aegis** is perfect for securely storing arbitrary configuration information at a 
-central location and securely dispatching it to workloads.
+**Aegis** is perfect for securely storing arbitrary configuration information at
+a central location and securely dispatching it to workloads.
 
 [Check out **Aegis**’s website][aegis-web] for more information.
 
 [aegis-web]: https://aegis.ist/
+
+## Projects 
+
+[**Aegis** consists of the several sister projects][aegis-projects] that is
+managed from a [central repository][aegis-repo]. This **README** you are
+reading right now is from that central repository.
+
+[aegis-projects]: https://aegis.ist/docs/architecture/#projects
+[aegis-repo]: https://github.com/zerotohero-dev/aegis
 
 ## Community
 
