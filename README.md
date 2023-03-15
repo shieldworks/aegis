@@ -14,13 +14,13 @@ The code that have been officially signed and released is stable,
 has passed integration tests, and can be used in a production 
 environment (*at your own risk—[see LICENSE](LICENSE)*).
 
-However—semantically-speaking—**Aegis** is still an **alpha** software.
+However,—semantically-speaking—**Aegis** is still an **alpha** software.
 Meaning, until **Aegis** reaches `v1.0.0`, nothing is backwards compatible 
 and anything can change with or without notice.
 
 ## A Note on Security
 
-We take Aegis’ security seriously. If you believe you have found a vulnerability, 
+We take **Aegis**’ security seriously. If you believe you have found a vulnerability, 
 please responsibly disclose by contacting [security@aegis.ist](mailto:security@aegis.ist).
 
 ## Links
@@ -114,10 +114,6 @@ currently being worked on.
 
 [mdp]: https://github.com/zerotohero-dev/aegis/projects?query=is%3Aopen
 
-There is also [a text file](aegis.txt) that is a more free-form list of
-issues. I sometimes jot things down there before creating more detailed GitHub
-issues.
-
 [todo-txt]: https://github.com/todotxt "todo.txt"
 
 ## Code Of Conduct
@@ -128,13 +124,6 @@ issues.
 
 It’s a bit chaotic around here, yet if you want to lend a hand,
 [here are the contributing guidelines](CONTRIBUTING.md).
-
-## Security
-
-We take security **very** seriously.
-
-[Follow the instructions here to report any security issues for **Aegis**
-or any of its sister projects](SECURITY.md).
 
 ## Maintainers
 
