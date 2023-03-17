@@ -103,7 +103,7 @@ of **Aegis** system design and how each component fits together.
 ## Changelog
 
 You can find the changelog, and migration/upgrade instructions (*if any*)
-on [Aegis’ Changelog Page](https://aegis.ist/changelog/).
+on [**Aegis**’ Changelog Page](https://aegis.ist/changelog/).
 
 ## What’s Coming Up Next?
 
