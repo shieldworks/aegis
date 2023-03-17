@@ -20,57 +20,8 @@ in all your interactions with the project.
 
 ## Building Aegis for Development
 
-> **Caveat**
-> 
-> This build workflow is still a work in progress.
-> 
-> You will likely need to hack things around with a local repository.
+To build **Aegis** from source code and develop locally, 
+[follow the contributing guidelines][contributing].
 
-First, create a workspace folder and `cd` into it:
-
-```bash 
-mkdir $HOME/WORKSPACE
-cd $HOME/WORKSPACE
-```
-
-Then clone `aegis` and its friends:
-
-```bash 
-# Switch to the workspace folder.
-cd $HOME/WORKSPACE
-
-# Clone the main Aegis repo.
-git clone git@github.com:zerotohero-dev/aegis.git
-
-# Clone other aegis-* repositories.
-# The exact command will differ if you are working on a forked repository.
-git clone git@github.com:zerotohero-dev/aegis-spire.git
-git clone git@github.com:zerotohero-dev/aegis-core.git
-git clone git@github.com:zerotohero-dev/aegis-sdk-go.git
-git clone git@github.com:zerotohero-dev/aegis-safe.git
-git clone git@github.com:zerotohero-dev/aegis-sentinel.git
-git clone git@github.com:zerotohero-dev/aegis-sidecar.git
-git clone git@github.com:zerotohero-dev/aegis-workload-demo-using-sidecar.git
-git clone git@github.com:zerotohero-dev/aegis-workload-demo-using-sdk.git
-git clone git@github.com:zerotohero-dev/aegis-web.git
-```
-
-Alternatively, if you have contributor access, you can execute `make pull`
-to pull all the satellite repositories.
-
-```bash 
-cd $HOME/WORKSPACE/aegis
-make pull
-```
-
-If you have dockerhub access, you can bump versions and publish new artifacts:
-
-```bash 
-cd $HOME/WORKSPACE/aegis
-./hack/bump-version.sh
-make build
-```
-
-## For Organization Admins
-
-When in doubt, [follow the runbook](runbook.txt).
+If you are a maintainer, and you are cutting a release,
+[follow the release guidelines][release].

@@ -63,7 +63,7 @@ a central location and securely dispatching it to workloads.
 [aegis-web]: https://aegis.ist/
 
 [aegis-projects]: https://aegis.ist/docs/architecture/#projects
-[aegis-repo]: https://github.com/zerotohero-dev/aegis
+[aegis-repo]: https://github.com/shieldworks/aegis
 
 ## Community
 
@@ -114,7 +114,7 @@ You can see the project’s progress [in these **Aegis** boards][mdp].
 The board outlines what are the current outstanding work items, and what is
 currently being worked on.
 
-[mdp]: https://github.com/zerotohero-dev/aegis/projects?query=is%3Aopen
+[mdp]: https://github.com/orgs/shieldworks/projects/1/views/2
 
 ## Code Of Conduct
 

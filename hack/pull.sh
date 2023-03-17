@@ -15,7 +15,7 @@ clone_and_update_repo() {
   if [ -d "$REPO" ] && [ ! -L "$REPO" ]; then
     echo "$REPO folder already exists. Not going to clone it."
   else
-    git clone "https://github.com/zerotohero-dev/$REPO.git"
+    git clone "https://github.com/shieldworks/$REPO.git"
   fi
   cd "$REPO" || exit
   git stash
