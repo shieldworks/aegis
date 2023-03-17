@@ -98,7 +98,7 @@ of **Aegis** system design and how each component fits together.
 
 [We have an article for that too 🙂][pronounce].
 
-[pronounce]: https://aegis.ist/docs/pronunciation/
+[pronounce]: https://aegis.ist/pronunciation/
 
 ## Changelog
 
@@ -113,8 +113,6 @@ The board outlines what are the current outstanding work items, and what is
 currently being worked on.
 
 [mdp]: https://github.com/zerotohero-dev/aegis/projects?query=is%3Aopen
-
-[todo-txt]: https://github.com/todotxt "todo.txt"
 
 ## Code Of Conduct
 
