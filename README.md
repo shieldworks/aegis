@@ -67,6 +67,8 @@ a central location and securely dispatching it to workloads.
 
 ## Community
 
+Open Source is better together.
+
 If you are a security enthusiast, [**join Aegis’ Slack Workspace**][slack-invite]
 and let us change the world together 🤘.
 
