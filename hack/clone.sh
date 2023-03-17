@@ -16,8 +16,8 @@ git clone git@github.com:shieldworks/aegis-sdk-go.git
 git clone git@github.com:shieldworks/aegis-safe.git
 git clone git@github.com:shieldworks/aegis-sentinel.git
 git clone git@github.com:shieldworks/aegis-sidecar.git
-git clone git@github.com:shieldworkds/aegis-init-container.git
-git clone git@github.com:shieldworkds/aegis-workload-demo-using-sidecar.git
+git clone git@github.com:shieldworks/aegis-init-container.git
+git clone git@github.com:shieldworks/aegis-workload-demo-using-sidecar.git
 git clone git@github.com:shieldworks/aegis-workload-demo-using-sdk.git
 git clone git@github.com:shieldworks/aegis-web.git
 
