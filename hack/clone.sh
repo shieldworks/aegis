@@ -19,6 +19,7 @@ git clone git@github.com:shieldworks/aegis-sidecar.git
 git clone git@github.com:shieldworks/aegis-init-container.git
 git clone git@github.com:shieldworks/aegis-workload-demo-using-sidecar.git
 git clone git@github.com:shieldworks/aegis-workload-demo-using-sdk.git
+git clone git@github.com:shieldworks/aegis-workload-demo-using-init-container.git
 git clone git@github.com:shieldworks/aegis-web.git
 
 echo "Everything is awesome!"
