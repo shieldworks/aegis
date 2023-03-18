@@ -8,7 +8,7 @@
 #     .\_/.
 #
 
-VERSION=0.13.5
+VERSION=0.14.0
 
 echo ""
 echo "--------"
@@ -25,7 +25,7 @@ cd ../aegis-safe || exit
 if git tag -s v$VERSION; then
   git push origin --tags
   gh release create
-  docker trust sign z2hdev/aegis-safe:$VERSION
+  docker trust sign aegishub/aegis-safe:$VERSION
 fi
 cd ../aegis || exit
 
@@ -36,7 +36,7 @@ cd ../aegis-sentinel || exit
 if git tag -s v$VERSION; then
   git push origin --tags
   gh release create
-  docker trust sign z2hdev/aegis-sentinel:$VERSION
+  docker trust sign aegishub/aegis-sentinel:$VERSION
 fi
 cd ../aegis || exit
 
@@ -47,7 +47,7 @@ cd ../aegis-sidecar || exit
 if git tag -s v$VERSION; then
   git push origin --tags
   gh release create
-  docker trust sign z2hdev/aegis-sidecar:$VERSION
+  docker trust sign aegishub/aegis-sidecar:$VERSION
 fi
 cd ../aegis || exit
 
@@ -58,7 +58,7 @@ cd ../aegis-init-container || exit
 if git tag -s v$VERSION; then
   git push origin --tags
   gh release create
-  docker trust sign z2hdev/aegis-init-container:$VERSION
+  docker trust sign aegishub/aegis-init-container:$VERSION
 fi
 cd ../aegis || exit
 
@@ -69,7 +69,7 @@ cd ../aegis-workload-demo-using-sidecar || exit
 if git tag -s v$VERSION; then
   git push origin --tags
   gh release create
-  docker trust sign z2hdev/aegis-workload-demo-using-sidecar:$VERSION
+  docker trust sign aegishub/aegis-workload-demo-using-sidecar:$VERSION
 fi
 cd ../aegis || exit
 
@@ -80,7 +80,7 @@ cd ../aegis-workload-demo-using-sdk || exit
 if git tag -s v$VERSION; then
   git push origin --tags
   gh release create
-  docker trust sign z2hdev/aegis-workload-demo-using-sdk:$VERSION
+  docker trust sign aegishub/aegis-workload-demo-using-sdk:$VERSION
 fi
 cd ../aegis || exit
 
@@ -91,7 +91,7 @@ cd ../aegis-workload-demo-using-init-container || exit
 if git tag -s v$VERSION; then
   git push origin --tags
   gh release create
-  docker trust sign z2hdev/aegis-workload-demo-using-init-container:$VERSION
+  docker trust sign aegishub/aegis-workload-demo-using-init-container:$VERSION
 fi
 cd ../aegis || exit
 
