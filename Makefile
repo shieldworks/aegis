@@ -229,6 +229,6 @@ help:
        EXAMPLE (INIT C): make example-init-container-deploy-local |\n\
                          make example-init-container-deploy\n\
                          ---------------------------------------------------\n\
-                CLEANUP: make clean\n"
+                CLEANUP: make clean"
 	@echo "                         ---------------------------------------------------"
 	@echo ""
