@@ -23,10 +23,9 @@ and anything can change with or without notice.
 We take **Aegis**’ security seriously. If you believe you have found a vulnerability, 
 please responsibly disclose by contacting [security@aegis.ist](mailto:security@aegis.ist).
 
-## Projects 
+## Folder Structure
 
-[**Aegis** consists of the several sister projects][aegis-projects] that are
-managed from this [central repository][aegis-repo].
+// TODO: describe the project folder structure here.
 
 ## Links
 

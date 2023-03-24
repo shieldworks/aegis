@@ -1,0 +1,116 @@
+#
+# .-'_.---._'-.
+# ||####|(__)||   Protect your secrets, protect your business.
+#   \\()|##//       Secure your sensitive data with Aegis.
+#    \\ |#//                    <aegis.ist>
+#     .\_/.
+#
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aegis-safe
+  namespace: aegis-system
+  labels:
+    app.kubernetes.io/name: aegis-safe
+    app.kubernetes.io/part-of: aegis-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: aegis-safe
+      app.kubernetes.io/part-of: aegis-system
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: aegis-safe
+        app.kubernetes.io/part-of: aegis-system
+    spec:
+      serviceAccountName: aegis-safe
+      containers:
+        - name: main
+          image: aegishub/aegis-safe:0.14.5
+          ports:
+            - containerPort: 8443
+          volumeMounts:
+            - name: spire-agent-socket
+              mountPath: /spire-agent-socket
+              readOnly: true
+            - name: aegis-data
+              mountPath: /data
+            - name: aegis-age
+              mountPath: /key
+              readOnly: true
+          #
+          # You can configure Aegis Safe by providing environment variables.
+          #
+          # See https://aegis.ist/docs/configuration for more information about
+          # these environment variables.
+          #
+          # When you don’t explicitly provide env vars here, Aegis Safe will assume
+          # the default values outlined in the given link above.
+          #
+          env:
+            - name: SPIFFE_ENDPOINT_SOCKET
+              value: "unix:///spire-agent-socket/agent.sock"
+            - name: AEGIS_LOG_LEVEL
+              value: "6"
+            - name: AEGIS_WORKLOAD_SVID_PREFIX
+              value: "spiffe://aegis.ist/workload/"
+            - name: AEGIS_SENTINEL_SVID_PREFIX
+              value: "spiffe://aegis.ist/workload/aegis-sentinel/ns/aegis-system/sa/aegis-sentinel/n/"
+            - name: AEGIS_SAFE_SVID_PREFIX
+              value: "spiffe://aegis.ist/workload/aegis-safe/ns/aegis-system/sa/aegis-safe/n/"
+            - name: AEGIS_SAFE_DATA_PATH
+              value: "/data"
+            - name:  AEGIS_SAFE_AGE_KEY_SECRET_NAME
+              value: "aegis-safe-age-key"
+            - name: AEGIS_SAFE_AGE_KEY_PATH
+              value: "/key/key.txt"
+            - name: AEGIS_SAFE_SECRET_NAME_PREFIX
+              value: "aegis-secret-"
+            - name: AEGIS_PROBE_LIVENESS_PORT
+              value: ":8081"
+            - name: AEGIS_PROBE_READINESS_PORT
+              value: ":8082"
+            - name: AEGIS_TLS_PORT
+              value: ":8443"
+            - name: AEGIS_SAFE_SECRET_BUFFER_SIZE
+              value: "10"
+            - name: AEGIS_SAFE_BACKING_STORE
+              value: "file"
+            - name: AEGIS_SAFE_USE_KUBERNETES_SECRETS
+              value: "false"
+            - name: AEGIS_SAFE_SVID_RETRIEVAL_TIMEOUT
+              value: "30000"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8081
+            initialDelaySeconds: 1
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8082
+            initialDelaySeconds: 1
+            periodSeconds: 10
+      volumes:
+        # Using SPIFFE CSI Driver to bind to the SPIRE Agent Socket
+        # ref: https://github.com/spiffe/spiffe-csi
+        - name: spire-agent-socket
+          csi:
+            driver: "csi.spiffe.io"
+            readOnly: true
+        # `aegis-data` is used to persist the encrypted backups of the secrets.
+        - name: aegis-data
+          hostPath:
+            path: /var/local/aegis/data
+            type: DirectoryOrCreate
+        # `aegis-age` stores the encryption keys to restore secrets from aegis-data.
+        - name: aegis-age
+          secret:
+            secretName: aegis-safe-age-key
+            items:
+              - key: KEY_TXT
+                path: key.txt
