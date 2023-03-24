@@ -45,7 +45,7 @@ spec:
                 key: PASSWORD
 
       initContainers:
-      # See `./hack/register.sh` to register the workload and finalize
+      # See `./register.sh` to register the workload and finalize
       # this init container.
       - name: init-container
         image: aegishub/aegis-init-container:0.14.5
