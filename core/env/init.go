@@ -1,0 +1,32 @@
+/*
+ * .-'_.---._'-.
+ * ||####|(__)||   Protect your secrets, protect your business.
+ *   \\()|##//       Secure your sensitive data with Aegis.
+ *    \\ |#//                    <aegis.ist>
+ *     .\_/.
+ */
+
+package env
+
+import (
+	"os"
+	"strconv"
+	"time"
+)
+
+// InitContainerPollInterval returns the time interval between each poll in the
+// Watch function. The interval is specified in milliseconds as the
+// AEGIS_INIT_CONTAINER_POLL_INTERVAL environment variable.  If the environment
+// variable is not set or is not a valid integer value, the function returns the
+// default interval of 5000 milliseconds.
+func InitContainerPollInterval() time.Duration {
+	p := os.Getenv("AEGIS_INIT_CONTAINER_POLL_INTERVAL")
+	if p == "" {
+		p = "5000"
+	}
+	i, err := strconv.ParseInt(p, 10, 32)
+	if err != nil {
+		return 5000 * time.Millisecond
+	}
+	return time.Duration(i) * time.Millisecond
+}

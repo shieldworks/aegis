@@ -1,0 +1,53 @@
+{% if site.doks.footer.content.logo.image or site.doks.footer.content.logo.text or site.doks.footer.content.copyright or site.doks.footer.social_list %}
+	<footer class="site-footer">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-3"></div>
+				<div class="col-sm-6" style="text-align: center;">
+					{% if site.doks.footer.content.logo.text %}
+					<a href="{% if jekyll.environment == 'production' %}{{ site.doks.baseurl }}{% endif %}/" class="site-footer__logo">{{ site.doks.footer.content.logo.text }}</a>
+					{% elsif site.doks.footer.content.logo.image %}
+					    <p style="color:#ffffff;margin-top:-1em;">keep your secrets… secret</p>
+						<a href="{% if jekyll.environment == 'production' %}{{ site.doks.baseurl }}{% endif %}/" class="site-footer__logo">
+							<img class="footer-logo" src="{% if jekyll.environment == 'production' %}{{ site.doks.baseurl }}{% endif %}/doks-theme/assets/images/aegis-icon.png"
+								 style="width:64px;margin:0.1em">
+						</a><!-- /.site-footer__logo -->
+					{% endif %}
+					{% if site.doks.footer.content.copyright %}
+						<p class="site-footer__copyright"><a href="https://github.com/shieldworks/aegis/blob/main/LICENSE" style="text-decoration:none;border-bottom:none;">{{ site.doks.footer.content.copyright }}</a></p>
+						<p class="site-footer__copyright">Documentation is distributed under <a href="https://creativecommons.org/licenses/by/4.0/" class="fl">CC-BY-4.0</a>.</p>
+						<p>&nbsp;</p>
+					{% endif %}
+					<a href="https://github.com/shieldworks/aegis" class="fl">code</a> |
+					<a href="/contact" class="fl">contact</a> |
+					<a href="/contact?#community" class="fl">community</a><br /><br />
+					<a href="/privacy" class="fl">privacy policy</a><br /><br />
+					<a href="/media" class="fl">media kit</a> |
+					<a href="/changelog" class="fl">release notes</a><br />
+				</div><!-- /.col -->
+				{% if site.doks.footer.social_list %}
+					<div class="col-sm-6 align-right">
+						<ul class="social-list">
+							{% for item in site.doks.footer.social_list %}
+								<li>
+									<a href="{{ item.profile_url }}" target="_blank" class="social-list__item social-list__item--{{ item.network_name }}">
+										<i class="icon icon--{{ item.network_name }}"></i>
+									</a>
+								</li>
+							{% endfor %}
+						</ul><!-- /.social-list -->
+					</div><!-- /.col -->
+				{% endif %}
+				<div class="col-sm-3"></div>
+			</div><!-- /.row -->
+		</div><!-- /.container -->
+	</footer><!-- /.site-footer -->
+{% endif %}
+
+<script src="{% if jekyll.environment == 'production' %}{{ site.doks.baseurl }}{% endif %}/doks-theme/assets/js/vendor/jquery.min.js"></script>
+<script type="text/javascript" src="{% if jekyll.environment == 'production' %}{{ site.doks.baseurl }}{% endif %}/doks-theme/assets/js/vendor/bootstrap/affix.min.js"></script>
+<script type="text/javascript" src="{% if jekyll.environment == 'production' %}{{ site.doks.baseurl }}{% endif %}/doks-theme/assets/js/vendor/bootstrap/scrollspy.min.js"></script>
+<script type="text/javascript" src="{% if jekyll.environment == 'production' %}{{ site.doks.baseurl }}{% endif %}/doks-theme/assets/js/vendor/matchHeight.min.js"></script>
+<script type="text/javascript" src="{% if jekyll.environment == 'production' %}{{ site.doks.baseurl }}{% endif %}/doks-theme/assets/js/scripts.min.js"></script>
+
+{% include google-analytics.html %}

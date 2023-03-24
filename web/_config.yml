@@ -1,0 +1,48 @@
+# Theme settings
+doks:
+    baseurl:
+    color_theme: blue # Available themes: blue (default), green, purple, red and yellow
+    header:
+        logo:
+            image: /doks-theme/assets/images/aegis-icon.png
+        nav:
+            - item_name: Home
+              item_url: '/'
+            - item_name: Soure Code
+              item_url: 'https://github.com/shieldworks/aegis'
+            - item_name: Contact
+              item_url: '/contact'
+            - item_name: Community
+              item_url: '/contact#community'
+            - item_name: Misc
+              item_url: '/misc'
+    footer:
+        content:
+            logo:
+                # text: Aegis
+                image: /doks-theme/assets/images/aegis-icon.png
+            copyright: Copyright &copy; Volkan Özçelik and Contributors. <br> All rights reserved.
+        social_list:
+#            - network_name: facebook
+#              profile_url: '#'
+#            - network_name: twitter
+#              profile_url: '#'
+#            - network_name: instagram
+#              profile_url: '#'
+#            - network_name: youtube
+#              profile_url: '#'
+ #   google_analytics:
+ #       tracking_code: # Add your Google Analytics tracking code to activate Google Analytics
+  #  comments:
+  #      disqus_forum_shortname: # Add your disqus forum shortname to activate comments
+
+# SASS settings
+sass:
+    sass_dir: ./doks-theme/_sass
+    style: :compressed
+
+# Jekyll settings
+layouts_dir: ./doks-theme/_layouts
+includes_dir: ./doks-theme/_includes
+exclude: [ 'README.md', 'CHANGELOG.md']
+permalink: /:title/
