@@ -11,21 +11,17 @@ keep your secrets… secret
 This project is in **active development**.
 
 The code that have been officially signed and released is stable,
-has passed integration tests, and can be used in a production 
+has passed integration tests, and can be used in a production
 environment (*at your own risk—[see LICENSE](LICENSE)*).
 
 However,—semantically-speaking—**Aegis** is still an **alpha** software.
-Meaning, until **Aegis** reaches `v1.0.0`, nothing is backwards compatible 
+Meaning, until **Aegis** reaches `v1.0.0`, nothing is backwards compatible
 and anything can change with or without notice.
 
 ## A Note on Security
 
-We take **Aegis**’ security seriously. If you believe you have found a vulnerability, 
+We take **Aegis**’ security seriously. If you believe you have found a vulnerability,
 please responsibly disclose by contacting [security@aegis.ist](mailto:security@aegis.ist).
-
-## Folder Structure
-
-// TODO: describe the project folder structure here.
 
 ## Links
 
@@ -49,10 +45,10 @@ please responsibly disclose by contacting [security@aegis.ist](mailto:security@a
 
 **Aegis** is a delightfully-secure Kubernetes-native secrets store.
 
-**Aegis** keeps your secrets secret. 
+**Aegis** keeps your secrets secret.
 
-With **Aegis**, you can rest assured that your 
-sensitive data is always **secure** and **protected**. 
+With **Aegis**, you can rest assured that your
+sensitive data is always **secure** and **protected**.
 
 **Aegis** is perfect for securely storing arbitrary configuration information at
 a central location and securely dispatching it to workloads.
@@ -95,6 +91,29 @@ of **Aegis** system design and how each component fits together.
 
 [deep-dive]: https://aegis.ist/docs/architecture/
 
+## Folder Structure
+
+Here are the important folders and files in this repository:
+
+* `./app`: Contains core **Aegis** components’ source code.
+    * `./app/init-container`: Contains the source code for the **Aegis Init Container**.
+    * `./app/safe`: Contains the source code for the **Aegis Safe**.
+    * `./app/sentinel`: Contains the source code for the **Aegis Sentinel**.
+    * `./app/sidecar`: Contains the source code for the **Aegis Sidecar**.
+* `./core`: Contains core modules that are shared across **Aegis** components.
+* `./examples`: Contains the source code of example use cases.
+* `./hack`: Contains scripts that are used for building, publishing, development
+  and testing.
+* `./k8s`: Contains Kubernetes manifests that are used to deploy **Aegis** and
+  its use cases.
+* `./sdk`: Contains the source code of the **Aegis SDK**.
+* `./CODE_OF_CONDUCT.md`: Contains **Aegis** Code of Conduct.
+* `./SECURITY.md`: Contains **Aegis** Security Policy.
+* `./LICENSE`: Contains **Aegis** License.
+* `./Makefile`: Contains **Aegis** Makefile that is used for building,
+  publishing, deploying, and testing the project.
+
+
 ## One More Thing… How Do I Pronounce “Aegis”?
 
 [We have an article for that too 🙂][pronounce].
@@ -131,7 +150,7 @@ As of now, I, [Volkan Özçelik][me], am the sole maintainer of **Aegis**.
 [me]: https://github.com/v0lkan "Volkan Özçelik"
 
 Please send your feedback, suggestions, recommendations, and comments to
-[feedback@aegis.ist](mailto:feedback@aegis.ist). 
+[feedback@aegis.ist](mailto:feedback@aegis.ist).
 
 I’d love to have them.
 
