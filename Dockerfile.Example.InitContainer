@@ -8,9 +8,11 @@
 
 # builder image
 FROM golang:1.20.1-alpine3.17 as builder
-RUN mkdir /build
-ADD *.go /build/
-ADD go.mod /build/
+COPY app /build/app
+COPY core /build/core
+COPY examples /build/examples
+COPY vendor /build/vendor
+COPY go.mod /build/go.mod
 WORKDIR /build
 RUN CGO_ENABLED=0 GOOS=linux go build -mod vendor -a -o aegis-workload-demo \
   ./examples/workload-using-init-container/main.go

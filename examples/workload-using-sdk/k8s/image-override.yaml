@@ -9,11 +9,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: aegis-sentinel
-  namespace: aegis-system
+  name: aegis-workload-demo
+  namespace: default
 spec:
   template:
     spec:
       containers:
-        - name: main
-          image: localhost:5000/aegis-sentinel:0.14.5
+      - name: main
+        image: localhost:5000/aegis-workload-demo-using-sdk:0.14.5

@@ -75,71 +75,80 @@ sidecar-push-local:
 
 # Builds the “Sidecar” use case into a binary.
 example-sidecar-build:
-	./hack/sentinel-build.sh "aegis-sentinel"
+	./hack/example-sidecar-build.sh "aegis-workload-demo-using-sidecar"
 # Packages the “Sidecar” binary into a container image.
 example-sidecar-bundle:
-	./hack/bundle.sh "aegis-sentinel" $(VERSION) "Dockerfile.Sentinel"
+	./hack/bundle.sh "aegis-workload-demo-using-sidecar" \
+		$(VERSION) "Dockerfile.Example.Sidecar"
 # Pushes the “Sidecar” use case container image to the public registry.
 example-sidecar-push:
-	./hack/push.sh "aegis-sentinel" $(VERSION) "aegishub/aegis-sentinel"
+	./hack/push.sh "aegis-workload-demo-using-sidecar" \
+		$(VERSION) "aegishub/aegis-workload-demo-using-sidecar"
 # Pushes the “Sidecar” use case container image to the local registry.
 example-sidecar-push-local:
-	./hack/push.sh "aegis-sentinel" $(VERSION) "localhost:5000/aegis-sentinel"
+	./hack/push.sh "aegis-workload-demo-using-sidecar" \
+		$(VERSION) "localhost:5000/aegis-workload-demo-using-sidecar"
 # Deploys the “Sidecar” use case app from the public registry into the cluster.
 example-sidecar-deploy:
-	./hack/sentinel-deploy.sh
-# Deploys the “Sidecar” use case pp from the local registry into the cluster.
+	./hack/example-sidecar-deploy.sh
+# Deploys the “Sidecar” use case app from the local registry into the cluster.
 example-sidecar-deploy-local:
-	./hack/sentinel-deploy-local.sh
+	./hack/example-sidecar-deploy-local.sh
 
 # Builds the “SDK” use case into a binary.
 example-sdk-build:
-	./hack/sentinel-build.sh "aegis-sentinel"
+	./hack/example-sdk-build.sh "aegis-workload-demo-using-sdk"
 # Packages the “SDK” binary into a container image.
 example-sdk-bundle:
-	./hack/bundle.sh "aegis-sentinel" $(VERSION) "Dockerfile.Sentinel"
+	./hack/bundle.sh "aegis-workload-demo-using-sdk" \
+		$(VERSION) "Dockerfile.Example.Sdk"
 # Pushes the “SDK” container image to the public registry.
 example-sdk-push:
-	./hack/push.sh "aegis-sentinel" $(VERSION) "aegishub/aegis-sentinel"
+	./hack/push.sh "aegis-workload-demo-using-sdk" \
+		$(VERSION) "aegishub/aegis-workload-demo-using-sdk"
 # Pushes the “SDK” container image to the local registry.
 example-sdk-push-local:
-	./hack/push.sh "aegis-sentinel" $(VERSION) "localhost:5000/aegis-sentinel"
+	./hack/push.sh "aegis-workload-demo-using-sdk" \
+		$(VERSION) "localhost:5000/aegis-workload-demo-using-sdk"
 # Deploys the “SDK” app from the public registry into the cluster.
 example-sdk-deploy:
-	./hack/sentinel-deploy.sh
+	./hack/example-sdk-deploy.sh
 # Deploys the “SDK” app from the local registry into the cluster.
 example-sdk-deploy-local:
-	./hack/sentinel-deploy-local.sh
+	./hack/example-sdk-deploy-local.sh
 
 # Builds the “Init Container” use case into a binary.
 example-init-container-build:
-	./hack/sentinel-build.sh "aegis-sentinel"
+	./hack/example-init-container-build.sh "aegis-workload-demo-using-init-container"
 # Packages the “Init Container” binary into a container image.
 example-init-container-bundle:
-	./hack/bundle.sh "aegis-sentinel" $(VERSION) "Dockerfile.Sentinel"
+	./hack/bundle.sh "aegis-workload-demo-using-init-container" \
+		$(VERSION) "Dockerfile.Example.InitContainer"
 # Pushes the “Init Container” container image to the public registry.
 example-init-container-push:
-	./hack/push.sh "aegis-sentinel" $(VERSION) "aegishub/aegis-sentinel"
+	./hack/push.sh "aegis-workload-demo-using-init-container" \
+		$(VERSION) "aegishub/aegis-workload-demo-using-init-container"
 # Pushes the “Init Container” container image to the local registry.
 example-init-container-push-local:
-	./hack/push.sh "aegis-sentinel" $(VERSION) "localhost:5000/aegis-sentinel"
+	./hack/push.sh "aegis-workload-demo-using-init-container" \
+		$(VERSION) "localhost:5000/aegis-workload-demo-using-init-container"
 # Deploys the “Init Container” app from the public registry into the cluster.
 example-init-container-deploy:
-	./hack/sentinel-deploy.sh
+	./hack/example-init-container-deploy.sh
 # Deploys the “Init Container” app from the local registry into the cluster.
 example-init-container-deploy-local:
-	./hack/sentinel-deploy-local.sh
+	./hack/example-init-container-deploy-local.sh
 
 # Removes the former Aegis deployment without entirely destroying the cluster.
 clean:
 	./hack/uninstall.sh
 
 # Completely removes the Minikube cluster.
-delete-k8s:
-	./hack/minikube-start.sh
-# Brings up a fresh Minikube cluster.
-start-k8s:
+k8s-delete:
 	./hack/minikube-delete.sh
+# Brings up a fresh Minikube cluster.
+k8s-start:
+	./hack/minikube-start.sh
 
 # Deploys Aegis to the cluster.
 deploy:
@@ -149,9 +158,9 @@ deploy-local:
 
 # Integration tests.
 test:
-	./hack/test.sh
+	./hack/test.sh "remote"
 test-local:
-	./hack/test-local.sh
+	./hack/test.sh
 
 # Builds everything and pushes to registries.
 build: \
@@ -206,7 +215,7 @@ help:
 	@echo "            Docker Host: ${DOCKER_HOST}"
 	@echo "Minikube Active dockerd: ${MINIKUBE_ACTIVE_DOCKERD}"
 	@echo "                         ---------------------------------------------------"
-	@echo "                   PREP: make delete-k8s;make start-k8s;\n\
+	@echo "                   PREP: make k8s-delete;make k8s-start;\n\
                    TEST: make build-local;make deploy-local;make test-local;\n\
  TEST (docker/aegishub): make build;make deploy;make test\n\
                 RELEASE: make bump;make build;make tag\n\

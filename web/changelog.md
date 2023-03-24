@@ -32,6 +32,7 @@ page_nav:
   static analysis, coverage reporting, vulnerability scanning, detecting 
   unused functions, repetitive code blocks, etc, etc. so much easier: 
   All good things.
+* Cleanup and improvement in build scripts.
 
 ## [v0.14.0] - 2023-03-18
 

@@ -21,3 +21,4 @@ minikube start \
 echo "waiting 10 secs before enabling registry"
 sleep 10
 minikube addons enable registry
+kubectl get node
