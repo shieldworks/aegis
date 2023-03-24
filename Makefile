@@ -14,13 +14,13 @@ safe-build:
 	./hack/safe-build.sh "aegis-safe"
 # Packages the “Aegis Safe” into a container image.
 safe-bundle:
-	./hack/bundle.sh "aegis-safe" $(VERSION) "Safe.Dockerfile"
+	./hack/bundle.sh "aegis-safe" $(VERSION) "Dockerfile.Safe"
 # Pushes the “Aegis Safe” container to the public registry.
 safe-push:
 	./hack/push.sh "aegis-safe" $(VERSION) "aegishub/aegis-safe"
 # Pushes the “Aegis Safe” container image to the local registry.
 safe-push-local:
-	./hack/push-local.sh "aegis-safe" $(VERSION) "localhost:5000/aegis-safe"
+	./hack/push.sh "aegis-safe" $(VERSION) "localhost:5000/aegis-safe"
 # Deploys “Aegis Safe” from the public registry into the cluster.
 safe-deploy:
 	./hack/safe-deploy.sh
@@ -33,13 +33,13 @@ sentinel-build:
 	./hack/sentinel-build.sh "aegis-sentinel"
 # Packages the “Aegis Sentinel” binary into a container image.
 sentinel-bundle:
-	./hack/bundle.sh "aegis-sentinel" $(VERSION) "Sentinel.Dockerfile"
+	./hack/bundle.sh "aegis-sentinel" $(VERSION) "Dockerfile.Sentinel"
 # Pushes the “Aegis Sentinel” container image the the public registry.
 sentinel-push:
 	./hack/push.sh "aegis-sentinel" $(VERSION) "aegishub/aegis-sentinel"
 # Pushes the “Aegis Sentinel” container image to the local registry.
 sentinel-push-local:
-	./hack/push-local.sh "aegis-sentinel" $(VERSION) "localhost:5000/aegis-sentinel"
+	./hack/push.sh "aegis-sentinel" $(VERSION) "localhost:5000/aegis-sentinel"
 # Deploys “Aegis Sentinel” from the public registry into the cluster.
 sentinel-deploy:
 	./hack/sentinel-deploy.sh
@@ -52,7 +52,7 @@ init-container-build:
 	./hack/init-container-build.sh "aegis-init-container"
 # Packages the “Aegis Init Container” binary into a container image.
 init-container-bundle:
-	./hack/bundle.sh "aegis-init-container" $(VERSION) "InitContainer.Dockerfile"
+	./hack/bundle.sh "aegis-init-container" $(VERSION) "Dockerfile.InitContainer"
 # Pushes the “Aegis Init Container” container image to the public registry.
 init-container-push:
 	./hack/push.sh "aegis-init-container" $(VERSION) "aegishub/aegis-init-container"
@@ -65,7 +65,7 @@ sidecar-build:
 	./hack/sidecar-build.sh "aegis-sidecar"
 # Packages the “Aegis Sidecar” binary into a container image.
 sidecar-bundle:
-	./hack/bundle.sh "aegis-sidecar" $(VERSION) "Sidecar.Dockerfile"
+	./hack/bundle.sh "aegis-sidecar" $(VERSION) "Dockerfile.Sidecar"
 # Pushes the “Aegis Sidecar” container image to the public registry.
 sidecar-push:
 	./hack/push.sh "aegis-sidecar" $(VERSION) "aegishub/aegis-sidecar"
@@ -78,13 +78,13 @@ example-sidecar-build:
 	./hack/sentinel-build.sh "aegis-sentinel"
 # Packages the “Sidecar” binary into a container image.
 example-sidecar-bundle:
-	./hack/bundle.sh "aegis-sentinel" $(VERSION) "Sentinel.Dockerfile"
+	./hack/bundle.sh "aegis-sentinel" $(VERSION) "Dockerfile.Sentinel"
 # Pushes the “Sidecar” use case container image to the public registry.
 example-sidecar-push:
 	./hack/push.sh "aegis-sentinel" $(VERSION) "aegishub/aegis-sentinel"
 # Pushes the “Sidecar” use case container image to the local registry.
 example-sidecar-push-local:
-	./hack/push-local.sh "aegis-sentinel" $(VERSION) "localhost:5000/aegis-sentinel"
+	./hack/push.sh "aegis-sentinel" $(VERSION) "localhost:5000/aegis-sentinel"
 # Deploys the “Sidecar” use case app from the public registry into the cluster.
 example-sidecar-deploy:
 	./hack/sentinel-deploy.sh
@@ -97,13 +97,13 @@ example-sdk-build:
 	./hack/sentinel-build.sh "aegis-sentinel"
 # Packages the “SDK” binary into a container image.
 example-sdk-bundle:
-	./hack/bundle.sh "aegis-sentinel" $(VERSION) "Sentinel.Dockerfile"
+	./hack/bundle.sh "aegis-sentinel" $(VERSION) "Dockerfile.Sentinel"
 # Pushes the “SDK” container image to the public registry.
 example-sdk-push:
 	./hack/push.sh "aegis-sentinel" $(VERSION) "aegishub/aegis-sentinel"
 # Pushes the “SDK” container image to the local registry.
 example-sdk-push-local:
-	./hack/push-local.sh "aegis-sentinel" $(VERSION) "localhost:5000/aegis-sentinel"
+	./hack/push.sh "aegis-sentinel" $(VERSION) "localhost:5000/aegis-sentinel"
 # Deploys the “SDK” app from the public registry into the cluster.
 example-sdk-deploy:
 	./hack/sentinel-deploy.sh
@@ -116,13 +116,13 @@ example-init-container-build:
 	./hack/sentinel-build.sh "aegis-sentinel"
 # Packages the “Init Container” binary into a container image.
 example-init-container-bundle:
-	./hack/bundle.sh "aegis-sentinel" $(VERSION) "Sentinel.Dockerfile"
+	./hack/bundle.sh "aegis-sentinel" $(VERSION) "Dockerfile.Sentinel"
 # Pushes the “Init Container” container image to the public registry.
 example-init-container-push:
 	./hack/push.sh "aegis-sentinel" $(VERSION) "aegishub/aegis-sentinel"
 # Pushes the “Init Container” container image to the local registry.
 example-init-container-push-local:
-	./hack/push-local.sh "aegis-sentinel" $(VERSION) "localhost:5000/aegis-sentinel"
+	./hack/push.sh "aegis-sentinel" $(VERSION) "localhost:5000/aegis-sentinel"
 # Deploys the “Init Container” app from the public registry into the cluster.
 example-init-container-deploy:
 	./hack/sentinel-deploy.sh
@@ -202,6 +202,7 @@ build-local: \
 help:
 	@echo ""
 	@echo "                         ---------------------------------------------------"
+	@echo "                         eval $\(minikube -p minikube docker-env)"
 	@echo "            Docker Host: ${DOCKER_HOST}"
 	@echo "Minikube Active dockerd: ${MINIKUBE_ACTIVE_DOCKERD}"
 	@echo "                         ---------------------------------------------------"
@@ -209,12 +210,16 @@ help:
                    TEST: make build-local;make deploy-local;make test-local;\n\
  TEST (docker/aegishub): make build;make deploy;make test\n\
                 RELEASE: make bump;make build;make tag\n\
-      EXAMPLE (SIDECAR): make example-sidecar-deploy-local |\
+                         ---------------------------------------------------\n\
+      EXAMPLE (SIDECAR): make example-sidecar-deploy-local |\n\
                          make example-sidecar-deploy\n\
-          EXAMPLE (SDK): make example-sdk-deploy-local |\
+                         ---------------------------------------------------\n\
+          EXAMPLE (SDK): make example-sdk-deploy-local |\n\
                          make example-sdk-deploy\n\
-       EXAMPLE (INIT C): make example-init-container-deploy-local |\
+                         ---------------------------------------------------\n\
+       EXAMPLE (INIT C): make example-init-container-deploy-local |\n\
                          make example-init-container-deploy\n\
+                         ---------------------------------------------------\n\
                 CLEANUP: make clean\n"
 	@echo "                         ---------------------------------------------------"
 	@echo ""

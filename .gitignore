@@ -29,5 +29,9 @@
 
 vendor
 
+# Binaries
+aegis-safe
+aegis-init-container
+aegis-sentinel
 aegis-sidecar
 aegis-workload-demo

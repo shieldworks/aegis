@@ -99,7 +99,6 @@ func Secret(w http.ResponseWriter, r *http.Request, svid string) {
 	namespace := sr.Namespace
 	template := sr.Template
 	format := sr.Format
-	encrypt := sr.Encrypt
 
 	if namespace == "" {
 		namespace = "default"
@@ -111,7 +110,6 @@ func Secret(w http.ResponseWriter, r *http.Request, svid string) {
 		"backingStore:", backingStore,
 		"template:", template,
 		"format:", format,
-		"encrypt:", encrypt,
 		"useK8s", useK8s)
 
 	if workloadId == "" {
