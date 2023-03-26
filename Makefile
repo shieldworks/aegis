@@ -211,7 +211,7 @@ build-local: \
 help:
 	@echo ""
 	@echo "                         ---------------------------------------------------"
-	@echo "                         eval $\(minikube -p minikube docker-env)"
+	@echo "                         eval $$ (minikube -p minikube docker-env)"
 	@echo "            Docker Host: ${DOCKER_HOST}"
 	@echo "Minikube Active dockerd: ${MINIKUBE_ACTIVE_DOCKERD}"
 	@echo "                         ---------------------------------------------------"
