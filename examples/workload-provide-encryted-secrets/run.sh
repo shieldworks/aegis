@@ -8,5 +8,6 @@
 #     .\_/.
 #
 
-# Replace 5ADAE85E0C301567 with the recipient’s GPG public key fingerprint.
-gpg --encrypt --recipient 5ADAE85E0C301567 register.sh
+# register.sh.gph needs to be encrypted with the user’s PUBLIC gpg key.
+gpg --decrypt register.sh.gpg | bash
+
