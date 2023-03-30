@@ -33,6 +33,7 @@ else
   make example-sdk-deploy-local
 fi
 
+echo "will wait for 10 seconds"
 sleep 10
 
 SECRET=$(openssl rand -base64 16)
@@ -65,6 +66,7 @@ else
   make example-sidecar-deploy-local
 fi
 
+echo "will wait for 10 seconds"
 sleep 10
 
 SECRET=$(openssl rand -base64 16)
@@ -97,6 +99,7 @@ else
   make example-init-container-deploy-local
 fi
 
+echo "will wait for 10 seconds"
 sleep 10
 
 SECRET=$(openssl rand -base64 16)
@@ -110,7 +113,8 @@ kubectl exec "$SENTINEL_POD_NAME" -n aegis-system -- aegis \
 -t '{"USERNAME":"{{.username}}", "PASSWORD":"{{.password}}", "VALUE": "{{.value}}"}' \
 -k
 
-sleep 10
+echo "will wait for 30 seconds"
+sleep 30
 
 IMAGE_COUNT=$(kubectl get po -n default | grep "$WORKLOAD_POD_NAME" | grep -c Running)
 

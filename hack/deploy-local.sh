@@ -12,17 +12,11 @@ cd ./k8s || exit
 
 kubectl apply -k ./spire
 
-while ! kubectl get po -n spire-system | grep spire-server | grep Running
-do
-    echo "waiting for SPIRE server to be up."
-    sleep 5
-done
-
-while ! kubectl get po -n spire-system | grep spire-agent | grep Running
-do
-    echo "waiting for SPIRE agent to be up."
-    sleep 5
-done
+echo "waiting for SPIRE server to be ready."
+kubectl wait --for=condition=Ready pod -n spire-system --selector=app=spire-server
+echo "waiting for SPIRE agent to be ready."
+kubectl wait --for=condition=Ready pod -n spire-system --selector=app=spire-agent
+echo "next"
 
 cd safe || exit
 kubectl apply -f ./Namespace.yaml
