@@ -7,14 +7,19 @@
 #
 
 # The common version tag assigned to all the things.
-VERSION=0.15.0
+VERSION=0.15.6
+
+# tags a release
+tag:
+	./hack/tag.sh $(VERSION)
+
 
 # Builds “Aegis Safe” into a binary.
 safe-build:
 	./hack/safe-build.sh "aegis-safe"
 # Packages the “Aegis Safe” into a container image.
 safe-bundle:
-	./hack/bundle.sh "aegis-safe" $(VERSION) "Dockerfile.Safe"
+	./hack/bundle.sh "aegis-safe" $(VERSION) "dockerfiles/aegis-safe/Dockerfile"
 # Pushes the “Aegis Safe” container to the public registry.
 safe-push:
 	./hack/push.sh "aegis-safe" $(VERSION) "aegishub/aegis-safe"
@@ -33,7 +38,7 @@ sentinel-build:
 	./hack/sentinel-build.sh "aegis-sentinel"
 # Packages the “Aegis Sentinel” binary into a container image.
 sentinel-bundle:
-	./hack/bundle.sh "aegis-sentinel" $(VERSION) "Dockerfile.Sentinel"
+	./hack/bundle.sh "aegis-sentinel" $(VERSION) "dockerfiles/aegis-sentinel/Dockerfile"
 # Pushes the “Aegis Sentinel” container image the the public registry.
 sentinel-push:
 	./hack/push.sh "aegis-sentinel" $(VERSION) "aegishub/aegis-sentinel"
@@ -52,7 +57,7 @@ init-container-build:
 	./hack/init-container-build.sh "aegis-init-container"
 # Packages the “Aegis Init Container” binary into a container image.
 init-container-bundle:
-	./hack/bundle.sh "aegis-init-container" $(VERSION) "Dockerfile.InitContainer"
+	./hack/bundle.sh "aegis-init-container" $(VERSION) "dockerfiles/aegis-init-container/Dockerfile"
 # Pushes the “Aegis Init Container” container image to the public registry.
 init-container-push:
 	./hack/push.sh "aegis-init-container" $(VERSION) "aegishub/aegis-init-container"
@@ -65,7 +70,7 @@ sidecar-build:
 	./hack/sidecar-build.sh "aegis-sidecar"
 # Packages the “Aegis Sidecar” binary into a container image.
 sidecar-bundle:
-	./hack/bundle.sh "aegis-sidecar" $(VERSION) "Dockerfile.Sidecar"
+	./hack/bundle.sh "aegis-sidecar" $(VERSION) "dockerfiles/aegis-sidecar/Dockerfile"
 # Pushes the “Aegis Sidecar” container image to the public registry.
 sidecar-push:
 	./hack/push.sh "aegis-sidecar" $(VERSION) "aegishub/aegis-sidecar"
@@ -79,7 +84,7 @@ example-sidecar-build:
 # Packages the “Sidecar” binary into a container image.
 example-sidecar-bundle:
 	./hack/bundle.sh "aegis-workload-demo-using-sidecar" \
-		$(VERSION) "Dockerfile.Example.Sidecar"
+		$(VERSION) "dockerfiles/example-sidecar/Dockerfile"
 # Pushes the “Sidecar” use case container image to the public registry.
 example-sidecar-push:
 	./hack/push.sh "aegis-workload-demo-using-sidecar" \
@@ -101,7 +106,7 @@ example-sdk-build:
 # Packages the “SDK” binary into a container image.
 example-sdk-bundle:
 	./hack/bundle.sh "aegis-workload-demo-using-sdk" \
-		$(VERSION) "Dockerfile.Example.Sdk"
+		$(VERSION) "dockerfiles/example-sdk/Dockerfile"
 # Pushes the “SDK” container image to the public registry.
 example-sdk-push:
 	./hack/push.sh "aegis-workload-demo-using-sdk" \
@@ -123,7 +128,7 @@ example-init-container-build:
 # Packages the “Init Container” binary into a container image.
 example-init-container-bundle:
 	./hack/bundle.sh "aegis-workload-demo-using-init-container" \
-		$(VERSION) "Dockerfile.Example.InitContainer"
+		$(VERSION) "dockerfiles/example-init-container/Dockerfile"
 # Pushes the “Init Container” container image to the public registry.
 example-init-container-push:
 	./hack/push.sh "aegis-workload-demo-using-init-container" \
@@ -217,8 +222,6 @@ help:
 	@echo "                         ---------------------------------------------------"
 	@echo "                   PREP: make k8s-delete;make k8s-start;\n\
                    TEST: make build-local;make deploy-local;make test-local;\n\
- TEST (docker/aegishub): make build;make deploy;make test\n\
-                RELEASE: make bump;make build;make tag\n\
                          ---------------------------------------------------\n\
       EXAMPLE (SIDECAR): make example-sidecar-deploy-local |\n\
                          make example-sidecar-deploy\n\
@@ -229,6 +232,10 @@ help:
        EXAMPLE (INIT C): make example-init-container-deploy-local |\n\
                          make example-init-container-deploy\n\
                          ---------------------------------------------------\n\
-                CLEANUP: make clean"
-	@echo "                         ---------------------------------------------------"
+                CLEANUP: make clean\n\
+                         ---------------------------------------------------\n\
+                RELEASE: make k8s-delete;make bump;make build;\n\
+         TEST (release): make k8s-start;make deploy;make test;\n\
+                    TAG: make tag\n\
+                         ---------------------------------------------------\n"
 	@echo ""

@@ -16,3 +16,5 @@ REPO="$3"
 docker build . -t "${PACKAGE}":"${VERSION}"
 docker tag "${PACKAGE}":"${VERSION}" "${REPO}":"${VERSION}"
 docker push "${REPO}":"${VERSION}"
+
+sleep 10

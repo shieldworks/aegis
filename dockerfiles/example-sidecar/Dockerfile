@@ -8,20 +8,20 @@
 
 # builder image
 FROM golang:1.20.1-alpine3.17 as builder
-RUN mkdir /build
 COPY app /build/app
 COPY core /build/core
-COPY sdk /build/sdk
+COPY examples /build/examples
 COPY vendor /build/vendor
 COPY go.mod /build/go.mod
 WORKDIR /build
-RUN CGO_ENABLED=0 GOOS=linux go build -mod vendor -a -o aegis-sidecar ./app/sidecar/cmd/main.go
+RUN CGO_ENABLED=0 GOOS=linux go build -a -o aegis-workload-demo \
+    ./examples/workload-using-sidecar/main.go
 
 # generate clean, final image for end users
 FROM gcr.io/distroless/static-debian11
 
 LABEL "maintainers"="Volkan Özçelik <volkan@aegis.ist>"
-LABEL "version"="0.14.0"
+LABEL "version"="0.15.6"
 LABEL "website"="https://aegis.ist/"
 LABEL "repo"="https://github.com/shieldworks/aegis"
 LABEL "documentation"="https://aegis.ist/docs/"
@@ -29,8 +29,8 @@ LABEL "contact"="https://aegis.ist/contact/"
 LABEL "community"="https://aegis.ist/contact/#community"
 LABEL "changelog"="https://aegis.ist/changelog"
 
-COPY --from=builder /build/aegis-sidecar .
+COPY --from=builder /build/aegis-workload-demo .
 
 # executable
-ENTRYPOINT [ "./aegis-sidecar" ]
+ENTRYPOINT [ "./aegis-workload-demo" ]
 CMD [ "" ]

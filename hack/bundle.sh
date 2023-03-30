@@ -14,3 +14,5 @@ DOCKERFILE="$3"
 
 go mod vendor
 docker build -f "${DOCKERFILE}" . -t "${PACKAGE}":"${VERSION}"
+
+sleep 10
