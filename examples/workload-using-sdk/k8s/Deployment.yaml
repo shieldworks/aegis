@@ -26,7 +26,7 @@ spec:
       serviceAccountName: aegis-workload-demo
       containers:
       - name: main
-        image: aegishub/aegis-workload-demo-using-sdk:0.14.5
+        image: aegishub/aegis-workload-demo-using-sdk:0.15.0
         volumeMounts:
         # Volume mount for SPIRE unix domain socket.
         - name: spire-agent-socket

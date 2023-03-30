@@ -7,7 +7,7 @@
 #
 
 # The common version tag assigned to all the things.
-VERSION=0.14.5
+VERSION=0.15.0
 
 # Builds “Aegis Safe” into a binary.
 safe-build:
