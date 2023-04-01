@@ -11,175 +11,26 @@ package state
 import (
 	"bytes"
 	"encoding/base64"
-	"encoding/json"
 	"github.com/shieldworks/aegis/app/safe/internal/template"
 	entity "github.com/shieldworks/aegis/core/entity/data/v1"
-	"github.com/shieldworks/aegis/core/env"
 	"github.com/shieldworks/aegis/core/log"
-	"os"
-	"strings"
 	"sync"
 	"time"
 )
 
-// This is where all the secrets are stored.
-var secrets sync.Map
-
-const selfName = "aegis-safe"
-
-type AegisInternalCommand struct {
-	LogLevel int `json:"logLevel"`
-}
-
 var ageKey = ""
 var lock sync.Mutex
 
+// SetAgeKey sets the age key to be used for encryption and decryption.
 func SetAgeKey(k string) {
 	lock.Lock()
 	defer lock.Unlock()
 	ageKey = k
 }
 
-func evaluate(data string) *AegisInternalCommand {
-	var command AegisInternalCommand
-	err := json.Unmarshal([]byte(data), &command)
-	if err != nil {
-		return nil
-	}
-	return &command
-}
-
-// These are persisted to files. They are buffered, so that they can
-// be written in the order they are queued and there are no concurrent
-// writes to the same file at a time. An alternative approach would be
-// to have a map of queues of `SecretsStored`s per file name but that
-// feels like an overkill.
-var secretQueue = make(chan entity.SecretStored, env.SafeSecretBufferSize())
-
-// The secrets put here are synced with their Kubernetes Secret counterparts.
-var k8sSecretQueue = make(chan entity.SecretStored, env.SafeSecretBufferSize())
-
-func handleSecrets() {
-	errChan := make(chan error)
-
-	go func() {
-		for e := range errChan {
-			// If the `persist` operation spews out an error, log it.
-			log.ErrorLn("handleSecrets: error persisting secret:", e.Error())
-		}
-	}()
-
-	for {
-		// Buffer overflow check.
-		if len(secretQueue) == env.SafeSecretBufferSize() {
-			log.ErrorLn(
-				"handleSecrets: there are too many k8s secrets queued. " +
-					"The goroutine will BLOCK until the queue is cleared.",
-			)
-		}
-
-		// Get a secret to be persisted to the disk.
-		secret := <-secretQueue
-
-		log.TraceLn("picked a secret", len(secretQueue))
-
-		// Persist the secret to disk.
-		//
-		// Each secret is persisted one at a time, with the order they
-		// come in.
-		//
-		// Do not call this function elsewhere.
-		// It is meant to be called inside this `handleSecrets` goroutine.
-		persist(secret, errChan)
-
-		log.TraceLn("should have persisted the secret.")
-	}
-}
-
-func handleK8sSecrets() {
-	errChan := make(chan error)
-
-	go func() {
-		for e := range errChan {
-			// If the `persistK8s` operation spews out an error, log it.
-			log.ErrorLn("handleK8sSecrets: error persisting secret:", e.Error())
-		}
-	}()
-
-	for {
-		// Buffer overflow check.
-		if len(secretQueue) == env.SafeSecretBufferSize() {
-			log.ErrorLn(
-				"handleK8sSecrets: there are too many k8s secrets queued. " +
-					"The goroutine will BLOCK until the queue is cleared.",
-			)
-		}
-
-		// Get a secret to be persisted to the disk.
-		secret := <-k8sSecretQueue
-
-		log.TraceLn("handleK8sSecrets: picked k8s secret")
-
-		// Sync up the secret to etcd as a Kubernetes Secret.
-		//
-		// Each secret is synced one at a time, with the order they
-		// come in.
-		//
-		// Do not call this function elsewhere.
-		// It is meant to be called inside this `handleK8sSecrets` goroutine.
-		persistK8s(secret, errChan)
-
-		log.TraceLn("handleK8sSecrets: Should have persisted k8s secret")
-	}
-}
-
-func init() {
-	go handleSecrets()
-	go handleK8sSecrets()
-}
-
-var secretsPopulated = false
-var secretsPopulatedLock = sync.Mutex{}
-
-func populateSecrets() {
-	secretsPopulatedLock.Lock()
-	defer secretsPopulatedLock.Unlock()
-
-	root := env.SafeDataPath()
-	files, err := os.ReadDir(root)
-	if err != nil {
-		log.InfoLn("populateSecrets problem:", err.Error())
-		return
-	}
-
-	for _, file := range files {
-		if file.IsDir() {
-			continue
-		}
-
-		fn := file.Name()
-		if strings.HasSuffix(fn, ".backup") {
-			continue
-		}
-
-		key := strings.Replace(fn, ".age", "", 1)
-
-		_, exists := secrets.Load(key)
-		if exists {
-			continue
-		}
-
-		secretOnDisk := readFromDisk(key)
-		if secretOnDisk != nil {
-			currentState.Increment(key)
-			secrets.Store(key, *secretOnDisk)
-		}
-	}
-
-	secretsPopulated = true
-	log.InfoLn("populateSecrets: secrets populated.")
-}
-
+// EncryptValue takes a string value and returns an encrypted and base64-encoded
+// representation of the input value. If the encryption process encounters any
+// error, it will return an empty string and the corresponding error.
 func EncryptValue(value string) (string, error) {
 	var out bytes.Buffer
 
@@ -193,6 +44,9 @@ func EncryptValue(value string) (string, error) {
 	return base64Str, nil
 }
 
+// DecryptValue takes a base64-encoded and encrypted string value and returns
+// the original, decrypted string. If the decryption process encounters any
+// error, it will return an empty string and the corresponding error.
 func DecryptValue(value string) (string, error) {
 	decoded, err := base64.StdEncoding.DecodeString(value)
 	if err != nil {
@@ -207,6 +61,9 @@ func DecryptValue(value string) (string, error) {
 	return string(decrypted), nil
 }
 
+// AllSecrets returns a slice of entity.Secret containing all secrets
+// currently stored. If no secrets are found, an empty slice is
+// returned.
 func AllSecrets() []entity.Secret {
 	var result []entity.Secret
 
@@ -237,6 +94,9 @@ func AllSecrets() []entity.Secret {
 	return result
 }
 
+// UpsertSecret takes an entity.SecretStored object and inserts it into
+// the in-memory store if it doesn't exist, or updates it if it does. It also
+// handles updating the backing store and Kubernetes secrets if necessary.
 func UpsertSecret(secret entity.SecretStored) {
 	if secret.Name == selfName {
 		cmd := evaluate(secret.Value)
@@ -298,6 +158,10 @@ func UpsertSecret(secret entity.SecretStored) {
 	}
 }
 
+// ReadSecret takes a key string and returns a pointer to an entity.SecretStored
+// object if the secret exists in the in-memory store. If the secret is not
+// found in memory, it attempts to read it from disk, store it in memory, and
+// return it. If the secret is not found on disk, it returns nil.
 func ReadSecret(key string) *entity.SecretStored {
 	result, ok := secrets.Load(key)
 	if !ok {
@@ -313,52 +177,4 @@ func ReadSecret(key string) *entity.SecretStored {
 
 	s := result.(entity.SecretStored)
 	return &s
-}
-
-type Status struct {
-	SecretQueueLen int
-	SecretQueueCap int
-	K8sQueueLen    int
-	K8sQueueCap    int
-	NumSecrets     int
-	lock           *sync.Mutex
-}
-
-var currentState = Status{
-	SecretQueueLen: 0,
-	SecretQueueCap: 0,
-	K8sQueueLen:    0,
-	K8sQueueCap:    0,
-	NumSecrets:     0,
-	lock:           &sync.Mutex{},
-}
-
-func (s *Status) Increment(name string) {
-	s.lock.Lock()
-	defer s.lock.Unlock()
-	_, ok := secrets.Load(name)
-	if !ok {
-		s.NumSecrets++
-	}
-}
-
-func (s *Status) Decrement(name string) {
-	s.lock.Lock()
-	defer s.lock.Unlock()
-	_, ok := secrets.Load(name)
-	if ok {
-		s.NumSecrets--
-	}
-}
-
-func Stats() Status {
-	currentState.lock.Lock()
-	defer currentState.lock.Unlock()
-
-	currentState.K8sQueueCap = cap(k8sSecretQueue)
-	currentState.K8sQueueLen = len(k8sSecretQueue)
-	currentState.SecretQueueCap = cap(secretQueue)
-	currentState.SecretQueueLen = len(secretQueue)
-
-	return currentState
 }
