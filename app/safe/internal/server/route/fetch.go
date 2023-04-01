@@ -32,7 +32,7 @@ func Fetch(w http.ResponseWriter, r *http.Request, svid string) {
 
 	j := audit.JournalEntry{
 		CorrelationId: correlationId,
-		Entity:        nil,
+		Entity:        reqres.SecretFetchRequest{},
 		Method:        r.Method,
 		Url:           r.RequestURI,
 		Svid:          svid,
