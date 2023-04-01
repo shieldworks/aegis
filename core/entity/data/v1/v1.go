@@ -30,7 +30,6 @@ type BackingStore string
 
 var File BackingStore = "file"
 var Memory BackingStore = "memory"
-var Cluster BackingStore = "cluster"
 
 type SecretFormat string
 

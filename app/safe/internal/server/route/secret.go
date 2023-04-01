@@ -102,7 +102,35 @@ func Secret(w http.ResponseWriter, r *http.Request, svid string) {
 	encrypt := sr.Encrypt
 
 	if workloadId == "" && encrypt {
-		panic("Return encrypted secret")
+		if value == "" {
+			j.Event = audit.EventNoValue
+			audit.Log(j)
+
+			w.WriteHeader(http.StatusBadRequest)
+			_, err := io.WriteString(w, "")
+			if err != nil {
+				log.InfoLn("Secret: Problem sending response", err.Error())
+			}
+			return
+		}
+
+		encrypted, err := state.EncryptValue(value)
+		if err != nil {
+			j.Event = audit.EventEncryptionFailed
+			audit.Log(j)
+
+			w.WriteHeader(http.StatusInternalServerError)
+			_, err := io.WriteString(w, "")
+			if err != nil {
+				log.InfoLn("Secret: Problem sending response", err.Error())
+			}
+			return
+		}
+
+		_, err = io.WriteString(w, encrypted)
+		if err != nil {
+			log.InfoLn("Secret: Problem sending response", err.Error())
+		}
 		return
 	}
 
@@ -126,8 +154,22 @@ func Secret(w http.ResponseWriter, r *http.Request, svid string) {
 		return
 	}
 
+	// `encrypt` means that the value is encrypted, so we need to decrypt it.
 	if encrypt {
-		panic("decrypt the value before saving")
+		decrypted, err := state.DecryptValue(value)
+		if err != nil {
+			j.Event = audit.EventDecryptionFailed
+			audit.Log(j)
+
+			w.WriteHeader(http.StatusInternalServerError)
+			_, err := io.WriteString(w, "")
+			if err != nil {
+				log.InfoLn("Secret: Problem sending response", err.Error())
+			}
+			return
+		}
+
+		value = decrypted
 	}
 
 	state.UpsertSecret(entity.SecretStored{

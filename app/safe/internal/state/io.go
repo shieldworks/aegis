@@ -41,6 +41,37 @@ func ageKeyPair() (string, string) {
 	return parts[0], parts[1]
 }
 
+func decryptBytes(data []byte) ([]byte, error) {
+	privateKey, _ := ageKeyPair()
+
+	identity, err := age.ParseX25519Identity(privateKey)
+	if err != nil {
+		log.WarnLn("Failed to parse private key", privateKey, err)
+		return []byte{}, err
+	}
+
+	if len(data) == 0 {
+		log.WarnLn("file on disk appears to be empty")
+		return []byte{}, err
+	}
+
+	out := &bytes.Buffer{}
+	f := bytes.NewReader(data)
+
+	r, err := age.Decrypt(f, identity)
+	if err != nil {
+		log.WarnLn("Failed to open encrypted file", err.Error())
+		return []byte{}, err
+	}
+
+	if _, err := io.Copy(out, r); err != nil {
+		log.WarnLn("Failed to read encrypted file", err.Error())
+		return []byte{}, err
+	}
+
+	return out.Bytes(), nil
+}
+
 func decryptDataFromDisk(key string) ([]byte, error) {
 	dataPath := path.Join(env.SafeDataPath(), key+".age")
 
@@ -55,34 +86,7 @@ func decryptDataFromDisk(key string) ([]byte, error) {
 		return nil, err
 	}
 
-	privateKey, _ := ageKeyPair()
-
-	identity, err := age.ParseX25519Identity(privateKey)
-	if err != nil {
-		log.WarnLn("Failed to parse private key", privateKey, err)
-		return nil, err
-	}
-
-	if len(data) == 0 {
-		log.WarnLn("file on disk appears to be empty")
-		return nil, err
-	}
-
-	out := &bytes.Buffer{}
-	f := bytes.NewReader(data)
-
-	r, err := age.Decrypt(f, identity)
-	if err != nil {
-		log.WarnLn("Failed to open encrypted file", err.Error())
-		return nil, err
-	}
-
-	if _, err := io.Copy(out, r); err != nil {
-		log.WarnLn("Failed to read encrypted file", err.Error())
-		return nil, err
-	}
-
-	return out.Bytes(), nil
+	return decryptBytes(data)
 }
 
 // readFromDisk returns a pointer to a secret.

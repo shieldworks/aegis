@@ -10,6 +10,7 @@ package state
 
 import (
 	"bytes"
+	"encoding/base64"
 	"encoding/json"
 	"github.com/shieldworks/aegis/app/safe/internal/template"
 	entity "github.com/shieldworks/aegis/core/entity/data/v1"
@@ -187,7 +188,23 @@ func EncryptValue(value string) (string, error) {
 		return "", err
 	}
 
-	return out.String(), nil
+	base64Str := base64.StdEncoding.EncodeToString(out.Bytes())
+
+	return base64Str, nil
+}
+
+func DecryptValue(value string) (string, error) {
+	decoded, err := base64.StdEncoding.DecodeString(value)
+	if err != nil {
+		return "", err
+	}
+
+	decrypted, err := decryptBytes(decoded)
+	if err != nil {
+		return "", err
+	}
+
+	return string(decrypted), nil
 }
 
 func AllSecrets() []entity.Secret {
@@ -265,8 +282,6 @@ func UpsertSecret(secret entity.SecretStored) {
 		log.TraceLn("Will push secret. len", len(secretQueue), "cap", cap(secretQueue))
 		secretQueue <- secret
 		log.TraceLn("Pushed secret. len", len(secretQueue), "cap", cap(secretQueue))
-	case entity.Cluster:
-		panic("Cluster backing store not implemented yet!")
 	}
 
 	useK8sSecrets := secret.Meta.UseKubernetesSecret
@@ -300,7 +315,7 @@ func ReadSecret(key string) *entity.SecretStored {
 	return &s
 }
 
-type StateStatus struct {
+type Status struct {
 	SecretQueueLen int
 	SecretQueueCap int
 	K8sQueueLen    int
@@ -309,7 +324,7 @@ type StateStatus struct {
 	lock           *sync.Mutex
 }
 
-var currentState = StateStatus{
+var currentState = Status{
 	SecretQueueLen: 0,
 	SecretQueueCap: 0,
 	K8sQueueLen:    0,
@@ -318,7 +333,7 @@ var currentState = StateStatus{
 	lock:           &sync.Mutex{},
 }
 
-func (s *StateStatus) Increment(name string) {
+func (s *Status) Increment(name string) {
 	s.lock.Lock()
 	defer s.lock.Unlock()
 	_, ok := secrets.Load(name)
@@ -327,7 +342,7 @@ func (s *StateStatus) Increment(name string) {
 	}
 }
 
-func (s *StateStatus) Decrement(name string) {
+func (s *Status) Decrement(name string) {
 	s.lock.Lock()
 	defer s.lock.Unlock()
 	_, ok := secrets.Load(name)
@@ -336,7 +351,7 @@ func (s *StateStatus) Decrement(name string) {
 	}
 }
 
-func Stats() StateStatus {
+func Stats() Status {
 	currentState.lock.Lock()
 	defer currentState.lock.Unlock()
 
