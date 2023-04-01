@@ -99,6 +99,12 @@ func Secret(w http.ResponseWriter, r *http.Request, svid string) {
 	namespace := sr.Namespace
 	template := sr.Template
 	format := sr.Format
+	encrypt := sr.Encrypt
+
+	if workloadId == "" && encrypt {
+		panic("Return encrypted secret")
+		return
+	}
 
 	if namespace == "" {
 		namespace = "default"
@@ -110,13 +116,18 @@ func Secret(w http.ResponseWriter, r *http.Request, svid string) {
 		"backingStore:", backingStore,
 		"template:", template,
 		"format:", format,
+		"encrypt:", encrypt,
 		"useK8s", useK8s)
 
-	if workloadId == "" {
+	if workloadId == "" && !encrypt {
 		j.Event = audit.EventNoWorkloadId
 		audit.Log(j)
 
 		return
+	}
+
+	if encrypt {
+		panic("decrypt the value before saving")
 	}
 
 	state.UpsertSecret(entity.SecretStored{

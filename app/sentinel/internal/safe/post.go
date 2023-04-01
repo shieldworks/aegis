@@ -28,7 +28,7 @@ import (
 )
 
 func Post(workloadId, secret, namespace, backingStore string, useKubernetes bool,
-	template string, format string) {
+	template string, format string, encrypt bool) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
@@ -115,6 +115,7 @@ func Post(workloadId, secret, namespace, backingStore string, useKubernetes bool
 		UseKubernetes: useKubernetes,
 		Template:      template,
 		Format:        f,
+		Encrypt:       encrypt,
 		Value:         secret,
 	}
 
