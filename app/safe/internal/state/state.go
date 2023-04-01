@@ -9,6 +9,7 @@
 package state
 
 import (
+	"bytes"
 	"encoding/json"
 	"github.com/shieldworks/aegis/app/safe/internal/template"
 	entity "github.com/shieldworks/aegis/core/entity/data/v1"
@@ -176,6 +177,17 @@ func populateSecrets() {
 
 	secretsPopulated = true
 	log.InfoLn("populateSecrets: secrets populated.")
+}
+
+func EncryptValue(value string) (string, error) {
+	var out bytes.Buffer
+
+	err := encryptToWriter(&out, value)
+	if err != nil {
+		return "", err
+	}
+
+	return out.String(), nil
 }
 
 func AllSecrets() []entity.Secret {
