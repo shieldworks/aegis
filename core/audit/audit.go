@@ -23,6 +23,9 @@ const EventBadPeerSvid Event = "aegis-bad-peer-svid"
 const EventNoSecret Event = "aegis-no-secret"
 const EventOk Event = "aegis-ok"
 const EventNoWorkloadId Event = "aegis-no-workload-id"
+const EventNoValue Event = "aegis-no-value"
+const EventEncryptionFailed Event = "aegis-encryption-failed"
+const EventDecryptionFailed Event = "aegis-decryption-failed"
 
 type JournalEntry struct {
 	CorrelationId string

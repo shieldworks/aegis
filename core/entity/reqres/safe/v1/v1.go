@@ -20,6 +20,7 @@ type SecretUpsertRequest struct {
 	Value         string            `json:"value"`
 	Template      string            `json:"template"`
 	Format        data.SecretFormat `json:"format"`
+	Encrypt       bool              `json:"encrypt"`
 	Err           string            `json:"err,omitempty"`
 }
 

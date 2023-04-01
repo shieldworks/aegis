@@ -41,6 +41,37 @@ func ageKeyPair() (string, string) {
 	return parts[0], parts[1]
 }
 
+func decryptBytes(data []byte) ([]byte, error) {
+	privateKey, _ := ageKeyPair()
+
+	identity, err := age.ParseX25519Identity(privateKey)
+	if err != nil {
+		log.WarnLn("Failed to parse private key", privateKey, err)
+		return []byte{}, err
+	}
+
+	if len(data) == 0 {
+		log.WarnLn("file on disk appears to be empty")
+		return []byte{}, err
+	}
+
+	out := &bytes.Buffer{}
+	f := bytes.NewReader(data)
+
+	r, err := age.Decrypt(f, identity)
+	if err != nil {
+		log.WarnLn("Failed to open encrypted file", err.Error())
+		return []byte{}, err
+	}
+
+	if _, err := io.Copy(out, r); err != nil {
+		log.WarnLn("Failed to read encrypted file", err.Error())
+		return []byte{}, err
+	}
+
+	return out.Bytes(), nil
+}
+
 func decryptDataFromDisk(key string) ([]byte, error) {
 	dataPath := path.Join(env.SafeDataPath(), key+".age")
 
@@ -55,34 +86,7 @@ func decryptDataFromDisk(key string) ([]byte, error) {
 		return nil, err
 	}
 
-	privateKey, _ := ageKeyPair()
-
-	identity, err := age.ParseX25519Identity(privateKey)
-	if err != nil {
-		log.WarnLn("Failed to parse private key", privateKey, err)
-		return nil, err
-	}
-
-	if len(data) == 0 {
-		log.WarnLn("file on disk appears to be empty")
-		return nil, err
-	}
-
-	out := &bytes.Buffer{}
-	f := bytes.NewReader(data)
-
-	r, err := age.Decrypt(f, identity)
-	if err != nil {
-		log.WarnLn("Failed to open encrypted file", err.Error())
-		return nil, err
-	}
-
-	if _, err := io.Copy(out, r); err != nil {
-		log.WarnLn("Failed to read encrypted file", err.Error())
-		return nil, err
-	}
-
-	return out.Bytes(), nil
+	return decryptBytes(data)
 }
 
 // readFromDisk returns a pointer to a secret.
@@ -106,6 +110,35 @@ func readFromDisk(key string) *entity.SecretStored {
 
 var lastBackedUpIndex = make(map[string]int)
 
+func encryptToWriter(out io.Writer, data string) error {
+	_, publicKey := ageKeyPair()
+	recipient, err := age.ParseX25519Recipient(publicKey)
+	if err != nil {
+		log.WarnLn("Failed to parse public key", publicKey, err.Error())
+		return err
+	}
+
+	wrappedWriter, err := age.Encrypt(out, recipient)
+	if err != nil {
+		log.WarnLn("Failed to create encrypted file", err.Error())
+		return err
+	}
+
+	if _, err := io.WriteString(wrappedWriter, data); err != nil {
+		log.FatalLn("Failed to write to encrypted file: %v", err.Error())
+		return err
+	}
+
+	defer func() {
+		err := wrappedWriter.Close()
+		if err != nil {
+			log.InfoLn("problem closing stream", err.Error())
+		}
+	}()
+
+	return nil
+}
+
 func saveSecretToDisk(secret entity.SecretStored, dataPath string) error {
 	data, err := json.Marshal(secret)
 	if err != nil {
@@ -125,34 +158,7 @@ func saveSecretToDisk(secret entity.SecretStored, dataPath string) error {
 		}
 	}()
 
-	_, publicKey := ageKeyPair()
-	recipient, err := age.ParseX25519Recipient(publicKey)
-	if err != nil {
-		log.WarnLn("Failed to parse public key", publicKey, err.Error())
-		return err
-	}
-
-	out := file
-
-	w, err := age.Encrypt(out, recipient)
-	if err != nil {
-		log.WarnLn("Failed to create encrypted file", err.Error())
-		return err
-	}
-
-	if _, err := io.WriteString(w, string(data)); err != nil {
-		log.FatalLn("Failed to write to encrypted file: %v", err.Error())
-		return err
-	}
-
-	defer func() {
-		err := w.Close()
-		if err != nil {
-			log.InfoLn("problem closing stream", err.Error())
-		}
-	}()
-
-	return nil
+	return encryptToWriter(file, string(data))
 }
 
 const InitialSecretValue = `{"empty":true}`

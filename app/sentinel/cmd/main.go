@@ -54,6 +54,13 @@ func main() {
 			"Valid values: yaml, json, and none. Defaults to none.",
 	})
 
+	encrypt := parser.Flag("e", "encrypt", &argparse.Options{
+		Required: false,
+		Help: "returns an encrypted version of the secret if used with `-s`; " +
+			"decrypts the secret before registering it to the workload if used " +
+			"with `-s` and `-w`.",
+	})
+
 	err := parser.Parse(os.Args)
 	if err != nil {
 		fmt.Print(parser.Usage(err))
@@ -64,7 +71,7 @@ func main() {
 		return
 	}
 
-	if workload == nil || *workload == "" {
+	if (workload == nil || *workload == "") && (encrypt == nil || !*encrypt) {
 		fmt.Println("Please provide a workload name.")
 		fmt.Println("")
 		fmt.Println("type `aegis -h` (without backticks) and press return for help.")
@@ -119,8 +126,13 @@ func main() {
 		formatP = *format
 	}
 
+	encryptP := false
+	if encrypt != nil {
+		encryptP = *encrypt
+	}
+
 	safe.Post(
 		workloadP, secretP, namespaceP, backingStoreP, useK8sP,
-		templateP, formatP,
+		templateP, formatP, encryptP,
 	)
 }

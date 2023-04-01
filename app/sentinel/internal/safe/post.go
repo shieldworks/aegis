@@ -28,7 +28,7 @@ import (
 )
 
 func Post(workloadId, secret, namespace, backingStore string, useKubernetes bool,
-	template string, format string) {
+	template string, format string, encrypt bool) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
@@ -95,8 +95,8 @@ func Post(workloadId, secret, namespace, backingStore string, useKubernetes bool
 			bs = data.File
 		case data.Memory:
 			bs = data.Memory
-		case data.Cluster:
-			bs = data.Cluster
+		default:
+			bs = data.Memory
 		}
 	}
 
@@ -106,6 +106,8 @@ func Post(workloadId, secret, namespace, backingStore string, useKubernetes bool
 		f = data.Json
 	case data.Yaml:
 		f = data.Yaml
+	default:
+		f = data.None
 	}
 
 	sr := reqres.SecretUpsertRequest{
@@ -115,6 +117,7 @@ func Post(workloadId, secret, namespace, backingStore string, useKubernetes bool
 		UseKubernetes: useKubernetes,
 		Template:      template,
 		Format:        f,
+		Encrypt:       encrypt,
 		Value:         secret,
 	}
 

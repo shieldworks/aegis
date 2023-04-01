@@ -40,8 +40,8 @@ func SafeSecretBufferSize() int {
 
 // SafeBackingStore returns the storage type for the data,
 // as specified in the AEGIS_SAFE_BACKING_STORE environment variable.
-// If the environment variable is not set, it defaults to "persistent".
-// Any value that is not "persistent" will mean Aegis Safe will store
+// If the environment variable is not set, it defaults to "file".
+// Any value that is not "file" will mean Aegis Safe will store
 // its state in-memory
 func SafeBackingStore() data.BackingStore {
 	s := os.Getenv("AEGIS_SAFE_BACKING_STORE")
@@ -49,15 +49,11 @@ func SafeBackingStore() data.BackingStore {
 		return data.File
 	}
 
-	if data.BackingStore(s) == data.Memory {
-		return data.Memory
+	if data.BackingStore(s) == data.File {
+		return data.File
 	}
 
-	if data.BackingStore(s) == data.Cluster {
-		return data.Cluster
-	}
-
-	return data.File
+	return data.Memory
 }
 
 // SafeUseKubernetesSecrets returns a boolean indicating whether to create a
