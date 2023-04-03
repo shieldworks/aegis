@@ -48,5 +48,7 @@ func main() {
 		}
 	}()
 
-	server.Serve(source, serverStarted)
+	if err := server.Serve(source, serverStarted); err != nil {
+		log.FatalLn(&id, "failed to serve", err.Error())
+	}
 }

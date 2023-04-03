@@ -13,7 +13,6 @@ import (
 	"fmt"
 	"github.com/shieldworks/aegis/app/safe/internal/state"
 	"github.com/shieldworks/aegis/core/audit"
-	"github.com/shieldworks/aegis/core/crypto"
 	reqres "github.com/shieldworks/aegis/core/entity/reqres/safe/v1"
 	"github.com/shieldworks/aegis/core/env"
 	"github.com/shieldworks/aegis/core/log"
@@ -24,12 +23,7 @@ import (
 	"time"
 )
 
-func Fetch(w http.ResponseWriter, r *http.Request, svid string) {
-	correlationId, _ := crypto.RandomString(8)
-	if correlationId == "" {
-		correlationId = "CID"
-	}
-
+func Fetch(correlationId string, w http.ResponseWriter, r *http.Request, svid string) {
 	j := audit.JournalEntry{
 		CorrelationId: correlationId,
 		Entity:        reqres.SecretFetchRequest{},

@@ -9,10 +9,9 @@
 package server
 
 import (
-	"errors"
+	"github.com/pkg/errors"
 	"github.com/shieldworks/aegis/app/safe/internal/server/handle"
 	"github.com/shieldworks/aegis/core/env"
-	"github.com/shieldworks/aegis/core/log"
 	"github.com/shieldworks/aegis/core/probe"
 	"github.com/shieldworks/aegis/core/validation"
 	"github.com/spiffe/go-spiffe/v2/spiffeid"
@@ -21,14 +20,12 @@ import (
 	"net/http"
 )
 
-func Serve(source *workloadapi.X509Source, serverStarted chan<- bool) {
+func Serve(source *workloadapi.X509Source, serverStarted chan<- bool) error {
 	if source == nil {
-		log.FatalLn("Serve: Got nil source while trying to serve")
+		return errors.New("serve: got nil source while trying to serve")
 	}
 
-	log.DebugLn("Serve: Initializing routes")
 	handle.InitializeRoutes()
-	log.DebugLn("Server: Initialized routes")
 
 	authorizer := tlsconfig.AdaptMatcher(func(id spiffeid.ID) error {
 		if validation.IsWorkload(id.String()) {
@@ -47,11 +44,13 @@ func Serve(source *workloadapi.X509Source, serverStarted chan<- bool) {
 	}
 
 	serverStarted <- true
-	log.DebugLn("Serve: creating readiness probe")
+
+	// Since server has started, we can enable the readiness probe.
 	go probe.CreateReadiness()
-	log.DebugLn("Serve: created readiness probe")
 
 	if err := server.ListenAndServeTLS("", ""); err != nil {
-		log.FatalLn("Error on serve: %v", err.Error())
+		return errors.Wrap(err, "serve: failed to listen and serve")
 	}
+
+	return nil
 }

@@ -123,7 +123,7 @@ func CreateCryptoKey(id *string, updatedSecret chan<- bool) {
 
 	identity, err := age.GenerateX25519Identity()
 	if err != nil {
-		log.FatalLn(id, "Failed to generate key pair: %v", err.Error())
+		log.FatalLn(id, "Failed to generate key pair", err.Error())
 	}
 
 	publicKey := identity.Recipient().String()
@@ -132,6 +132,9 @@ func CreateCryptoKey(id *string, updatedSecret chan<- bool) {
 	log.TraceLn(id, "Public key: %s...\n", identity.Recipient().String()[:4])
 	log.TraceLn(id, "Private key: %s...\n", identity.String()[:16])
 
-	persistKeys(privateKey, publicKey)
+	if err = persistKeys(privateKey, publicKey); err != nil {
+		log.FatalLn(id, "Failed to persist keys", err.Error())
+	}
+
 	updatedSecret <- true
 }

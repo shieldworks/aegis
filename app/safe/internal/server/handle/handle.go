@@ -9,39 +9,28 @@
 package handle
 
 import (
-	"github.com/pkg/errors"
 	"github.com/shieldworks/aegis/app/safe/internal/server/route"
+	"github.com/shieldworks/aegis/core/crypto"
 	"github.com/shieldworks/aegis/core/log"
-	"github.com/spiffe/go-spiffe/v2/spiffeid"
-	"github.com/spiffe/go-spiffe/v2/svid/x509svid"
 	"io"
 	"net/http"
 )
 
-func getSpiffeId(r *http.Request) (*spiffeid.ID, error) {
-	tlsConnectionState := r.TLS
-	if len(tlsConnectionState.PeerCertificates) == 0 {
-		return nil, errors.New("no peer certs")
-	}
-
-	id, err := x509svid.IDFromCert(tlsConnectionState.PeerCertificates[0])
-	if err != nil {
-		return nil, errors.Wrap(err, "problem extracting svid")
-	}
-
-	return &id, nil
-}
-
 func InitializeRoutes() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		id, err := getSpiffeId(r)
+		cid, _ := crypto.RandomString(8)
+		if cid == "" {
+			cid = "AEGISCID"
+		}
+
+		id, err := spiffeIdFromRequest(r)
 		if err != nil {
-			log.WarnLn("Handler: blocking insecure svid", id, err)
+			log.WarnLn(&cid, "Handler: blocking insecure svid", id, err)
 
 			// Block insecure connection attempt.
 			_, err = io.WriteString(w, "")
 			if err != nil {
-				log.InfoLn("Problem writing response:", err.Error())
+				log.InfoLn(&cid, "Problem writing response:", err.Error())
 				return
 			}
 		}
@@ -49,13 +38,13 @@ func InitializeRoutes() {
 		sid := id.String()
 		p := r.URL.Path
 
-		log.DebugLn("Handler: got svid:", sid, "path", p, "method", r.Method)
+		log.DebugLn(&cid, "Handler: got svid:", sid, "path", p, "method", r.Method)
 
 		// Route to list secrets.
 		// Only Aegis Sentinel is allowed to call this API endpoint.
 		// Calling it from anywhere else will error out.
 		if r.Method == http.MethodGet && p == "/sentinel/v1/secrets" {
-			log.DebugLn("Handler: will list")
+			log.DebugLn(&cid, "Handler: will list")
 			route.List(w, r, sid)
 			return
 		}

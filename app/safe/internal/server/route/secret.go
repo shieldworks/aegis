@@ -12,7 +12,6 @@ import (
 	"encoding/json"
 	"github.com/shieldworks/aegis/app/safe/internal/state"
 	"github.com/shieldworks/aegis/core/audit"
-	"github.com/shieldworks/aegis/core/crypto"
 	entity "github.com/shieldworks/aegis/core/entity/data/v1"
 	reqres "github.com/shieldworks/aegis/core/entity/reqres/safe/v1"
 	"github.com/shieldworks/aegis/core/log"
@@ -21,12 +20,7 @@ import (
 	"net/http"
 )
 
-func Secret(w http.ResponseWriter, r *http.Request, svid string) {
-	correlationId, _ := crypto.RandomString(8)
-	if correlationId == "" {
-		correlationId = "CID"
-	}
-
+func Secret(correlationId string, w http.ResponseWriter, r *http.Request, svid string) {
 	j := audit.JournalEntry{
 		CorrelationId: correlationId,
 		Entity:        reqres.SecretFetchRequest{},
