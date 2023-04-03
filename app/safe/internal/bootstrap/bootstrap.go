@@ -27,6 +27,7 @@ func NotifyTimeout(timedOut chan<- bool) {
 }
 
 func Monitor(
+	correlationId *string,
 	acquiredSvid <-chan bool,
 	updatedSecret <-chan bool,
 	serverStarted <-chan bool,
@@ -35,28 +36,28 @@ func Monitor(
 	counter := 3
 	select {
 	case <-acquiredSvid:
-		log.InfoLn("Acquired identity.")
+		log.InfoLn(correlationId, "Acquired identity.")
 		counter--
 		if counter == 0 {
-			log.DebugLn("Creating readiness probe.")
+			log.DebugLn(correlationId, "Creating readiness probe.")
 			go probe.CreateReadiness()
 		}
 	case <-updatedSecret:
-		log.InfoLn("Updated age key.")
+		log.InfoLn(correlationId, "Updated age key.")
 		counter--
 		if counter == 0 {
-			log.DebugLn("Creating readiness probe.")
+			log.DebugLn(correlationId, "Creating readiness probe.")
 			go probe.CreateReadiness()
 		}
 	case <-serverStarted:
-		log.InfoLn("Server ready.")
+		log.InfoLn(correlationId, "Server ready.")
 		counter--
 		if counter == 0 {
-			log.DebugLn("Creating readiness probe.")
+			log.DebugLn(correlationId, "Creating readiness probe.")
 			go probe.CreateReadiness()
 		}
 	case <-timedOut:
-		log.FatalLn("Failed to acquire an identity in a timely manner.")
+		log.FatalLn(correlationId, "Failed to acquire an identity in a timely manner.")
 	}
 }
 
@@ -69,23 +70,25 @@ func AcquireSource(
 		),
 	)
 
+	id := ctx.Value("correlationId").(*string)
+
 	if err != nil {
-		log.FatalLn("Unable to fetch X.509 Bundle: %v", err)
+		log.FatalLn(id, "Unable to fetch X.509 Bundle", err.Error())
 	}
 
 	if source == nil {
-		log.FatalLn("Could not find source")
+		log.FatalLn(id, "Could not find source")
 	}
 
 	svid, err := source.GetX509SVID()
 	if err != nil {
-		log.FatalLn("Unable to get X.509 SVID from source bundle:", err.Error())
+		log.FatalLn(id, "Unable to get X.509 SVID from source bundle", err.Error())
 	}
 
 	svidId := svid.ID
 	if !validation.IsSafe(svid.ID.String()) {
 		log.FatalLn(
-			"Svid check: I don’t know you, and it’s crazy:", svidId.String(),
+			id, "Svid check: I don’t know you, and it’s crazy:", svidId.String(),
 		)
 	}
 
@@ -94,40 +97,40 @@ func AcquireSource(
 	return source
 }
 
-func CreateCryptoKey(updatedSecret chan<- bool) {
+func CreateCryptoKey(id *string, updatedSecret chan<- bool) {
 	keyPath := env.SafeAgeKeyPath()
 
 	if _, err := os.Stat(keyPath); os.IsNotExist(err) {
-		log.FatalLn("CreateCryptoKey: Secret key not mounted at", keyPath)
+		log.FatalLn(id, "CreateCryptoKey: Secret key not mounted at", keyPath)
 		return
 	}
 
 	data, err := os.ReadFile(keyPath)
 	if err != nil {
-		log.FatalLn("CreateCryptoKey: Error reading file:", err.Error())
+		log.FatalLn(id, "CreateCryptoKey: Error reading file:", err.Error())
 		return
 	}
 
 	secret := string(data)
 
 	if secret != state.BlankAgeKeyValue {
-		log.InfoLn("Secret has been set in the cluster, will reuse it")
+		log.InfoLn(id, "Secret has been set in the cluster, will reuse it")
 		state.SetAgeKey(secret)
 		return
 	}
 
-	log.InfoLn("Secret has not been set yet. Will compute a secure secret.")
+	log.InfoLn(id, "Secret has not been set yet. Will compute a secure secret.")
 
 	identity, err := age.GenerateX25519Identity()
 	if err != nil {
-		log.FatalLn("Failed to generate key pair: %v", err.Error())
+		log.FatalLn(id, "Failed to generate key pair: %v", err.Error())
 	}
 
 	publicKey := identity.Recipient().String()
 	privateKey := identity.String()
 
-	log.TraceLn("Public key: %s...\n", identity.Recipient().String()[:4])
-	log.TraceLn("Private key: %s...\n", identity.String()[:16])
+	log.TraceLn(id, "Public key: %s...\n", identity.Recipient().String()[:4])
+	log.TraceLn(id, "Private key: %s...\n", identity.String()[:16])
 
 	persistKeys(privateKey, publicKey)
 	updatedSecret <- true

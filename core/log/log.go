@@ -35,52 +35,75 @@ func SetLevel(l Level) {
 	currentLevel = l
 }
 
-func GetLevel(v ...any) Level {
+func GetLevel() Level {
 	mux.Lock()
 	defer mux.Unlock()
 	return currentLevel
 }
 
-func FatalLn(v ...any) {
-	log.Fatalln(v...)
+func FatalLn(correlationId *string, v ...any) {
+	var args []any
+	args = append(args, *correlationId)
+	args = append(args, v...)
+	log.Fatalln(args...)
 }
 
-func ErrorLn(v ...any) {
+func ErrorLn(correlationId *string, v ...any) {
 	l := GetLevel()
 	if l < Error {
 		return
 	}
-	log.Println(v...)
+
+	var args []any
+	args = append(args, *correlationId)
+	args = append(args, v...)
+	log.Println(args...)
 }
 
-func WarnLn(v ...any) {
+func WarnLn(correlationId *string, v ...any) {
 	l := GetLevel()
 	if l < Warn {
 		return
 	}
-	log.Println(v...)
+
+	var args []any
+	args = append(args, *correlationId)
+	args = append(args, v...)
+	log.Println(args...)
 }
 
-func InfoLn(v ...any) {
+func InfoLn(correlationId *string, v ...any) {
 	l := GetLevel()
 	if l < Info {
 		return
 	}
-	log.Println(v...)
+
+	var args []any
+	args = append(args, *correlationId)
+	args = append(args, v...)
+	log.Println(args...)
 }
 
-func DebugLn(v ...any) {
+func DebugLn(correlationId *string, v ...any) {
 	l := GetLevel()
 	if l < Debug {
 		return
 	}
-	log.Println(v...)
+
+	var args []any
+	args = append(args, *correlationId)
+	args = append(args, v...)
+	log.Println(args...)
 }
 
-func TraceLn(v ...any) {
+func TraceLn(correlationId *string, v ...any) {
 	l := GetLevel()
 	if l < Trace {
 		return
 	}
-	log.Println(v...)
+
+	var args []any
+	args = append(args, *correlationId)
+	args = append(args, v...)
+	log.Println(args...)
 }

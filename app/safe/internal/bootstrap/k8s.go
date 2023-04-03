@@ -19,7 +19,7 @@ import (
 	"k8s.io/client-go/rest"
 )
 
-func persistKeys(privateKey, publicKey string) {
+func persistKeys(privateKey, publicKey string) error {
 	config, err := rest.InClusterConfig()
 	if err != nil {
 		log.FatalLn("Error creating client config: %v", err.Error())
