@@ -98,11 +98,13 @@ func AllSecrets() []entity.Secret {
 // the in-memory store if it doesn't exist, or updates it if it does. It also
 // handles updating the backing store and Kubernetes secrets if necessary.
 func UpsertSecret(secret entity.SecretStored) {
+	cid := secret.Meta.CorrelationId
+
 	if secret.Name == selfName {
 		cmd := evaluate(secret.Value)
 		if cmd != nil {
 			newLogLevel := cmd.LogLevel
-			log.InfoLn("Setting new level to:", newLogLevel)
+			log.InfoLn(&cid, "Setting new level to:", newLogLevel)
 			log.SetLevel(log.Level(newLogLevel))
 		}
 	}
@@ -117,7 +119,7 @@ func UpsertSecret(secret entity.SecretStored) {
 	}
 	secret.Updated = now
 
-	log.InfoLn("UpsertSecret:",
+	log.InfoLn(&cid, "UpsertSecret:",
 		"created", secret.Created, "updated", secret.Updated, "name", secret.Name,
 	)
 
@@ -127,7 +129,7 @@ func UpsertSecret(secret entity.SecretStored) {
 	} else {
 		parsedStr, err := template.Parse(secret)
 		if err != nil {
-			log.InfoLn("Error parsing secret. Will use fallback value.", err.Error())
+			log.InfoLn(&cid, "Error parsing secret. Will use fallback value.", err.Error())
 		}
 
 		secret.ValueTransformed = parsedStr
@@ -139,19 +141,21 @@ func UpsertSecret(secret entity.SecretStored) {
 
 	switch store {
 	case entity.File:
-		log.TraceLn("Will push secret. len", len(secretQueue), "cap", cap(secretQueue))
+		log.TraceLn(&cid, "Will push secret. len", len(secretQueue), "cap", cap(secretQueue))
 		secretQueue <- secret
-		log.TraceLn("Pushed secret. len", len(secretQueue), "cap", cap(secretQueue))
+		log.TraceLn(&cid, "Pushed secret. len", len(secretQueue), "cap", cap(secretQueue))
 	}
 
 	useK8sSecrets := secret.Meta.UseKubernetesSecret
 	if useK8sSecrets {
 		log.TraceLn(
+			&cid,
 			"will push Kubernetes secret. len", len(k8sSecretQueue),
 			"cap", cap(k8sSecretQueue),
 		)
 		k8sSecretQueue <- secret
 		log.TraceLn(
+			&cid,
 			"pushed Kubernetes secret. len", len(k8sSecretQueue),
 			"cap", cap(k8sSecretQueue),
 		)

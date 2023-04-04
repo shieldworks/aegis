@@ -33,10 +33,12 @@ var k8sSecretQueue = make(chan entity.SecretStored, env.SafeSecretBufferSize())
 func handleSecrets() {
 	errChan := make(chan error)
 
+	id := "AEGIHSCR"
+
 	go func() {
 		for e := range errChan {
 			// If the `persist` operation spews out an error, log it.
-			log.ErrorLn("handleSecrets: error persisting secret:", e.Error())
+			log.ErrorLn(&id, "handleSecrets: error persisting secret:", e.Error())
 		}
 	}()
 
@@ -44,7 +46,8 @@ func handleSecrets() {
 		// Buffer overflow check.
 		if len(secretQueue) == env.SafeSecretBufferSize() {
 			log.ErrorLn(
-				"handleSecrets: there are too many k8s secrets queued. " +
+				&id,
+				"handleSecrets: there are too many k8s secrets queued. "+
 					"The goroutine will BLOCK until the queue is cleared.",
 			)
 		}
@@ -52,7 +55,9 @@ func handleSecrets() {
 		// Get a secret to be persisted to the disk.
 		secret := <-secretQueue
 
-		log.TraceLn("picked a secret", len(secretQueue))
+		cid := secret.Meta.CorrelationId
+
+		log.TraceLn(&cid, "handleSecrets: picked a secret", len(secretQueue))
 
 		// Persist the secret to disk.
 		//
@@ -63,17 +68,19 @@ func handleSecrets() {
 		// It is meant to be called inside this `handleSecrets` goroutine.
 		persist(secret, errChan)
 
-		log.TraceLn("should have persisted the secret.")
+		log.TraceLn(&cid, "handleSecrets: should have persisted the secret.")
 	}
 }
 
 func handleK8sSecrets() {
 	errChan := make(chan error)
 
+	id := "AEGIHK8S"
+
 	go func() {
 		for e := range errChan {
 			// If the `persistK8s` operation spews out an error, log it.
-			log.ErrorLn("handleK8sSecrets: error persisting secret:", e.Error())
+			log.ErrorLn(&id, "handleK8sSecrets: error persisting secret:", e.Error())
 		}
 	}()
 
@@ -81,7 +88,8 @@ func handleK8sSecrets() {
 		// Buffer overflow check.
 		if len(secretQueue) == env.SafeSecretBufferSize() {
 			log.ErrorLn(
-				"handleK8sSecrets: there are too many k8s secrets queued. " +
+				&id,
+				"handleK8sSecrets: there are too many k8s secrets queued. "+
 					"The goroutine will BLOCK until the queue is cleared.",
 			)
 		}
@@ -89,7 +97,9 @@ func handleK8sSecrets() {
 		// Get a secret to be persisted to the disk.
 		secret := <-k8sSecretQueue
 
-		log.TraceLn("handleK8sSecrets: picked k8s secret")
+		cid := secret.Meta.CorrelationId
+
+		log.TraceLn(&cid, "handleK8sSecrets: picked k8s secret")
 
 		// Sync up the secret to etcd as a Kubernetes Secret.
 		//
@@ -100,21 +110,21 @@ func handleK8sSecrets() {
 		// It is meant to be called inside this `handleK8sSecrets` goroutine.
 		persistK8s(secret, errChan)
 
-		log.TraceLn("handleK8sSecrets: Should have persisted k8s secret")
+		log.TraceLn(&cid, "handleK8sSecrets: Should have persisted k8s secret")
 	}
 }
 
 var secretsPopulated = false
 var secretsPopulatedLock = sync.Mutex{}
 
-func populateSecrets() {
+func populateSecrets() error {
 	secretsPopulatedLock.Lock()
 	defer secretsPopulatedLock.Unlock()
 
 	root := env.SafeDataPath()
 	files, err := os.ReadDir(root)
 	if err != nil {
-		log.InfoLn("populateSecrets problem:", err.Error())
+		log.InfoLn("populateSecrets: problem:", err.Error())
 		return
 	}
 

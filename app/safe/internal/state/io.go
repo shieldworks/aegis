@@ -46,13 +46,11 @@ func decryptBytes(data []byte) ([]byte, error) {
 
 	identity, err := age.ParseX25519Identity(privateKey)
 	if err != nil {
-		log.WarnLn("Failed to parse private key", privateKey, err)
-		return []byte{}, err
+		return []byte{}, errors.Wrap(err, "decryptBytes: failed to parse private key")
 	}
 
 	if len(data) == 0 {
-		log.WarnLn("file on disk appears to be empty")
-		return []byte{}, err
+		return []byte{}, errors.Wrap(err, "decryptBytes: file on disk appears to be empty")
 	}
 
 	out := &bytes.Buffer{}
@@ -60,13 +58,11 @@ func decryptBytes(data []byte) ([]byte, error) {
 
 	r, err := age.Decrypt(f, identity)
 	if err != nil {
-		log.WarnLn("Failed to open encrypted file", err.Error())
-		return []byte{}, err
+		return []byte{}, errors.Wrap(err, "decryptBytes: failed to open encrypted file")
 	}
 
 	if _, err := io.Copy(out, r); err != nil {
-		log.WarnLn("Failed to read encrypted file", err.Error())
-		return []byte{}, err
+		return []byte{}, errors.Wrap(err, "decryptBytes: failed to read encrypted file")
 	}
 
 	return out.Bytes(), nil
@@ -76,14 +72,12 @@ func decryptDataFromDisk(key string) ([]byte, error) {
 	dataPath := path.Join(env.SafeDataPath(), key+".age")
 
 	if _, err := os.Stat(dataPath); os.IsNotExist(err) {
-		log.TraceLn("decryptDataFromDisk: No file at:", dataPath)
-		return nil, err
+		return nil, errors.Wrap(err, "decryptDataFromDisk: No file at: "+dataPath)
 	}
 
 	data, err := os.ReadFile(dataPath)
 	if err != nil {
-		log.WarnLn("decryptDataFromDisk: Error reading file:", err.Error())
-		return nil, err
+		return nil, errors.Wrap(err, "decryptDataFromDisk: Error reading file")
 	}
 
 	return decryptBytes(data)
@@ -93,19 +87,18 @@ func decryptDataFromDisk(key string) ([]byte, error) {
 // It returns a nil pointer if secret cannot be read
 // // readFromDisk returns a pointer to a secret.
 // // It returns a nil pointer if secret cannot be read.
-func readFromDisk(key string) *entity.SecretStored {
+func readFromDisk(key string) (*entity.SecretStored, error) {
 	contents, err := decryptDataFromDisk(key)
 	if err != nil {
-		return nil
+		return nil, errors.Wrap(err, "readFromDisk: error decrypting file")
 	}
 
 	var secret entity.SecretStored
 	err = json.Unmarshal(contents, &secret)
 	if err != nil {
-		log.WarnLn("Failed to unmarshal secret", err.Error())
-		return nil
+		return nil, errors.Wrap(err, "readFromDisk: Failed to unmarshal secret")
 	}
-	return &secret
+	return &secret, nil
 }
 
 var lastBackedUpIndex = make(map[string]int)
@@ -114,27 +107,25 @@ func encryptToWriter(out io.Writer, data string) error {
 	_, publicKey := ageKeyPair()
 	recipient, err := age.ParseX25519Recipient(publicKey)
 	if err != nil {
-		log.WarnLn("Failed to parse public key", publicKey, err.Error())
-		return err
+		return errors.Wrap(err, "encryptToWriter: failed to parse public key")
 	}
 
 	wrappedWriter, err := age.Encrypt(out, recipient)
 	if err != nil {
-		log.WarnLn("Failed to create encrypted file", err.Error())
-		return err
-	}
-
-	if _, err := io.WriteString(wrappedWriter, data); err != nil {
-		log.FatalLn("Failed to write to encrypted file: %v", err.Error())
-		return err
+		return errors.Wrap(err, "encryptToWriter: failed to create encrypted file")
 	}
 
 	defer func() {
 		err := wrappedWriter.Close()
 		if err != nil {
-			log.InfoLn("problem closing stream", err.Error())
+			id := "AEGIIOCL"
+			log.InfoLn(&id, "encryptToWriter: problem closing stream", err.Error())
 		}
 	}()
+
+	if _, err := io.WriteString(wrappedWriter, data); err != nil {
+		return errors.Wrap(err, "encryptToWriter: failed to write to encrypted file")
+	}
 
 	return nil
 }
@@ -142,19 +133,18 @@ func encryptToWriter(out io.Writer, data string) error {
 func saveSecretToDisk(secret entity.SecretStored, dataPath string) error {
 	data, err := json.Marshal(secret)
 	if err != nil {
-		log.WarnLn("persist: failed to marshal secret", err.Error())
-		return err
+		return errors.Wrap(err, "saveSecretToDisk: failed to marshal secret")
 	}
 
 	file, err := os.Create(dataPath)
 	if err != nil {
-		log.WarnLn("persist: problem creating file", err.Error())
-		return err
+		return errors.Wrap(err, "saveSecretToDisk: failed to create file")
 	}
 	defer func() {
 		err := file.Close()
 		if err != nil {
-			log.InfoLn("problem closing file", err.Error())
+			id := "AEGIIOCL"
+			log.InfoLn(&id, "saveSecretToDisk: problem closing file", err.Error())
 		}
 	}()
 
@@ -233,12 +223,13 @@ func saveSecretToKubernetes(secret entity.SecretStored) error {
 		return errors.Wrap(err, "error updating the secret")
 	}
 
-	log.InfoLn("Updated the Kubernetes Secret.")
 	return nil
 }
 
 func persistK8s(secret entity.SecretStored, errChan chan<- error) {
-	log.TraceLn("Will persist k8s secret.")
+	cid := secret.Meta.CorrelationId
+
+	log.TraceLn(&cid, "persistK8s: Will persist k8s secret.")
 
 	// Defensive coding:
 	// secret’s value is never empty because when the value is set to an
@@ -249,18 +240,18 @@ func persistK8s(secret entity.SecretStored, errChan chan<- error) {
 		secret.Value = InitialSecretValue
 	}
 
-	log.TraceLn("Will try saving secret to k8s.")
+	log.TraceLn(&cid, "persistK8s: Will try saving secret to k8s.")
 	err := saveSecretToKubernetes(secret)
-	log.TraceLn("should have saved secret to k8s.")
+	log.TraceLn(&cid, "persistK8s: should have saved secret to k8s.")
 	if err != nil {
-		log.TraceLn("Got error while trying to save, will retry.")
+		log.TraceLn(&cid, "persistK8s: Got error while trying to save, will retry.")
 		// Retry once more.
 		time.Sleep(500 * time.Millisecond)
-		log.TraceLn("Retrying saving secret to k8s.")
+		log.TraceLn(&cid, "persistK8s: Retrying saving secret to k8s.")
 		err := saveSecretToKubernetes(secret)
-		log.TraceLn("Should have saved secret.")
+		log.TraceLn(&cid, "persistK8s: Should have saved secret.")
 		if err != nil {
-			log.TraceLn("still error, pushing the error to errchan")
+			log.TraceLn(&cid, "persistK8s: still error, pushing the error to errchan")
 			errChan <- err
 		}
 	}
@@ -268,6 +259,8 @@ func persistK8s(secret entity.SecretStored, errChan chan<- error) {
 
 // Only one goroutine accesses this function at any given time.
 func persist(secret entity.SecretStored, errChan chan<- error) {
+	cid := secret.Meta.CorrelationId
+
 	backupCount := env.SafeSecretBackupCount()
 
 	// Resetting the value also removes the secret file from the disk.
@@ -275,7 +268,7 @@ func persist(secret entity.SecretStored, errChan chan<- error) {
 		dataPath := path.Join(env.SafeDataPath(), secret.Name+".age")
 		err := os.Remove(dataPath)
 		if !os.IsNotExist(err) {
-			log.WarnLn("persist: failed to remove secret", err.Error())
+			log.WarnLn(&cid, "persist: failed to remove secret", err.Error())
 		}
 		return
 	}

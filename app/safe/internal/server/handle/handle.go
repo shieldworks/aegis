@@ -20,7 +20,7 @@ func InitializeRoutes() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		cid, _ := crypto.RandomString(8)
 		if cid == "" {
-			cid = "AEGISCID"
+			cid = "AEGISFHN"
 		}
 
 		id, err := spiffeIdFromRequest(r)
@@ -45,7 +45,7 @@ func InitializeRoutes() {
 		// Calling it from anywhere else will error out.
 		if r.Method == http.MethodGet && p == "/sentinel/v1/secrets" {
 			log.DebugLn(&cid, "Handler: will list")
-			route.List(w, r, sid)
+			route.List(cid, w, r, sid)
 			return
 		}
 
@@ -53,8 +53,8 @@ func InitializeRoutes() {
 		// Only Aegis Sentinel is allowed to call this API endpoint.
 		// Calling it from anywhere else will error out.
 		if r.Method == http.MethodPost && p == "/sentinel/v1/secrets" {
-			log.DebugLn("Handler: will secret")
-			route.Secret(w, r, sid)
+			log.DebugLn(&cid, "Handler:/sentinel/v1/secrets will secret")
+			route.Secret(cid, w, r, sid)
 			return
 		}
 
@@ -63,17 +63,17 @@ func InitializeRoutes() {
 		// call this API endpoint. Calling it from anywhere else will
 		// error out.
 		if r.Method == http.MethodGet && p == "/workload/v1/secrets" {
-			log.DebugLn("Handler: will fetch")
-			route.Fetch(w, r, sid)
+			log.DebugLn(&cid, "Handler:/workload/v1/secrets: will fetch")
+			route.Fetch(cid, w, r, sid)
 			return
 		}
 
-		log.DebugLn("Handler: route mismatch")
+		log.DebugLn(&cid, "Handler: route mismatch")
 
 		w.WriteHeader(http.StatusBadRequest)
 		_, err = io.WriteString(w, "")
 		if err != nil {
-			log.WarnLn("Problem writing response", err.Error())
+			log.WarnLn(&cid, "Problem writing response", err.Error())
 			return
 		}
 	})

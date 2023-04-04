@@ -52,6 +52,8 @@ type SecretMeta struct {
 	Template string `json:"template"`
 	// Defaults to None
 	Format SecretFormat
+	// For tracking purposes
+	CorrelationId string `json:"correlationId"`
 }
 
 type SecretStored struct {

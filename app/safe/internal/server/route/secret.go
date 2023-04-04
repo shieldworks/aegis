@@ -20,9 +20,9 @@ import (
 	"net/http"
 )
 
-func Secret(correlationId string, w http.ResponseWriter, r *http.Request, svid string) {
+func Secret(cid string, w http.ResponseWriter, r *http.Request, svid string) {
 	j := audit.JournalEntry{
-		CorrelationId: correlationId,
+		CorrelationId: cid,
 		Entity:        reqres.SecretFetchRequest{},
 		Method:        r.Method,
 		Url:           r.RequestURI,
@@ -39,12 +39,12 @@ func Secret(correlationId string, w http.ResponseWriter, r *http.Request, svid s
 		w.WriteHeader(http.StatusBadRequest)
 		_, err := io.WriteString(w, "")
 		if err != nil {
-			log.InfoLn("Problem sending response", err.Error())
+			log.InfoLn(&cid, "Secret: Problem sending response", err.Error())
 		}
 		return
 	}
 
-	log.DebugLn("Secret: sentinel svid:", svid)
+	log.DebugLn(&cid, "Secret: sentinel svid:", svid)
 
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
@@ -54,7 +54,7 @@ func Secret(correlationId string, w http.ResponseWriter, r *http.Request, svid s
 		w.WriteHeader(http.StatusBadRequest)
 		_, err := io.WriteString(w, "")
 		if err != nil {
-			log.InfoLn("Secret: Problem sending response", err.Error())
+			log.InfoLn(&cid, "Secret: Problem sending response", err.Error())
 		}
 		return
 	}
@@ -64,11 +64,11 @@ func Secret(correlationId string, w http.ResponseWriter, r *http.Request, svid s
 		}
 		err := b.Close()
 		if err != nil {
-			log.InfoLn("Secret: Problem closing body", err.Error())
+			log.InfoLn(&cid, "Secret: Problem closing body", err.Error())
 		}
 	}(r.Body)
 
-	log.DebugLn("Secret: Parsed request body")
+	log.DebugLn(&cid, "Secret: Parsed request body")
 
 	var sr reqres.SecretUpsertRequest
 	err = json.Unmarshal(body, &sr)
@@ -78,7 +78,7 @@ func Secret(correlationId string, w http.ResponseWriter, r *http.Request, svid s
 		w.WriteHeader(http.StatusBadRequest)
 		_, err := io.WriteString(w, "")
 		if err != nil {
-			log.InfoLn("Secret: Problem sending response", err.Error())
+			log.InfoLn(&cid, "Secret: Problem sending response", err.Error())
 		}
 		return
 	}
@@ -103,7 +103,7 @@ func Secret(correlationId string, w http.ResponseWriter, r *http.Request, svid s
 			w.WriteHeader(http.StatusBadRequest)
 			_, err := io.WriteString(w, "")
 			if err != nil {
-				log.InfoLn("Secret: Problem sending response", err.Error())
+				log.InfoLn(&cid, "Secret: Problem sending response", err.Error())
 			}
 			return
 		}
@@ -116,14 +116,14 @@ func Secret(correlationId string, w http.ResponseWriter, r *http.Request, svid s
 			w.WriteHeader(http.StatusInternalServerError)
 			_, err := io.WriteString(w, "")
 			if err != nil {
-				log.InfoLn("Secret: Problem sending response", err.Error())
+				log.InfoLn(&cid, "Secret: Problem sending response", err.Error())
 			}
 			return
 		}
 
 		_, err = io.WriteString(w, encrypted)
 		if err != nil {
-			log.InfoLn("Secret: Problem sending response", err.Error())
+			log.InfoLn(&cid, "Secret: Problem sending response", err.Error())
 		}
 		return
 	}
@@ -132,7 +132,7 @@ func Secret(correlationId string, w http.ResponseWriter, r *http.Request, svid s
 		namespace = "default"
 	}
 
-	log.DebugLn("Secret:Upsert: ",
+	log.DebugLn(&cid, "Secret:Upsert: ",
 		"workloadId:", workloadId,
 		"namespace:", namespace,
 		"backingStore:", backingStore,
@@ -158,7 +158,7 @@ func Secret(correlationId string, w http.ResponseWriter, r *http.Request, svid s
 			w.WriteHeader(http.StatusInternalServerError)
 			_, err := io.WriteString(w, "")
 			if err != nil {
-				log.InfoLn("Secret: Problem sending response", err.Error())
+				log.InfoLn(&cid, "Secret: Problem sending response", err.Error())
 			}
 			return
 		}
@@ -174,16 +174,17 @@ func Secret(correlationId string, w http.ResponseWriter, r *http.Request, svid s
 			BackingStore:        backingStore,
 			Template:            template,
 			Format:              format,
+			CorrelationId:       cid,
 		},
 		Value: value,
 	})
-	log.DebugLn("Secret:UpsertEnd: workloadId", workloadId)
+	log.DebugLn(&cid, "Secret:UpsertEnd: workloadId", workloadId)
 
 	j.Event = audit.EventOk
 	audit.Log(j)
 
 	_, err = io.WriteString(w, "OK")
 	if err != nil {
-		log.InfoLn("Secret: Problem sending response", err.Error())
+		log.InfoLn(&cid, "Secret: Problem sending response", err.Error())
 	}
 }

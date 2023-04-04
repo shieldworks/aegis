@@ -15,7 +15,7 @@ import (
 )
 
 func main() {
-	id := "AEGINCTR"
+	id := "AEGIICNT"
 
 	log.InfoLn(&id, "Starting Aegis Init Container")
 	go startup.Watch()

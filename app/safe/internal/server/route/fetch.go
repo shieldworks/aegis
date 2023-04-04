@@ -23,9 +23,9 @@ import (
 	"time"
 )
 
-func Fetch(correlationId string, w http.ResponseWriter, r *http.Request, svid string) {
+func Fetch(cid string, w http.ResponseWriter, r *http.Request, svid string) {
 	j := audit.JournalEntry{
-		CorrelationId: correlationId,
+		CorrelationId: cid,
 		Entity:        reqres.SecretFetchRequest{},
 		Method:        r.Method,
 		Url:           r.RequestURI,
@@ -40,27 +40,27 @@ func Fetch(correlationId string, w http.ResponseWriter, r *http.Request, svid st
 		j.Event = audit.EventBadSvid
 		audit.Log(j)
 
-		log.DebugLn("Fetch: bad svid", svid)
+		log.DebugLn(&cid, "Fetch: bad svid", svid)
 
 		w.WriteHeader(http.StatusBadRequest)
 		_, err := io.WriteString(w, "")
 		if err != nil {
-			log.InfoLn("Fetch: Problem sending response", err.Error())
+			log.InfoLn(&cid, "Fetch: Problem sending response", err.Error())
 		}
 
 		return
 	}
 
-	log.DebugLn("Fetch: sending response")
+	log.DebugLn(&cid, "Fetch: sending response")
 
 	defer func() {
 		err := r.Body.Close()
 		if err != nil {
-			log.InfoLn("Fetch: Problem closing body")
+			log.InfoLn(&cid, "Fetch: Problem closing body")
 		}
 	}()
 
-	log.DebugLn("Fetch: preparing request")
+	log.DebugLn(&cid, "Fetch: preparing request")
 
 	tmp := strings.Replace(svid, env.WorkloadSvidPrefix(), "", 1)
 	parts := strings.Split(tmp, "/")
@@ -71,7 +71,7 @@ func Fetch(correlationId string, w http.ResponseWriter, r *http.Request, svid st
 		w.WriteHeader(http.StatusBadRequest)
 		_, err := io.WriteString(w, "")
 		if err != nil {
-			log.InfoLn("Fetch: Problem with svid", svid)
+			log.InfoLn(&cid, "Fetch: Problem with svid", svid)
 		}
 		return
 	}
@@ -79,7 +79,7 @@ func Fetch(correlationId string, w http.ResponseWriter, r *http.Request, svid st
 	workloadId := parts[0]
 	secret := state.ReadSecret(workloadId)
 
-	log.TraceLn("Fetch: workloadId", workloadId)
+	log.TraceLn(&cid, "Fetch: workloadId", workloadId)
 
 	// If secret does not exist, send an empty response.
 	if secret == nil {
@@ -89,12 +89,12 @@ func Fetch(correlationId string, w http.ResponseWriter, r *http.Request, svid st
 		w.WriteHeader(http.StatusNotFound)
 		_, err := io.WriteString(w, "")
 		if err != nil {
-			log.InfoLn("Fetch: Problem sending response", err.Error())
+			log.InfoLn(&cid, "Fetch: Problem sending response", err.Error())
 		}
 		return
 	}
 
-	log.DebugLn("Fetch: will send. workload id:", workloadId)
+	log.DebugLn(&cid, "Fetch: will send. workload id:", workloadId)
 
 	value := ""
 	if secret.ValueTransformed != "" {
@@ -120,17 +120,17 @@ func Fetch(correlationId string, w http.ResponseWriter, r *http.Request, svid st
 		w.WriteHeader(http.StatusInternalServerError)
 		_, err := io.WriteString(w, "Problem unmarshaling response")
 		if err != nil {
-			log.InfoLn("Fetch: Problem sending response", err.Error())
+			log.InfoLn(&cid, "Fetch: Problem sending response", err.Error())
 		}
 		return
 	}
 
-	log.DebugLn("Fetch: before response")
+	log.DebugLn(&cid, "Fetch: before response")
 
 	_, err = io.WriteString(w, string(resp))
 	if err != nil {
-		log.InfoLn("Problem sending response", err.Error())
+		log.InfoLn(&cid, "Problem sending response", err.Error())
 	}
 
-	log.DebugLn("Fetch: after response")
+	log.DebugLn(&cid, "Fetch: after response")
 }

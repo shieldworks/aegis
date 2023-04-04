@@ -17,7 +17,7 @@ import (
 )
 
 func main() {
-	id := "AEGSAFE"
+	id := "AEGISAFE"
 
 	log.InfoLn(&id, "Acquiring identity…")
 
