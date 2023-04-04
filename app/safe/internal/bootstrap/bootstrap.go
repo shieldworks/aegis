@@ -21,11 +21,23 @@ import (
 	"time"
 )
 
+// NotifyTimeout waits for the duration specified by env.SafeSvidRetrievalTimeout()
+// and then sends a 'true' value to the provided 'timedOut' channel. This function
+// can be used to notify other parts of the application when a specific timeout
+// has been reached.
 func NotifyTimeout(timedOut chan<- bool) {
 	time.Sleep(env.SafeSvidRetrievalTimeout())
 	timedOut <- true
 }
 
+// Monitor listens to various channels to track the progress of acquiring an
+// identity, updating the age key, and starting the server. It takes a
+// correlationId for logging purposes and four channels: acquiredSvid,
+// updatedSecret, serverStarted, and timedOut. When all three of the first
+// events (acquiring identity, updating age key, and starting the server) have
+// occurred, the function initializes the state and creates a readiness probe.
+// If a timeout occurs before all three events happen, the function logs a
+// fatal message.
 func Monitor(
 	correlationId *string,
 	acquiredSvid <-chan bool,
@@ -39,6 +51,7 @@ func Monitor(
 		log.InfoLn(correlationId, "Acquired identity.")
 		counter--
 		if counter == 0 {
+			state.Initialize()
 			log.DebugLn(correlationId, "Creating readiness probe.")
 			go probe.CreateReadiness()
 		}
@@ -46,6 +59,7 @@ func Monitor(
 		log.InfoLn(correlationId, "Updated age key.")
 		counter--
 		if counter == 0 {
+			state.Initialize()
 			log.DebugLn(correlationId, "Creating readiness probe.")
 			go probe.CreateReadiness()
 		}
@@ -53,6 +67,7 @@ func Monitor(
 		log.InfoLn(correlationId, "Server ready.")
 		counter--
 		if counter == 0 {
+			state.Initialize()
 			log.DebugLn(correlationId, "Creating readiness probe.")
 			go probe.CreateReadiness()
 		}
@@ -61,6 +76,10 @@ func Monitor(
 	}
 }
 
+// AcquireSource establishes a connection to the workload API, fetches the
+// X.509 bundle, and returns an X509Source. It takes a context and a channel
+// acquiredSvid to signal when the SVID has been acquired. If there are any
+// errors during the process, the function logs a fatal message and exits.
 func AcquireSource(
 	ctx context.Context, acquiredSvid chan<- bool,
 ) *workloadapi.X509Source {
@@ -97,6 +116,13 @@ func AcquireSource(
 	return source
 }
 
+// CreateCryptoKey generates or reuses a cryptographic key pair for the
+// application, taking an id for logging purposes and a channel updatedSecret
+// to signal when the secret has been updated. If the secret key is not mounted
+// at the expected location or there are any errors reading the key file, the
+// function logs a fatal message and exits. If the secret has not been set in
+// the cluster, the function generates a new key pair, persists them, and
+// signals the updatedSecret channel.
 func CreateCryptoKey(id *string, updatedSecret chan<- bool) {
 	keyPath := env.SafeAgeKeyPath()
 

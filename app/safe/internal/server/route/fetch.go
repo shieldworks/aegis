@@ -77,7 +77,10 @@ func Fetch(cid string, w http.ResponseWriter, r *http.Request, svid string) {
 	}
 
 	workloadId := parts[0]
-	secret := state.ReadSecret(workloadId)
+	secret, err := state.ReadSecret(workloadId)
+	if err != nil {
+		log.WarnLn(&cid, "Fetch: Problem reading secret", err.Error())
+	}
 
 	log.TraceLn(&cid, "Fetch: workloadId", workloadId)
 
