@@ -9,6 +9,7 @@
 package sentry
 
 import (
+	"github.com/shieldworks/aegis/core/crypto"
 	"github.com/shieldworks/aegis/core/log"
 	"github.com/shieldworks/aegis/sdk/internal/timer"
 	"time"
@@ -24,6 +25,11 @@ func Watch() {
 	successCount := int64(0)
 	errorCount := int64(0)
 
+	cid, _ := crypto.RandomString(8)
+	if cid == "" {
+		cid = "AEGISSDK"
+	}
+
 	for {
 		ticker := time.NewTicker(interval)
 		select {
@@ -36,7 +42,7 @@ func Watch() {
 			)
 
 			if err != nil {
-				log.InfoLn("Could not fetch secrets", err.Error(),
+				log.InfoLn(&cid, "Could not fetch secrets", err.Error(),
 					". Will retry in", interval, ".")
 			}
 

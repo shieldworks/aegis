@@ -11,15 +11,25 @@ package state
 import (
 	"bytes"
 	"encoding/base64"
-	"github.com/shieldworks/aegis/app/safe/internal/template"
 	entity "github.com/shieldworks/aegis/core/entity/data/v1"
 	"github.com/shieldworks/aegis/core/log"
 	"sync"
 	"time"
 )
 
+const InitialSecretValue = `{"empty":true}`
+const BlankAgeKeyValue = "{}"
+
 var ageKey = ""
 var lock sync.Mutex
+
+// Initialize starts two goroutines: one to process the secret queue and
+// another to process the Kubernetes secret queue. These goroutines are
+// responsible for handling queued secrets and persisting them to disk.
+func Initialize() {
+	go processSecretQueue()
+	go processK8sSecretQueue()
+}
 
 // SetAgeKey sets the age key to be used for encryption and decryption.
 func SetAgeKey(k string) {
@@ -64,14 +74,17 @@ func DecryptValue(value string) (string, error) {
 // AllSecrets returns a slice of entity.Secret containing all secrets
 // currently stored. If no secrets are found, an empty slice is
 // returned.
-func AllSecrets() []entity.Secret {
+func AllSecrets(cid string) []entity.Secret {
 	var result []entity.Secret
 
 	// Check existing stored secrets files.
 	// If Aegis pod is evicted and revived, it will not have knowledge about
 	// the secret it has. This loop helps it re-populate its cache.
 	if !secretsPopulated {
-		populateSecrets()
+		err := populateSecrets(cid)
+		if err != nil {
+			log.WarnLn(&cid, "Failed to populate secrets from disk", err.Error())
+		}
 	}
 
 	// Range over all existing secrets.
@@ -98,11 +111,13 @@ func AllSecrets() []entity.Secret {
 // the in-memory store if it doesn't exist, or updates it if it does. It also
 // handles updating the backing store and Kubernetes secrets if necessary.
 func UpsertSecret(secret entity.SecretStored) {
+	cid := secret.Meta.CorrelationId
+
 	if secret.Name == selfName {
 		cmd := evaluate(secret.Value)
 		if cmd != nil {
 			newLogLevel := cmd.LogLevel
-			log.InfoLn("Setting new level to:", newLogLevel)
+			log.InfoLn(&cid, "Setting new level to:", newLogLevel)
 			log.SetLevel(log.Level(newLogLevel))
 		}
 	}
@@ -117,7 +132,7 @@ func UpsertSecret(secret entity.SecretStored) {
 	}
 	secret.Updated = now
 
-	log.InfoLn("UpsertSecret:",
+	log.InfoLn(&cid, "UpsertSecret:",
 		"created", secret.Created, "updated", secret.Updated, "name", secret.Name,
 	)
 
@@ -125,9 +140,10 @@ func UpsertSecret(secret entity.SecretStored) {
 		currentState.Decrement(secret.Name)
 		secrets.Delete(secret.Name)
 	} else {
-		parsedStr, err := template.Parse(secret)
+		parsedStr, err := secret.Parse()
 		if err != nil {
-			log.InfoLn("Error parsing secret. Will use fallback value.", err.Error())
+			log.InfoLn(&cid,
+				"Error parsing secret. Will use fallback value.", err.Error())
 		}
 
 		secret.ValueTransformed = parsedStr
@@ -139,19 +155,23 @@ func UpsertSecret(secret entity.SecretStored) {
 
 	switch store {
 	case entity.File:
-		log.TraceLn("Will push secret. len", len(secretQueue), "cap", cap(secretQueue))
+		log.TraceLn(
+			&cid, "Will push secret. len", len(secretQueue), "cap", cap(secretQueue))
 		secretQueue <- secret
-		log.TraceLn("Pushed secret. len", len(secretQueue), "cap", cap(secretQueue))
+		log.TraceLn(
+			&cid, "Pushed secret. len", len(secretQueue), "cap", cap(secretQueue))
 	}
 
 	useK8sSecrets := secret.Meta.UseKubernetesSecret
 	if useK8sSecrets {
 		log.TraceLn(
+			&cid,
 			"will push Kubernetes secret. len", len(k8sSecretQueue),
 			"cap", cap(k8sSecretQueue),
 		)
 		k8sSecretQueue <- secret
 		log.TraceLn(
+			&cid,
 			"pushed Kubernetes secret. len", len(k8sSecretQueue),
 			"cap", cap(k8sSecretQueue),
 		)
@@ -162,19 +182,23 @@ func UpsertSecret(secret entity.SecretStored) {
 // object if the secret exists in the in-memory store. If the secret is not
 // found in memory, it attempts to read it from disk, store it in memory, and
 // return it. If the secret is not found on disk, it returns nil.
-func ReadSecret(key string) *entity.SecretStored {
+func ReadSecret(key string) (*entity.SecretStored, error) {
 	result, ok := secrets.Load(key)
 	if !ok {
-		stored := readFromDisk(key)
+		stored, err := readFromDisk(key)
+		if err != nil {
+			return nil, err
+		}
+
 		if stored == nil {
-			return nil
+			return nil, nil
 		}
 		currentState.Increment(stored.Name)
 		secrets.Store(stored.Name, *stored)
 		secretQueue <- *stored
-		return stored
+		return stored, nil
 	}
 
 	s := result.(entity.SecretStored)
-	return &s
+	return &s, nil
 }

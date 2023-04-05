@@ -10,24 +10,24 @@ package bootstrap
 
 import (
 	"context"
+	"github.com/pkg/errors"
 	"github.com/shieldworks/aegis/app/safe/internal/state"
 	"github.com/shieldworks/aegis/core/env"
-	"github.com/shieldworks/aegis/core/log"
 	v1 "k8s.io/api/core/v1"
 	metaV1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
 )
 
-func persistKeys(privateKey, publicKey string) {
+func persistKeys(privateKey, publicKey string) error {
 	config, err := rest.InClusterConfig()
 	if err != nil {
-		log.FatalLn("Error creating client config: %v", err.Error())
+		return errors.Wrap(err, "Error creating client config")
 	}
 
 	clientset, err := kubernetes.NewForConfig(config)
 	if err != nil {
-		log.FatalLn("Error creating client: %v", err.Error())
+		return errors.Wrap(err, "Error creating clientset")
 	}
 
 	data := make(map[string][]byte)
@@ -57,11 +57,10 @@ func persistKeys(privateKey, publicKey string) {
 	)
 
 	if err != nil {
-		log.FatalLn("error creating the secret", err.Error())
-		return
+		return errors.Wrap(err, "Error creating the secret")
 	}
 
-	log.InfoLn("Created the secret.")
 	state.SetAgeKey(keysCombined)
-	log.InfoLn("Registered the age key into memory.")
+
+	return nil
 }
