@@ -9,6 +9,7 @@
 package startup
 
 import (
+	"github.com/shieldworks/aegis/core/crypto"
 	"github.com/shieldworks/aegis/core/env"
 	"github.com/shieldworks/aegis/core/log"
 	"github.com/shieldworks/aegis/sdk/sentry"
@@ -28,12 +29,18 @@ func initialized() bool {
 func Watch() {
 	interval := env.InitContainerPollInterval()
 	ticker := time.NewTicker(interval)
+
+	cid, _ := crypto.RandomString(8)
+	if cid == "" {
+		cid = "AEGISSDK"
+	}
+
 	for {
 		select {
 		case <-ticker.C:
-			log.InfoLn("init:: tick")
+			log.InfoLn(&cid, "init:: tick")
 			if initialized() {
-				log.InfoLn("initialized… exiting the init process")
+				log.InfoLn(&cid, "initialized… exiting the init process")
 				os.Exit(0)
 			}
 		}

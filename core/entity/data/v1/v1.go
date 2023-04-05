@@ -9,9 +9,12 @@
 package v1
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/shieldworks/aegis/core/template"
+	tpl "github.com/shieldworks/aegis/core/template"
+	"strings"
+	"text/template"
 	"time"
 )
 
@@ -78,6 +81,55 @@ type SecretStored struct {
 	Updated time.Time
 }
 
+// parseForK8sSecret parses the provided `SecretStored` and applies a template
+// if one is defined.
+//
+// Args:
+//
+//	secret: A SecretStored struct containing the secret data and metadata.
+//
+// Returns:
+//
+//	A map of string keys to string values, containing the parsed secret data.
+//
+//	If there is an error during parsing or applying the template, an error
+//	will be returned.
+func parseForK8sSecret(secret SecretStored) (map[string]string, error) {
+	// cannot move this to /core/template because of circular dependency.
+
+	jsonData := strings.TrimSpace(secret.Value)
+	tmpStr := strings.TrimSpace(secret.Meta.Template)
+
+	secretData := make(map[string]string)
+	err := json.Unmarshal([]byte(jsonData), &secretData)
+	if err != nil {
+		return secretData, err
+	}
+
+	if tmpStr == "" {
+		return secretData, err
+	}
+
+	tmpl, err := template.New("secret").Parse(tmpStr)
+	if err != nil {
+		return secretData, err
+	}
+
+	var tpl bytes.Buffer
+	err = tmpl.Execute(&tpl, secretData)
+	if err != nil {
+		return secretData, err
+	}
+
+	output := make(map[string]string)
+	err = json.Unmarshal(tpl.Bytes(), &output)
+	if err != nil {
+		return output, err
+	}
+
+	return output, nil
+}
+
 // ToMapForK8s returns a map that can be used to create a Kubernetes secret.
 //
 //  1. If there is no template, ttempt to unmarshal the secret’ss value
@@ -101,7 +153,7 @@ func (secret SecretStored) ToMapForK8s() map[string][]byte {
 	}
 
 	// Otherwise, apply the template.
-	newData, err := template.ParseForK8sSecret(secret)
+	newData, err := parseForK8sSecret(secret)
 	if err == nil {
 		data = make(map[string][]byte)
 		for k, v := range newData {
@@ -135,4 +187,61 @@ func (secret SecretStored) ToMap() map[string]any {
 		"Created": secret.Created,
 		"Updated": secret.Updated,
 	}
+}
+
+// Parse takes a data.SecretStored type as input and returns the parsed
+// string or an error.
+//
+// If the Meta.Template field is empty, it tries to parse secret.Value;
+// otherwise it transforms secret.Value using the Go template transformation
+// defined by Meta.Template.
+//
+// If the Meta.Format field is None, it returns the parsed string.
+//
+// If the Meta.Format field is Json, it returns the parsed string if it’s a
+// valid JSON or the original string otherwise.
+//
+// If the Meta.Format field is Yaml, it tries its best to transform the data
+// into Yaml. If it fails, it tries to return a valid JSON at least. If that
+// fails too, returns the original secret value.
+//
+// If the Meta.Format field is not recognized, it returns an empty string.
+func (secret SecretStored) Parse() (string, error) {
+	jsonData := strings.TrimSpace(secret.Value)
+	tmpStr := strings.TrimSpace(secret.Meta.Template)
+
+	parsedString := ""
+	if tmpStr == "" {
+		parsedString = jsonData
+	} else {
+		parsedString = tpl.TryParse(tmpStr, jsonData)
+	}
+
+	switch secret.Meta.Format {
+	case None:
+		return parsedString, nil
+	case Json:
+		if tpl.ValidJSON(parsedString) {
+			return parsedString, nil
+		} else {
+			return jsonData, nil
+		}
+	case Yaml:
+		if tpl.ValidJSON(parsedString) {
+			yml, err := tpl.JsonToYaml(parsedString)
+			if err != nil {
+				return parsedString, err
+			}
+			return yml, nil
+		} else {
+			yml, err := tpl.JsonToYaml(jsonData)
+			if err != nil {
+				return jsonData, err
+			}
+			return yml, nil
+		}
+	}
+
+	// Unknown option.
+	return "", nil
 }

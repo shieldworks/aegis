@@ -13,7 +13,6 @@ import (
 	"encoding/base64"
 	entity "github.com/shieldworks/aegis/core/entity/data/v1"
 	"github.com/shieldworks/aegis/core/log"
-	"github.com/shieldworks/aegis/core/template"
 	"sync"
 	"time"
 )
@@ -141,7 +140,7 @@ func UpsertSecret(secret entity.SecretStored) {
 		currentState.Decrement(secret.Name)
 		secrets.Delete(secret.Name)
 	} else {
-		parsedStr, err := template.Parse(secret)
+		parsedStr, err := secret.Parse()
 		if err != nil {
 			log.InfoLn(&cid,
 				"Error parsing secret. Will use fallback value.", err.Error())

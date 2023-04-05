@@ -12,6 +12,7 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/pkg/errors"
+	"github.com/shieldworks/aegis/core/crypto"
 	reqres "github.com/shieldworks/aegis/core/entity/reqres/safe/v1"
 	"github.com/shieldworks/aegis/core/env"
 	"github.com/shieldworks/aegis/core/log"
@@ -39,6 +40,11 @@ func Fetch() (reqres.SecretFetchResponse, error) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
+	cid, _ := crypto.RandomString(8)
+	if cid == "" {
+		cid = "AEGISSDK"
+	}
+
 	var source *workloadapi.X509Source
 
 	source, err := workloadapi.NewX509Source(
@@ -48,25 +54,25 @@ func Fetch() (reqres.SecretFetchResponse, error) {
 	)
 	if err != nil {
 		return reqres.SecretFetchResponse{}, errors.Wrap(
-			err, "failed getting SVID Bundle from the SPIRE Workload API",
+			err, "Fetch: failed getting SVID Bundle from the SPIRE Workload API",
 		)
 	}
 
 	defer func() {
 		err := source.Close()
 		if err != nil {
-			log.InfoLn("problem closing source: ", err.Error())
+			log.InfoLn(&cid, "Fetch: problem closing source: ", err.Error())
 		}
 	}()
 
 	svid, err := source.GetX509SVID()
 	if err != nil {
-		return reqres.SecretFetchResponse{}, errors.Wrap(err, "error getting SVID from source")
+		return reqres.SecretFetchResponse{}, errors.Wrap(err, "Fetch: error getting SVID from source")
 	}
 
 	// Make sure that we are calling Safe from a workload that Aegis knows about.
 	if !validation.IsWorkload(svid.ID.String()) {
-		return reqres.SecretFetchResponse{}, errors.New("untrusted workload")
+		return reqres.SecretFetchResponse{}, errors.New("Fetch: untrusted workload")
 	}
 
 	authorizer := tlsconfig.AdaptMatcher(func(id spiffeid.ID) error {
@@ -74,13 +80,13 @@ func Fetch() (reqres.SecretFetchResponse, error) {
 			return nil
 		}
 
-		return errors.New("I don’t know you, and it’s crazy: '" + id.String() + "'")
+		return errors.New("Fetch: I don’t know you, and it’s crazy: '" + id.String() + "'")
 	})
 
 	p, err := url.JoinPath(env.SafeEndpointUrl(), "/workload/v1/secrets")
 	if err != nil {
 		return reqres.SecretFetchResponse{},
-			errors.New("problem generating server url")
+			errors.New("Fetch: problem generating server url")
 	}
 
 	client := &http.Client{
@@ -95,12 +101,12 @@ func Fetch() (reqres.SecretFetchResponse, error) {
 		},
 	}
 
-	log.TraceLn("Sentry:Fetch", p)
+	log.TraceLn(&cid, "Sentry:Fetch", p)
 
 	r, err := client.Get(p)
 	if err != nil {
 		return reqres.SecretFetchResponse{}, errors.Wrap(
-			err, "problem connecting to Aegis Safe API endpoint",
+			err, "Fetch: problem connecting to Aegis Safe API endpoint",
 		)
 	}
 
@@ -108,7 +114,7 @@ func Fetch() (reqres.SecretFetchResponse, error) {
 		err := r.Body.Close()
 		if err != nil {
 			if err != nil {
-				log.InfoLn("problem closing response body: ", err.Error())
+				log.InfoLn(&cid, "Fetch: problem closing response body: ", err.Error())
 			}
 		}
 	}()

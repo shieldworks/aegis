@@ -38,11 +38,12 @@ type JournalEntry struct {
 
 func printAudit(correlationId, method, url, svid, message string) {
 	log.InfoLn(
-		correlationId,
-		"method", method,
-		"url", url,
-		"svid", svid,
-		"msg", message,
+		&correlationId,
+		"AUDIT::{{"+
+			"method:[["+method+"]],"+
+			"url:[["+url+"]],"+
+			"svid:[["+svid+"]],"+
+			"msg:[["+message+"]]}}",
 	)
 }
 
@@ -59,37 +60,37 @@ func Log(e JournalEntry) {
 		printAudit(
 			e.CorrelationId,
 			e.Method, e.Url, e.Svid,
-			"e:"+v.Err+"m"+string(e.Event),
+			"e:'"+v.Err+"',m:'"+string(e.Event)+"'",
 		)
 	case reqres.SecretFetchResponse:
 		printAudit(
 			e.CorrelationId,
 			e.Method, e.Url, e.Svid,
-			"e:"+v.Err+"c:"+v.Created+"u:"+v.Updated+"m:"+string(e.Event),
+			"e:'"+v.Err+",'c:'"+v.Created+",'u:'"+v.Updated+",'m:'"+string(e.Event)+"'",
 		)
 	case reqres.SecretUpsertRequest:
 		printAudit(
 			e.CorrelationId,
 			e.Method, e.Url, e.Svid,
-			"e:"+v.Err+"m"+string(e.Event),
+			"e:'"+v.Err+"',m:'"+string(e.Event)+"'",
 		)
 	case reqres.SecretUpsertResponse:
 		printAudit(
 			e.CorrelationId,
 			e.Method, e.Url, e.Svid,
-			"e:"+v.Err+"m"+string(e.Event),
+			"e:'"+v.Err+"',m:'"+string(e.Event)+"'",
 		)
 	case reqres.SecretListRequest:
 		printAudit(
 			e.CorrelationId,
 			e.Method, e.Url, e.Svid,
-			"e:"+v.Err+"m"+string(e.Event),
+			"e:'"+v.Err+"',m:'"+string(e.Event)+"'",
 		)
 	case reqres.SecretListResponse:
 		printAudit(
 			e.CorrelationId,
 			e.Method, e.Url, e.Svid,
-			"e:"+v.Err+"m"+string(e.Event),
+			"e:'"+v.Err+"',m:'"+string(e.Event)+"'",
 		)
 	default:
 		printAudit(

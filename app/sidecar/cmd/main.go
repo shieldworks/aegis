@@ -15,7 +15,8 @@ import (
 )
 
 func main() {
-	log.InfoLn("Starting Aegis Sidecar")
+	id := "AEGSSDCR"
+	log.InfoLn(&id, "Starting Aegis Sidecar")
 	go sentry.Watch()
 	// Keep the main routine alive:
 	system.KeepAlive()
