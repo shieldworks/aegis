@@ -6,6 +6,14 @@ keep your secrets… secret
 
 [spire]: https://spiffe.io/ "SPIFFE: Secure Production Identity Framework for Everyone"
 
+## The Elevator Pitch
+
+[**Aegis**](https://aegis.ist) is a delightfully-secure Kubernetes-native secrets store.
+
+[**Aegis**](https://aegis.ist) keeps your secrets secret.
+
+Official documentation available on <https://aegis.ist/>.
+
 ## Empower Our Journey ✊
 
 ⭐️ Star [**Aegis**](https://github.com/ShieldWorks/aegis) to show your support.
