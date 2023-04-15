@@ -43,7 +43,17 @@ please responsibly disclose by contacting [security@aegis.ist](mailto:security@a
 * **Community**: [Join **Aegis**’ Slack Workspace][slack-invite]
 * **Contact**: <https://aegis.ist/contact/>
 * **Media Kit**: <https://aegist.ist/media/>
-* **Aegis Umbrella**: [List of all **Aegis** Projects][aegis-projects]
+
+* **Installation and Quickstart**: <https://aegis.ist/docs/register/>
+* **Local Development Instructions**: <https://aegis.ist/docs/contributing/>
+* **Aegis Go SDK**: <https://aegis.ist/docs/sdk/>
+* **Aegis CLI**: <https://aegis.ist/docs/sentinel/>
+* **Architectural Deep Dive**: <https://aegis.ist/docs/architecture/>
+* **Configuration**: <https://aegis.ist/docs/configuration/>
+* **Design Philosophy**: <https://aegis.ist/docs/philosophy/>
+* **Production Deployment Tips**: <https://aegis.ist/production/>
+* **Changelog**: <https://aegis.ist/changelog/>
+
 
 [slack-invite]: https://join.slack.com/t/aegis-6n41813/shared_invite/zt-1myzqdi6t-jTvuRd1zDLbHX0gN8VkCqg "Join aegis.slack.com"
 
