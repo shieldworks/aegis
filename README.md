@@ -6,6 +6,10 @@ keep your secrets… secret
 
 [spire]: https://spiffe.io/ "SPIFFE: Secure Production Identity Framework for Everyone"
 
+## Empower Our Journey ✊
+
+⭐️ Star [**Aegis**](https://github.com/ShieldWorks/aegis) to show your support.
+
 ## Status of This Software
 
 This project is in **active development**.
