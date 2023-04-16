@@ -12,7 +12,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/shieldworks/aegis/core/log"
 	tpl "github.com/shieldworks/aegis/core/template"
 	"strings"
 	"text/template"
@@ -270,23 +269,32 @@ func (secret SecretStored) Parse() (string, error) {
 		return "", fmt.Errorf("no values found for secret %s", secret.Name)
 	}
 
+	parseFailed := false
 	results := make([]string, len(secret.Values))
 	for _, v := range secret.Values {
 		transformed, err := transform(secret, v)
 		if err != nil {
-			log.WarnLn(&secret.Meta.CorrelationId, "Parse: failed to transform secret", err.Error())
+			parseFailed = true
 			continue
 		}
 		results = append(results, transformed)
 	}
 
 	if len(results) == 1 {
+		if parseFailed {
+			return results[0], fmt.Errorf("failed to parse secret %s", secret.Name)
+		}
+
 		return results[0], nil
 	}
 
 	marshaled, err := json.Marshal(results)
 	if err != nil {
 		return "", err
+	}
+
+	if parseFailed {
+		return string(marshaled), fmt.Errorf("failed to parse secret %s", secret.Name)
 	}
 
 	return string(marshaled), nil
