@@ -12,6 +12,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/shieldworks/aegis/core/log"
 	tpl "github.com/shieldworks/aegis/core/template"
 	"strings"
 	"text/template"
@@ -205,31 +206,8 @@ func (secret SecretStored) ToMap() map[string]any {
 	}
 }
 
-// Parse takes a data.SecretStored type as input and returns the parsed
-// string or an error.
-//
-// If the Meta.Template field is empty, it tries to parse the first secret.Values;
-// otherwise it transforms secret.Values[0] using the Go template transformation
-// defined by Meta.Template.
-//
-// If the Meta.Format field is None, it returns the parsed string.
-//
-// If the Meta.Format field is Json, it returns the parsed string if it’s a
-// valid JSON or the original string otherwise.
-//
-// If the Meta.Format field is Yaml, it tries its best to transform the data
-// into Yaml. If it fails, it tries to return a valid JSON at least. If that
-// fails too, returns the original secret value.
-//
-// If the Meta.Format field is not recognized, it returns an empty string.
-//
-// Note that, only the first value in the `Values` collection will be parsed.
-func (secret SecretStored) Parse() (string, error) {
-	if len(secret.Values) == 0 {
-		return "", fmt.Errorf("no values found for secret %s", secret.Name)
-	}
-
-	jsonData := strings.TrimSpace(secret.Values[0])
+func transform(secret SecretStored, value string) (string, error) {
+	jsonData := strings.TrimSpace(value)
 	tmpStr := strings.TrimSpace(secret.Meta.Template)
 
 	parsedString := ""
@@ -262,8 +240,54 @@ func (secret SecretStored) Parse() (string, error) {
 			}
 			return yml, nil
 		}
+	default:
+		return "", fmt.Errorf("unknown format: %s", secret.Meta.Format)
+	}
+}
+
+// Parse takes a data.SecretStored type as input and returns the parsed
+// string or an error.
+//
+// If the Meta.Template field is empty, it tries to parse the first secret.Values;
+// otherwise it transforms secret.Values[0] using the Go template transformation
+// defined by Meta.Template.
+//
+// If the Meta.Format field is None, it returns the parsed string.
+//
+// If the Meta.Format field is Json, it returns the parsed string if it’s a
+// valid JSON or the original string otherwise.
+//
+// If the Meta.Format field is Yaml, it tries its best to transform the data
+// into Yaml. If it fails, it tries to return a valid JSON at least. If that
+// fails too, returns the original secret value.
+//
+// If the Meta.Format field is not recognized, it returns an empty string.
+//
+// If there is more than one value in the Values collection then the transformation
+// is applied to each value and the result is returned as a JSON array.
+func (secret SecretStored) Parse() (string, error) {
+	if len(secret.Values) == 0 {
+		return "", fmt.Errorf("no values found for secret %s", secret.Name)
 	}
 
-	// Unknown option.
-	return "", nil
+	results := make([]string, len(secret.Values))
+	for _, v := range secret.Values {
+		transformed, err := transform(secret, v)
+		if err != nil {
+			log.WarnLn(&secret.Meta.CorrelationId, "Parse: failed to transform secret", err.Error())
+			continue
+		}
+		results = append(results, transformed)
+	}
+
+	if len(results) == 1 {
+		return results[0], nil
+	}
+
+	marshaled, err := json.Marshal(results)
+	if err != nil {
+		return "", err
+	}
+
+	return string(marshaled), nil
 }

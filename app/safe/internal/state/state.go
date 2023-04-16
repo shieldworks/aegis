@@ -109,10 +109,21 @@ func AllSecrets(cid string) []entity.Secret {
 	return result
 }
 
+func contains(s []string, e string) bool {
+	for _, a := range s {
+		if a == e {
+			return true
+		}
+	}
+	return false
+}
+
 // UpsertSecret takes an entity.SecretStored object and inserts it into
 // the in-memory store if it doesn't exist, or updates it if it does. It also
 // handles updating the backing store and Kubernetes secrets if necessary.
-func UpsertSecret(secret entity.SecretStored) {
+// If appendValue is true, the new value will be appended to the existing values,
+// otherwise it will replace the existing values.
+func UpsertSecret(secret entity.SecretStored, appendValue bool) {
 	cid := secret.Meta.CorrelationId
 
 	s, exists := secrets.Load(secret.Name)
@@ -120,6 +131,15 @@ func UpsertSecret(secret entity.SecretStored) {
 	if exists {
 		ss := s.(entity.SecretStored)
 		secret.Created = ss.Created
+
+		if appendValue {
+			for _, v := range ss.Values {
+				if contains(secret.Values, v) {
+					continue
+				}
+				secret.Values = append(secret.Values, v)
+			}
+		}
 	} else {
 		secret.Created = now
 	}
