@@ -277,6 +277,9 @@ func (secret SecretStored) Parse() (string, error) {
 			parseFailed = true
 			continue
 		}
+		if transformed == "" {
+			continue
+		}
 		results = append(results, transformed)
 	}
 
