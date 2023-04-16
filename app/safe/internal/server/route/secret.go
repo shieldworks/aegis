@@ -166,7 +166,7 @@ func Secret(cid string, w http.ResponseWriter, r *http.Request, svid string) {
 		value = decrypted
 	}
 
-	if len(value) > 0 {
+	if len(value) > 65536 {
 		panic("This is just a reminder to implement multiple-valued secrets")
 	}
 

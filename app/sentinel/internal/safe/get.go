@@ -84,7 +84,7 @@ func Get() {
 
 	r, err := client.Get(p)
 	if err != nil {
-		fmt.Println("Problem connecting to Aegis Safe API endpoint URL.")
+		fmt.Println("Get: Problem connecting to Aegis Safe API endpoint URL.", err.Error())
 		fmt.Println("")
 		return
 	}
@@ -95,13 +95,13 @@ func Get() {
 		}
 		err := b.Close()
 		if err != nil {
-			log.Println("Problem closing request body.")
+			log.Println("Get: Problem closing request body.")
 		}
 	}(r.Body)
 
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
-		fmt.Println("Unable to read the response body from Aegis Safe.")
+		fmt.Println("Get: Unable to read the response body from Aegis Safe.")
 		fmt.Println("")
 		return
 	}
