@@ -71,13 +71,17 @@ func persistK8s(secret entity.SecretStored, errChan chan<- error) {
 
 	log.TraceLn(&cid, "persistK8s: Will persist k8s secret.")
 
+	if len(secret.Values) == 0 {
+		secret.Values = append(secret.Values, InitialSecretValue)
+	}
+
 	// Defensive coding:
 	// secret’s value is never empty because when the value is set to an
 	// empty secret, it is scheduled for deletion and not persisted to the
 	// file system or the cluster. However, it that happens, we would at least
 	// want an indicator that it happened.
-	if secret.Value == "" {
-		secret.Value = InitialSecretValue
+	if secret.Values[0] == "" {
+		secret.Values[0] = InitialSecretValue
 	}
 
 	log.TraceLn(&cid, "persistK8s: Will try saving secret to k8s.")

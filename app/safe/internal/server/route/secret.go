@@ -166,6 +166,10 @@ func Secret(cid string, w http.ResponseWriter, r *http.Request, svid string) {
 		value = decrypted
 	}
 
+	if len(value) > 0 {
+		panic("This is just a reminder to implement multiple-valued secrets")
+	}
+
 	state.UpsertSecret(entity.SecretStored{
 		Name: workloadId,
 		Meta: entity.SecretMeta{
@@ -176,7 +180,7 @@ func Secret(cid string, w http.ResponseWriter, r *http.Request, svid string) {
 			Format:              format,
 			CorrelationId:       cid,
 		},
-		Value: value,
+		Values: []string{value},
 	})
 	log.DebugLn(&cid, "Secret:UpsertEnd: workloadId", workloadId)
 

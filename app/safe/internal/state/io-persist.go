@@ -46,19 +46,7 @@ func saveSecretToDisk(secret entity.SecretStored, dataPath string) error {
 
 // Only one goroutine accesses this function at any given time.
 func persist(secret entity.SecretStored, errChan chan<- error) {
-	cid := secret.Meta.CorrelationId
-
 	backupCount := env.SafeSecretBackupCount()
-
-	// Resetting the value also removes the secret file from the disk.
-	if secret.Value == "" {
-		dataPath := path.Join(env.SafeDataPath(), secret.Name+".age")
-		err := os.Remove(dataPath)
-		if !os.IsNotExist(err) {
-			log.WarnLn(&cid, "persist: failed to remove secret", err.Error())
-		}
-		return
-	}
 
 	// Save the secret
 	dataPath := path.Join(env.SafeDataPath(), secret.Name+".age")

@@ -113,15 +113,6 @@ func AllSecrets(cid string) []entity.Secret {
 func UpsertSecret(secret entity.SecretStored) {
 	cid := secret.Meta.CorrelationId
 
-	if secret.Name == selfName {
-		cmd := evaluate(secret.Value)
-		if cmd != nil {
-			newLogLevel := cmd.LogLevel
-			log.InfoLn(&cid, "Setting new level to:", newLogLevel)
-			log.SetLevel(log.Level(newLogLevel))
-		}
-	}
-
 	s, exists := secrets.Load(secret.Name)
 	now := time.Now()
 	if exists {
@@ -136,16 +127,14 @@ func UpsertSecret(secret entity.SecretStored) {
 		"created", secret.Created, "updated", secret.Updated, "name", secret.Name,
 	)
 
-	if secret.Value == "" {
-		currentState.Decrement(secret.Name)
-		secrets.Delete(secret.Name)
-	} else {
+	if len(secret.Values) > 0 && secret.Values[0] != "" {
 		parsedStr, err := secret.Parse()
 		if err != nil {
 			log.InfoLn(&cid,
 				"Error parsing secret. Will use fallback value.", err.Error())
 		}
 
+		// TODO: make this plural when `parse` can handle multiple values.
 		secret.ValueTransformed = parsedStr
 		currentState.Increment(secret.Name)
 		secrets.Store(secret.Name, secret)
