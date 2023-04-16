@@ -20,16 +20,3 @@ func SafeEndpointUrl() string {
 	}
 	return u
 }
-
-// NotaryEndpointUrl returns the URL for the Aegis Notary endpoint used in the
-// Aegis system. The URL is obtained from the environment variable
-// AEGIS_NOTARY_ENDPOINT_URL. If the variable is not set, the default URL is used.
-//
-// THIS IS NOT BEING USED. IT IS EXPERIMENTAL.
-func NotaryEndpointUrl() string {
-	u := os.Getenv("AEGIS_NOTARY_ENDPOINT_URL")
-	if u == "" {
-		u = "https://aegis-notary.aegis-system.svc.cluster.local:8443/"
-	}
-	return u
-}

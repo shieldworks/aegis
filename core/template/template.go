@@ -19,8 +19,8 @@ import (
 //
 // The function takes a string as input and attempts to unmarshal it
 // into a map[string]any using the JSON package. If the unmarshalling
-// is successful, it returns true, indicating that the string is a valid JSON object.
-// Otherwise, it returns false.
+// is successful, it returns true, indicating that the string is a valid JSON
+// object. Otherwise, it returns false.
 func ValidJSON(s string) bool {
 	var js map[string]any
 	return json.Unmarshal([]byte(s), &js) == nil
