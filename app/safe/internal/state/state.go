@@ -29,6 +29,8 @@ var lock sync.Mutex
 func Initialize() {
 	go processSecretQueue()
 	go processK8sSecretQueue()
+	go processSecretDeleteQueue()
+	go processK8sSecretDeleteQueue()
 }
 
 // SetAgeKey sets the age key to be used for encryption and decryption.
@@ -131,7 +133,7 @@ func UpsertSecret(secret entity.SecretStored) {
 		parsedStr, err := secret.Parse()
 		if err != nil {
 			log.InfoLn(&cid,
-				"Error parsing secret. Will use fallback value.", err.Error())
+				"UpsertSecret: Error parsing secret. Will use fallback value.", err.Error())
 		}
 
 		// TODO: make this plural when `parse` can handle multiple values.
@@ -145,26 +147,72 @@ func UpsertSecret(secret entity.SecretStored) {
 	switch store {
 	case entity.File:
 		log.TraceLn(
-			&cid, "Will push secret. len", len(secretQueue), "cap", cap(secretQueue))
+			&cid, "UpsertSecret: Will push secret. len", len(secretQueue), "cap", cap(secretQueue))
 		secretQueue <- secret
 		log.TraceLn(
-			&cid, "Pushed secret. len", len(secretQueue), "cap", cap(secretQueue))
+			&cid, "UpsertSecret: Pushed secret. len", len(secretQueue), "cap", cap(secretQueue))
 	}
 
 	useK8sSecrets := secret.Meta.UseKubernetesSecret
 	if useK8sSecrets {
 		log.TraceLn(
 			&cid,
-			"will push Kubernetes secret. len", len(k8sSecretQueue),
+			"UpsertSecret: will push Kubernetes secret. len", len(k8sSecretQueue),
 			"cap", cap(k8sSecretQueue),
 		)
 		k8sSecretQueue <- secret
 		log.TraceLn(
 			&cid,
-			"pushed Kubernetes secret. len", len(k8sSecretQueue),
+			"UpsertSecret: pushed Kubernetes secret. len", len(k8sSecretQueue),
 			"cap", cap(k8sSecretQueue),
 		)
 	}
+}
+
+func DeleteSecret(secret entity.SecretStored) {
+	cid := secret.Meta.CorrelationId
+
+	s, exists := secrets.Load(secret.Name)
+	if !exists {
+		log.WarnLn(&cid, "DeleteSecret: Secret does not exist. Cannot delete.", secret.Name)
+
+		ss := s.(entity.SecretStored)
+		secret.Created = ss.Created
+
+		return
+	}
+
+	ss := s.(entity.SecretStored)
+
+	store := ss.Meta.BackingStore
+
+	switch store {
+	case entity.File:
+		log.TraceLn(
+			&cid, "DeleteSecret: Will delete secret. len", len(secretDeleteQueue), "cap", cap(secretDeleteQueue))
+		secretDeleteQueue <- secret
+		log.TraceLn(
+			&cid, "DeleteSecret: Pushed secret to delete. len", len(secretDeleteQueue), "cap", cap(secretDeleteQueue))
+	}
+
+	useK8sSecrets := secret.Meta.UseKubernetesSecret
+	if useK8sSecrets {
+		log.TraceLn(
+			&cid,
+			"DeleteSecret: will push Kubernetes secret to delete. len", len(k8sSecretDeleteQueue),
+			"cap", cap(k8sSecretDeleteQueue),
+		)
+		k8sSecretDeleteQueue <- secret
+		log.TraceLn(
+			&cid,
+			"DeleteSecret: pushed Kubernetes secret to delete. len", len(k8sSecretDeleteQueue),
+			"cap", cap(k8sSecretDeleteQueue),
+		)
+	}
+
+	// Remove the secret from the memory.
+	currentState.Decrement(secret.Name)
+	secrets.Delete(secret.Name)
 }
 
 // ReadSecret takes a key string and returns a pointer to an entity.SecretStored

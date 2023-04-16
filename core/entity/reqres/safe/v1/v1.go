@@ -39,6 +39,15 @@ type SecretFetchResponse struct {
 	Err     string `json:"err,omitempty"`
 }
 
+type SecretDeleteRequest struct {
+	WorkloadId string `json:"key"`
+	Err        string `json:"err,omitempty"`
+}
+
+type SecretDeleteResponse struct {
+	Err string `json:"err,omitempty"`
+}
+
 type SecretListRequest struct {
 	Err string `json:"err,omitempty"`
 }

@@ -58,18 +58,13 @@ func InitializeRoutes() {
 			return
 		}
 
-		if r.Method == http.MethodDelete {
-			panic("A reminder to implement secret deletion. The deletion should be independent of the value of the secret.")
-			// 		currentState.Decrement(secret.Name)
-			//		secrets.Delete(secret.Name)
-			// is how secrete deletion is done.
-			// when a secret is deleted, its backup is also removed from the fs.
-			// 		dataPath := path.Join(env.SafeDataPath(), secret.Name+".age")
-			//		err := os.Remove(dataPath)
-			//		if !os.IsNotExist(err) {
-			//			log.WarnLn(&cid, "persist: failed to remove secret", err.Error())
-			//		}
-			//		return
+		// Route to delete secrets from Aegis Safe.
+		// Only Aegis Sentinel is allowed to call this API endpoint.
+		// Calling it from anywhere else will error out.
+		if r.Method == http.MethodDelete && p == "/sentinel/v1/secrets" {
+			log.DebugLn(&cid, "Handler:/sentinel/v1/secrets will delete")
+			route.Delete(cid, w, r, sid)
+			return
 		}
 
 		// Route to fetch secrets.

@@ -1,0 +1,64 @@
+/*
+ * .-'_.---._'-.
+ * ||####|(__)||   Protect your secrets, protect your business.
+ *   \\()|##//       Secure your sensitive data with Aegis.
+ *    \\ |#//                    <aegis.ist>
+ *     .\_/.
+ */
+
+package state
+
+import (
+	entity "github.com/shieldworks/aegis/core/entity/data/v1"
+	"github.com/shieldworks/aegis/core/env"
+	"github.com/shieldworks/aegis/core/log"
+	"os"
+	"path"
+)
+
+// These are persisted to files. They are buffered, so that they can
+// be written in the order they are queued and there are no concurrent
+// writes to the same file at a time. An alternative approach would be
+// to have a map of queues of `SecretsStored`s per file name but that
+// feels like an overkill.
+var secretDeleteQueue = make(chan entity.SecretStored, env.SafeSecretBufferSize())
+
+func processSecretDeleteQueue() {
+	errChan := make(chan error)
+
+	id := "AEGIHSCD"
+
+	go func() {
+		for e := range errChan {
+			// If the `delete` operation spews out an error, log it.
+			log.ErrorLn(&id, "processSecretDeleteQueue: error deleting secret:", e.Error())
+		}
+	}()
+
+	for {
+		// Buffer overflow check.
+		if len(secretDeleteQueue) == env.SafeSecretBufferSize() {
+			log.ErrorLn(
+				&id,
+				"processSecretDeleteQueue: there are too many k8s secrets queued. "+
+					"The goroutine will BLOCK until the queue is cleared.",
+			)
+		}
+
+		// Get a secret to be removed from the disk.
+		secret := <-secretDeleteQueue
+
+		cid := secret.Meta.CorrelationId
+
+		log.TraceLn(&cid, "processSecretDeleteQueue: picked a secret", len(secretQueue))
+
+		// Remove secret from disk.
+		dataPath := path.Join(env.SafeDataPath(), secret.Name+".age")
+		err := os.Remove(dataPath)
+		if !os.IsNotExist(err) {
+			log.WarnLn(&cid, "processSecretDeleteQueue: failed to remove secret", err.Error())
+		}
+
+		log.TraceLn(&cid, "processSecretDeleteQueue: should have persisted the secret.")
+	}
+}
