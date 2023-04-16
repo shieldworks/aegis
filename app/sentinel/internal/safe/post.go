@@ -28,7 +28,7 @@ import (
 )
 
 func Post(workloadId, secret, namespace, backingStore string, useKubernetes bool,
-	template string, format string, encrypt bool) {
+	template string, format string, encrypt, deleteSecret, appendSecret bool) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
@@ -118,6 +118,7 @@ func Post(workloadId, secret, namespace, backingStore string, useKubernetes bool
 		Template:      template,
 		Format:        f,
 		Encrypt:       encrypt,
+		AppendValue:   appendSecret,
 		Value:         secret,
 	}
 
@@ -128,11 +129,28 @@ func Post(workloadId, secret, namespace, backingStore string, useKubernetes bool
 		return
 	}
 
-	r, err := client.Post(p, "application/json", bytes.NewBuffer(md))
-	if err != nil {
-		fmt.Println("Post: Problem connecting to Aegis Safe API endpoint URL.", err.Error())
-		fmt.Println("")
-		return
+	var r *http.Response
+	if deleteSecret {
+		req, err := http.NewRequest(http.MethodDelete, p, bytes.NewBuffer(md))
+		if err != nil {
+			fmt.Println("Post:Delete: Problem connecting to Aegis Safe API endpoint URL.", err.Error())
+			fmt.Println("")
+			return
+		}
+		req.Header.Set("Content-Type", "application/json")
+		r, err = client.Do(req)
+		if err != nil {
+			fmt.Println("Post:Delete: Problem connecting to Aegis Safe API endpoint URL.", err.Error())
+			fmt.Println("")
+			return
+		}
+	} else {
+		r, err = client.Post(p, "application/json", bytes.NewBuffer(md))
+		if err != nil {
+			fmt.Println("Post: Problem connecting to Aegis Safe API endpoint URL.", err.Error())
+			fmt.Println("")
+			return
+		}
 	}
 
 	defer func(b io.ReadCloser) {

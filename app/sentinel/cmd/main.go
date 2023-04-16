@@ -25,6 +25,16 @@ func main() {
 		Help: "update an associated Kubernetes secret upon save. " +
 			"Overrides AEGIS_SAFE_USE_KUBERNETES_SECRETS.",
 	})
+	deleteSecret := parser.Flag("d", "delete", &argparse.Options{
+		Required: false, Default: false,
+		Help: "delete the secret associated with the workload.",
+	})
+	appendSecret := parser.Flag("a", "append", &argparse.Options{
+		Required: false, Default: false,
+		Help: "append the secret to the existing secret collection" +
+			" associated with the workload.",
+	})
+
 	namespace := parser.String("n", "namespace", &argparse.Options{
 		Required: false, Default: "default",
 		Help: "the namespace of the Kubernetes Secret to create.",
@@ -53,7 +63,6 @@ func main() {
 			" Has effect only when `-t` is provided. " +
 			"Valid values: yaml, json, and none. Defaults to none.",
 	})
-
 	encrypt := parser.Flag("e", "encrypt", &argparse.Options{
 		Required: false,
 		Help: "returns an encrypted version of the secret if used with `-s`; " +
@@ -131,8 +140,18 @@ func main() {
 		encryptP = *encrypt
 	}
 
+	deleteP := false
+	if deleteSecret != nil {
+		deleteP = *deleteSecret
+	}
+
+	appendP := false
+	if appendSecret != nil {
+		appendP = *appendSecret
+	}
+
 	safe.Post(
 		workloadP, secretP, namespaceP, backingStoreP, useK8sP,
-		templateP, formatP, encryptP,
+		templateP, formatP, encryptP, deleteP, appendP,
 	)
 }
