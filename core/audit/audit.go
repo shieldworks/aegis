@@ -37,9 +37,9 @@ type JournalEntry struct {
 }
 
 func printAudit(correlationId, method, url, svid, message string) {
-	log.InfoLn(
+	log.AuditLn(
 		&correlationId,
-		"AUDIT::{{"+
+		"{{"+
 			"method:[["+method+"]],"+
 			"url:[["+url+"]],"+
 			"svid:[["+svid+"]],"+

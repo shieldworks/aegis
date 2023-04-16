@@ -94,6 +94,7 @@ func Secret(cid string, w http.ResponseWriter, r *http.Request, svid string) {
 	template := sr.Template
 	format := sr.Format
 	encrypt := sr.Encrypt
+	appendValue := sr.AppendValue
 
 	if workloadId == "" && encrypt {
 		if value == "" {
@@ -139,6 +140,7 @@ func Secret(cid string, w http.ResponseWriter, r *http.Request, svid string) {
 		"template:", template,
 		"format:", format,
 		"encrypt:", encrypt,
+		"appendValue:", appendValue,
 		"useK8s", useK8s)
 
 	if workloadId == "" && !encrypt {
@@ -166,6 +168,10 @@ func Secret(cid string, w http.ResponseWriter, r *http.Request, svid string) {
 		value = decrypted
 	}
 
+	if len(value) > 65536 {
+		panic("This is just a reminder to implement multiple-valued secrets")
+	}
+
 	state.UpsertSecret(entity.SecretStored{
 		Name: workloadId,
 		Meta: entity.SecretMeta{
@@ -176,8 +182,8 @@ func Secret(cid string, w http.ResponseWriter, r *http.Request, svid string) {
 			Format:              format,
 			CorrelationId:       cid,
 		},
-		Value: value,
-	})
+		Values: []string{value},
+	}, appendValue)
 	log.DebugLn(&cid, "Secret:UpsertEnd: workloadId", workloadId)
 
 	j.Event = audit.EventOk

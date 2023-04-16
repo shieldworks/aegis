@@ -64,16 +64,18 @@ type SecretMeta struct {
 type SecretStored struct {
 	// Name of the secret.
 	Name string
-	// Raw value.
-	Value string
-	// Transformed value. This value is the value that workloads see.
+	// Raw values. A secret can have multiple values. Sentinel returns
+	// a single value if there is a single value in this array. Sentinel
+	// will return an array of values if there are multiple values in the array.
+	Values []string `json:"values"`
+	// Transformed values. This value is the value that workloads see.
 	//
 	// Apply transformation (if needed) and then store the value in
 	// one of the supported formats. If the format is json, ensure that
 	// a valid JSON is stored here. If the format is yaml, ensure that
 	// a valid YAML is stored here. If the format is none, then just
 	// apply transformation (if needed) and do not do any validity check.
-	ValueTransformed string `json:"valueTransformed"`
+	ValueTransformed string `json:"valuesTransformed"`
 	// Additional information that helps formatting and storing the secret.
 	Meta SecretMeta
 	// Timestamps
@@ -94,13 +96,22 @@ type SecretStored struct {
 //
 //	If there is an error during parsing or applying the template, an error
 //	will be returned.
+//
+// Note that this function will consider only the first value in the `Values`
+// collection. If there are multiple values, only the first value will be
+// parsed and transformed.
 func parseForK8sSecret(secret SecretStored) (map[string]string, error) {
 	// cannot move this to /core/template because of circular dependency.
 
-	jsonData := strings.TrimSpace(secret.Value)
+	secretData := make(map[string]string)
+
+	if len(secret.Values) == 0 {
+		return secretData, fmt.Errorf("no values found for secret %s", secret.Name)
+	}
+
+	jsonData := strings.TrimSpace(secret.Values[0])
 	tmpStr := strings.TrimSpace(secret.Meta.Template)
 
-	secretData := make(map[string]string)
 	err := json.Unmarshal([]byte(jsonData), &secretData)
 	if err != nil {
 		return secretData, err
@@ -115,14 +126,14 @@ func parseForK8sSecret(secret SecretStored) (map[string]string, error) {
 		return secretData, err
 	}
 
-	var tpl bytes.Buffer
-	err = tmpl.Execute(&tpl, secretData)
+	var t bytes.Buffer
+	err = tmpl.Execute(&t, secretData)
 	if err != nil {
 		return secretData, err
 	}
 
 	output := make(map[string]string)
-	err = json.Unmarshal(tpl.Bytes(), &output)
+	err = json.Unmarshal(t.Bytes(), &output)
 	if err != nil {
 		return output, err
 	}
@@ -132,7 +143,7 @@ func parseForK8sSecret(secret SecretStored) (map[string]string, error) {
 
 // ToMapForK8s returns a map that can be used to create a Kubernetes secret.
 //
-//  1. If there is no template, ttempt to unmarshal the secret’ss value
+//  1. If there is no template, attempt to unmarshal the secret’ss value
 //     into a map. If that fails, store the secret’s value under the "VALUE" key.
 //  2. If there is a template, attempt to parse it. If parsing is successful,
 //     create a new map with the parsed data. If parsing fails, follow the same
@@ -141,11 +152,16 @@ func parseForK8sSecret(secret SecretStored) (map[string]string, error) {
 func (secret SecretStored) ToMapForK8s() map[string][]byte {
 	data := make(map[string][]byte)
 
+	// If there are no values, return an empty map.
+	if len(secret.Values) == 0 {
+		return data
+	}
+
 	// If there is no template, use the secret’s value as is.
 	if secret.Meta.Template == "" {
-		err := json.Unmarshal(([]byte)(secret.Value), &data)
+		err := json.Unmarshal(([]byte)(secret.Values[0]), &data)
 		if err != nil {
-			value := secret.Value
+			value := secret.Values[0]
 			data["VALUE"] = ([]byte)(value)
 		}
 
@@ -164,9 +180,9 @@ func (secret SecretStored) ToMapForK8s() map[string][]byte {
 	}
 
 	// If the template fails, use the secret’s value as is.
-	err = json.Unmarshal(([]byte)(secret.Value), &data)
+	err = json.Unmarshal(([]byte)(secret.Values[0]), &data)
 	if err != nil {
-		value := secret.Value
+		value := secret.Values[0]
 		data["VALUE"] = ([]byte)(value)
 	}
 
@@ -177,37 +193,20 @@ func (secret SecretStored) ToMapForK8s() map[string][]byte {
 // The resulting map contains the following key-value pairs:
 //
 //	"Name": the Name field of the SecretStored struct
-//	"Value": the Value field of the SecretStored struct
+//	"Values": the Values field of the SecretStored struct
 //	"Created": the Created field of the SecretStored struct
 //	"Updated": the Updated field of the SecretStored struct
 func (secret SecretStored) ToMap() map[string]any {
 	return map[string]any{
 		"Name":    secret.Name,
-		"Value":   secret.Value,
+		"Values":  secret.Values,
 		"Created": secret.Created,
 		"Updated": secret.Updated,
 	}
 }
 
-// Parse takes a data.SecretStored type as input and returns the parsed
-// string or an error.
-//
-// If the Meta.Template field is empty, it tries to parse secret.Value;
-// otherwise it transforms secret.Value using the Go template transformation
-// defined by Meta.Template.
-//
-// If the Meta.Format field is None, it returns the parsed string.
-//
-// If the Meta.Format field is Json, it returns the parsed string if it’s a
-// valid JSON or the original string otherwise.
-//
-// If the Meta.Format field is Yaml, it tries its best to transform the data
-// into Yaml. If it fails, it tries to return a valid JSON at least. If that
-// fails too, returns the original secret value.
-//
-// If the Meta.Format field is not recognized, it returns an empty string.
-func (secret SecretStored) Parse() (string, error) {
-	jsonData := strings.TrimSpace(secret.Value)
+func transform(secret SecretStored, value string) (string, error) {
+	jsonData := strings.TrimSpace(value)
 	tmpStr := strings.TrimSpace(secret.Meta.Template)
 
 	parsedString := ""
@@ -240,8 +239,63 @@ func (secret SecretStored) Parse() (string, error) {
 			}
 			return yml, nil
 		}
+	default:
+		return "", fmt.Errorf("unknown format: %s", secret.Meta.Format)
+	}
+}
+
+// Parse takes a data.SecretStored type as input and returns the parsed
+// string or an error.
+//
+// If the Meta.Template field is empty, it tries to parse the first secret.Values;
+// otherwise it transforms secret.Values[0] using the Go template transformation
+// defined by Meta.Template.
+//
+// If the Meta.Format field is None, it returns the parsed string.
+//
+// If the Meta.Format field is Json, it returns the parsed string if it’s a
+// valid JSON or the original string otherwise.
+//
+// If the Meta.Format field is Yaml, it tries its best to transform the data
+// into Yaml. If it fails, it tries to return a valid JSON at least. If that
+// fails too, returns the original secret value.
+//
+// If the Meta.Format field is not recognized, it returns an empty string.
+//
+// If there is more than one value in the Values collection then the transformation
+// is applied to each value and the result is returned as a JSON array.
+func (secret SecretStored) Parse() (string, error) {
+	if len(secret.Values) == 0 {
+		return "", fmt.Errorf("no values found for secret %s", secret.Name)
 	}
 
-	// Unknown option.
-	return "", nil
+	parseFailed := false
+	results := make([]string, len(secret.Values))
+	for _, v := range secret.Values {
+		transformed, err := transform(secret, v)
+		if err != nil {
+			parseFailed = true
+			continue
+		}
+		results = append(results, transformed)
+	}
+
+	if len(results) == 1 {
+		if parseFailed {
+			return results[0], fmt.Errorf("failed to parse secret %s", secret.Name)
+		}
+
+		return results[0], nil
+	}
+
+	marshaled, err := json.Marshal(results)
+	if err != nil {
+		return "", err
+	}
+
+	if parseFailed {
+		return string(marshaled), fmt.Errorf("failed to parse secret %s", secret.Name)
+	}
+
+	return string(marshaled), nil
 }

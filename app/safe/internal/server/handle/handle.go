@@ -58,6 +58,15 @@ func InitializeRoutes() {
 			return
 		}
 
+		// Route to delete secrets from Aegis Safe.
+		// Only Aegis Sentinel is allowed to call this API endpoint.
+		// Calling it from anywhere else will error out.
+		if r.Method == http.MethodDelete && p == "/sentinel/v1/secrets" {
+			log.DebugLn(&cid, "Handler:/sentinel/v1/secrets will delete")
+			route.Delete(cid, w, r, sid)
+			return
+		}
+
 		// Route to fetch secrets.
 		// Only an Aegis-nominated workload is allowed to
 		// call this API endpoint. Calling it from anywhere else will

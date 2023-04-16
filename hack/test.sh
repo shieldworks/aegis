@@ -40,7 +40,9 @@ SECRET=$(openssl rand -base64 16)
 SENTINEL_POD_NAME=$(kubectl get po -n aegis-system | grep "aegis-sentinel-" | awk '{print $1}')
 WORKLOAD_POD_NAME=$(kubectl get po -n default | grep "aegis-workload-demo-" | awk '{print $1}')
 
+echo "registering secret with Aegis…"
 kubectl exec "$SENTINEL_POD_NAME" -n aegis-system -- aegis -w "aegis-workload-demo" -s "$SECRET"
+echo "registered secret with Aegis."
 
 echo "will wait for 30 seconds"
 sleep 30
@@ -73,7 +75,9 @@ SECRET=$(openssl rand -base64 16)
 SENTINEL_POD_NAME=$(kubectl get po -n aegis-system | grep "aegis-sentinel-" | awk '{print $1}')
 WORKLOAD_POD_NAME=$(kubectl get po -n default | grep "aegis-workload-demo-" | awk '{print $1}')
 
+echo "registering secret with Aegis…"
 kubectl exec "$SENTINEL_POD_NAME" -n aegis-system -- aegis -w "aegis-workload-demo" -s "$SECRET"
+echo "registered secret with Aegis."
 
 echo "will wait for 30 seconds"
 sleep 30
@@ -106,12 +110,14 @@ SECRET=$(openssl rand -base64 16)
 SENTINEL_POD_NAME=$(kubectl get po -n aegis-system | grep "aegis-sentinel-" | awk '{print $1}')
 WORKLOAD_POD_NAME=$(kubectl get po -n default | grep "aegis-workload-demo-" | awk '{print $1}')
 
+echo "registering secret with Aegis…"
 kubectl exec "$SENTINEL_POD_NAME" -n aegis-system -- aegis \
 -w "aegis-workload-demo" \
 -n "default" \
 -s '{"username": "root", "password": "SuperSecret", "value": "AegisRocks"}' \
 -t '{"USERNAME":"{{.username}}", "PASSWORD":"{{.password}}", "VALUE": "{{.value}}"}' \
 -k
+echo "registered secret with Aegis."
 
 echo "will wait for 30 seconds"
 sleep 30

@@ -21,6 +21,7 @@ type SecretUpsertRequest struct {
 	Template      string            `json:"template"`
 	Format        data.SecretFormat `json:"format"`
 	Encrypt       bool              `json:"encrypt"`
+	AppendValue   bool              `json:"appendValue"`
 	Err           string            `json:"err,omitempty"`
 }
 
@@ -37,6 +38,15 @@ type SecretFetchResponse struct {
 	Created string `json:"created"`
 	Updated string `json:"updated"`
 	Err     string `json:"err,omitempty"`
+}
+
+type SecretDeleteRequest struct {
+	WorkloadId string `json:"key"`
+	Err        string `json:"err,omitempty"`
+}
+
+type SecretDeleteResponse struct {
+	Err string `json:"err,omitempty"`
 }
 
 type SecretListRequest struct {

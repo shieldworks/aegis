@@ -37,15 +37,15 @@ func Post(workloadId, secret, namespace, backingStore string, useKubernetes bool
 	)
 
 	if err != nil {
-		fmt.Println("I cannot execute command because I cannot talk to SPIRE.")
+		fmt.Println("Post: I cannot execute command because I cannot talk to SPIRE.")
 		fmt.Println("")
 		return
 	}
 
 	svid, err := source.GetX509SVID()
 	if err != nil {
-		fmt.Println("I am having trouble fetching my identity from SPIRE.")
-		fmt.Println("I won’t proceed until you put me in a secured container.")
+		fmt.Println("Post: I am having trouble fetching my identity from SPIRE.")
+		fmt.Println("Post: I won’t proceed until you put me in a secured container.")
 		fmt.Println("")
 		return
 	}
@@ -53,13 +53,13 @@ func Post(workloadId, secret, namespace, backingStore string, useKubernetes bool
 	defer func() {
 		err := source.Close()
 		if err != nil {
-			log.Println("Problem closing the workload source.")
+			log.Println("Post: Problem closing the workload source.", err.Error())
 		}
 	}()
 
 	// Make sure that the binary is enclosed in a Pod that we trust.
 	if !validation.IsSentinel(svid.ID.String()) {
-		fmt.Println("I don’t know you, and it’s crazy: '" + svid.ID.String() + "'")
+		fmt.Println("Post: I don’t know you, and it’s crazy: '" + svid.ID.String() + "'")
 		fmt.Println("`aegis` can only run from within the Sentinel container.")
 		fmt.Println("")
 		return
@@ -70,12 +70,12 @@ func Post(workloadId, secret, namespace, backingStore string, useKubernetes bool
 			return nil
 		}
 
-		return errors.New("I don’t know you, and it’s crazy: '" + id.String() + "'")
+		return errors.New("Post: I don’t know you, and it’s crazy: '" + id.String() + "'")
 	})
 
 	p, err := url.JoinPath(env.SafeEndpointUrl(), "/sentinel/v1/secrets")
 	if err != nil {
-		fmt.Println("I am having problem generating Aegis Safe secrets api endpoint URL.")
+		fmt.Println("Post: I am having problem generating Aegis Safe secrets api endpoint URL.", err.Error())
 		fmt.Println("")
 		return
 	}
@@ -130,7 +130,7 @@ func Post(workloadId, secret, namespace, backingStore string, useKubernetes bool
 
 	r, err := client.Post(p, "application/json", bytes.NewBuffer(md))
 	if err != nil {
-		fmt.Println("Problem connecting to Aegis Safe API endpoint URL.")
+		fmt.Println("Post: Problem connecting to Aegis Safe API endpoint URL.", err.Error())
 		fmt.Println("")
 		return
 	}
@@ -141,13 +141,13 @@ func Post(workloadId, secret, namespace, backingStore string, useKubernetes bool
 		}
 		err := b.Close()
 		if err != nil {
-			log.Println("Problem closing request body.")
+			log.Println("Post: Problem closing request body.", err.Error())
 		}
 	}(r.Body)
 
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
-		fmt.Println("Unable to read the response body from Aegis Safe.")
+		fmt.Println("Post: Unable to read the response body from Aegis Safe.", err.Error())
 		fmt.Println("")
 		return
 	}

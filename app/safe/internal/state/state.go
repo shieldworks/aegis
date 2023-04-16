@@ -29,6 +29,8 @@ var lock sync.Mutex
 func Initialize() {
 	go processSecretQueue()
 	go processK8sSecretQueue()
+	go processSecretDeleteQueue()
+	go processK8sSecretDeleteQueue()
 }
 
 // SetAgeKey sets the age key to be used for encryption and decryption.
@@ -107,26 +109,37 @@ func AllSecrets(cid string) []entity.Secret {
 	return result
 }
 
+func contains(s []string, e string) bool {
+	for _, a := range s {
+		if a == e {
+			return true
+		}
+	}
+	return false
+}
+
 // UpsertSecret takes an entity.SecretStored object and inserts it into
 // the in-memory store if it doesn't exist, or updates it if it does. It also
 // handles updating the backing store and Kubernetes secrets if necessary.
-func UpsertSecret(secret entity.SecretStored) {
+// If appendValue is true, the new value will be appended to the existing values,
+// otherwise it will replace the existing values.
+func UpsertSecret(secret entity.SecretStored, appendValue bool) {
 	cid := secret.Meta.CorrelationId
-
-	if secret.Name == selfName {
-		cmd := evaluate(secret.Value)
-		if cmd != nil {
-			newLogLevel := cmd.LogLevel
-			log.InfoLn(&cid, "Setting new level to:", newLogLevel)
-			log.SetLevel(log.Level(newLogLevel))
-		}
-	}
 
 	s, exists := secrets.Load(secret.Name)
 	now := time.Now()
 	if exists {
 		ss := s.(entity.SecretStored)
 		secret.Created = ss.Created
+
+		if appendValue {
+			for _, v := range ss.Values {
+				if contains(secret.Values, v) {
+					continue
+				}
+				secret.Values = append(secret.Values, v)
+			}
+		}
 	} else {
 		secret.Created = now
 	}
@@ -136,16 +149,14 @@ func UpsertSecret(secret entity.SecretStored) {
 		"created", secret.Created, "updated", secret.Updated, "name", secret.Name,
 	)
 
-	if secret.Value == "" {
-		currentState.Decrement(secret.Name)
-		secrets.Delete(secret.Name)
-	} else {
+	if len(secret.Values) > 0 && secret.Values[0] != "" {
 		parsedStr, err := secret.Parse()
 		if err != nil {
 			log.InfoLn(&cid,
-				"Error parsing secret. Will use fallback value.", err.Error())
+				"UpsertSecret: Error parsing secret. Will use fallback value.", err.Error())
 		}
 
+		// TODO: make this plural when `parse` can handle multiple values.
 		secret.ValueTransformed = parsedStr
 		currentState.Increment(secret.Name)
 		secrets.Store(secret.Name, secret)
@@ -156,26 +167,72 @@ func UpsertSecret(secret entity.SecretStored) {
 	switch store {
 	case entity.File:
 		log.TraceLn(
-			&cid, "Will push secret. len", len(secretQueue), "cap", cap(secretQueue))
+			&cid, "UpsertSecret: Will push secret. len", len(secretQueue), "cap", cap(secretQueue))
 		secretQueue <- secret
 		log.TraceLn(
-			&cid, "Pushed secret. len", len(secretQueue), "cap", cap(secretQueue))
+			&cid, "UpsertSecret: Pushed secret. len", len(secretQueue), "cap", cap(secretQueue))
 	}
 
 	useK8sSecrets := secret.Meta.UseKubernetesSecret
 	if useK8sSecrets {
 		log.TraceLn(
 			&cid,
-			"will push Kubernetes secret. len", len(k8sSecretQueue),
+			"UpsertSecret: will push Kubernetes secret. len", len(k8sSecretQueue),
 			"cap", cap(k8sSecretQueue),
 		)
 		k8sSecretQueue <- secret
 		log.TraceLn(
 			&cid,
-			"pushed Kubernetes secret. len", len(k8sSecretQueue),
+			"UpsertSecret: pushed Kubernetes secret. len", len(k8sSecretQueue),
 			"cap", cap(k8sSecretQueue),
 		)
 	}
+}
+
+func DeleteSecret(secret entity.SecretStored) {
+	cid := secret.Meta.CorrelationId
+
+	s, exists := secrets.Load(secret.Name)
+	if !exists {
+		log.WarnLn(&cid, "DeleteSecret: Secret does not exist. Cannot delete.", secret.Name)
+
+		ss := s.(entity.SecretStored)
+		secret.Created = ss.Created
+
+		return
+	}
+
+	ss := s.(entity.SecretStored)
+
+	store := ss.Meta.BackingStore
+
+	switch store {
+	case entity.File:
+		log.TraceLn(
+			&cid, "DeleteSecret: Will delete secret. len", len(secretDeleteQueue), "cap", cap(secretDeleteQueue))
+		secretDeleteQueue <- secret
+		log.TraceLn(
+			&cid, "DeleteSecret: Pushed secret to delete. len", len(secretDeleteQueue), "cap", cap(secretDeleteQueue))
+	}
+
+	useK8sSecrets := secret.Meta.UseKubernetesSecret
+	if useK8sSecrets {
+		log.TraceLn(
+			&cid,
+			"DeleteSecret: will push Kubernetes secret to delete. len", len(k8sSecretDeleteQueue),
+			"cap", cap(k8sSecretDeleteQueue),
+		)
+		k8sSecretDeleteQueue <- secret
+		log.TraceLn(
+			&cid,
+			"DeleteSecret: pushed Kubernetes secret to delete. len", len(k8sSecretDeleteQueue),
+			"cap", cap(k8sSecretDeleteQueue),
+		)
+	}
+
+	// Remove the secret from the memory.
+	currentState.Decrement(secret.Name)
+	secrets.Delete(secret.Name)
 }
 
 // ReadSecret takes a key string and returns a pointer to an entity.SecretStored

@@ -90,9 +90,9 @@ func Fetch(cid string, w http.ResponseWriter, r *http.Request, svid string) {
 		audit.Log(j)
 
 		w.WriteHeader(http.StatusNotFound)
-		_, err := io.WriteString(w, "")
-		if err != nil {
-			log.InfoLn(&cid, "Fetch: Problem sending response", err.Error())
+		_, err2 := io.WriteString(w, "")
+		if err2 != nil {
+			log.InfoLn(&cid, "Fetch: Problem sending response", err2.Error())
 		}
 		return
 	}
@@ -103,7 +103,16 @@ func Fetch(cid string, w http.ResponseWriter, r *http.Request, svid string) {
 	if secret.ValueTransformed != "" {
 		value = secret.ValueTransformed
 	} else {
-		value = secret.Value
+		if len(secret.Values) == 1 {
+			value = secret.Values[0]
+		} else {
+			jsonData, err2 := json.Marshal(secret.Values)
+			if err2 != nil {
+				log.WarnLn(&cid, "Fetch: Problem marshaling values", err2.Error())
+			} else {
+				value = string(jsonData)
+			}
+		}
 	}
 
 	// RFC3339 is what Go uses internally when marshaling dates.
@@ -121,9 +130,9 @@ func Fetch(cid string, w http.ResponseWriter, r *http.Request, svid string) {
 	resp, err := json.Marshal(sfr)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		_, err := io.WriteString(w, "Problem unmarshaling response")
-		if err != nil {
-			log.InfoLn(&cid, "Fetch: Problem sending response", err.Error())
+		_, err2 := io.WriteString(w, "Problem unmarshaling response")
+		if err2 != nil {
+			log.InfoLn(&cid, "Fetch: Problem sending response", err2.Error())
 		}
 		return
 	}
