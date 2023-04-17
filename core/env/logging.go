@@ -21,7 +21,7 @@ import (
 func LogLevel() int {
 	p := os.Getenv("AEGIS_LOG_LEVEL")
 	if p == "" {
-		return int(3) // WARN
+		return 3 // WARN
 	}
 	l, _ := strconv.Atoi(p)
 	if l == 0 {
