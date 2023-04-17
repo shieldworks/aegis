@@ -270,7 +270,7 @@ func (secret SecretStored) Parse() (string, error) {
 	}
 
 	parseFailed := false
-	results := make([]string, len(secret.Values))
+	var results []string
 	for _, v := range secret.Values {
 		transformed, err := transform(secret, v)
 		if err != nil {
@@ -281,6 +281,10 @@ func (secret SecretStored) Parse() (string, error) {
 			continue
 		}
 		results = append(results, transformed)
+	}
+
+	if results == nil {
+		return "", fmt.Errorf("failed to parse secret %s", secret.Name)
 	}
 
 	if len(results) == 1 {

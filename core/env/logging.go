@@ -17,19 +17,18 @@ import (
 // variable, or a default level.
 //
 // AEGIS_LOG_LEVEL determines the verbosity of the logs.
-// 1: logs are off, 6: highest verbosity.
-// Off = 1, Error = 2, Warn = 3, Info = 4, Debug = 5, Trace = 6
+// 0: logs are off, 7: highest verbosity (TRACE).
 func LogLevel() int {
 	p := os.Getenv("AEGIS_LOG_LEVEL")
 	if p == "" {
-		return 3
+		return 3 // WARN
 	}
 	l, _ := strconv.Atoi(p)
 	if l == 0 {
-		return 3
+		return 3 // WARN
 	}
-	if l < 0 || l > 6 {
-		return 3
+	if l < 0 || l > 7 {
+		return 3 // WARN
 	}
 	return l
 }
