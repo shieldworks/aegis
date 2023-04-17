@@ -54,7 +54,7 @@ spec:
             - name: SPIFFE_ENDPOINT_SOCKET
               value: "unix:///spire-agent-socket/agent.sock"
             - name: AEGIS_LOG_LEVEL
-              value: "6"
+              value: "7"
             - name: AEGIS_WORKLOAD_SVID_PREFIX
               value: "spiffe://aegis.ist/workload/"
             - name: AEGIS_SENTINEL_SVID_PREFIX

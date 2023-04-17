@@ -77,7 +77,7 @@ func Fetch(cid string, w http.ResponseWriter, r *http.Request, svid string) {
 	}
 
 	workloadId := parts[0]
-	secret, err := state.ReadSecret(workloadId)
+	secret, err := state.ReadSecret(cid, workloadId)
 	if err != nil {
 		log.WarnLn(&cid, "Fetch: Problem reading secret", err.Error())
 	}
@@ -101,8 +101,15 @@ func Fetch(cid string, w http.ResponseWriter, r *http.Request, svid string) {
 
 	value := ""
 	if secret.ValueTransformed != "" {
+		log.TraceLn(&cid, "Fetch: using transformed value")
 		value = secret.ValueTransformed
 	} else {
+		// This part is for backwards compatibility.
+		// It probably won’t execute because `secret.ValueTransformed` will
+		// always be set.
+
+		log.TraceLn(&cid, "Fetch: using raw value")
+
 		if len(secret.Values) == 1 {
 			value = secret.Values[0]
 		} else {

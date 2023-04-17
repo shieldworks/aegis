@@ -126,15 +126,43 @@ func contains(s []string, e string) bool {
 func UpsertSecret(secret entity.SecretStored, appendValue bool) {
 	cid := secret.Meta.CorrelationId
 
+	vs := secret.Values
+
+	if len(vs) == 0 {
+		log.InfoLn(&cid, "UpsertSecret: nothing to upsert. exiting.", "len(vs)", len(vs))
+		return
+	}
+
+	var nonEmptyValues []string
+	for _, value := range secret.Values {
+		if value != "" {
+			nonEmptyValues = append(nonEmptyValues, value)
+		}
+	}
+
+	if nonEmptyValues == nil {
+		log.InfoLn(&cid, "UpsertSecret: nothing to upsert. exiting.", "len(vs)", len(vs))
+		return
+	}
+
+	secret.Values = nonEmptyValues
+
 	s, exists := secrets.Load(secret.Name)
 	now := time.Now()
 	if exists {
+		log.TraceLn(&cid, "UpsertSecret: Secret exists. Will update.")
+
 		ss := s.(entity.SecretStored)
 		secret.Created = ss.Created
 
 		if appendValue {
+			log.TraceLn(&cid, "UpsertSecret: Will append value.")
+
 			for _, v := range ss.Values {
 				if contains(secret.Values, v) {
+					continue
+				}
+				if len(v) == 0 {
 					continue
 				}
 				secret.Values = append(secret.Values, v)
@@ -147,20 +175,22 @@ func UpsertSecret(secret entity.SecretStored, appendValue bool) {
 
 	log.InfoLn(&cid, "UpsertSecret:",
 		"created", secret.Created, "updated", secret.Updated, "name", secret.Name,
+		"len(vs)", len(vs),
 	)
 
-	if len(secret.Values) > 0 && secret.Values[0] != "" {
-		parsedStr, err := secret.Parse()
-		if err != nil {
-			log.InfoLn(&cid,
-				"UpsertSecret: Error parsing secret. Will use fallback value.", err.Error())
-		}
+	log.TraceLn(&cid, "UpsertSecret: Will parse secret.")
 
-		// TODO: make this plural when `parse` can handle multiple values.
-		secret.ValueTransformed = parsedStr
-		currentState.Increment(secret.Name)
-		secrets.Store(secret.Name, secret)
+	parsedStr, err := secret.Parse()
+	if err != nil {
+		log.InfoLn(&cid,
+			"UpsertSecret: Error parsing secret. Will use fallback value.", err.Error())
 	}
+
+	log.TraceLn(&cid, "UpsertSecret: Parsed secret. Will set transformed value.")
+
+	secret.ValueTransformed = parsedStr
+	currentState.Increment(secret.Name)
+	secrets.Store(secret.Name, secret)
 
 	store := secret.Meta.BackingStore
 
@@ -239,7 +269,9 @@ func DeleteSecret(secret entity.SecretStored) {
 // object if the secret exists in the in-memory store. If the secret is not
 // found in memory, it attempts to read it from disk, store it in memory, and
 // return it. If the secret is not found on disk, it returns nil.
-func ReadSecret(key string) (*entity.SecretStored, error) {
+func ReadSecret(cid string, key string) (*entity.SecretStored, error) {
+	log.TraceLn(&cid, "ReadSecret:begin")
+
 	result, ok := secrets.Load(key)
 	if !ok {
 		stored, err := readFromDisk(key)
@@ -253,9 +285,12 @@ func ReadSecret(key string) (*entity.SecretStored, error) {
 		currentState.Increment(stored.Name)
 		secrets.Store(stored.Name, *stored)
 		secretQueue <- *stored
+
+		log.TraceLn(&cid, "ReadSecret: returning from disk.", "len", len(stored.Values))
 		return stored, nil
 	}
 
 	s := result.(entity.SecretStored)
+	log.TraceLn(&cid, "ReadSecret: returning from memory.", "len", len(s.Values))
 	return &s, nil
 }
