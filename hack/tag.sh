@@ -32,6 +32,8 @@ echo "aegis-workload-demo-using-sidecar"
 docker trust sign aegishub/aegis-workload-demo-using-sidecar:"$VERSION"
 echo "aegis-workload-demo-using-sdk"
 docker trust sign aegishub/aegis-workload-demo-using-sdk:"$VERSION"
+echo "aegis-workload-demo-multiple-secrets"
+docker trust sign aegishub/aegis-workload-demo-multiple-secrets:"$VERSION"
 echo "aegis-workload-demo-using-init-container"
 docker trust sign aegishub/aegis-workload-demo-using-init-container:"$VERSION"
 
