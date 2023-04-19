@@ -16,7 +16,9 @@ COPY vendor /build/vendor
 COPY go.mod /build/go.mod
 WORKDIR /build
 RUN CGO_ENABLED=0 GOOS=linux go build -mod vendor -a -o env \
-  ./examples/workload-using-sdk/main.go
+  ./examples/workload-multiple-secrets/main.go
+RUN CGO_ENABLED=0 GOOS=linux go build -mod vendor -a -o sloth \
+  ./examples/workload-multiple-secrets/busywait/main.go
 
 # generate clean, final image for end users
 FROM gcr.io/distroless/static-debian11
@@ -31,7 +33,8 @@ LABEL "community"="https://aegis.ist/contact/#community"
 LABEL "changelog"="https://aegis.ist/changelog"
 
 COPY --from=builder /build/env .
+COPY --from=builder /build/sloth .
 
 # executable
-ENTRYPOINT [ "./env" ]
+ENTRYPOINT [ "./sloth" ]
 CMD [ "" ]
