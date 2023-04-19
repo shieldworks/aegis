@@ -7,7 +7,7 @@
 #
 
 # The common version tag assigned to all the things.
-VERSION=0.15.6
+VERSION=0.15.7
 
 # tags a release
 tag:

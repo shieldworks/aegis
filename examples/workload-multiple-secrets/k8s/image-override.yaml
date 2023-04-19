@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: main
-        image: localhost:5000/aegis-workload-demo-multiple-secrets:0.15.6
+        image: localhost:5000/aegis-workload-demo-multiple-secrets:0.15.7
         env:
           - name: AEGIS_LOG_LEVEL
             value: "0"

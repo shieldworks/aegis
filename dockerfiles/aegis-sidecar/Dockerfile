@@ -21,7 +21,7 @@ RUN CGO_ENABLED=0 GOOS=linux go build -mod vendor -a -o aegis-sidecar ./app/side
 FROM gcr.io/distroless/static-debian11
 
 LABEL "maintainers"="Volkan Özçelik <volkan@aegis.ist>"
-LABEL "version"="0.15.6"
+LABEL "version"="0.15.7"
 LABEL "website"="https://aegis.ist/"
 LABEL "repo"="https://github.com/shieldworks/aegis"
 LABEL "documentation"="https://aegis.ist/docs/"
