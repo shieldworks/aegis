@@ -1,0 +1,22 @@
+#
+# .-'_.---._'-.
+# ||####|(__)||   Protect your secrets, protect your business.
+#   \\()|##//       Secure your sensitive data with Aegis.
+#    \\ |#//                    <aegis.ist>
+#     .\_/.
+#
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aegis-workload-demo
+  namespace: default
+spec:
+  template:
+    spec:
+      containers:
+      - name: main
+        image: localhost:5000/aegis-workload-demo-with-multiple-secrets:0.15.6
+      initContainers:
+      - name: init-container
+        image: localhost:5000/aegis-init-container:0.15.6
