@@ -218,14 +218,23 @@ func transform(secret SecretStored, value string) (string, error) {
 
 	switch secret.Meta.Format {
 	case None:
+		// Return the parsed string as is, without any further validation.
 		return parsedString, nil
 	case Json:
+		// If the parsed string is a valid JSON, return it as is.
+		// Otherwise, assume the parsing failed and return the original JSON string.
 		if tpl.ValidJSON(parsedString) {
 			return parsedString, nil
 		} else {
 			return jsonData, nil
 		}
 	case Yaml:
+		// If the parsed string is a valid JSON, convert it to YAML.
+		// If the conversion succeeds, return the YAML string.
+		// Otherwise, assume the parsing failed and return the original parsed string.
+		// If the parsed string is not a valid JSON, convert it to YAML.
+		// If the conversion succeeds, return the YAML string.
+		// Otherwise, assume the parsing failed and return the original parsed string.
 		if tpl.ValidJSON(parsedString) {
 			yml, err := tpl.JsonToYaml(parsedString)
 			if err != nil {
@@ -240,6 +249,7 @@ func transform(secret SecretStored, value string) (string, error) {
 			return yml, nil
 		}
 	default:
+		// The program flow shall never enter here.
 		return "", fmt.Errorf("unknown format: %s", secret.Meta.Format)
 	}
 }
