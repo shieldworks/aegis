@@ -1,0 +1,34 @@
+scenarios:
+
+0. k get ns (explain stuff)
+0.1. k get po -n spire-system
+0.2 k get po -n aegis-system
+1. get clusterspiffeid
+2. describe clusterspiffeid safe
+3. describe clusterspiffeid sentinel
+4. install inspector
+5. describe clusterspiffeid inspector
+6. deploy workload using sidecar
+7. describe cluster spiffeid workload
+8. register plain secrets
+9. register multiple secrets
+10. encrypt secret
+11. register encrypted secret
+12. encrypt multiple secres
+13. register multiple encrypted secrets
+14. register transformed secrets
+15. interpolate aegis secrets to k8s secrets
+16. delete secrets from safe
+17. deploy workload using sdk
+18. register secret
+19. delete secret
+20. deploy workload using sidecar
+21. register secret
+22. delete secret
+23. deploy workload using init container
+24. register secret
+25. delete secret
+26. create a json secret; transform it; show transformed secret
+27. delete secret
+28. create a json secret; transform it; show the secret in yaml form
+
