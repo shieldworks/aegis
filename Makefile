@@ -158,7 +158,7 @@ example-multiple-secrets-bundle:
 		$(VERSION) "dockerfiles/example-multiple-secrets/Dockerfile"
 # Pushes the “multiple secrets” use case container image to the public registry.
 example-multiple-secrets-push:
-	./hack/push.sh "aegis-workload-demo-using-secrets" \
+	./hack/push.sh "aegis-workload-demo-multiple-secrets" \
 		$(VERSION) "aegishub/aegis-workload-demo-multiple-secrets"
 # Pushes the “multiple secrets” use case container image to the local registry.
 example-multiple-secrets-push-local:
