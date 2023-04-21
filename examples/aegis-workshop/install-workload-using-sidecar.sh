@@ -7,3 +7,11 @@
 #    \\ |#//                    <aegis.ist>
 #     .\_/.
 #
+
+. ./env.sh
+
+cd ./workload-sidecar || exit
+
+kubectl apply -f Identity.yaml
+kubectl apply -f ServiceAccount.yaml
+kubectl apply -k .

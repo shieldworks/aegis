@@ -10,11 +10,8 @@
 
 . ./env.sh
 
-echo "Secret: '$SECRET'"
+cd ./workload-sdk || exit
 
-kubectl exec "$SENTINEL" -n aegis-system -- aegis \
--w "aegis-workload-demo" \
--n "default" \
--s "$SECRET" \
--e \
--a
+kubectl apply -f Identity.yaml
+kubectl apply -f ServiceAccount.yaml
+kubectl apply -k .

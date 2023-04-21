@@ -8,17 +8,10 @@
 #     .\_/.
 #
 
-SENTINEL=$(kubectl get po -n aegis-system \
-  | grep "aegis-sentinel-" | awk '{print $1}')
+. ./env.sh
 
 kubectl exec "$SENTINEL" -n aegis-system -- aegis \
 -w "aegis-workload-demo" \
 -n "default" \
--s '{"name": "USERNAME", "value": "admin"}' \
--a
-
-kubectl exec "$SENTINEL" -n aegis-system -- aegis \
--w "aegis-workload-demo" \
--n "default" \
--s '{"name": "PASSWORD", "value": "AegisRocks!"}' \
--a
+-s '{"username": "root", "password": "SuperSecret", "value": "AegisRocks"}' \
+-t '{"USERNAME":"{{.username}}", "PASSWORD":"{{.password}}", "VALUE": "{{.value}}"}'

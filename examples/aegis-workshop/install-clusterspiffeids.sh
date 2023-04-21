@@ -8,13 +8,5 @@
 #     .\_/.
 #
 
-. ./env.sh
-
-echo "Secret: '$SECRET'"
-
-kubectl exec "$SENTINEL" -n aegis-system -- aegis \
--w "aegis-workload-demo" \
--n "default" \
--s "$SECRET" \
--e \
--a
+cd ids || exit
+kubectl apply -f .
