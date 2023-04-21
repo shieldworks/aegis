@@ -225,10 +225,6 @@ func DeleteSecret(secret entity.SecretStored) {
 	s, exists := secrets.Load(secret.Name)
 	if !exists {
 		log.WarnLn(&cid, "DeleteSecret: Secret does not exist. Cannot delete.", secret.Name)
-
-		ss := s.(entity.SecretStored)
-		secret.Created = ss.Created
-
 		return
 	}
 

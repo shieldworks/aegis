@@ -48,17 +48,22 @@ func processSecretDeleteQueue() {
 		// Get a secret to be removed from the disk.
 		secret := <-secretDeleteQueue
 
-		cid := secret.Meta.CorrelationId
+		if secret.Name == "" {
+			log.WarnLn(&id, "processSecretDeleteQueue: trying to delete an empty secret. "+
+				"Possibly picked a nil secret", len(secretQueue))
+			return
+		}
 
-		log.TraceLn(&cid, "processSecretDeleteQueue: picked a secret", len(secretQueue))
+		log.TraceLn(&id, "processSecretDeleteQueue: picked a secret", len(secretQueue))
 
 		// Remove secret from disk.
 		dataPath := path.Join(env.SafeDataPath(), secret.Name+".age")
+		log.TraceLn(&id, "processSecretDeleteQueue: removing secret from disk:", dataPath)
 		err := os.Remove(dataPath)
-		if !os.IsNotExist(err) {
-			log.WarnLn(&cid, "processSecretDeleteQueue: failed to remove secret", err.Error())
+		if err != nil && !os.IsNotExist(err) {
+			log.WarnLn(&id, "processSecretDeleteQueue: failed to remove secret", err.Error())
 		}
 
-		log.TraceLn(&cid, "processSecretDeleteQueue: should have persisted the secret.")
+		log.TraceLn(&id, "processSecretDeleteQueue: should have deleted the secret.")
 	}
 }
