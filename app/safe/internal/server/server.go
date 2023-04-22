@@ -44,9 +44,6 @@ func Serve(source *workloadapi.X509Source, serverStarted chan<- bool) error {
 
 	serverStarted <- true
 
-	// Since server has started, we can enable the readiness probe.
-	// go probe.CreateReadiness()
-
 	if err := server.ListenAndServeTLS("", ""); err != nil {
 		return errors.Wrap(err, "serve: failed to listen and serve")
 	}
