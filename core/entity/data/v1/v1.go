@@ -206,6 +206,9 @@ func (secret SecretStored) ToMap() map[string]any {
 }
 
 func transform(secret SecretStored, value string) (string, error) {
+	// TODO: delete these when you are done.
+	fmt.Println("transform: enter")
+
 	jsonData := strings.TrimSpace(value)
 	tmpStr := strings.TrimSpace(secret.Meta.Template)
 
@@ -229,12 +232,6 @@ func transform(secret SecretStored, value string) (string, error) {
 			return jsonData, nil
 		}
 	case Yaml:
-		// If the parsed string is a valid JSON, convert it to YAML.
-		// If the conversion succeeds, return the YAML string.
-		// Otherwise, assume the parsing failed and return the original parsed string.
-		// If the parsed string is not a valid JSON, convert it to YAML.
-		// If the conversion succeeds, return the YAML string.
-		// Otherwise, assume the parsing failed and return the original parsed string.
 		if tpl.ValidJSON(parsedString) {
 			yml, err := tpl.JsonToYaml(parsedString)
 			if err != nil {
@@ -242,38 +239,34 @@ func transform(secret SecretStored, value string) (string, error) {
 			}
 			return yml, nil
 		} else {
-			yml, err := tpl.JsonToYaml(jsonData)
-			if err != nil {
-				return jsonData, err
-			}
-			return yml, nil
+			return parsedString, nil
 		}
 	default:
 		// The program flow shall never enter here.
-		return "", fmt.Errorf("unknown format: %s", secret.Meta.Format)
+		return parsedString, fmt.Errorf("unknown format: %s", secret.Meta.Format)
 	}
 }
 
 // Parse takes a data.SecretStored type as input and returns the parsed
 // string or an error.
 //
-// If the Meta.Template field is empty, it tries to parse the first secret.Values;
-// otherwise it transforms secret.Values[0] using the Go template transformation
-// defined by Meta.Template.
+// It parses all the `.Values` of the secret, and for each value tries to apply
+// a template transformation.
 //
-// If the Meta.Format field is None, it returns the parsed string.
+// Here is how the template transformation is applied:
 //
-// If the Meta.Format field is Json, it returns the parsed string if it’s a
-// valid JSON or the original string otherwise.
+//  1. Compute parsedString:
+//     If the Meta.Template field is empty, then parsedString is the original value.
+//     Otherwise, parsedString is the result of applying the template transformation
+//     to the original value.
 //
-// If the Meta.Format field is Yaml, it tries its best to transform the data
-// into Yaml. If it fails, it tries to return a valid JSON at least. If that
-// fails too, returns the original secret value.
-//
-// If the Meta.Format field is not recognized, it returns an empty string.
-//
-// If there is more than one value in the Values collection then the transformation
-// is applied to each value and the result is returned as a JSON array.
+// 2.	Compute the output string:
+//   - If the Meta.Format field is None, then the output string is parsedString.
+//   - If the Meta.Format field is Json, then the output string is parsedString
+//     if parsedString is a valid JSON, otherwise it’s the original value.
+//   - If the Meta.Format field is Yaml, then the output string is the result of
+//     transforming parsedString into Yaml if parsedString is a valid JSON,
+//     otherwise it’s parsedString.
 func (secret SecretStored) Parse() (string, error) {
 	if len(secret.Values) == 0 {
 		return "", fmt.Errorf("no values found for secret %s", secret.Name)
