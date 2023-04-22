@@ -206,9 +206,6 @@ func (secret SecretStored) ToMap() map[string]any {
 }
 
 func transform(secret SecretStored, value string) (string, error) {
-	// TODO: delete these when you are done.
-	fmt.Println("transform: enter")
-
 	jsonData := strings.TrimSpace(value)
 	tmpStr := strings.TrimSpace(secret.Meta.Template)
 
