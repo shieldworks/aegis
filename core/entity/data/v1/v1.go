@@ -236,6 +236,9 @@ func transform(secret SecretStored, value string) (string, error) {
 			}
 			return yml, nil
 		} else {
+			// Parsed string is not a valid JSON, so return it as is.
+			// It can be either a valid YAML already, or some random string.
+			// There is not much can be done at this point other than returning it.
 			return parsedString, nil
 		}
 	default:
