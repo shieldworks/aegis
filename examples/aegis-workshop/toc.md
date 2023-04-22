@@ -10,24 +10,16 @@
 [ ] Install Inspector                               » (iin)                                     OK
 [ ] Examine Inspector’s ClusterSPIFFEID             » (din)                                     OK
 [ ] Use Case: Workload Using Sidecar                » (ds, dw, isc, twl)                        OK
-[ ]   * register a plain secret                     » (rps)
-[ ]   * register multiple secrets                   » (rms)
-[ ]   * encrypt a secret                            » (es, venv (contains multiple secrets)))
-[ ]   * register encrypted secret                   » (ves, res)
-[ ]   * encrypt multiple secrets                    » (vems, ems, venv)
-[ ]   * register multiple encrypted secrets         » (vrmes, rmes)
-[ ]   * remove all secrets                          » (vds, ds)
-[ ]   * uninstall the workload                      » (vdwo, dwo)
-[ ] Use Case: Workload Using SDK                    » (vsdk, isdk, twl)
-[ ]   * register secret                             » (rps)
-[ ]   * remove all secrets                          » (ds)
-[ ]   * uninstall the workload                      » (dwo)
-[ ] Use Case: Workload Using Init Container         » (vinit, iinit, twl)
-[ ]   * check the workload’s state                  » (kgp)
-[ ]   * register the secret                         » (rps)
-[ ]   * check the workload’s state                  » (kgp, twl)
-[ ]   * remove all secrets                          » (ds)
-[ ]   * uninstall the workload                      » (dwl)
+[ ]   * register a plain secret                     » (rps)                                     OK
+[ ]   * register multiple secrets                   » (rms)                                     OK
+[ ]   * encrypt a secret                            » (es)                                      OK
+[ ]   * register encrypted secret                   » (venv, xes, res)                          OK
+[ ] Use Case: Workload Using SDK                    » (ds, dwl, isdk, twl)                      OK
+[ ]   * register secret                             » (rps)                                     OK
+[ ]   * register multiple secrets                   » (rms)                                     OK
+[ ] Use Case: Workload Using Init Container         » (ds, dwo, ic)                             OK
+[ ]   * check the workload’s state                  » (kgp -w)                                  OK
+[ ]   * register the secret                         » (rks)                                     OK
 [ ] Use Case: Transforming Secrets                  » (vsdk, isdk, twl)
 [ ]   * register a secret with JSON transformation  » (vjson, rjson)
 [ ]   * register a secret with YAML transformation  » (vyaml, ryaml)
