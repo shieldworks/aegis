@@ -46,33 +46,41 @@ func Monitor(
 	timedOut <-chan bool,
 ) {
 	counter := 3
-	select {
-	case <-acquiredSvid:
-		log.InfoLn(correlationId, "Acquired identity.")
-		counter--
+	for {
 		if counter == 0 {
-			state.Initialize()
-			log.DebugLn(correlationId, "Creating readiness probe.")
-			go probe.CreateReadiness()
+			break
 		}
-	case <-updatedSecret:
-		log.InfoLn(correlationId, "Updated age key.")
-		counter--
-		if counter == 0 {
-			state.Initialize()
-			log.DebugLn(correlationId, "Creating readiness probe.")
-			go probe.CreateReadiness()
+		select {
+		case <-acquiredSvid:
+			log.InfoLn(correlationId, "Acquired identity.")
+			counter--
+			log.InfoLn(correlationId, "remaining:", counter)
+			if counter == 0 {
+				state.Initialize()
+				log.DebugLn(correlationId, "Creating readiness probe.")
+				go probe.CreateReadiness()
+			}
+		case <-updatedSecret:
+			log.InfoLn(correlationId, "Updated age key.")
+			counter--
+			log.InfoLn(correlationId, "remaining:", counter)
+			if counter == 0 {
+				state.Initialize()
+				log.DebugLn(correlationId, "Creating readiness probe.")
+				go probe.CreateReadiness()
+			}
+		case <-serverStarted:
+			log.InfoLn(correlationId, "Server ready.")
+			counter--
+			log.InfoLn(correlationId, "remaining:", counter)
+			if counter == 0 {
+				state.Initialize()
+				log.DebugLn(correlationId, "Creating readiness probe.")
+				go probe.CreateReadiness()
+			}
+		case <-timedOut:
+			log.FatalLn(correlationId, "Failed to acquire an identity in a timely manner.")
 		}
-	case <-serverStarted:
-		log.InfoLn(correlationId, "Server ready.")
-		counter--
-		if counter == 0 {
-			state.Initialize()
-			log.DebugLn(correlationId, "Creating readiness probe.")
-			go probe.CreateReadiness()
-		}
-	case <-timedOut:
-		log.FatalLn(correlationId, "Failed to acquire an identity in a timely manner.")
 	}
 }
 
@@ -111,7 +119,9 @@ func AcquireSource(
 		)
 	}
 
+	log.TraceLn(id, "Sending: Acquired SVID", len(acquiredSvid))
 	acquiredSvid <- true
+	log.TraceLn(id, "Sent: Acquired SVID", len(acquiredSvid))
 
 	return source
 }
@@ -142,6 +152,7 @@ func CreateCryptoKey(id *string, updatedSecret chan<- bool) {
 	if secret != state.BlankAgeKeyValue {
 		log.InfoLn(id, "Secret has been set in the cluster, will reuse it")
 		state.SetAgeKey(secret)
+		updatedSecret <- true
 		return
 	}
 

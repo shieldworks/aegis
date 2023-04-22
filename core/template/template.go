@@ -60,16 +60,22 @@ func JsonToYaml(js string) (string, error) {
 //
 // On successful execution, the function returns the resulting string from the
 // executed template.
-func TryParse(tmpStr, json string) string {
+func TryParse(tmpStr, jason string) string {
 	tmpl, err := template.New("secret").Parse(tmpStr)
 	if err != nil {
-		return json
+		return jason
+	}
+
+	var result map[string]any
+	err = json.Unmarshal([]byte(jason), &result)
+	if err != nil {
+		return jason
 	}
 
 	var tpl bytes.Buffer
-	err = tmpl.Execute(&tpl, json)
+	err = tmpl.Execute(&tpl, result)
 	if err != nil {
-		return json
+		return jason
 	}
 
 	return tpl.String()

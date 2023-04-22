@@ -12,7 +12,6 @@ import (
 	"github.com/pkg/errors"
 	"github.com/shieldworks/aegis/app/safe/internal/server/handle"
 	"github.com/shieldworks/aegis/core/env"
-	"github.com/shieldworks/aegis/core/probe"
 	"github.com/shieldworks/aegis/core/validation"
 	"github.com/spiffe/go-spiffe/v2/spiffeid"
 	"github.com/spiffe/go-spiffe/v2/spiffetls/tlsconfig"
@@ -44,9 +43,6 @@ func Serve(source *workloadapi.X509Source, serverStarted chan<- bool) error {
 	}
 
 	serverStarted <- true
-
-	// Since server has started, we can enable the readiness probe.
-	go probe.CreateReadiness()
 
 	if err := server.ListenAndServeTLS("", ""); err != nil {
 		return errors.Wrap(err, "serve: failed to listen and serve")
