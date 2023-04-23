@@ -16,10 +16,6 @@ keep your secrets… secret
 
 Official documentation available on <https://aegis.ist/>.
 
-## Empower Our Journey ✊
-
-⭐️ Star [**Aegis**](https://github.com/ShieldWorks/aegis) to show your support.
-
 ## Status of This Software
 
 This project is in **active development**.
