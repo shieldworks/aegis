@@ -8,9 +8,9 @@ keep your secrets… secret
 
 ## The Elevator Pitch
 
-[**Aegis**](https://aegis.ist) is a delightfully-secure Kubernetes-native secrets store.
+**Aegis** is a delightfully-secure Kubernetes-native secrets store.
 
-[**Aegis**](https://aegis.ist) keeps your secrets secret.
+**Aegis** keeps your secrets secret.
 
 With **Aegis**, you can rest assured that your
 sensitive data is always **secure** and **protected**.
