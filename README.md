@@ -14,7 +14,7 @@ keep your secrets… secret
 
 ## 🦆🦆🦆 (*Docs*)
 
-Official documentation available on <https://aegis.ist/>.
+[Official documentation available on **aegis.ist**](https://aegis.ist).
 
 ## Status of This Software
 
