@@ -13,11 +13,11 @@ source ./env.sh
 kubectl exec "$SENTINEL" -n aegis-system -- aegis \
 -w "aegis-workload-demo" \
 -n "default" \
--s '{"name": "USERNAME", "value": "admin"}' \
+-s '{"name": "USERNAME", "value": "operator"}' \
 -a
 
 kubectl exec "$SENTINEL" -n aegis-system -- aegis \
 -w "aegis-workload-demo" \
 -n "default" \
--s '{"name": "PASSWORD", "value": "AegisRocks!"}' \
+-s '{"name": "PASSWORD", "value": "!KeepYourSecrets!"}' \
 -a

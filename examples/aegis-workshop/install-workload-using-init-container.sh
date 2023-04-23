@@ -12,7 +12,6 @@
 
 cd ./workload-init-container || exit
 
-kubectl apply -f Identity.yaml
 kubectl apply -f ServiceAccount.yaml
 kubectl apply -f Secret.yaml
 kubectl apply -k .

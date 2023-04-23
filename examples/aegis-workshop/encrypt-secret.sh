@@ -8,8 +8,8 @@
 #     .\_/.
 #
 
-. /home/v0lk4n/Desktop/AEGIS/aegis/examples/aegis-workshop/env.sh
+. ./env.sh
 
 kubectl exec "$SENTINEL" -n aegis-system -- aegis \
--s '{"username": "root", "password": "SuperSecret", "value": "AegisRocks"}' \
+-s '{"username": "*root*", "password": "*Ca$#C0w*", "value": "!AegisRocks!"}' \
 -e

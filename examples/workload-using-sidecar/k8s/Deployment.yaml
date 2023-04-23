@@ -26,7 +26,7 @@ spec:
       serviceAccountName: aegis-workload-demo
       containers:
       - name: main
-        image: aegishub/aegis-workload-demo-using-sidecar:0.15.7
+        image: aegishub/aegis-workload-demo-using-sidecar:0.15.8
         volumeMounts:
         # `main` shares this volume with `sidecar`.
         - mountPath: /opt/aegis
