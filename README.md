@@ -12,6 +12,8 @@ keep your secrets… secret
 
 [**Aegis**](https://aegis.ist) keeps your secrets secret.
 
+## 🦆🦆🦆 (*Docs*)
+
 Official documentation available on <https://aegis.ist/>.
 
 ## Empower Our Journey ✊
