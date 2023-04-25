@@ -23,40 +23,51 @@ import (
 	"net/url"
 )
 
-func Get() {
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
-
+func acquireSource(ctx context.Context) (*workloadapi.X509Source, bool) {
 	source, err := workloadapi.NewX509Source(
 		ctx, workloadapi.WithClientOptions(workloadapi.WithAddr(env.SpiffeSocketUrl())),
 	)
 
 	if err != nil {
-		fmt.Println("I cannot execute command because I cannot talk to SPIRE.")
+		fmt.Println("Post: I cannot execute command because I cannot talk to SPIRE.")
 		fmt.Println("")
-		return
+		return nil, false
 	}
 
 	svid, err := source.GetX509SVID()
 	if err != nil {
-		fmt.Println("I am having trouble fetching my identity from SPIRE.")
-		fmt.Println("I won’t proceed until you put me in a secured container.")
+		fmt.Println("Post: I am having trouble fetching my identity from SPIRE.")
+		fmt.Println("Post: I won’t proceed until you put me in a secured container.")
 		fmt.Println("")
-		return
+		return source, false
 	}
-
-	defer func() {
-		err := source.Close()
-		if err != nil {
-			log.Println("Problem closing the workload source.")
-		}
-	}()
 
 	// Make sure that the binary is enclosed in a Pod that we trust.
 	if !validation.IsSentinel(svid.ID.String()) {
 		fmt.Println("I don’t know you, and it’s crazy: '" + svid.ID.String() + "'")
 		fmt.Println("`aegis` can only run from within the Sentinel container.")
 		fmt.Println("")
+		return source, false
+	}
+
+	return source, true
+}
+
+func Get() {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	source, proceed := acquireSource(ctx)
+	defer func() {
+		if source == nil {
+			return
+		}
+		err := source.Close()
+		if err != nil {
+			log.Println("Problem closing the workload source.")
+		}
+	}()
+	if !proceed {
 		return
 	}
 
