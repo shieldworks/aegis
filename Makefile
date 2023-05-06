@@ -5,7 +5,7 @@
 #    \\ |#//                    <aegis.ist>
 #     .\_/.
 #
-
+  
 # The common version tag assigned to all the things.
 VERSION=0.15.8
 
