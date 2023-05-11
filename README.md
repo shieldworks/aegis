@@ -8,7 +8,8 @@ keep your secrets… secret
 
 ## The Elevator Pitch
 
-[**Aegis**](https://aegis.ist) is a delightfully-secure Kubernetes-native secrets store.
+[**Aegis**](https://aegis.ist) is a delightfully-secure Kubernetes-native 
+secrets store.
 
 [**Aegis**](https://aegis.ist) keeps your secrets secret.
 
@@ -17,6 +18,45 @@ Official documentation available on <https://aegis.ist/>.
 ## Empower Our Journey ✊
 
 ⭐️ Star [**Aegis**](https://github.com/ShieldWorks/aegis) to show your support.
+
+## Getting Your Hands Dirty
+
+Before trying **Aegis**, you might want to [learn about its 
+[architecture][architecture] and [design goals][design].
+
+Once you are ready to get started, [see the Quickstart guide][quickstart].
+
+Or, if you one of those who “*learn by doing*”, you might want to dig into the 
+implementation details later. If that’s the case, you can directly jump to the 
+fun part and [follow the steps here][installation] to install 
+**Aegis** to your Kubernetes cluster.
+
+## Dive Into Example Use Cases
+
+There are several examples demonstrating **Aegis** sample use cases 
+[inside the `./examples/` folder](./examples).
+
+## Container Images
+
+Pre-built container images of **Aegis** components can be found at:
+<https://hub.docker.com/u/aegishub>.
+
+## Build Aegis From the Source
+
+[You can also build **Aegis** from the source][build].
+
+## The Roadmap
+
+[We publicly track all **Aegis** plans on a GitHub project][roadmap]. You can
+check it out to get a glimpse of the current planned features, and how the
+future of **Aegis** looks like.
+
+[roadmap]:https://github.com/orgs/shieldworks/projects/1  "The Roadmap"
+[installation]: https://aegis.ist/docs/#installation "Install Aegis"
+[build]: https://aegis.ist/docs/contributing/#building-deploying-and-testing
+[architecture]: https://aegis.ist/docs/architecture/ "Aegis Deep Dive"
+[design]: https://aegis.ist/docs/philosophy/ "Aegis Philosphy"
+[quickstart]: https://aegis.ist/docs/
 
 ## Status of This Software
 
@@ -138,7 +178,6 @@ Here are the important folders and files in this repository:
 * `./Makefile`: Contains **Aegis** Makefile that is used for building,
   publishing, deploying, and testing the project.
 
-
 ## One More Thing… How Do I Pronounce “Aegis”?
 
 [We have an article for that too 🙂][pronounce].
@@ -165,8 +204,10 @@ currently being worked on.
 
 ## Contributing
 
-It’s a bit chaotic around here, yet if you want to lend a hand,
-[here are the contributing guidelines](CONTRIBUTING.md).
+To contribute to **Aegis**, [follow the contributing guidelines](CONTRIBUTING.md)
+to get started.
+
+Use GitHub issues to request features or file bugs.
 
 ## Maintainers
 
