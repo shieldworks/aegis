@@ -2,4 +2,4 @@
 
 ![Aegis](../../assets/aegis-icon.png "Aegis")
 
-## Use 
+## Use Case: Using an Init Container
