@@ -9,17 +9,14 @@
 package main
 
 import (
+	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"github.com/shieldworks/aegis/sdk/sentry"
 	"os"
 	"os/signal"
 	"syscall"
 )
-
-type Secret struct {
-	Name  string `json:"name"`
-	Value string `json:"value"`
-}
 
 func main() {
 	go func() {
@@ -47,6 +44,35 @@ func main() {
 		return
 	}
 
-	// d.Data is a collection of Secrets.
-	fmt.Println(d.Data)
+	// Check if d.Data is a JSON array
+	if string(d.Data[0]) == "[" {
+		// Convert the array into a slice of strings
+		var dataSlice []string
+		err = json.Unmarshal([]byte(d.Data), &dataSlice)
+		if err != nil {
+			fmt.Println("Failed to unmarshal the data into a slice of strings. Check the data format.")
+			fmt.Println(err.Error())
+			return
+		}
+
+		// Concatenate all members of the slice into one large string
+		concatString := ""
+		for _, s := range dataSlice {
+			concatString += s
+		}
+
+		// Base64 decode the string
+		decodedString, err := base64.StdEncoding.DecodeString(concatString)
+		if err != nil {
+			fmt.Println("Failed to decode the base64 string.")
+			fmt.Println(err.Error())
+			return
+		}
+
+		// Print the result
+		fmt.Println(string(decodedString))
+	} else {
+		// d.Data is a collection of Secrets.
+		fmt.Println(d.Data)
+	}
 }

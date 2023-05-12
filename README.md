@@ -11,13 +11,13 @@ keep your secrets… secret
 [**Aegis**](https://aegis.ist) is a delightfully-secure Kubernetes-native 
 secrets store.
 
-[**Aegis**](https://aegis.ist) keeps your secrets secret.
+**Aegis** keeps your secrets secret.
 
-Official documentation available on <https://aegis.ist/>.
+With **Aegis**, you can rest assured that your
+sensitive data is always **secure** and **protected**.
 
-## Empower Our Journey ✊
-
-⭐️ Star [**Aegis**](https://github.com/ShieldWorks/aegis) to show your support.
+**Aegis** is perfect for securely storing arbitrary configuration information at
+a central location and securely dispatching it to workloads.
 
 ## Getting Your Hands Dirty
 
@@ -70,10 +70,27 @@ However,—semantically-speaking—**Aegis** is still an **alpha** software.
 Meaning, until **Aegis** reaches `v1.0.0`, nothing is backwards compatible
 and anything can change with or without notice.
 
+## 🦆🦆🦆 (*Docs*)
+
+[Official documentation available on **aegis.ist**](https://aegis.ist).
+
 ## A Note on Security
 
 We take **Aegis**’ security seriously. If you believe you have found a vulnerability,
 please responsibly disclose by contacting [security@aegis.ist](mailto:security@aegis.ist).
+
+## A Tour Of Aegis
+
+[Check out this quickstart guide][quickstart] for an overview of **Aegis**.
+
+[quickstart]: https://aegis.ist/docs/
+
+## Community
+
+Open Source is better together.
+
+If you are a security enthusiast, [**join Aegis’ Slack Workspace**][slack-invite]
+and let us change the world together 🤘.
 
 ## Links
 
@@ -97,40 +114,6 @@ please responsibly disclose by contacting [security@aegis.ist](mailto:security@a
 * **Configuration**: <https://aegis.ist/docs/configuration/>
 * **Design Philosophy**: <https://aegis.ist/docs/philosophy/>
 * **Production Deployment Tips**: <https://aegis.ist/production/>
-
-[slack-invite]: https://join.slack.com/t/aegis-6n41813/shared_invite/zt-1myzqdi6t-jTvuRd1zDLbHX0gN8VkCqg "Join aegis.slack.com"
-
-## A Tour Of Aegis
-
-[Check out this quickstart guide][quickstart] for an overview of **Aegis**.
-
-[quickstart]: https://aegis.ist/docs/
-
-## About Aegis
-
-**Aegis** is a delightfully-secure Kubernetes-native secrets store.
-
-**Aegis** keeps your secrets secret.
-
-With **Aegis**, you can rest assured that your
-sensitive data is always **secure** and **protected**.
-
-**Aegis** is perfect for securely storing arbitrary configuration information at
-a central location and securely dispatching it to workloads.
-
-[Check out **Aegis**’s website][aegis-web] for more information.
-
-[aegis-web]: https://aegis.ist/
-
-[aegis-projects]: https://aegis.ist/docs/architecture/#projects
-[aegis-repo]: https://github.com/shieldworks/aegis
-
-## Community
-
-Open Source is better together.
-
-If you are a security enthusiast, [**join Aegis’ Slack Workspace**][slack-invite]
-and let us change the world together 🤘.
 
 ## Installation
 
@@ -223,3 +206,8 @@ I’d love to have them.
 ## License
 
 [MIT License](LICENSE).
+
+[slack-invite]: https://join.slack.com/t/aegis-6n41813/shared_invite/zt-1myzqdi6t-jTvuRd1zDLbHX0gN8VkCqg "Join aegis.slack.com"
+[aegis-web]: https://aegis.ist/
+[aegis-projects]: https://aegis.ist/docs/architecture/#projects
+[aegis-repo]: https://github.com/shieldworks/aegis
