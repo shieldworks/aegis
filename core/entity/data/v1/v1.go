@@ -41,8 +41,6 @@ type SecretFormat string
 var Json SecretFormat = "json"
 var Yaml SecretFormat = "yaml"
 
-// var None SecretFormat = "none"
-
 type SecretMeta struct {
 	// Overrides Env.SafeUseKubernetesSecrets()
 	UseKubernetesSecret bool `json:"k8s"`
