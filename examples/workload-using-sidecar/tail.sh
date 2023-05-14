@@ -8,8 +8,7 @@
 #     .\_/.
 #
 
-retval=$(kubectl get po -n default \
+WORKLOAD=$(kubectl get po -n default \
   | grep "aegis-workload-demo-" | awk '{print $1}')
-export WORKLOAD="$retval"
 
 kubectl logs "$WORKLOAD" -n default -f

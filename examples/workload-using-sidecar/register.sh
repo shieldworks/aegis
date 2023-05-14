@@ -8,9 +8,8 @@
 #     .\_/.
 #
 
-retval=$(kubectl get po -n aegis-system \
+SENTINEL=$(kubectl get po -n aegis-system \
   | grep "aegis-sentinel-" | awk '{print $1}')
-export SENTINEL=$retval
 
 kubectl exec "$SENTINEL" -n aegis-system -- aegis \
   -w "aegis-workload-demo" \
