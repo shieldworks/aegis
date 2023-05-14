@@ -201,7 +201,7 @@ As of now, I, [Volkan Özçelik][me], am the sole maintainer of **Aegis**.
 Please send your feedback, suggestions, recommendations, and comments to
 [feedback@aegis.ist](mailto:feedback@aegis.ist).
 
-I’d love to have them.
+We’d love to have them.
 
 ## License
 

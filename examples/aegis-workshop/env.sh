@@ -11,16 +11,20 @@
 
 export SECRET="ComputeMe!"
 
-export SENTINEL=$(kubectl get po -n aegis-system \
+SENTINEL=$(kubectl get po -n aegis-system \
   | grep "aegis-sentinel-" | awk '{print $1}')
+export SENTINEL=$SENTINEL
 
-export SAFE=$(kubectl get po -n aegis-system \
+SAFE=$(kubectl get po -n aegis-system \
   | grep "aegis-safe-" | awk '{print $1}')
+export SAFE=$SAFE
 
-export WORKLOAD=$(kubectl get po -n default \
+WORKLOAD=$(kubectl get po -n default \
   | grep "aegis-workload-demo-" | awk '{print $1}')
+export WORKLOAD=$WORKLOAD
 
-export INSPECTOR=$(kubectl get po -n default \
+INSPECTOR=$(kubectl get po -n default \
   | grep "aegis-inspector-" | awk '{print $1}')
+export INSPECTOR=$INSPECTOR
 
 export DEPLOYMENT="aegis-workload-demo"

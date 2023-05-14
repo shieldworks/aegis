@@ -80,14 +80,14 @@ func Post(workloadId, secret, namespace, backingStore string, useKubernetes bool
 		}
 	}
 
-	f := data.None
+	f := data.Json
 	switch data.SecretFormat(format) {
 	case data.Json:
 		f = data.Json
 	case data.Yaml:
 		f = data.Yaml
 	default:
-		f = data.None
+		f = data.Json
 	}
 
 	sr := reqres.SecretUpsertRequest{
