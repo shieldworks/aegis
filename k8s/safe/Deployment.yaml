@@ -73,12 +73,10 @@ spec:
               value: ":8081"
             - name: AEGIS_PROBE_READINESS_PORT
               value: ":8082"
-            - name: AEGIS_TLS_PORT
+            - name: AEGIS_SAFE_TLS_PORT
               value: ":8443"
             - name: AEGIS_SAFE_SECRET_BUFFER_SIZE
               value: "10"
-            - name: AEGIS_SAFE_BACKING_STORE
-              value: "file"
             - name: AEGIS_SAFE_USE_KUBERNETES_SECRETS
               value: "false"
             - name: AEGIS_SAFE_SVID_RETRIEVAL_TIMEOUT

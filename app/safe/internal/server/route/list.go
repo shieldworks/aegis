@@ -15,7 +15,6 @@ import (
 	reqres "github.com/shieldworks/aegis/core/entity/reqres/safe/v1"
 	"github.com/shieldworks/aegis/core/env"
 	"github.com/shieldworks/aegis/core/log"
-	"github.com/shieldworks/aegis/core/validation"
 	"io"
 	"net/http"
 	"strings"
@@ -34,18 +33,7 @@ func List(cid string, w http.ResponseWriter, r *http.Request, svid string) {
 	audit.Log(j)
 
 	// Only sentinel can list.
-	if !validation.IsSentinel(svid) {
-		j.Event = audit.EventBadSvid
-		audit.Log(j)
-
-		log.DebugLn(&cid, "List: bad svid", svid)
-
-		w.WriteHeader(http.StatusBadRequest)
-		_, err := io.WriteString(w, "")
-		if err != nil {
-			log.InfoLn(&cid, "List: Problem sending response", err.Error())
-		}
-
+	if !isSentinel(j, cid, w, svid) {
 		return
 	}
 

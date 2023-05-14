@@ -14,11 +14,4 @@ SENTINEL=$(kubectl get po -n aegis-system \
 kubectl exec "$SENTINEL" -n aegis-system -- aegis \
   -w "aegis-workload-demo" \
   -n "default" \
-  -s '{"name": "USERNAME", "value": "admin"}' \
-  -a
-
-kubectl exec "$SENTINEL" -n aegis-system -- aegis \
-  -w "aegis-workload-demo" \
-  -n "default" \
-  -s '{"name": "PASSWORD", "value": "AegisRocks!"}' \
-  -a
+  -s "AegisRocks!"

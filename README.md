@@ -8,7 +8,8 @@ keep your secrets… secret
 
 ## The Elevator Pitch
 
-**Aegis** is a delightfully-secure Kubernetes-native secrets store.
+[**Aegis**](https://aegis.ist) is a delightfully-secure Kubernetes-native 
+secrets store.
 
 **Aegis** keeps your secrets secret.
 
@@ -17,6 +18,57 @@ sensitive data is always **secure** and **protected**.
 
 **Aegis** is perfect for securely storing arbitrary configuration information at
 a central location and securely dispatching it to workloads.
+
+## Getting Your Hands Dirty
+
+Before trying **Aegis**, you might want to [learn about its 
+[architecture][architecture] and [design goals][design].
+
+Once you are ready to get started, [see the Quickstart guide][quickstart].
+
+Or, if you one of those who “*learn by doing*”, you might want to dig into the 
+implementation details later. If that’s the case, you can directly jump to the 
+fun part and [follow the steps here][installation] to install 
+**Aegis** to your Kubernetes cluster.
+
+## Dive Into Example Use Cases
+
+There are several examples demonstrating **Aegis** sample use cases 
+[inside the `./examples/` folder](./examples).
+
+## Container Images
+
+Pre-built container images of **Aegis** components can be found at:
+<https://hub.docker.com/u/aegishub>.
+
+## Build Aegis From the Source
+
+[You can also build **Aegis** from the source][build].
+
+## The Roadmap
+
+[We publicly track all **Aegis** plans on a GitHub project][roadmap]. You can
+check it out to get a glimpse of the current planned features, and how the
+future of **Aegis** looks like.
+
+[roadmap]:https://github.com/orgs/shieldworks/projects/1  "The Roadmap"
+[installation]: https://aegis.ist/docs/#installation "Install Aegis"
+[build]: https://aegis.ist/docs/contributing/#building-deploying-and-testing
+[architecture]: https://aegis.ist/docs/architecture/ "Aegis Deep Dive"
+[design]: https://aegis.ist/docs/philosophy/ "Aegis Philosphy"
+[quickstart]: https://aegis.ist/docs/
+
+## Status of This Software
+
+This project is in **active development**.
+
+The code that have been officially signed and released is stable,
+has passed integration tests, and can be used in a production
+environment (*at your own risk—[see LICENSE](LICENSE)*).
+
+However,—semantically-speaking—**Aegis** is still an **alpha** software.
+Meaning, until **Aegis** reaches `v1.0.0`, nothing is backwards compatible
+and anything can change with or without notice.
 
 ## 🦆🦆🦆 (*Docs*)
 
@@ -135,8 +187,10 @@ currently being worked on.
 
 ## Contributing
 
-It’s a bit chaotic around here, yet if you want to lend a hand,
-[here are the contributing guidelines](CONTRIBUTING.md).
+To contribute to **Aegis**, [follow the contributing guidelines](CONTRIBUTING.md)
+to get started.
+
+Use GitHub issues to request features or file bugs.
 
 ## Maintainers
 
@@ -147,16 +201,13 @@ As of now, I, [Volkan Özçelik][me], am the sole maintainer of **Aegis**.
 Please send your feedback, suggestions, recommendations, and comments to
 [feedback@aegis.ist](mailto:feedback@aegis.ist).
 
-I’d love to have them.
+We’d love to have them.
 
 ## License
 
 [MIT License](LICENSE).
 
-
 [slack-invite]: https://join.slack.com/t/aegis-6n41813/shared_invite/zt-1myzqdi6t-jTvuRd1zDLbHX0gN8VkCqg "Join aegis.slack.com"
-
 [aegis-web]: https://aegis.ist/
-
 [aegis-projects]: https://aegis.ist/docs/architecture/#projects
 [aegis-repo]: https://github.com/shieldworks/aegis

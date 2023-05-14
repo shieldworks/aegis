@@ -40,7 +40,6 @@ type SecretFormat string
 
 var Json SecretFormat = "json"
 var Yaml SecretFormat = "yaml"
-var None SecretFormat = "none"
 
 type SecretMeta struct {
 	// Overrides Env.SafeUseKubernetesSecrets()
@@ -217,9 +216,6 @@ func transform(secret SecretStored, value string) (string, error) {
 	}
 
 	switch secret.Meta.Format {
-	case None:
-		// Return the parsed string as is, without any further validation.
-		return parsedString, nil
 	case Json:
 		// If the parsed string is a valid JSON, return it as is.
 		// Otherwise, assume the parsing failed and return the original JSON string.
@@ -261,7 +257,6 @@ func transform(secret SecretStored, value string) (string, error) {
 //     to the original value.
 //
 // 2.	Compute the output string:
-//   - If the Meta.Format field is None, then the output string is parsedString.
 //   - If the Meta.Format field is Json, then the output string is parsedString
 //     if parsedString is a valid JSON, otherwise it’s the original value.
 //   - If the Meta.Format field is Yaml, then the output string is the result of

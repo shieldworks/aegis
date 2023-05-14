@@ -20,7 +20,6 @@ import (
 	"github.com/shieldworks/aegis/core/validation"
 	"github.com/spiffe/go-spiffe/v2/spiffeid"
 	"github.com/spiffe/go-spiffe/v2/spiffetls/tlsconfig"
-	"github.com/spiffe/go-spiffe/v2/workloadapi"
 	"io"
 	"log"
 	"net/http"
@@ -32,36 +31,17 @@ func Post(workloadId, secret, namespace, backingStore string, useKubernetes bool
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	source, err := workloadapi.NewX509Source(
-		ctx, workloadapi.WithClientOptions(workloadapi.WithAddr(env.SpiffeSocketUrl())),
-	)
-
-	if err != nil {
-		fmt.Println("Post: I cannot execute command because I cannot talk to SPIRE.")
-		fmt.Println("")
-		return
-	}
-
-	svid, err := source.GetX509SVID()
-	if err != nil {
-		fmt.Println("Post: I am having trouble fetching my identity from SPIRE.")
-		fmt.Println("Post: I won’t proceed until you put me in a secured container.")
-		fmt.Println("")
-		return
-	}
-
+	source, proceed := acquireSource(ctx)
 	defer func() {
+		if source == nil {
+			return
+		}
 		err := source.Close()
 		if err != nil {
-			log.Println("Post: Problem closing the workload source.", err.Error())
+			log.Println("Problem closing the workload source.")
 		}
 	}()
-
-	// Make sure that the binary is enclosed in a Pod that we trust.
-	if !validation.IsSentinel(svid.ID.String()) {
-		fmt.Println("Post: I don’t know you, and it’s crazy: '" + svid.ID.String() + "'")
-		fmt.Println("`aegis` can only run from within the Sentinel container.")
-		fmt.Println("")
+	if !proceed {
 		return
 	}
 
@@ -100,14 +80,14 @@ func Post(workloadId, secret, namespace, backingStore string, useKubernetes bool
 		}
 	}
 
-	f := data.None
+	f := data.Json
 	switch data.SecretFormat(format) {
 	case data.Json:
 		f = data.Json
 	case data.Yaml:
 		f = data.Yaml
 	default:
-		f = data.None
+		f = data.Json
 	}
 
 	sr := reqres.SecretUpsertRequest{

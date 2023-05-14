@@ -8,7 +8,10 @@
 #     .\_/.
 #
 
-WORKLOAD=$(kubectl get po -n default \
-  | grep "aegis-workload-demo-" | awk '{print $1}')
+SENTINEL=$(kubectl get po -n aegis-system \
+  | grep "aegis-sentinel-" | awk '{print $1}')
 
-kubectl exec "$WORKLOAD" -- ./env
+kubectl exec "$SENTINEL" -n aegis-system -- aegis \
+  -w "aegis-workload-demo" \
+  -n "default" \
+  -s "AegisRocks!"

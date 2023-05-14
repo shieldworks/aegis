@@ -20,6 +20,25 @@ import (
 	"net/http"
 )
 
+func isSentinel(j audit.JournalEntry, cid string, w http.ResponseWriter, svid string) bool {
+	audit.Log(j)
+
+	if validation.IsSentinel(svid) {
+		return true
+	}
+
+	j.Event = audit.EventBadSvid
+	audit.Log(j)
+
+	w.WriteHeader(http.StatusBadRequest)
+	_, err := io.WriteString(w, "")
+	if err != nil {
+		log.InfoLn(&cid, "Delete: Problem sending response", err.Error())
+	}
+
+	return false
+}
+
 func Delete(cid string, w http.ResponseWriter, r *http.Request, svid string) {
 	j := audit.JournalEntry{
 		CorrelationId: cid,
@@ -30,17 +49,7 @@ func Delete(cid string, w http.ResponseWriter, r *http.Request, svid string) {
 		Event:         audit.EventEnter,
 	}
 
-	audit.Log(j)
-
-	if !validation.IsSentinel(svid) {
-		j.Event = audit.EventBadSvid
-		audit.Log(j)
-
-		w.WriteHeader(http.StatusBadRequest)
-		_, err := io.WriteString(w, "")
-		if err != nil {
-			log.InfoLn(&cid, "Delete: Problem sending response", err.Error())
-		}
+	if !isSentinel(j, cid, w, svid) {
 		return
 	}
 

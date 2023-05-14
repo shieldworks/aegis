@@ -24,8 +24,8 @@ SENTINEL=$(kubectl get po -n aegis-system \
 # -s : is the actual value of the secret.
 
 kubectl exec "$SENTINEL" -n aegis-system -- aegis \
--w "aegis-workload-demo" \
--n "default" \
--s '{"username": "root", "password": "SuperSecret", "value": "AegisRocks"}' \
--t '{"USERNAME":"{{.username}}", "PASSWORD":"{{.password}}", "VALUE": "{{.value}}"}' \
--k
+  -w "aegis-workload-demo" \
+  -n "default" \
+  -s '{"username": "root", "password": "SuperSecret", "value": "AegisRocks"}' \
+  -t '{"USERNAME":"{{.username}}", "PASSWORD":"{{.password}}", "VALUE": "{{.value}}"}' \
+  -k
