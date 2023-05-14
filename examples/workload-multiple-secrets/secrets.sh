@@ -11,5 +11,4 @@
 WORKLOAD=$(kubectl get po -n default \
   | grep "aegis-workload-demo-" | awk '{print $1}')
 
-
 kubectl logs "$WORKLOAD" -n default -f
