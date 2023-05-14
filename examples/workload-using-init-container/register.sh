@@ -22,7 +22,6 @@ SENTINEL=$(kubectl get po -n aegis-system \
 # -k : means Aegis will update an associated Kubernetes Secret.
 # -t : will be used to transform the fields of the payload.
 # -s : is the actual value of the secret.
-# -t : is the template transformation used to interpolate the value.
 
 kubectl exec "$SENTINEL" -n aegis-system -- aegis \
 -w "aegis-workload-demo" \
