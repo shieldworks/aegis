@@ -88,7 +88,8 @@ func main() {
 		return
 	}
 
-	if secret == nil || *secret == "" {
+	// If secret is truthy and deleteSecret is falsy:
+	if (secret == nil || *secret == "") && (deleteSecret == nil || !*deleteSecret) {
 		fmt.Println("Please provide a secret.")
 		fmt.Println("")
 		fmt.Println("type `aegis -h` (without backticks) and press return for help.")
