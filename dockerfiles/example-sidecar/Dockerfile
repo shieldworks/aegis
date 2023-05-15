@@ -21,7 +21,7 @@ RUN CGO_ENABLED=0 GOOS=linux go build -a -o aegis-workload-demo \
 FROM gcr.io/distroless/static-debian11
 
 LABEL "maintainers"="Volkan Özçelik <volkan@aegis.ist>"
-LABEL "version"="0.15.8"
+LABEL "version"="0.16.0"
 LABEL "website"="https://aegis.ist/"
 LABEL "repo"="https://github.com/shieldworks/aegis"
 LABEL "documentation"="https://aegis.ist/docs/"
