@@ -14,9 +14,9 @@ spec:
   # SPIFFE ID `MUST` start with "spiffe://aegis.ist/workload/$workloadName/ns/"
   # for `aegis-safe` to recognize the workload and dispatch secrets to it.
   spiffeIDTemplate: "spiffe://aegis.ist\
-    /workload/aegis-workload-demo\
+    /workload/example\
     /ns/default\
-    /sa/aegis-workload-demo\
+    /sa/example\
     /n/{{ .PodMeta.Name }}"
   podSelector:
     matchLabels:

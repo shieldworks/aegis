@@ -8,7 +8,7 @@
 #     .\_/.
 #
 
-cd ./examples/workload-using-sdk || exit
+cd ./examples/using-sdk || exit
 
 kubectl apply -f ./k8s/ServiceAccount.yaml
 kubectl apply -k ./k8s

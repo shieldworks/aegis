@@ -10,7 +10,7 @@
 
 . ./env.sh
 
-cd ./workload-init-container || exit
+cd ./init-container || exit
 
 kubectl apply -f ServiceAccount.yaml
 kubectl apply -f Secret.yaml

@@ -11,4 +11,4 @@
 PACKAGE="$1"
 
 go mod vendor
-go build -o "${PACKAGE}" ./examples/workload-using-sdk/main.go
+go build -o "${PACKAGE}" ./examples/using-sdk/main.go

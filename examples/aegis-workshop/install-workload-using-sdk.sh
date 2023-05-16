@@ -10,7 +10,7 @@
 
 . ./env.sh
 
-cd ./workload-sdk || exit
+cd ./sdk || exit
 
 kubectl apply -f ServiceAccount.yaml
 kubectl apply -k .

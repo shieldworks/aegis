@@ -10,7 +10,7 @@
 
 . ./env.sh
 
-cd ./workload-sidecar || exit
+cd ./sidecar || exit
 
 kubectl apply -f ServiceAccount.yaml
 kubectl apply -k .

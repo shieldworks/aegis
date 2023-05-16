@@ -20,11 +20,11 @@ SAFE=$(kubectl get po -n aegis-system \
 export SAFE=$SAFE
 
 WORKLOAD=$(kubectl get po -n default \
-  | grep "aegis-workload-demo-" | awk '{print $1}')
+  | grep "example-" | awk '{print $1}')
 export WORKLOAD=$WORKLOAD
 
 INSPECTOR=$(kubectl get po -n default \
   | grep "aegis-inspector-" | awk '{print $1}')
 export INSPECTOR=$INSPECTOR
 
-export DEPLOYMENT="aegis-workload-demo"
+export DEPLOYMENT="example"

@@ -8,7 +8,7 @@
 #     .\_/.
 #
 
-cd ./examples/workload-using-init-container || exit
+cd ./examples/using-init-container || exit
 
 kubectl apply -f ./k8s/ServiceAccount.yaml
 kubectl apply -k ./k8s

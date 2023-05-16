@@ -12,9 +12,9 @@
 
 # Freeform transformation
 kubectl exec "$SENTINEL" -n aegis-system -- aegis \
--w "aegis-workload-demo" \
--n "default" \
--f "none" \
--s '{"username": "admin", "password": "cashcow!", "value": "AegisRocks!"}' \
--t 'NEITHER JSON "{{.username}}", "PASSWORD":"{{.password}}" NOR YAML "VALUE" {{.value}}"' \
--a
+  -w "example" \
+  -n "default" \
+  -f "none" \
+  -s '{"username": "admin", "password": "CashCow!", "value": "AegisRocks!"}' \
+  -t 'NEITHER JSON "{{.username}}", "PASSWORD":"{{.password}}" NOR YAML "VALUE" {{.value}}"' \
+  -a

@@ -8,7 +8,7 @@
 #     .\_/.
 #
 
-cd ./examples/workload-using-sidecar || exit
+cd ./examples/using-sidecar || exit
 
 kubectl apply -f ./k8s/ServiceAccount.yaml
 kubectl apply -f ./k8s/Deployment.yaml

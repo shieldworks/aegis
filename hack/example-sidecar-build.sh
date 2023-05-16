@@ -10,4 +10,4 @@
 
 PACKAGE="$1"
 
-go build -o "${PACKAGE}" ./examples/workload-using-sidecar/main.go
+go build -o "${PACKAGE}" ./examples/using-sidecar/main.go
