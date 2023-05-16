@@ -7,7 +7,7 @@
 #
 
 # The common version tag assigned to all the things.
-VERSION=0.16.0
+VERSION=0.16.1
 
 # tags a release
 tag:
@@ -19,16 +19,16 @@ tag:
 
 # Builds “Aegis Safe” into a binary.
 safe-build:
-	./hack/safe-build.sh "aegis-safe"
+	./hack/safe-build.sh "aegis-ist-safe"
 # Packages the “Aegis Safe” into a container image.
 safe-bundle:
-	./hack/bundle.sh "aegis-safe" $(VERSION) "dockerfiles/aegis-safe/Dockerfile"
+	./hack/bundle.sh "aegis-ist-safe" $(VERSION) "dockerfiles/aegis-ist/safe.Dockerfile"
 # Pushes the “Aegis Safe” container to the public registry.
 safe-push:
-	./hack/push.sh "aegis-safe" $(VERSION) "aegishub/aegis-safe"
+	./hack/push.sh "aegis-ist-safe" $(VERSION) "aegishub/aegis-ist-safe"
 # Pushes the “Aegis Safe” container image to the local registry.
 safe-push-local:
-	./hack/push.sh "aegis-safe" $(VERSION) "localhost:5000/aegis-safe"
+	./hack/push.sh "aegis-ist-safe" $(VERSION) "localhost:5000/aegis-ist-safe"
 # Deploys “Aegis Safe” from the public registry into the cluster.
 safe-deploy:
 	./hack/safe-deploy.sh
@@ -42,16 +42,16 @@ safe-deploy-local:
 
 # Builds “Aegis Sentinel” into a binary.
 sentinel-build:
-	./hack/sentinel-build.sh "aegis-sentinel"
+	./hack/sentinel-build.sh "aegis-ist-sentinel"
 # Packages the “Aegis Sentinel” binary into a container image.
 sentinel-bundle:
-	./hack/bundle.sh "aegis-sentinel" $(VERSION) "dockerfiles/aegis-sentinel/Dockerfile"
+	./hack/bundle.sh "aegis-ist-sentinel" $(VERSION) "dockerfiles/aegis-ist/sentinel.Dockerfile"
 # Pushes the “Aegis Sentinel” container image the the public registry.
 sentinel-push:
-	./hack/push.sh "aegis-sentinel" $(VERSION) "aegishub/aegis-sentinel"
+	./hack/push.sh "aegis-ist-sentinel" $(VERSION) "aegishub/aegis-ist-sentinel"
 # Pushes the “Aegis Sentinel” container image to the local registry.
 sentinel-push-local:
-	./hack/push.sh "aegis-sentinel" $(VERSION) "localhost:5000/aegis-sentinel"
+	./hack/push.sh "aegis-ist-sentinel" $(VERSION) "localhost:5000/aegis-ist-sentinel"
 # Deploys “Aegis Sentinel” from the public registry into the cluster.
 sentinel-deploy:
 	./hack/sentinel-deploy.sh
@@ -65,16 +65,16 @@ sentinel-deploy-local:
 
 # Builds “Aegis Init Container” into a binary.
 init-container-build:
-	./hack/init-container-build.sh "aegis-init-container"
+	./hack/init-container-build.sh "aegis-ist-init-container"
 # Packages the “Aegis Init Container” binary into a container image.
 init-container-bundle:
-	./hack/bundle.sh "aegis-init-container" $(VERSION) "dockerfiles/aegis-init-container/Dockerfile"
+	./hack/bundle.sh "aegis-ist-init-container" $(VERSION) "dockerfiles/aegis-ist/init-container.Dockerfile"
 # Pushes the “Aegis Init Container” container image to the public registry.
 init-container-push:
-	./hack/push.sh "aegis-init-container" $(VERSION) "aegishub/aegis-init-container"
+	./hack/push.sh "aegis-ist-init-container" $(VERSION) "aegishub/aegis-ist-init-container"
 # Pushes the “Aegis Init Container” container image to the local registry.
 init-container-push-local:
-	./hack/push.sh "aegis-init-container" $(VERSION) "localhost:5000/aegis-init-container"
+	./hack/push.sh "aegis-ist-init-container" $(VERSION) "localhost:5000/aegis-ist-init-container"
 
 #
 # ## Aegis Sidecar ##
@@ -82,16 +82,16 @@ init-container-push-local:
 
 # Builds “Aegis Sidecar” into a binary.
 sidecar-build:
-	./hack/sidecar-build.sh "aegis-sidecar"
+	./hack/sidecar-build.sh "aegis-ist-sidecar"
 # Packages the “Aegis Sidecar” binary into a container image.
 sidecar-bundle:
-	./hack/bundle.sh "aegis-sidecar" $(VERSION) "dockerfiles/aegis-sidecar/Dockerfile"
+	./hack/bundle.sh "aegis-ist-sidecar" $(VERSION) "dockerfiles/aegis-ist/sidecar.Dockerfile"
 # Pushes the “Aegis Sidecar” container image to the public registry.
 sidecar-push:
-	./hack/push.sh "aegis-sidecar" $(VERSION) "aegishub/aegis-sidecar"
+	./hack/push.sh "aegis-ist-sidecar" $(VERSION) "aegishub/aegis-ist-sidecar"
 # Pushes the “Aegis Sidecar” container image to the local registry.
 sidecar-push-local:
-	./hack/push.sh "aegis-sidecar" $(VERSION) "localhost:5000/aegis-sidecar"
+	./hack/push.sh "aegis-ist-sidecar" $(VERSION) "localhost:5000/aegis-ist-sidecar"
 
 #
 # ## Use Case: Sidecar ##
@@ -99,19 +99,19 @@ sidecar-push-local:
 
 # Builds the “Sidecar” use case into a binary.
 example-sidecar-build:
-	./hack/example-sidecar-build.sh "aegis-workload-demo-using-sidecar"
+	./hack/example-sidecar-build.sh "example-using-sidecar"
 # Packages the “Sidecar” use case binary into a container image.
 example-sidecar-bundle:
-	./hack/bundle.sh "aegis-workload-demo-using-sidecar" \
-		$(VERSION) "dockerfiles/example-sidecar/Dockerfile"
+	./hack/bundle.sh "example-using-sidecar" \
+		$(VERSION) "dockerfiles/example/sidecar.Dockerfile"
 # Pushes the “Sidecar” use case container image to the public registry.
 example-sidecar-push:
-	./hack/push.sh "aegis-workload-demo-using-sidecar" \
-		$(VERSION) "aegishub/aegis-workload-demo-using-sidecar"
+	./hack/push.sh "example-using-sidecar" \
+		$(VERSION) "aegishub/example-using-sidecar"
 # Pushes the “Sidecar” use case container image to the local registry.
 example-sidecar-push-local:
-	./hack/push.sh "aegis-workload-demo-using-sidecar" \
-		$(VERSION) "localhost:5000/aegis-workload-demo-using-sidecar"
+	./hack/push.sh "example-using-sidecar" \
+		$(VERSION) "localhost:5000/example-using-sidecar"
 # Deploys the “Sidecar” use case app from the public registry into the cluster.
 example-sidecar-deploy:
 	./hack/example-sidecar-deploy.sh
@@ -125,19 +125,19 @@ example-sidecar-deploy-local:
 
 # Builds the “SDK” use case into a binary.
 example-sdk-build:
-	./hack/example-sdk-build.sh "aegis-workload-demo-using-sdk"
+	./hack/example-sdk-build.sh "example-using-sdk"
 # Packages the “SDK” use case binary into a container image.
 example-sdk-bundle:
-	./hack/bundle.sh "aegis-workload-demo-using-sdk" \
-		$(VERSION) "dockerfiles/example-sdk/Dockerfile"
+	./hack/bundle.sh "example-using-sdk" \
+		$(VERSION) "dockerfiles/example/sdk.Dockerfile"
 # Pushes the “SDK” use case container image to the public registry.
 example-sdk-push:
-	./hack/push.sh "aegis-workload-demo-using-sdk" \
-		$(VERSION) "aegishub/aegis-workload-demo-using-sdk"
+	./hack/push.sh "example-using-sdk" \
+		$(VERSION) "aegishub/example-using-sdk"
 # Pushes the “SDK” use case container image to the local registry.
 example-sdk-push-local:
-	./hack/push.sh "aegis-workload-demo-using-sdk" \
-		$(VERSION) "localhost:5000/aegis-workload-demo-using-sdk"
+	./hack/push.sh "example-using-sdk" \
+		$(VERSION) "localhost:5000/example-using-sdk"
 # Deploys the “SDK” use case app from the public registry into the cluster.
 example-sdk-deploy:
 	./hack/example-sdk-deploy.sh
@@ -151,19 +151,19 @@ example-sdk-deploy-local:
 
 # Builds the “multiple secrets” use case into a binary.
 example-multiple-secrets-build:
-	./hack/example-multiple-secrets-build.sh "aegis-workload-demo-multiple-secrets"
+	./hack/example-multiple-secrets-build.sh "example-multiple-secrets"
 # Packages the “multiple secrets” use case binary into a container image.
 example-multiple-secrets-bundle:
-	./hack/bundle.sh "aegis-workload-demo-multiple-secrets" \
-		$(VERSION) "dockerfiles/example-multiple-secrets/Dockerfile"
+	./hack/bundle.sh "example-multiple-secrets" \
+		$(VERSION) "dockerfiles/example/multiple-secrets.Dockerfile"
 # Pushes the “multiple secrets” use case container image to the public registry.
 example-multiple-secrets-push:
-	./hack/push.sh "aegis-workload-demo-multiple-secrets" \
-		$(VERSION) "aegishub/aegis-workload-demo-multiple-secrets"
+	./hack/push.sh "example-multiple-secrets" \
+		$(VERSION) "aegishub/example-multiple-secrets"
 # Pushes the “multiple secrets” use case container image to the local registry.
 example-multiple-secrets-push-local:
-	./hack/push.sh "aegis-workload-demo-multiple-secrets" \
-		$(VERSION) "localhost:5000/aegis-workload-demo-multiple-secrets"
+	./hack/push.sh "example-multiple-secrets" \
+		$(VERSION) "localhost:5000/example-multiple-secrets"
 # Deploys the “multiple secrets” use case app from the public registry into the cluster.
 example-multiple-secrets-deploy:
 	./hack/example-multiple-secrets-deploy.sh
@@ -177,19 +177,19 @@ example-multiple-secrets-deploy-local:
 
 # Builds the “Init Container” use case into a binary.
 example-init-container-build:
-	./hack/example-init-container-build.sh "aegis-workload-demo-using-init-container"
+	./hack/example-init-container-build.sh "example-using-init-container"
 # Packages the “Init Container” binary into a container image.
 example-init-container-bundle:
-	./hack/bundle.sh "aegis-workload-demo-using-init-container" \
-		$(VERSION) "dockerfiles/example-init-container/Dockerfile"
+	./hack/bundle.sh "example-using-init-container" \
+		$(VERSION) "dockerfiles/example/init-container.Dockerfile"
 # Pushes the “Init Container” container image to the public registry.
 example-init-container-push:
-	./hack/push.sh "aegis-workload-demo-using-init-container" \
-		$(VERSION) "aegishub/aegis-workload-demo-using-init-container"
+	./hack/push.sh "example-using-init-container" \
+		$(VERSION) "aegishub/example-using-init-container"
 # Pushes the “Init Container” container image to the local registry.
 example-init-container-push-local:
-	./hack/push.sh "aegis-workload-demo-using-init-container" \
-		$(VERSION) "localhost:5000/aegis-workload-demo-using-init-container"
+	./hack/push.sh "example-using-init-container" \
+		$(VERSION) "localhost:5000/example-using-init-container"
 # Deploys the “Init Container” app from the public registry into the cluster.
 example-init-container-deploy:
 	./hack/example-init-container-deploy.sh

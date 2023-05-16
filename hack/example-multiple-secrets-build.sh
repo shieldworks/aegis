@@ -11,4 +11,4 @@
 PACKAGE="$1"
 
 go mod vendor
-go build -o "${PACKAGE}" ./examples/workload-multiple-secrets/main.go
+go build -o "${PACKAGE}" ./examples/multiple-secrets/main.go

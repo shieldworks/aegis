@@ -34,8 +34,11 @@ vendor
 /aegis-init-container
 /aegis-sentinel
 /aegis-sidecar
-/aegis-workload-demo
-/aegis-workload-demo-using-init-container
-/aegis-workload-demo-using-sidecar
-/aegis-workload-demo-using-sdk
-/aegis-workload-demo-multiple-secrets
+/example-using-init-container
+/example-using-sidecar
+/example-using-sdk
+/example-multiple-secrets
+/aegis-ist-init-container
+/aegis-ist-safe
+/aegis-ist-sentinel
+/aegis-ist-sidecar

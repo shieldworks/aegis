@@ -8,7 +8,7 @@
 #     .\_/.
 #
 
-cd ./examples/workload-multiple-secrets || exit
+cd ./examples/multiple-secrets || exit
 
 kubectl apply -f ./k8s/ServiceAccount.yaml
 kubectl apply -k ./k8s

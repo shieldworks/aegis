@@ -11,9 +11,9 @@
 . ./env.sh
 
 kubectl exec "$SENTINEL" -n aegis-system -- aegis \
--w "aegis-workload-demo" \
--n "default" \
--f "yaml" \
--s '{"username": "admin", "password": "cashcow!", "value": "AegisRocks!"}' \
--t '{"USERNAME":"{{.username}}", "PASSWORD":"{{.password}}", "VALUE": "{{.value}}"}' \
--a
+  -w "example" \
+  -n "default" \
+  -f "yaml" \
+  -s '{"username": "admin", "password": "CashCow!", "value": "AegisRocks!"}' \
+  -t '{"USERNAME":"{{.username}}", "PASSWORD":"{{.password}}", "VALUE": "{{.value}}"}' \
+  -a

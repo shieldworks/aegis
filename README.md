@@ -101,7 +101,7 @@ and let us change the world together 🤘.
 * **Changelog**: <https://aegis.ist/changelog/>
 * **Community**: [Join **Aegis**’ Slack Workspace][slack-invite]
 * **Contact**: <https://aegis.ist/contact/>
-* **Media Kit**: <https://aegist.ist/media/>
+* **Media Kit**: <https://aegis.ist/media/>
 * **Changelog**: <https://aegis.ist/changelog/>
 
 ### Guides and Tutorials

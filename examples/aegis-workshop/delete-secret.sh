@@ -10,8 +10,6 @@
 
 . ./env.sh
 
-# FIXME: -s argument should not be needed.
 kubectl exec "$SENTINEL" -n aegis-system -- aegis \
--w "aegis-workload-demo" \
--s "dummy" \
--d
+  -w "example" \
+  -d

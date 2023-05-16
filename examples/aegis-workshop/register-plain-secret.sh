@@ -11,6 +11,6 @@
 . ./env.sh
 
 kubectl exec "$SENTINEL" -n aegis-system -- aegis \
--w "aegis-workload-demo" \
--n "default" \
--s "AegisRocks!"
+  -w "example" \
+  -n "default" \
+  -s "AegisRocks!"
