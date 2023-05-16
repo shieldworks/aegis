@@ -38,4 +38,7 @@ vendor
 /example-using-sidecar
 /example-using-sdk
 /example-multiple-secrets
-
+/aegis-ist-init-container
+/aegis-ist-safe
+/aegis-ist-sentinel
+/aegis-ist-sidecar
