@@ -26,7 +26,7 @@ spec:
       serviceAccountName: example
       containers:
       - name: main
-        image: aegishub/example-using-sdk:0.16.0
+        image: aegishub/example-using-sdk:0.16.1
         volumeMounts:
         # Volume mount for SPIRE unix domain socket.
         - name: spire-agent-socket
