@@ -19,7 +19,7 @@ tag:
 
 # Builds “Aegis Safe” into a binary.
 safe-build:
-	./hack/safe-build.sh "aegis-ist-safe"
+	./hack/build.sh "aegis-ist-safe" "./app/safe/cmd/main.go"
 # Packages the “Aegis Safe” into a container image.
 safe-bundle:
 	./hack/bundle.sh "aegis-ist-safe" $(VERSION) "dockerfiles/aegis-ist/safe.Dockerfile"
@@ -42,7 +42,7 @@ safe-deploy-local:
 
 # Builds “Aegis Sentinel” into a binary.
 sentinel-build:
-	./hack/sentinel-build.sh "aegis-ist-sentinel"
+	./hack/build.sh "aegis-ist-sentinel" "./app/sentinel/cmd/main.go"
 # Packages the “Aegis Sentinel” binary into a container image.
 sentinel-bundle:
 	./hack/bundle.sh "aegis-ist-sentinel" $(VERSION) "dockerfiles/aegis-ist/sentinel.Dockerfile"
@@ -65,7 +65,7 @@ sentinel-deploy-local:
 
 # Builds “Aegis Init Container” into a binary.
 init-container-build:
-	./hack/init-container-build.sh "aegis-ist-init-container"
+	./hack/build.sh "aegis-ist-init-container" "./app/init-container/cmd/main.go"
 # Packages the “Aegis Init Container” binary into a container image.
 init-container-bundle:
 	./hack/bundle.sh "aegis-ist-init-container" $(VERSION) "dockerfiles/aegis-ist/init-container.Dockerfile"
@@ -82,7 +82,7 @@ init-container-push-local:
 
 # Builds “Aegis Sidecar” into a binary.
 sidecar-build:
-	./hack/sidecar-build.sh "aegis-ist-sidecar"
+	./hack/build.sh "aegis-ist-sidecar" "./app/sidecar/cmd/main.go"
 # Packages the “Aegis Sidecar” binary into a container image.
 sidecar-bundle:
 	./hack/bundle.sh "aegis-ist-sidecar" $(VERSION) "dockerfiles/aegis-ist/sidecar.Dockerfile"
@@ -99,7 +99,7 @@ sidecar-push-local:
 
 # Builds the “Sidecar” use case into a binary.
 example-sidecar-build:
-	./hack/example-sidecar-build.sh "example-using-sidecar"
+	./hack/build.sh "example-using-sidecar" "./examples/using-sidecar/main.go"
 # Packages the “Sidecar” use case binary into a container image.
 example-sidecar-bundle:
 	./hack/bundle.sh "example-using-sidecar" \
@@ -125,7 +125,7 @@ example-sidecar-deploy-local:
 
 # Builds the “SDK” use case into a binary.
 example-sdk-build:
-	./hack/example-sdk-build.sh "example-using-sdk"
+	./hack/build.sh "example-using-sdk" "./examples/using-sdk/main.go"
 # Packages the “SDK” use case binary into a container image.
 example-sdk-bundle:
 	./hack/bundle.sh "example-using-sdk" \
@@ -151,7 +151,7 @@ example-sdk-deploy-local:
 
 # Builds the “multiple secrets” use case into a binary.
 example-multiple-secrets-build:
-	./hack/example-multiple-secrets-build.sh "example-multiple-secrets"
+	./hack/build.sh "example-multiple-secrets" "./examples/multiple-secrets/main.go"
 # Packages the “multiple secrets” use case binary into a container image.
 example-multiple-secrets-bundle:
 	./hack/bundle.sh "example-multiple-secrets" \
@@ -177,7 +177,7 @@ example-multiple-secrets-deploy-local:
 
 # Builds the “Init Container” use case into a binary.
 example-init-container-build:
-	./hack/example-init-container-build.sh "example-using-init-container"
+	./hack/build.sh "example-using-init-container" "./examples/using-init-container/main.go"
 # Packages the “Init Container” binary into a container image.
 example-init-container-bundle:
 	./hack/bundle.sh "example-using-init-container" \
