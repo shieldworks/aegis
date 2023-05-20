@@ -9,6 +9,7 @@
 #
 
 PACKAGE="$1"
+BINS="$2"
 
 go mod vendor
-go build -o "${PACKAGE}" ./examples/multiple-secrets/main.go
+go build -o "${PACKAGE}" "${BINS}"
