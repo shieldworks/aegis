@@ -192,6 +192,11 @@ to get started.
 
 Use GitHub issues to request features or file bugs.
 
+## Communications
+
+* [**Slack** is where the community hangs out][slack-invite]
+* [Send comments and suggestions to **feedback@aegis.ist**](mailto:feedback@aegis.ist)
+
 ## Maintainers
 
 As of now, I, [Volkan Özçelik][me], am the sole maintainer of **Aegis**.
