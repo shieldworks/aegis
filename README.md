@@ -60,15 +60,20 @@ future of **Aegis** looks like.
 
 ## Status of This Software
 
-This project is in **active development**.
+**Aegis**, is under dynamic and progressive development.
 
-The code that have been officially signed and released is stable,
-has passed integration tests, and can be used in a production
-environment (*at your own risk—[see LICENSE](LICENSE)*).
+The code that we’ve officially signed and released maintains a 
+high standard of stability and dependability. However, we do encourage 
+it be used in a production environment (*at your own risk—[see LICENSE](LICENSE)*).
 
-However,—semantically-speaking—**Aegis** is still an **alpha** software.
-Meaning, until **Aegis** reaches `v1.0.0`, nothing is backwards compatible
-and anything can change with or without notice.
+It’s important to note that, technically speaking, **Aegis** currently holds the 
+status of an alpha software. This simply means that as we journey towards our milestone of 
+`v1.0.0`, it's possible for changes to occur—both major and minor. While this might mean 
+some aspects are not backward compatible, it's a testament to our unwavering commitment 
+to refining and enhancing **Aegis**.
+
+In a nutshell, we are ceaselessly pushing the boundaries of what’s possible, while 
+ensuring our software stays as dependable and effective for production use.
 
 ## 🦆🦆🦆 (*Docs*)
 
@@ -194,8 +199,8 @@ Use GitHub issues to request features or file bugs.
 
 ## Communications
 
-* [**Slack** is where the community hangs out][slack-invite]
-* [Send comments and suggestions to **feedback@aegis.ist**](mailto:feedback@aegis.ist)
+* [**Slack** is where the community hangs out][slack-invite].
+* [Send comments and suggestions to **feedback@aegis.ist**](mailto:feedback@aegis.ist).
 
 ## Maintainers
 
