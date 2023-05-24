@@ -18,7 +18,7 @@ contributors to adhere to it in all interactions with the project.
 
 1. Ensure all components build and function properly on a local Kubernetes cluster (*such as minikube*).
 2. Adhere to the code standards described below.
-3. Update necessary `README.md` documents to reflect your changes.
+3. Update necessary `README.md` and other documents to reflect your changes.
 4. Keep pull requests as granular as possible. Reviewing large amounts of code 
    can be error-prone and time-consuming for the reviewers.
 6. Engage in the discussion under the pull request and proceed accordingly.
