@@ -187,7 +187,9 @@ func Secret(cid string, w http.ResponseWriter, r *http.Request, svid string) {
 	appendValue := sr.AppendValue
 
 	if workloadId == "" && encrypt {
+		// has side effect of sending response.
 		encryptValue(cid, value, j, w)
+		return
 	}
 
 	if namespace == "" {
