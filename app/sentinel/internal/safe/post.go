@@ -80,7 +80,7 @@ func Post(workloadId, secret, namespace, backingStore string, useKubernetes bool
 		}
 	}
 
-	f := data.Json
+	var f data.SecretFormat
 	switch data.SecretFormat(format) {
 	case data.Json:
 		f = data.Json

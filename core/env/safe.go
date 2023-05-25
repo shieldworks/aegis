@@ -153,7 +153,7 @@ func SafeAgeKeySecretName() string {
 }
 
 // SafeSecretNamePrefix returns the prefix to be used for the names of secrets that
-// Aegis Safe stores, when it is configured to persist the secrest in the Kubernetes
+// Aegis Safe stores, when it is configured to persist the secret in the Kubernetes
 // cluster as Kubernetes `Secret` objects.
 //
 // The prefix is retrieved using the "AEGIS_SAFE_SECRET_NAME_PREFIX"
