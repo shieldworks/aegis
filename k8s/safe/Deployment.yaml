@@ -29,7 +29,7 @@ spec:
       serviceAccountName: aegis-safe
       containers:
         - name: main
-          image: aegishub/aegis-ist-safe:0.16.1
+          image: aegishub/aegis-ist-safe:0.17.0
           ports:
             - containerPort: 8443
           volumeMounts:
