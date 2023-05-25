@@ -19,8 +19,9 @@ import (
 	"net/http"
 )
 
-func Secret(cid string, w http.ResponseWriter, r *http.Request, svid string) {
-	j := audit.JournalEntry{
+func createDefaultJournalEntry(cid, svid string,
+	r *http.Request) audit.JournalEntry {
+	return audit.JournalEntry{
 		CorrelationId: cid,
 		Entity:        reqres.SecretFetchRequest{},
 		Method:        r.Method,
@@ -28,27 +29,23 @@ func Secret(cid string, w http.ResponseWriter, r *http.Request, svid string) {
 		Svid:          svid,
 		Event:         audit.EventEnter,
 	}
+}
 
-	audit.Log(j)
-
-	if !isSentinel(j, cid, w, svid) {
-		return
-	}
-
-	log.DebugLn(&cid, "Secret: sentinel svid:", svid)
-
+func readBody(cid string, r *http.Request, w http.ResponseWriter,
+	j audit.JournalEntry) []byte {
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		j.Event = audit.EventBrokenBody
 		audit.Log(j)
 
 		w.WriteHeader(http.StatusBadRequest)
-		_, err := io.WriteString(w, "")
-		if err != nil {
-			log.InfoLn(&cid, "Secret: Problem sending response", err.Error())
+		_, err2 := io.WriteString(w, "")
+		if err2 != nil {
+			log.InfoLn(&cid, "Secret: Problem sending response", err2.Error())
 		}
-		return
+		return nil
 	}
+
 	defer func(b io.ReadCloser) {
 		if b == nil {
 			return
@@ -59,10 +56,13 @@ func Secret(cid string, w http.ResponseWriter, r *http.Request, svid string) {
 		}
 	}(r.Body)
 
-	log.DebugLn(&cid, "Secret: Parsed request body")
+	return body
+}
 
+func unmarshalRequest(cid string, body []byte, j audit.JournalEntry,
+	w http.ResponseWriter) *reqres.SecretUpsertRequest {
 	var sr reqres.SecretUpsertRequest
-	err = json.Unmarshal(body, &sr)
+	err := json.Unmarshal(body, &sr)
 	if err != nil {
 		j.Event = audit.EventRequestTypeMismatch
 		audit.Log(j)
@@ -71,14 +71,113 @@ func Secret(cid string, w http.ResponseWriter, r *http.Request, svid string) {
 		if err != nil {
 			log.InfoLn(&cid, "Secret: Problem sending response", err.Error())
 		}
+		return nil
+	}
+	return &sr
+}
+
+func encryptValue(cid string, value string, j audit.JournalEntry,
+	w http.ResponseWriter) {
+	if value == "" {
+		j.Event = audit.EventNoValue
+		audit.Log(j)
+
+		w.WriteHeader(http.StatusBadRequest)
+		_, err := io.WriteString(w, "")
+		if err != nil {
+			log.InfoLn(&cid, "Secret: Problem sending response", err.Error())
+		}
 		return
 	}
+
+	encrypted, err := state.EncryptValue(value)
+	if err != nil {
+		j.Event = audit.EventEncryptionFailed
+		audit.Log(j)
+
+		w.WriteHeader(http.StatusInternalServerError)
+		_, err2 := io.WriteString(w, "")
+		if err2 != nil {
+			log.InfoLn(&cid, "Secret: Problem sending response", err2.Error())
+		}
+		return
+	}
+
+	_, err = io.WriteString(w, encrypted)
+	if err != nil {
+		log.InfoLn(&cid, "Secret: Problem sending response", err.Error())
+	}
+	return
+}
+
+func decryptValue(cid string, value string, j audit.JournalEntry,
+	w http.ResponseWriter) (string, bool) {
+	decrypted, err := state.DecryptValue(value)
+	if err != nil {
+		j.Event = audit.EventDecryptionFailed
+		audit.Log(j)
+
+		w.WriteHeader(http.StatusInternalServerError)
+		_, err := io.WriteString(w, "")
+		if err != nil {
+			log.InfoLn(&cid, "Secret: Problem sending response", err.Error())
+		}
+		return "", true
+	}
+
+	return decrypted, false
+}
+
+func upsert(secretToStore entity.SecretStored,
+	appendValue bool, workloadId string, cid string,
+	j audit.JournalEntry, w http.ResponseWriter,
+) {
+	state.UpsertSecret(secretToStore, appendValue)
+	log.DebugLn(&cid, "Secret:UpsertEnd: workloadId", workloadId)
+
+	j.Event = audit.EventOk
+	audit.Log(j)
+
+	_, err := io.WriteString(w, "OK")
+	if err != nil {
+		log.InfoLn(&cid, "Secret: Problem sending response", err.Error())
+	}
+}
+
+func Secret(cid string, w http.ResponseWriter, r *http.Request, svid string) {
+	j := createDefaultJournalEntry(cid, svid, r)
+	audit.Log(j)
+
+	if !isSentinel(j, cid, w, svid) {
+		j.Event = audit.EventBadSvid
+		audit.Log(j)
+		return
+	}
+
+	log.DebugLn(&cid, "Secret: sentinel svid:", svid)
+
+	body := readBody(cid, r, w, j)
+	if body == nil {
+		j.Event = audit.EventBadPayload
+		audit.Log(j)
+		return
+	}
+
+	log.DebugLn(&cid, "Secret: Parsed request body")
+
+	ur := unmarshalRequest(cid, body, j, w)
+	if ur == nil {
+		j.Event = audit.EventBadPayload
+		audit.Log(j)
+		return
+	}
+
+	sr := *ur
 
 	j.Entity = sr
 
 	workloadId := sr.WorkloadId
 	value := sr.Value
-
 	backingStore := sr.BackingStore
 	useK8s := sr.UseKubernetes
 	namespace := sr.Namespace
@@ -88,35 +187,8 @@ func Secret(cid string, w http.ResponseWriter, r *http.Request, svid string) {
 	appendValue := sr.AppendValue
 
 	if workloadId == "" && encrypt {
-		if value == "" {
-			j.Event = audit.EventNoValue
-			audit.Log(j)
-
-			w.WriteHeader(http.StatusBadRequest)
-			_, err := io.WriteString(w, "")
-			if err != nil {
-				log.InfoLn(&cid, "Secret: Problem sending response", err.Error())
-			}
-			return
-		}
-
-		encrypted, err := state.EncryptValue(value)
-		if err != nil {
-			j.Event = audit.EventEncryptionFailed
-			audit.Log(j)
-
-			w.WriteHeader(http.StatusInternalServerError)
-			_, err := io.WriteString(w, "")
-			if err != nil {
-				log.InfoLn(&cid, "Secret: Problem sending response", err.Error())
-			}
-			return
-		}
-
-		_, err = io.WriteString(w, encrypted)
-		if err != nil {
-			log.InfoLn(&cid, "Secret: Problem sending response", err.Error())
-		}
+		// has side effect of sending response.
+		encryptValue(cid, value, j, w)
 		return
 	}
 
@@ -124,15 +196,10 @@ func Secret(cid string, w http.ResponseWriter, r *http.Request, svid string) {
 		namespace = "default"
 	}
 
-	log.DebugLn(&cid, "Secret:Upsert: ",
-		"workloadId:", workloadId,
-		"namespace:", namespace,
-		"backingStore:", backingStore,
-		"template:", template,
-		"format:", format,
-		"encrypt:", encrypt,
-		"appendValue:", appendValue,
-		"useK8s", useK8s)
+	log.DebugLn(&cid, "Secret:Upsert: ", "workloadId:", workloadId,
+		"namespace:", namespace, "backingStore:", backingStore,
+		"template:", template, "format:", format, "encrypt:", encrypt,
+		"appendValue:", appendValue, "useK8s", useK8s)
 
 	if workloadId == "" && !encrypt {
 		j.Event = audit.EventNoWorkloadId
@@ -143,27 +210,16 @@ func Secret(cid string, w http.ResponseWriter, r *http.Request, svid string) {
 
 	// `encrypt` means that the value is encrypted, so we need to decrypt it.
 	if encrypt {
-		decrypted, err := state.DecryptValue(value)
-		if err != nil {
-			j.Event = audit.EventDecryptionFailed
-			audit.Log(j)
+		v, failed := decryptValue(cid, value, j, w)
+		value = v
 
-			w.WriteHeader(http.StatusInternalServerError)
-			_, err := io.WriteString(w, "")
-			if err != nil {
-				log.InfoLn(&cid, "Secret: Problem sending response", err.Error())
-			}
+		// If decryption failed, we already sent the response.
+		if failed {
 			return
 		}
-
-		value = decrypted
 	}
 
-	if len(value) > 65536 {
-		panic("This is just a reminder to implement multiple-valued secrets")
-	}
-
-	state.UpsertSecret(entity.SecretStored{
+	secretToStore := entity.SecretStored{
 		Name: workloadId,
 		Meta: entity.SecretMeta{
 			UseKubernetesSecret: useK8s,
@@ -174,14 +230,7 @@ func Secret(cid string, w http.ResponseWriter, r *http.Request, svid string) {
 			CorrelationId:       cid,
 		},
 		Values: []string{value},
-	}, appendValue)
-	log.DebugLn(&cid, "Secret:UpsertEnd: workloadId", workloadId)
-
-	j.Event = audit.EventOk
-	audit.Log(j)
-
-	_, err = io.WriteString(w, "OK")
-	if err != nil {
-		log.InfoLn(&cid, "Secret: Problem sending response", err.Error())
 	}
+
+	upsert(secretToStore, appendValue, workloadId, cid, j, w)
 }
