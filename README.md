@@ -114,7 +114,7 @@ and let us change the world together 🤘.
 
 ### General Links
 
-* **Homepage**: <https://aegis.ist>
+* **Homepage**: <https://aegis.ist/>
 * **Documentation**: <https://aegis.ist/docs/>
 * **Changelog**: <https://aegis.ist/changelog/>
 * **Community**: [Join **Aegis**’ Slack Workspace][slack-invite]
