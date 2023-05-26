@@ -19,6 +19,19 @@ sensitive data is always **secure** and **protected**.
 **Aegis** is perfect for securely storing arbitrary configuration information at
 a central location and securely dispatching it to workloads.
 
+## Tell Me More
+
+**Aegis** is a cloud-native secure store for secrets management. 
+It provides a minimal and intuitive API, ensuring practical security without 
+compromising user experience. 
+
+Aegis is **resilient** and **secure** by default, storing sensitive data in memory 
+and encrypting any data saved to disk. 
+
+Endorsed by industry experts, **Aegis** is a ground-up re-imagination of 
+secrets management, leveraging SPIFFE for authentication and providing 
+a cloud-native way to manage secrets end-to-end.
+
 ## Getting Your Hands Dirty
 
 Before trying **Aegis**, you might want to [learn about its 
