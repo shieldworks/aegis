@@ -34,7 +34,7 @@ a cloud-native way to manage secrets end-to-end.
 
 ## Getting Your Hands Dirty
 
-Before trying **Aegis**, you might want to [learn about its 
+Before trying **Aegis**, you might want to learn about its 
 [architecture][architecture] and [design goals][design].
 
 Once you are ready to get started, [see the Quickstart guide][quickstart].
