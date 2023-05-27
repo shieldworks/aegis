@@ -117,7 +117,7 @@ func Delete(cid string, w http.ResponseWriter, r *http.Request, svid string) {
 			CorrelationId: cid,
 		},
 	})
-	log.DebugLn(&cid, "Delete:End: workloadId", workloadId)
+	log.DebugLn(&cid, "Delete:End: workloadId:", workloadId)
 
 	j.Event = audit.EventOk
 	audit.Log(j)

@@ -31,7 +31,7 @@ const (
 )
 
 var currentLevel = Level(env.LogLevel())
-var mux sync.Mutex
+var mux sync.RWMutex
 
 // SetLevel sets the global log level to the provided level.
 //
@@ -48,8 +48,8 @@ func SetLevel(l Level) {
 
 // GetLevel returns the current global log level.
 func GetLevel() Level {
-	mux.Lock()
-	defer mux.Unlock()
+	mux.RLock()
+	defer mux.RUnlock()
 	return currentLevel
 }
 

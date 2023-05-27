@@ -38,6 +38,18 @@ func SafeSecretBufferSize() int {
 	return l
 }
 
+
+- name: AEGIS_SAFE_SECRET_BUFFER_SIZE
+value: "10"
+- name: AEGIS_AFE_K8S_SECRET_BUFFER_SIZE
+value: "10"
+- name: AEGIS_SAFE_SECRET_DELETE_BUFFER_SIZE
+value: "10"
+- name: AEGIS_SAFE_K8S_SECRET_DELETE_BUFFER_SIZE
+value: "10"
+
+
+
 // SafeBackingStore returns the storage type for the data,
 // as specified in the AEGIS_SAFE_BACKING_STORE environment variable.
 // If the environment variable is not set, it defaults to "file".
@@ -123,13 +135,13 @@ func SafeAgeKeyPath() string {
 	return p
 }
 
-// SafeSvidRetrievalTimeout returns the allowed time for Aegis Safe to wait
+// SafeBootstrapTimeout returns the allowed time for Aegis Safe to wait
 // before killing the pod to retrieve an SVID, in time.Duration.
-// The interval is determined by the AEGIS_SAFE_SVID_RETRIEVAL_TIMEOUT environment
+// The interval is determined by the AEGIS_SAFE_BOOTSTRAP_TIMEOUT environment
 // variable, with a default value of 30000 milliseconds if the variable is not
 // set or if there is an error in parsing the value.
-func SafeSvidRetrievalTimeout() time.Duration {
-	p := os.Getenv("AEGIS_SAFE_SVID_RETRIEVAL_TIMEOUT")
+func SafeBootstrapTimeout() time.Duration {
+	p := os.Getenv("AEGIS_SAFE_BOOTSTRAP_TIMEOUT")
 	if p == "" {
 		p = "30000"
 	}

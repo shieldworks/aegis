@@ -77,9 +77,15 @@ spec:
               value: ":8443"
             - name: AEGIS_SAFE_SECRET_BUFFER_SIZE
               value: "10"
+            - name: AEGIS_AFE_K8S_SECRET_BUFFER_SIZE
+              value: "10"
+            - name: AEGIS_SAFE_SECRET_DELETE_BUFFER_SIZE
+              value: "10"
+            - name: AEGIS_SAFE_K8S_SECRET_DELETE_BUFFER_SIZE
+              value: "10"
             - name: AEGIS_SAFE_USE_KUBERNETES_SECRETS
               value: "false"
-            - name: AEGIS_SAFE_SVID_RETRIEVAL_TIMEOUT
+            - name: AEGIS_SAFE_BOOTSTRAP_TIMEOUT
               value: "30000"
           livenessProbe:
             httpGet:

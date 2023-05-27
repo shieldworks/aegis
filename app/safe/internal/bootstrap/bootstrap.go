@@ -21,12 +21,12 @@ import (
 	"time"
 )
 
-// NotifyTimeout waits for the duration specified by env.SafeSvidRetrievalTimeout()
+// NotifyTimeout waits for the duration specified by env.SafeBootstrapTimeout()
 // and then sends a 'true' value to the provided 'timedOut' channel. This function
 // can be used to notify other parts of the application when a specific timeout
 // has been reached.
 func NotifyTimeout(timedOut chan<- bool) {
-	time.Sleep(env.SafeSvidRetrievalTimeout())
+	time.Sleep(env.SafeBootstrapTimeout())
 	timedOut <- true
 }
 
