@@ -11,5 +11,8 @@
 PACKAGE="$1"
 BINS="$2"
 
-go mod vendor
-go build -o "${PACKAGE}" "${BINS}"
+echo "Intentionally skipping local build: ${PACKAGE} ${BINS}"
+echo "Will use a container image to do the build instead."
+
+# go mod vendor
+# go build -o "${PACKAGE}" "${BINS}"
