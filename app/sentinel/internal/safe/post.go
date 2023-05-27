@@ -26,71 +26,47 @@ import (
 	"net/url"
 )
 
-func Post(workloadId, secret, namespace, backingStore string, useKubernetes bool,
-	template string, format string, encrypt, deleteSecret, appendSecret bool) {
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
-
-	source, proceed := acquireSource(ctx)
-	defer func() {
-		if source == nil {
-			return
-		}
-		err := source.Close()
-		if err != nil {
-			log.Println("Problem closing the workload source.")
-		}
-	}()
-	if !proceed {
-		return
-	}
-
-	authorizer := tlsconfig.AdaptMatcher(func(id spiffeid.ID) error {
+func createAuthorizer() tlsconfig.Authorizer {
+	return tlsconfig.AdaptMatcher(func(id spiffeid.ID) error {
 		if validation.IsSafe(id.String()) {
 			return nil
 		}
 
-		return errors.New("Post: I don’t know you, and it’s crazy: '" + id.String() + "'")
+		return errors.New("Post: I don’t know you, and it’s crazy: '" +
+			id.String() + "'",
+		)
 	})
+}
 
-	p, err := url.JoinPath(env.SafeEndpointUrl(), "/sentinel/v1/secrets")
-	if err != nil {
-		fmt.Println("Post: I am having problem generating Aegis Safe secrets api endpoint URL.", err.Error())
-		fmt.Println("")
-		return
+func decideBackingStore(backingStore string) data.BackingStore {
+	switch data.BackingStore(backingStore) {
+	case data.File:
+		return data.File
+	case data.Memory:
+		return data.Memory
+	default:
+		return env.SafeBackingStore()
 	}
+}
 
-	tlsConfig := tlsconfig.MTLSClientConfig(source, source, authorizer)
-	client := &http.Client{
-		Transport: &http.Transport{
-			TLSClientConfig: tlsConfig,
-		},
-	}
-
-	bs := env.SafeBackingStore()
-	if backingStore != "" {
-		b := data.BackingStore(backingStore)
-		switch b {
-		case data.File:
-			bs = data.File
-		case data.Memory:
-			bs = data.Memory
-		default:
-			bs = data.Memory
-		}
-	}
-
-	var f data.SecretFormat
+func decideSecretFormat(format string) data.SecretFormat {
 	switch data.SecretFormat(format) {
 	case data.Json:
-		f = data.Json
+		return data.Json
 	case data.Yaml:
-		f = data.Yaml
+		return data.Yaml
 	default:
-		f = data.Json
+		return data.Json
 	}
+}
 
-	sr := reqres.SecretUpsertRequest{
+func newSecretUpsertRequest(workloadId, secret, namespace, backingStore string,
+	useKubernetes bool, template string, format string, encrypt, appendSecret bool,
+) reqres.SecretUpsertRequest {
+	bs := decideBackingStore(backingStore)
+	f := decideSecretFormat(format)
+
+	return reqres.SecretUpsertRequest{
 		WorkloadId:    workloadId,
 		BackingStore:  bs,
 		Namespace:     namespace,
@@ -101,36 +77,11 @@ func Post(workloadId, secret, namespace, backingStore string, useKubernetes bool
 		AppendValue:   appendSecret,
 		Value:         secret,
 	}
+}
 
-	md, err := json.Marshal(sr)
-	if err != nil {
-		fmt.Println("Trouble generating payload.")
-		fmt.Println("")
+func respond(r *http.Response) {
+	if r == nil {
 		return
-	}
-
-	var r *http.Response
-	if deleteSecret {
-		req, err := http.NewRequest(http.MethodDelete, p, bytes.NewBuffer(md))
-		if err != nil {
-			fmt.Println("Post:Delete: Problem connecting to Aegis Safe API endpoint URL.", err.Error())
-			fmt.Println("")
-			return
-		}
-		req.Header.Set("Content-Type", "application/json")
-		r, err = client.Do(req)
-		if err != nil {
-			fmt.Println("Post:Delete: Problem connecting to Aegis Safe API endpoint URL.", err.Error())
-			fmt.Println("")
-			return
-		}
-	} else {
-		r, err = client.Post(p, "application/json", bytes.NewBuffer(md))
-		if err != nil {
-			fmt.Println("Post: Problem connecting to Aegis Safe API endpoint URL.", err.Error())
-			fmt.Println("")
-			return
-		}
 	}
 
 	defer func(b io.ReadCloser) {
@@ -153,4 +104,93 @@ func Post(workloadId, secret, namespace, backingStore string, useKubernetes bool
 	fmt.Println("")
 	fmt.Println(string(body))
 	fmt.Println("")
+}
+
+func printEndpointError(err error) {
+	fmt.Println("Post: I am having problem generating Aegis Safe "+
+		"secrets api endpoint URL.", err.Error())
+	fmt.Println("")
+}
+
+func printPayloadError(err error) {
+	fmt.Println("Post: I am having problem generating the payload.", err.Error())
+	fmt.Println("")
+}
+
+func doDelete(client *http.Client, p string, md []byte) {
+	req, err := http.NewRequest(http.MethodDelete, p, bytes.NewBuffer(md))
+	if err != nil {
+		fmt.Println("Post:Delete: Problem connecting to Aegis Safe API endpoint URL.", err.Error())
+		fmt.Println("")
+		return
+	}
+	req.Header.Set("Content-Type", "application/json")
+	r, err := client.Do(req)
+	if err != nil {
+		fmt.Println("Post:Delete: Problem connecting to Aegis Safe API endpoint URL.", err.Error())
+		fmt.Println("")
+		return
+	}
+	respond(r)
+}
+
+func doPost(client *http.Client, p string, md []byte) {
+	r, err := client.Post(p, "application/json", bytes.NewBuffer(md))
+	if err != nil {
+		fmt.Println("Post: Problem connecting to Aegis Safe API endpoint URL.", err.Error())
+		fmt.Println("")
+		return
+	}
+	respond(r)
+}
+
+func Post(workloadId, secret, namespace, backingStore string, useKubernetes bool,
+	template string, format string, encrypt, deleteSecret, appendSecret bool,
+) {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	source, proceed := acquireSource(ctx)
+	defer func() {
+		if source == nil {
+			return
+		}
+		err := source.Close()
+		if err != nil {
+			log.Println("Problem closing the workload source.")
+		}
+	}()
+	if !proceed {
+		return
+	}
+
+	authorizer := createAuthorizer()
+
+	p, err := url.JoinPath(env.SafeEndpointUrl(), "/sentinel/v1/secrets")
+	if err != nil {
+		printEndpointError(err)
+		return
+	}
+
+	tlsConfig := tlsconfig.MTLSClientConfig(source, source, authorizer)
+	client := &http.Client{
+		Transport: &http.Transport{
+			TLSClientConfig: tlsConfig,
+		},
+	}
+
+	sr := newSecretUpsertRequest(workloadId, secret, namespace, backingStore,
+		useKubernetes, template, format, encrypt, appendSecret)
+	md, err := json.Marshal(sr)
+	if err != nil {
+		printPayloadError(err)
+		return
+	}
+
+	if deleteSecret {
+		doDelete(client, p, md)
+		return
+	}
+
+	doPost(client, p, md)
 }
