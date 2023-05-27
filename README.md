@@ -1,8 +1,6 @@
 # Aegis
 
-![Aegis](assets/aegis-icon.png "Aegis")
-
-keep your secrets… secret
+![Aegis](assets/aegis-git-banner.png "Aegis")
 
 [spire]: https://spiffe.io/ "SPIFFE: Secure Production Identity Framework for Everyone"
 
