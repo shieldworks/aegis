@@ -6,8 +6,6 @@
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/shieldworks/aegis)](https://goreportcard.com/report/github.com/shieldworks/aegis)
 
-<!-- -->
-
 ## The Elevator Pitch
 
 [**Aegis**](https://aegis.ist) is a delightfully-secure Kubernetes-native 
