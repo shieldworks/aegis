@@ -12,16 +12,17 @@ import (
 	"bytes"
 	"encoding/base64"
 	entity "github.com/shieldworks/aegis/core/entity/data/v1"
+	"github.com/shieldworks/aegis/core/env"
 	"github.com/shieldworks/aegis/core/log"
-	"sync"
 	"time"
 )
 
 const InitialSecretValue = `{"empty":true}`
 const BlankAgeKeyValue = "{}"
 
+// ageKey is set only once during initialization; we don’t need to lock
+// access to it.
 var ageKey = ""
-var lock sync.Mutex
 
 // Initialize starts two goroutines: one to process the secret queue and
 // another to process the Kubernetes secret queue. These goroutines are
@@ -34,9 +35,9 @@ func Initialize() {
 }
 
 // SetAgeKey sets the age key to be used for encryption and decryption.
+// This function is not thread-safe and should only be called once during
+// initialization.
 func SetAgeKey(k string) {
-	lock.Lock()
-	defer lock.Unlock()
 	ageKey = k
 }
 
@@ -204,7 +205,10 @@ func UpsertSecret(secret entity.SecretStored, appendValue bool) {
 	}
 
 	useK8sSecrets := secret.Meta.UseKubernetesSecret
-	if useK8sSecrets {
+
+	// If useK8sSecrets is not set, use the value from the environment.
+	// The environment value defaults to false, too, if not set.
+	if useK8sSecrets || env.SafeUseKubernetesSecrets() {
 		log.TraceLn(
 			&cid,
 			"UpsertSecret: will push Kubernetes secret. len", len(k8sSecretQueue),
@@ -242,7 +246,10 @@ func DeleteSecret(secret entity.SecretStored) {
 	}
 
 	useK8sSecrets := secret.Meta.UseKubernetesSecret
-	if useK8sSecrets {
+
+	// If useK8sSecrets is not set, use the value from the environment.
+	// The environment value defaults to false, too, if not set.
+	if useK8sSecrets || env.SafeUseKubernetesSecrets() {
 		log.TraceLn(
 			&cid,
 			"DeleteSecret: will push Kubernetes secret to delete. len", len(k8sSecretDeleteQueue),

@@ -21,7 +21,7 @@ import (
 // writes to the same file at a time. An alternative approach would be
 // to have a map of queues of `SecretsStored`s per file name but that
 // feels like an overkill.
-var secretDeleteQueue = make(chan entity.SecretStored, env.SafeSecretBufferSize())
+var secretDeleteQueue = make(chan entity.SecretStored, env.SafeSecretDeleteBufferSize())
 
 func processSecretDeleteQueue() {
 	errChan := make(chan error)

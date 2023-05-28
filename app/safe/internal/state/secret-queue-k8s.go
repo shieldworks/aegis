@@ -15,7 +15,7 @@ import (
 )
 
 // The secrets put here are synced with their Kubernetes Secret counterparts.
-var k8sSecretQueue = make(chan entity.SecretStored, env.SafeSecretBufferSize())
+var k8sSecretQueue = make(chan entity.SecretStored, env.SafeK8sSecretBufferSize())
 
 func processK8sSecretQueue() {
 	errChan := make(chan error)

@@ -19,7 +19,7 @@ type Status struct {
 	K8sQueueLen    int
 	K8sQueueCap    int
 	NumSecrets     int
-	lock           *sync.Mutex
+	lock           *sync.RWMutex
 }
 
 var currentState = Status{
@@ -28,7 +28,7 @@ var currentState = Status{
 	K8sQueueLen:    0,
 	K8sQueueCap:    0,
 	NumSecrets:     0,
-	lock:           &sync.Mutex{},
+	lock:           &sync.RWMutex{},
 }
 
 // Increment is a method for the Status struct that increments the NumSecrets
@@ -56,8 +56,8 @@ func (s *Status) Decrement(name string) {
 // Stats returns a copy of the currentState Status object, providing a snapshot
 // of the current status of the secret manager.
 func Stats() Status {
-	currentState.lock.Lock()
-	defer currentState.lock.Unlock()
+	currentState.lock.RLock()
+	defer currentState.lock.RUnlock()
 
 	currentState.K8sQueueCap = cap(k8sSecretQueue)
 	currentState.K8sQueueLen = len(k8sSecretQueue)
