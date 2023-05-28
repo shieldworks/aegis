@@ -14,7 +14,7 @@ import (
 )
 
 // The secrets put here are synced with their Kubernetes Secret counterparts.
-var k8sSecretDeleteQueue = make(chan entity.SecretStored, env.SafeSecretBufferSize())
+var k8sSecretDeleteQueue = make(chan entity.SecretStored, env.SafeK8sSecretDeleteBufferSize())
 
 func processK8sSecretDeleteQueue() {
 	// id := "AEGIHK8D"

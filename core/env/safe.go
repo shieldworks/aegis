@@ -38,17 +38,74 @@ func SafeSecretBufferSize() int {
 	return l
 }
 
+// SafeK8sSecretBufferSize returns the buffer size for the Aegis Safe Kubernetes
+// secret queue.
+//
+// The buffer size is determined by the environment variable
+// AEGIS_SAFE_K8S_SECRET_BUFFER_SIZE.
+//
+// If the environment variable is not set, the default buffer size is 10.
+// If the environment variable is set and can be parsed as an integer,
+// it will be used as the buffer size.
+// If the environment variable is set but cannot be parsed as an integer,
+// the default buffer size is used.
+func SafeK8sSecretBufferSize() int {
+	p := os.Getenv("AEGIS_SAFE_K8S_SECRET_BUFFER_SIZE")
+	if p == "" {
+		return 10
+	}
+	l, err := strconv.Atoi(p)
+	if err != nil {
+		return 10
+	}
+	return l
+}
 
-- name: AEGIS_SAFE_SECRET_BUFFER_SIZE
-value: "10"
-- name: AEGIS_AFE_K8S_SECRET_BUFFER_SIZE
-value: "10"
-- name: AEGIS_SAFE_SECRET_DELETE_BUFFER_SIZE
-value: "10"
-- name: AEGIS_SAFE_K8S_SECRET_DELETE_BUFFER_SIZE
-value: "10"
+// SafeSecretDeleteBufferSize returns the buffer size for the Aegis Safe secret
+// deletion queue.
+//
+// The buffer size is determined by the environment variable
+// AEGIS_SAFE_SECRET_DELETE_BUFFER_SIZE.
+//
+// If the environment variable is not set, the default buffer size is 10.
+// If the environment variable is set and can be parsed as an integer,
+// it will be used as the buffer size.
+// If the environment variable is set but cannot be parsed as an integer,
+// the default buffer size is used.
+func SafeSecretDeleteBufferSize() int {
+	p := os.Getenv("AEGIS_SAFE_SECRET_DELETE_BUFFER_SIZE")
+	if p == "" {
+		return 10
+	}
+	l, err := strconv.Atoi(p)
+	if err != nil {
+		return 10
+	}
+	return l
+}
 
-
+// SafeK8sSecretDeleteBufferSize returns the buffer size for the Aegis Safe
+// Kubernetes secret deletion queue.
+//
+// The buffer size is determined by the environment variable
+// AEGIS_SAFE_K8S_SECRET_DELETE_BUFFER_SIZE.
+//
+// If the environment variable is not set, the default buffer size is 10.
+// If the environment variable is set and can be parsed as an integer,
+// it will be used as the buffer size.
+// If the environment variable is set but cannot be parsed as an integer,
+// the default buffer size is used.
+func SafeK8sSecretDeleteBufferSize() int {
+	p := os.Getenv("AEGIS_SAFE_K8S_SECRET_DELETE_BUFFER_SIZE")
+	if p == "" {
+		return 10
+	}
+	l, err := strconv.Atoi(p)
+	if err != nil {
+		return 10
+	}
+	return l
+}
 
 // SafeBackingStore returns the storage type for the data,
 // as specified in the AEGIS_SAFE_BACKING_STORE environment variable.
