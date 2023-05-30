@@ -60,7 +60,7 @@ spec:
         - name: AEGIS_SAFE_SVID_PREFIX
           value: "spiffe://aegis.ist/workload/aegis-safe/ns/aegis-system/sa/aegis-safe/n/"
         - name: AEGIS_SIDECAR_POLL_INTERVAL
-          value: "20000"
+          value: "5000"
         - name: AEGIS_SIDECAR_MAX_POLL_INTERVAL
           value: "300000"
         - name: AEGIS_SIDECAR_EXPONENTIAL_BACKOFF_MULTIPLIER

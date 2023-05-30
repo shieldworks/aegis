@@ -14,8 +14,10 @@ COPY examples /build/examples
 COPY vendor /build/vendor
 COPY go.mod /build/go.mod
 WORKDIR /build
-RUN CGO_ENABLED=0 GOOS=linux go build -a -o example \
+RUN CGO_ENABLED=0 GOOS=linux go build -mod vendor -a -o example \
     ./examples/using-sidecar/main.go
+RUN CGO_ENABLED=0 GOOS=linux go build -mod vendor -a -o env \
+    ./examples/using-sidecar/helper/env/main.go
 
 # generate clean, final image for end users
 FROM gcr.io/distroless/static-debian11
@@ -30,6 +32,7 @@ LABEL "community"="https://aegis.ist/contact/#community"
 LABEL "changelog"="https://aegis.ist/changelog"
 
 COPY --from=builder /build/example .
+COPY --from=builder /build/env .
 
 # executable
 ENTRYPOINT [ "./example" ]

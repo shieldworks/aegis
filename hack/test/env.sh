@@ -8,8 +8,11 @@
 #     .\_/.
 #
 
-. ./env.sh
+SENTINEL=$(kubectl get po -n aegis-system \
+  | grep "aegis-sentinel-" | awk '{print $1}')
+export SENTINEL=$SENTINEL
 
-kubectl exec "$SENTINEL" -n aegis-system -- aegis \
-  -s '{"username": "*root*", "password": "*Ca$#C0w*", "value": "!AegisRocks!"}' \
-  -e
+SAFE=$(kubectl get po -n aegis-system \
+  | grep "aegis-safe-" | awk '{print $1}')
+export SAFE=$SAFE
+
