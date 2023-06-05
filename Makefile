@@ -7,11 +7,16 @@
 #
 
 # The common version tag assigned to all the things.
-VERSION=0.17.1
+VERSION=0.17.2
 
 # tags a release
 tag:
 	./hack/tag.sh $(VERSION)
+
+# create a proxy from user’s localhost to Docker for Mac’s docker
+# registry’s API port.
+mac-tunnel:
+	./hack/mac-registry-tunnel.sh
 
 #
 # ## Aegis Safe ##

@@ -11,5 +11,5 @@
 . ./env.sh
 
 kubectl exec "$SENTINEL" -n aegis-system -- aegis \
--s '{"username": "*root*", "password": "*Ca$#C0w*", "value": "!AegisRocks!"}' \
--e
+  -s '{"username": "*root*", "password": "*Ca$#C0w*", "value": "!AegisRocks!"}' \
+  -e
