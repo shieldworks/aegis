@@ -26,6 +26,6 @@ func main() {
 	if err != nil {
 		fmt.Print("ERR_READ_SECRET")
 	} else {
-		fmt.Print(dat)
+		fmt.Print(string(dat))
 	}
 }

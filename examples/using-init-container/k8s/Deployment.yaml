@@ -26,7 +26,7 @@ spec:
       serviceAccountName: example
       containers:
       - name: main
-        image: aegishub/example-using-init-container:0.17.1
+        image: aegishub/example-using-init-container:0.17.2
         env:
         - name: SECRET
           valueFrom:
@@ -48,7 +48,7 @@ spec:
       # See `./register.sh` to register the workload and finalize
       # this init container.
       - name: init-container
-        image: aegishub/aegis-ist-init-container:0.17.1
+        image: aegishub/aegis-ist-init-container:0.17.2
         volumeMounts:
         # Volume mount for SPIRE unix domain socket.
         - name: spire-agent-socket
@@ -68,7 +68,7 @@ spec:
         - name: SPIFFE_ENDPOINT_SOCKET
           value: "unix:///spire-agent-socket/agent.sock"
         - name: AEGIS_LOG_LEVEL
-          value: "7"
+          value: "1"
         - name: AEGIS_WORKLOAD_SVID_PREFIX
           value: "spiffe://aegis.ist/workload/"
         - name: AEGIS_SAFE_SVID_PREFIX

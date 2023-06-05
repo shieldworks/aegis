@@ -18,13 +18,13 @@ WORKDIR /build
 RUN CGO_ENABLED=0 GOOS=linux go build -mod vendor -a -o example \
   ./examples/using-sdk/main.go
 RUN CGO_ENABLED=0 GOOS=linux go build -mod vendor -a -o env \
-    ./examples/using-sidecar/helper/env/main.go
+    ./examples/using-sdk/helper/env/main.go
 
 # generate clean, final image for end users
 FROM gcr.io/distroless/static-debian11
 
 LABEL "maintainers"="Volkan Özçelik <volkan@aegis.ist>"
-LABEL "version"="0.17.1"
+LABEL "version"="0.17.2"
 LABEL "website"="https://aegis.ist/"
 LABEL "repo"="https://github.com/shieldworks/aegis"
 LABEL "documentation"="https://aegis.ist/docs/"
@@ -33,6 +33,7 @@ LABEL "community"="https://aegis.ist/contact/#community"
 LABEL "changelog"="https://aegis.ist/changelog"
 
 COPY --from=builder /build/example .
+COPY --from=builder /build/env .
 
 # executable
 ENTRYPOINT [ "./example" ]

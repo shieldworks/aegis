@@ -38,7 +38,21 @@ func saveData(data string) error {
 }
 
 func fetchSecrets() error {
-	r, _ := Fetch()
+	r, eFetch := Fetch()
+
+	// Aegis Safe was successfully queried, but no secrets found.
+	// This means someone has deleted the secret. We cannot let
+	// the workload linger with the existing secret, so we remove
+	// it from the workload too.
+	//
+	// If the user wants a more fine-tuned control for this case,
+	// that is: if the user wants to keep the existing secret even
+	// if it has been deleted from Aegis Safe, then the user should
+	// use Aegis SDK directly, instead of using Aegis Sidecar.
+	if eFetch == ErrSecretNotFound {
+		return saveData("")
+	}
+
 	v := r.Data
 	if v == "" {
 		return nil

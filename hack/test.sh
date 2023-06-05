@@ -11,17 +11,19 @@
 # Enable strict error checking.
 set -euo pipefail
 
-ORIGIN=$1
-if [[ -z "$ORIGIN" || "$ORIGIN" != "remote" ]]; then
+ORIGIN=${1:-"local"}
+if [[ "$ORIGIN" != "remote" ]]; then
   ORIGIN="local"
 fi
 
+printf "\n"
 printf "This script assumes that you have a local minikube cluster running,\n"
 printf "and you have already installed SPIRE and Aegis.\n"
-printf "Also, make sure you have executed 'eval \"\$(minikube docker-env)\'\n"
+printf "Also, make sure you have executed 'eval \$(minikube docker-env)\'\n"
 printf "before running this script.\n"
 printf "\n"
 read -n 1 -s -r -p "Press any key to proceed…"
+printf "\n\n"
 
 # ----- Helper Functions -------------------------------------------------------
 
@@ -53,17 +55,21 @@ sad_cuddle() {
 
 # Removes the secret and the demo workload deployment.
 cleanup() {
+  printf "Cleanup…\n"
+
   local sentinel
   readonly sentinel=$(define_sentinel)
-
-  printf "Cleanup…\n"
 
   kubectl exec "$sentinel" -n aegis-system -- aegis \
     -w "example" \
     -d || sad_cuddle "Cleanup: Failed to delete secret."
 
-  kubectl delete deployment example -n default \
-    || sad_cuddle "Cleanup: Failed to delete deployment."
+  if kubectl get deployment example -n default >/dev/null 2>&1; then
+    kubectl delete deployment example -n default \
+      || sad_cuddle "Cleanup: Failed to delete deployment."
+  else
+    printf "Deployment does not exist, skipping delete step.\n"
+  fi
 
   # Wait for the workload to be gone.
   wait_for_example_workload_deletion &
@@ -72,6 +78,8 @@ cleanup() {
 
 # Deletes the secret associated with the 'example' workload.
 delete_secret() {
+  printf "Deleting secret…\n"
+
   local sentinel
   readonly sentinel=$(define_sentinel)
 
@@ -79,6 +87,8 @@ delete_secret() {
     -w "example" \
     -n "default" \
     -d || sad_cuddle "delete_secret: Failed to delete secret."
+
+  printf "Deleted secret.\n"
 }
 
 ### Definitions ### _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
@@ -126,7 +136,7 @@ assert_exists() {
   local res
   readonly res="$1"
 
-  if [[  -n "$res" ]]; then
+  if [[ -z "$res" ]]; then
     printf "\n"
     printf "FAIL :(\n"
     printf "\n"
@@ -163,11 +173,16 @@ assert_workload_secret_value() {
 
   readonly workload=$(define_example_workload)
   readonly value=$1
+
+  printf "assert_workload_secret_value()\n"
+  printf "workload: '%s'\n" "$workload"
+  printf "value: '%s'\n" "$value"
+
   if [[ -z "$workload" || -z "$value" ]]; then
     sad_cuddle "assert_workload_secret_value: Failed to define workload or value."
   fi
 
-  readonly res=$(kubectl exec "$workload" -n default -- ./env; exit $?)
+  readonly res=$(kubectl exec "$workload" -n default -c main -- ./env; exit $?)
   if [[ $? -ne 0 ]]; then
     sad_cuddle "assert_workload_secret_value: Failed to exec kubectl."
   fi
@@ -194,12 +209,16 @@ assert_workload_secret_no_value() {
     sad_cuddle "assert_workload_secret_no_value: Failed to define workload."
   fi
 
-  readonly res=$(kubectl exec "$workload" -n default -- ./env; exit $?)
+  readonly res=$(kubectl exec "$workload" -n default -c main -- ./env; exit $?)
   if [ $? -ne 0 ]; then
     sad_cuddle "assert_workload_secret_no_value: Failed to exec kubectl."
   fi
 
-  if [[ -z "$res" ]]; then
+  printf "assert_workload_secret_no_value()\n"
+  printf "workload: '%s'\n" "$workload"
+  printf "res: '%s'\n" "$res"
+
+  if [[ -z "$res" || "$res" == "NO_SECRET" ]]; then
     printf "\n"
     printf "PASS \o/\n"
     printf "\n"
@@ -281,13 +300,30 @@ assert_init_container_running() {
 
 # Wait for the workload to be ready.
 wait_for_example_workload() {
-  kubectl wait --for=condition=Ready pod -n default \
-    --selector=app.kubernetes.io/name=example || \
-    sad_cuddle "wait_for_example_workload: Failed to wait for condition."
+  printf "Waiting for example workload…\n"
+
+  max_retries=5
+  retries=0
+
+  while ((retries < max_retries)); do
+    if kubectl wait --for=condition=Ready pod -n default \
+      --selector=app.kubernetes.io/name=example >/dev/null 2>&1; then
+      return 0
+    else
+      retries=$((retries + 1))
+      echo "Retry $retries/$max_retries: Failed to wait for condition. Retrying in 5 seconds..."
+      sleep 5
+    fi
+  done
+
+  sad_cuddle "wait_for_example_workload: Failed to wait for condition after $max_retries retries."
 }
+
 
 # Wait until the workload’s deployment is deleted.
 wait_for_example_workload_deletion() {
+  printf "Waiting for example workload deletion…\n"
+
   kubectl wait --for=delete deployment -n default \
     --selector=app.kubernetes.io/name=example || \
     sad_cuddle "wait_for_example_workload_deletion: Failed to wait for deletion."
@@ -316,6 +352,8 @@ pause_just_in_case() {
 
 # Encrypts a secret and stores it in Aegis Safe.
 set_encrypted_secret() {
+  printf "set_encrypted_secret()\n"
+
   local value
   local sentinel
 
@@ -325,9 +363,15 @@ set_encrypted_secret() {
     sad_cuddle "set_encrypted_secret: Failed to define value or sentinel."
   fi
 
+  printf "value: '%s'\n" "$value"
+  printf "sentinel: '%s'\n" "$sentinel"
+
   res=$(kubectl exec "$sentinel" -n aegis-system -- aegis \
     -s "$value" \
     -e; exit $?)
+
+  printf "res: '%s'\n" "$res"
+
   if [[ $? -ne 0 ]]; then
     sad_cuddle "set_encrypted_secret: Failed to exec kubectl."
   fi
@@ -340,10 +384,14 @@ set_encrypted_secret() {
     -n "default" \
     -s "$res" \
     -e || sad_cuddle "set_encrypted_secret: Failed to exec kubectl."
+
+  printf "done: set_encrypted_secret()\n"
 }
 
 # Registers a secret in Aegis Safe.
 set_secret() {
+  printf "set_secret()\n"
+
   local sentinel
   local value
 
@@ -357,10 +405,14 @@ set_secret() {
     -w "example" \
     -n "default" \
     -s "$value" || sad_cuddle "set_secret: Failed to exec kubectl."
+
+  printf "done: set_secret()\n"
 }
 
 # Registers a secret in Aegis Safe and transforms it as JSON.
 set_json_secret() {
+  printf "set_json_secret()\n"
+
   local sentinel
   local value
   local transform
@@ -378,10 +430,14 @@ set_json_secret() {
     -s "$value" \
     -t "$transform" \
     -f "json" || sad_cuddle "set_json_secret: Failed to exec kubectl."
+
+  printf "done: set_json_secret()\n"
 }
 
 # Registers a secret in Aegis Safe and transforms it as YAML.
 set_yaml_secret() {
+  printf "set_yaml_secret()\n"
+
   local sentinel
   local value
   local transform
@@ -399,10 +455,14 @@ set_yaml_secret() {
     -s "$value" \
     -t "$transform" \
     -f "yaml" || sad_cuddle "set_yaml_secret: Failed to exec kubectl."
+
+  printf "done: set_yaml_secret()\n"
 }
 
 # Registers a secret in Aegis Safe and transforms it as a Kubernetes secret.
 set_kubernetes_secret() {
+  printf "set_kubernetes_secret()\n"
+
   local sentinel
   readonly sentinel=$(define_sentinel)
   if [[ -z "$sentinel" ]]; then
@@ -419,10 +479,14 @@ set_kubernetes_secret() {
   # Wait for the workload to be ready.
   wait_for_example_workload &
   wait $!
+
+  printf  "done: set_kubernetes_secret()\n"
 }
 
 # Append a secret to the workload.
 append_secret() {
+  printf  "append_secret()\n"
+
   local sentinel
   local value
 
@@ -437,6 +501,8 @@ append_secret() {
     -n "default" \
     -a \
     -s "$value" || sad_cuddle "append_secret: Failed to exec kubectl."
+
+  printf "done: append_secret()\n"
 }
 
 ### Deployments ### _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
@@ -502,7 +568,6 @@ test_encrypting_secrets() {
   assert_encrypted_secret $value
 
   deploy_workload_using_sdk
-  define_example_workload
 
   set_encrypted_secret $value
   assert_workload_secret_value $value
@@ -517,7 +582,10 @@ test_encrypting_secrets
 # ------------------------------------------------------------------------------
 
 cleanup
+printf "\n"
+printf "----------------------------------------\n"
 printf "Case: Workload using Aegis SDK…\n"
+printf "\n"
 deploy_workload_using_sdk
 
 # ------------------------------------------------------------------------------
@@ -562,7 +630,7 @@ test_secret_registration_append() {
   local value
   readonly secret1="!Aegis"
   readonly secret2="Rocks!"
-  readonly value='["'"$secret1"'","'"$secret2"'"]'
+  readonly value='["'"$secret2"'","'"$secret1"'"]'
 
   append_secret "$secret1"
   append_secret "$secret2"
@@ -583,13 +651,13 @@ test_secret_registration_json_format() {
 
   local value
   local transform
-  readonly value='{"username": "*root*", "password": "*Ca$#C0w*"}'
+  readonly value='{"username": "*root*", "password": "*CasHC0w*"}'
   readonly transform='{"USERNAME":"{{.username}}", "PASSWORD":"{{.password}}"}'
 
   set_json_secret "$value" "$transform"
 
   local transformed
-  readonly transformed='{"USERNAME":"*root*", "PASSWORD":"*Ca$#C0w*"}'
+  readonly transformed='{"USERNAME":"*root*", "PASSWORD":"*CasHC0w*"}'
 
   assert_workload_secret_value "$transformed"
   delete_secret
@@ -607,17 +675,19 @@ test_secret_registration_yaml_format() {
 
   local value
   local transform
-  readonly value='{"username": "*root*", "password": "*Ca$#C0w*"}'
+  readonly value='{"username": "*root*", "password": "*CasHC0w*"}'
   readonly transform='{"USERNAME":"{{.username}}", "PASSWORD":"{{.password}}"}'
 
   set_yaml_secret "$value" "$transform"
-  value=$(cat << EOF
-  USERNAME: "*root*"
-  PASSWORD: "*CashC0w*"
+
+  local transformed
+  readonly transformed=$(cat << EOF
+PASSWORD: '*CasHC0w*'
+USERNAME: '*root*'
 EOF
   )
 
-  assert_workload_secret_value "$value"
+  assert_workload_secret_value "$transformed"
   delete_secret
 
   printf "Tested: Secret registration (YAML transformation).\n"
@@ -628,7 +698,10 @@ test_secret_registration_yaml_format
 # ------------------------------------------------------------------------------
 
 cleanup
+printf "\n"
+printf "----------------------------------------\n"
 printf "Case: Workload using Aegis Sidecar…\n"
+printf "\n"
 deploy_workload_using_sidecar
 
 # Note: for sidecar case, keep in mind that the poll interval is 5 seconds,
@@ -656,13 +729,13 @@ test_secret_registration_sidecar
 
 # Tests the deletion of secrets using Aegis Sidecar.
 test_secret_deletion_sidecar() {
-  printf "Testing: Secret deletion…\n"
+  printf "Testing: Secret deletion (sidecar)…\n"
 
   delete_secret
   pause
   assert_workload_secret_no_value
 
-  printf "Tested: Secret deletion.\n"
+  printf "Tested: Secret deletion (sidecar).\n"
 }
 
 test_secret_deletion_sidecar
@@ -678,7 +751,7 @@ test_secret_registration_append_sidecar() {
   local value
   readonly secret1="!Aegis"
   readonly secret2="Rocks!"
-  readonly value='["'"$secret1"'","'"$secret2"'"]'
+  readonly value='["'"$secret2"'","'"$secret1"'"]'
 
   append_secret "$secret1"
   append_secret "$secret2"
@@ -700,13 +773,13 @@ test_secret_registration_json_format_sidecar() {
 
   local value
   local transform
-  readonly value='{"username": "*root*", "password": "*Ca$#C0w*"}'
+  readonly value='{"username": "*root*", "password": "*CasHC0w*"}'
   readonly transform='{"USERNAME":"{{.username}}", "PASSWORD":"{{.password}}"}'
 
   set_json_secret "$value" "$transform"
 
   local transformed
-  readonly transformed='{"USERNAME":"*root*", "PASSWORD":"*Ca$#C0w*"}'
+  readonly transformed='{"USERNAME":"*root*", "PASSWORD":"*CasHC0w*"}'
 
   pause
   assert_workload_secret_value "$transformed"
@@ -725,19 +798,19 @@ test_secret_registration_yaml_format_sidecar() {
 
   local value
   local transform
-  readonly value='{"username": "*root*", "password": "*CaShC0w*"}'
+  readonly value='{"username": "*root*", "password": "*CasHC0w*"}'
   readonly transform='{"USERNAME":"{{.username}}", "PASSWORD":"{{.password}}"}'
 
   set_yaml_secret "$value" "$transform"
 
-  value=$(cat << EOF
-  USERNAME: "*root*"
-  PASSWORD: "*CashC0w*"
+  transformed=$(cat << EOF
+PASSWORD: '*CasHC0w*'
+USERNAME: '*root*'
 EOF
   )
 
   pause
-  assert_workload_secret_value "$value"
+  assert_workload_secret_value "$transformed"
   delete_secret
 
   printf "Tested: Secret registration (YAML transformation).\n"
@@ -748,7 +821,10 @@ test_secret_registration_yaml_format_sidecar
 # ------------------------------------------------------------------------------
 
 cleanup
+printf "\n"
+printf "----------------------------------------\n"
 printf "Case: Workload using Aegis Init Container…\n"
+printf "\n"
 
 # Tests the registration of secrets using Aegis Init Container.
 test_init_container() {

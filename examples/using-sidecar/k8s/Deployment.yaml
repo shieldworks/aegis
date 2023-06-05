@@ -26,13 +26,13 @@ spec:
       serviceAccountName: example
       containers:
       - name: main
-        image: aegishub/example-using-sidecar:0.17.1
+        image: aegishub/example-using-sidecar:0.17.2
         volumeMounts:
         # `main` shares this volume with `sidecar`.
         - mountPath: /opt/aegis
           name: aegis-secrets-volume
       - name: sidecar
-        image: aegishub/aegis-ist-sidecar:0.17.1
+        image: aegishub/aegis-ist-sidecar:0.17.2
         volumeMounts:
         # /opt/aegis/secrets.json is the place the secrets will be at.
         - mountPath: /opt/aegis

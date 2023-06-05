@@ -21,7 +21,7 @@ RUN CGO_ENABLED=0 GOOS=linux go build -mod vendor -a -o aegis-safe ./app/safe/cm
 FROM gcr.io/distroless/static-debian11
 
 LABEL "maintainers"="Volkan Özçelik <volkan@aegis.ist>"
-LABEL "version"="0.17.1"
+LABEL "version"="0.17.2"
 LABEL "website"="https://aegis.ist/"
 LABEL "repo"="https://github.com/shieldworks/aegis-safe"
 LABEL "documentation"="https://aegis.ist/docs/"
