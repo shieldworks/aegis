@@ -583,7 +583,7 @@ test_encrypting_secrets
 
 cleanup
 printf "\n"
-printf "----------------------------------------\n"
+printf "________________________________________\n"
 printf "Case: Workload using Aegis SDK…\n"
 printf "\n"
 deploy_workload_using_sdk
@@ -699,7 +699,7 @@ test_secret_registration_yaml_format
 
 cleanup
 printf "\n"
-printf "----------------------------------------\n"
+printf "________________________________________\n"
 printf "Case: Workload using Aegis Sidecar…\n"
 printf "\n"
 deploy_workload_using_sidecar
@@ -822,7 +822,7 @@ test_secret_registration_yaml_format_sidecar
 
 cleanup
 printf "\n"
-printf "----------------------------------------\n"
+printf "________________________________________\n"
 printf "Case: Workload using Aegis Init Container…\n"
 printf "\n"
 
