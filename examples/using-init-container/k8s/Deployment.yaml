@@ -43,6 +43,11 @@ spec:
             secretKeyRef:
               name: aegis-secret-example
               key: PASSWORD
+        - name: VALUE
+          valueFrom:
+            secretKeyRef:
+              name: aegis-secret-example
+              key: VALUE
 
       initContainers:
       # See `./register.sh` to register the workload and finalize
