@@ -22,12 +22,14 @@ mac-tunnel:
 # ## Aegis Safe ##
 #
 
-# Builds “Aegis Safe” into a binary.
-safe-build:
-	./hack/build.sh "aegis-ist-safe" "./app/safe/cmd/main.go"
 # Packages the “Aegis Safe” into a container image.
 safe-bundle:
-	./hack/bundle.sh "aegis-ist-safe" $(VERSION) "dockerfiles/aegis-ist/safe.Dockerfile"
+	./hack/bundle.sh "aegis-ist-safe" \
+		$(VERSION) "dockerfiles/aegis-ist/safe.Dockerfile"
+# Packages the “Aegis Safe” into a container image for Photon OS.
+safe-photon-bundle:
+	./hack/bundle.sh "aegis-photon-safe" \
+		$(VERSION) "dockerfiles/aegis-photon/safe.Dockerfile"
 # Pushes the “Aegis Safe” container to the public registry.
 safe-push:
 	./hack/push.sh "aegis-ist-safe" $(VERSION) "aegishub/aegis-ist-safe"
@@ -37,26 +39,33 @@ safe-push-local:
 # Deploys “Aegis Safe” from the public registry into the cluster.
 safe-deploy:
 	./hack/safe-deploy.sh
-# Deploys t“Aegis Safe” from the local registry into the cluster.
+# Deploys “Aegis Safe” from the local registry into the cluster.
 safe-deploy-local:
 	./hack/safe-deploy-local.sh
+# Deploys “Aegis Safe” (Photon OS) from the public registry into the cluster.
+safe-deploy-photon-local:
+	./hack/safe-deploy-photon.sh
 
 #
 # ## Aegis Sentinel ##
 #
 
-# Builds “Aegis Sentinel” into a binary.
-sentinel-build:
-	./hack/build.sh "aegis-ist-sentinel" "./app/sentinel/cmd/main.go"
 # Packages the “Aegis Sentinel” binary into a container image.
 sentinel-bundle:
-	./hack/bundle.sh "aegis-ist-sentinel" $(VERSION) "dockerfiles/aegis-ist/sentinel.Dockerfile"
+	./hack/bundle.sh "aegis-ist-sentinel" \
+		$(VERSION) "dockerfiles/aegis-ist/sentinel.Dockerfile"
+# Packages the “Aegis Sentinel” binary into a container image for Photon OS.
+sentinel-photon-bundle:
+	./hack/bundle.sh "aegis-photon-sentinel" \
+		$(VERSION) "dockerfiles/aegis-photon/sentinel.Dockerfile"
 # Pushes the “Aegis Sentinel” container image the the public registry.
 sentinel-push:
-	./hack/push.sh "aegis-ist-sentinel" $(VERSION) "aegishub/aegis-ist-sentinel"
+	./hack/push.sh "aegis-ist-sentinel" \
+		$(VERSION) "aegishub/aegis-ist-sentinel"
 # Pushes the “Aegis Sentinel” container image to the local registry.
 sentinel-push-local:
-	./hack/push.sh "aegis-ist-sentinel" $(VERSION) "localhost:5000/aegis-ist-sentinel"
+	./hack/push.sh "aegis-ist-sentinel" \
+		$(VERSION) "localhost:5000/aegis-ist-sentinel"
 # Deploys “Aegis Sentinel” from the public registry into the cluster.
 sentinel-deploy:
 	./hack/sentinel-deploy.sh
@@ -68,43 +77,48 @@ sentinel-deploy-local:
 # ## Aegis Init Container ##
 #
 
-# Builds “Aegis Init Container” into a binary.
-init-container-build:
-	./hack/build.sh "aegis-ist-init-container" "./app/init-container/cmd/main.go"
 # Packages the “Aegis Init Container” binary into a container image.
 init-container-bundle:
-	./hack/bundle.sh "aegis-ist-init-container" $(VERSION) "dockerfiles/aegis-ist/init-container.Dockerfile"
+	./hack/bundle.sh "aegis-ist-init-container" \
+		$(VERSION) "dockerfiles/aegis-ist/init-container.Dockerfile"
+# Packages the “Aegis Init Container” binary into a container image for Photon OS.
+init-container-photon-bundle:
+	./hack/bundle.sh "aegis-photon-init-container" \
+		$(VERSION) "dockerfiles/aegis-photon/init-container.Dockerfile"
 # Pushes the “Aegis Init Container” container image to the public registry.
 init-container-push:
-	./hack/push.sh "aegis-ist-init-container" $(VERSION) "aegishub/aegis-ist-init-container"
+	./hack/push.sh "aegis-ist-init-container" \
+		$(VERSION) "aegishub/aegis-ist-init-container"
 # Pushes the “Aegis Init Container” container image to the local registry.
 init-container-push-local:
-	./hack/push.sh "aegis-ist-init-container" $(VERSION) "localhost:5000/aegis-ist-init-container"
+	./hack/push.sh "aegis-ist-init-container" $(VERSION) \
+		"localhost:5000/aegis-ist-init-container"
 
 #
 # ## Aegis Sidecar ##
 #
 
-# Builds “Aegis Sidecar” into a binary.
-sidecar-build:
-	./hack/build.sh "aegis-ist-sidecar" "./app/sidecar/cmd/main.go"
 # Packages the “Aegis Sidecar” binary into a container image.
 sidecar-bundle:
-	./hack/bundle.sh "aegis-ist-sidecar" $(VERSION) "dockerfiles/aegis-ist/sidecar.Dockerfile"
+	./hack/bundle.sh "aegis-ist-sidecar" \
+		$(VERSION) "dockerfiles/aegis-ist/sidecar.Dockerfile"
+# Packages the “Aegis Sidecar” binary into a container image for Photon OS.
+sidecar-photon-bundle:
+	./hack/bundle.sh "aegis-photon-sidecar" \
+		$(VERSION) "dockerfiles/aegis-photon/sidecar.Dockerfile"
 # Pushes the “Aegis Sidecar” container image to the public registry.
 sidecar-push:
-	./hack/push.sh "aegis-ist-sidecar" $(VERSION) "aegishub/aegis-ist-sidecar"
+	./hack/push.sh "aegis-ist-sidecar" \
+		$(VERSION) "aegishub/aegis-ist-sidecar"
 # Pushes the “Aegis Sidecar” container image to the local registry.
 sidecar-push-local:
-	./hack/push.sh "aegis-ist-sidecar" $(VERSION) "localhost:5000/aegis-ist-sidecar"
+	./hack/push.sh "aegis-ist-sidecar" \
+		$(VERSION) "localhost:5000/aegis-ist-sidecar"
 
 #
 # ## Use Case: Sidecar ##
 #
 
-# Builds the “Sidecar” use case into a binary.
-example-sidecar-build:
-	./hack/build.sh "example-using-sidecar" "./examples/using-sidecar/main.go"
 # Packages the “Sidecar” use case binary into a container image.
 example-sidecar-bundle:
 	./hack/bundle.sh "example-using-sidecar" \
@@ -128,9 +142,6 @@ example-sidecar-deploy-local:
 # ## Use Case: SDK ##
 #
 
-# Builds the “SDK” use case into a binary.
-example-sdk-build:
-	./hack/build.sh "example-using-sdk" "./examples/using-sdk/main.go"
 # Packages the “SDK” use case binary into a container image.
 example-sdk-bundle:
 	./hack/bundle.sh "example-using-sdk" \
@@ -154,9 +165,6 @@ example-sdk-deploy-local:
 # ## Use Case: Multiple Secrets ##
 #
 
-# Builds the “multiple secrets” use case into a binary.
-example-multiple-secrets-build:
-	./hack/build.sh "example-multiple-secrets" "./examples/multiple-secrets/main.go"
 # Packages the “multiple secrets” use case binary into a container image.
 example-multiple-secrets-bundle:
 	./hack/bundle.sh "example-multiple-secrets" \
@@ -180,9 +188,6 @@ example-multiple-secrets-deploy-local:
 # ## Use Case: Init Container ##
 #
 
-# Builds the “Init Container” use case into a binary.
-example-init-container-build:
-	./hack/build.sh "example-using-init-container" "./examples/using-init-container/main.go"
 # Packages the “Init Container” binary into a container image.
 example-init-container-bundle:
 	./hack/bundle.sh "example-using-init-container" \
@@ -239,59 +244,81 @@ test-local:
 
 # Builds everything and pushes to registries.
 build: \
-	example-sidecar-build \
 	example-sidecar-bundle \
 	example-sidecar-push \
-	example-sdk-build \
 	example-sdk-bundle \
 	example-sdk-push \
-	example-multiple-secrets-build \
 	example-multiple-secrets-bundle \
 	example-multiple-secrets-push \
-	example-init-container-build \
 	example-init-container-bundle \
 	example-init-container-push \
-	safe-build \
 	safe-bundle \
+	safe-photon-bundle \
 	safe-push \
-	sidecar-build \
 	sidecar-bundle \
+	sidecar-photon-bundle \
 	sidecar-push \
-	sentinel-build \
 	sentinel-bundle \
+	sentinel-photon-bundle \
 	sentinel-push \
-	init-container-build \
 	init-container-bundle \
+	init-container-photon-bundle \
 	init-container-push
 build-local: \
-	example-sidecar-build \
 	example-sidecar-bundle \
 	example-sidecar-push-local \
-	example-sdk-build \
 	example-sdk-bundle \
 	example-sdk-push-local \
-	example-multiple-secrets-build \
 	example-multiple-secrets-bundle \
 	example-multiple-secrets-push-local \
-	example-init-container-build \
 	example-init-container-bundle \
 	example-init-container-push-local \
-	safe-build \
 	safe-bundle \
+	safe-photon-bundle \
 	safe-push-local \
-	sidecar-build \
 	sidecar-bundle \
+	sidecar-photon-bundle \
 	sidecar-push-local \
-	sentinel-build \
 	sentinel-bundle \
+	sentinel-photon-bundle \
 	sentinel-push-local \
-	init-container-build \
 	init-container-bundle \
+	init-container-photon-bundle \
 	init-container-push-local
+
+# Note that example images don’t have photon versions, but we’ll still build
+# them for consistency.
+build-photon: \
+	example-sidecar-bundle \
+	example-sidecar-push-local \
+	example-sdk-bundle \
+	example-sdk-push-local \
+	example-multiple-secrets-bundle \
+	example-multiple-secrets-push-local \
+	example-init-container-bundle \
+	example-init-container-push-local \
+	safe-bundle \
+	safe-photon-bundle \
+	safe-push-photon \
+	sidecar-bundle \
+	sidecar-photon-bundle \
+	sidecar-push-photon \
+	sentinel-bundle \
+	sentinel-photon-bundle \
+	sentinel-push-photon \
+	init-container-bundle \
+	init-container-photon-bundle \
+	init-container-push-photon
 
 #
 # ## Help ##
 #
+
+# TODO:
+# make build-local;make deploy-local;make test-local; (rename as build-ist-local; deploy-ist-local; make test-local)
+# make build-photon-local;make deploy-photon-local; make test-local
+# make build-photon-remote;make deploy-photon-remote; make test-remote
+# make build-ist-remote;make deploy-ist-remote; make test-remote
 
 help:
 	@echo ""
