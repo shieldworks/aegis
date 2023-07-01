@@ -30,13 +30,13 @@ fi
 kubectl apply -f ./ServiceAccount.yaml
 kubectl apply -f ./Identity.yaml
 kubectl apply -f ./Service.yaml
-kubectl apply -k .
+kubectl apply -k ./kustomizations/local/istanbul
 
 cd ..
 cd sentinel || exit
 kubectl apply -f Namespace.yaml
 kubectl apply -f Identity.yaml
 kubectl apply -f ServiceAccount.yaml
-kubectl apply -k .
+kubectl apply -k ./kustomizations/local/istanbul
 
 echo "Everything is awesome!"

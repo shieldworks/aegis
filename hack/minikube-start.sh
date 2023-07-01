@@ -16,7 +16,8 @@ minikube start \
     --extra-config=apiserver.service-account-issuer=api \
     --extra-config=apiserver.api-audiences=api,spire-server \
     --extra-config=apiserver.authorization-mode=Node,RBAC \
-    --memory='4096m' \
+    --memory='11264m' \
+    --cpus=8 \
     --insecure-registry "10.0.0.0/24"
 
 echo "waiting 10 secs before enabling registry"

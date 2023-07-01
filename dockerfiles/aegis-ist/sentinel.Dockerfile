@@ -17,11 +17,11 @@ WORKDIR /build
 RUN CGO_ENABLED=0 GOOS=linux go build -mod vendor -a -o aegis ./app/sentinel/cmd/main.go
 RUN CGO_ENABLED=0 GOOS=linux go build -mod vendor -a -o sloth ./app/sentinel/busywait/main.go
 
-# for debug: FROM alpine:3.17.0
+# generate clean, final image for end users
 FROM gcr.io/distroless/static-debian11
 
 LABEL "maintainers"="Volkan Özçelik <volkan@aegis.ist>"
-LABEL "version"="0.17.2"
+LABEL "version"="0.17.3"
 LABEL "website"="https://aegis.ist/"
 LABEL "repo"="https://github.com/shieldworks/aegis-sentinel"
 LABEL "documentation"="https://aegis.ist/docs/"
