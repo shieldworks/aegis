@@ -9,11 +9,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: aegis-safe
+  name: aegis-sentinel
   namespace: aegis-system
 spec:
   template:
     spec:
       containers:
         - name: main
-          image: localhost:5000/aegis-ist-safe:0.17.2
+          image: aegishub/aegis-ist-sentinel:0.17.3

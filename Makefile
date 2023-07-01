@@ -7,345 +7,78 @@
 #
 
 # The common version tag assigned to all the things.
-VERSION=0.17.2
+VERSION=0.17.3
 
-# tags a release
-tag:
-	./hack/tag.sh $(VERSION)
+# Utils
+include ./AegisMacOs.mk
+include ./AegisDeploy.mk
+## Aegis
+include ./AegisSafe.mk
+include ./AegisSentinel.mk
+include ./AegisInitContainer.mk
+include ./AegisSidecar.mk
+## Examples
+include ./AegisExampleSidecar.mk
+include ./AegisExampleSdk.mk
+include ./AegisExampleMultipleSecrets.mk
+include ./AegisExampleInitContainer.mk
 
-# create a proxy from user’s localhost to Docker for Mac’s docker
-# registry’s API port.
-mac-tunnel:
-	./hack/mac-registry-tunnel.sh
-
-#
-# ## Aegis Safe ##
-#
-
-# Packages the “Aegis Safe” into a container image.
-safe-bundle:
-	./hack/bundle.sh "aegis-ist-safe" \
-		$(VERSION) "dockerfiles/aegis-ist/safe.Dockerfile"
-# Packages the “Aegis Safe” into a container image for Photon OS.
-safe-photon-bundle:
-	./hack/bundle.sh "aegis-photon-safe" \
-		$(VERSION) "dockerfiles/aegis-photon/safe.Dockerfile"
-# Pushes the “Aegis Safe” container to the public registry.
-safe-push:
-	./hack/push.sh "aegis-ist-safe" $(VERSION) "aegishub/aegis-ist-safe"
-# Pushes the “Aegis Safe” container image to the local registry.
-safe-push-local:
-	./hack/push.sh "aegis-ist-safe" $(VERSION) "localhost:5000/aegis-ist-safe"
-# Deploys “Aegis Safe” from the public registry into the cluster.
-safe-deploy:
-	./hack/safe-deploy.sh
-# Deploys “Aegis Safe” from the local registry into the cluster.
-safe-deploy-local:
-	./hack/safe-deploy-local.sh
-# Deploys “Aegis Safe” (Photon OS) from the public registry into the cluster.
-safe-deploy-photon-local:
-	./hack/safe-deploy-photon.sh
-
-#
-# ## Aegis Sentinel ##
-#
-
-# Packages the “Aegis Sentinel” binary into a container image.
-sentinel-bundle:
-	./hack/bundle.sh "aegis-ist-sentinel" \
-		$(VERSION) "dockerfiles/aegis-ist/sentinel.Dockerfile"
-# Packages the “Aegis Sentinel” binary into a container image for Photon OS.
-sentinel-photon-bundle:
-	./hack/bundle.sh "aegis-photon-sentinel" \
-		$(VERSION) "dockerfiles/aegis-photon/sentinel.Dockerfile"
-# Pushes the “Aegis Sentinel” container image the the public registry.
-sentinel-push:
-	./hack/push.sh "aegis-ist-sentinel" \
-		$(VERSION) "aegishub/aegis-ist-sentinel"
-# Pushes the “Aegis Sentinel” container image to the local registry.
-sentinel-push-local:
-	./hack/push.sh "aegis-ist-sentinel" \
-		$(VERSION) "localhost:5000/aegis-ist-sentinel"
-# Deploys “Aegis Sentinel” from the public registry into the cluster.
-sentinel-deploy:
-	./hack/sentinel-deploy.sh
-# Deploys “Aegis Sentinel” from the local registry into the cluster.
-sentinel-deploy-local:
-	./hack/sentinel-deploy-local.sh
-
-#
-# ## Aegis Init Container ##
-#
-
-# Packages the “Aegis Init Container” binary into a container image.
-init-container-bundle:
-	./hack/bundle.sh "aegis-ist-init-container" \
-		$(VERSION) "dockerfiles/aegis-ist/init-container.Dockerfile"
-# Packages the “Aegis Init Container” binary into a container image for Photon OS.
-init-container-photon-bundle:
-	./hack/bundle.sh "aegis-photon-init-container" \
-		$(VERSION) "dockerfiles/aegis-photon/init-container.Dockerfile"
-# Pushes the “Aegis Init Container” container image to the public registry.
-init-container-push:
-	./hack/push.sh "aegis-ist-init-container" \
-		$(VERSION) "aegishub/aegis-ist-init-container"
-# Pushes the “Aegis Init Container” container image to the local registry.
-init-container-push-local:
-	./hack/push.sh "aegis-ist-init-container" $(VERSION) \
-		"localhost:5000/aegis-ist-init-container"
-
-#
-# ## Aegis Sidecar ##
-#
-
-# Packages the “Aegis Sidecar” binary into a container image.
-sidecar-bundle:
-	./hack/bundle.sh "aegis-ist-sidecar" \
-		$(VERSION) "dockerfiles/aegis-ist/sidecar.Dockerfile"
-# Packages the “Aegis Sidecar” binary into a container image for Photon OS.
-sidecar-photon-bundle:
-	./hack/bundle.sh "aegis-photon-sidecar" \
-		$(VERSION) "dockerfiles/aegis-photon/sidecar.Dockerfile"
-# Pushes the “Aegis Sidecar” container image to the public registry.
-sidecar-push:
-	./hack/push.sh "aegis-ist-sidecar" \
-		$(VERSION) "aegishub/aegis-ist-sidecar"
-# Pushes the “Aegis Sidecar” container image to the local registry.
-sidecar-push-local:
-	./hack/push.sh "aegis-ist-sidecar" \
-		$(VERSION) "localhost:5000/aegis-ist-sidecar"
-
-#
-# ## Use Case: Sidecar ##
-#
-
-# Packages the “Sidecar” use case binary into a container image.
-example-sidecar-bundle:
-	./hack/bundle.sh "example-using-sidecar" \
-		$(VERSION) "dockerfiles/example/sidecar.Dockerfile"
-# Pushes the “Sidecar” use case container image to the public registry.
-example-sidecar-push:
-	./hack/push.sh "example-using-sidecar" \
-		$(VERSION) "aegishub/example-using-sidecar"
-# Pushes the “Sidecar” use case container image to the local registry.
-example-sidecar-push-local:
-	./hack/push.sh "example-using-sidecar" \
-		$(VERSION) "localhost:5000/example-using-sidecar"
-# Deploys the “Sidecar” use case app from the public registry into the cluster.
-example-sidecar-deploy:
-	./hack/example-sidecar-deploy.sh
-# Deploys the “Sidecar” use case app from the local registry into the cluster.
-example-sidecar-deploy-local:
-	./hack/example-sidecar-deploy-local.sh
-
-#
-# ## Use Case: SDK ##
-#
-
-# Packages the “SDK” use case binary into a container image.
-example-sdk-bundle:
-	./hack/bundle.sh "example-using-sdk" \
-		$(VERSION) "dockerfiles/example/sdk.Dockerfile"
-# Pushes the “SDK” use case container image to the public registry.
-example-sdk-push:
-	./hack/push.sh "example-using-sdk" \
-		$(VERSION) "aegishub/example-using-sdk"
-# Pushes the “SDK” use case container image to the local registry.
-example-sdk-push-local:
-	./hack/push.sh "example-using-sdk" \
-		$(VERSION) "localhost:5000/example-using-sdk"
-# Deploys the “SDK” use case app from the public registry into the cluster.
-example-sdk-deploy:
-	./hack/example-sdk-deploy.sh
-# Deploys the “SDK” use case app from the local registry into the cluster.
-example-sdk-deploy-local:
-	./hack/example-sdk-deploy-local.sh
-
-#
-# ## Use Case: Multiple Secrets ##
-#
-
-# Packages the “multiple secrets” use case binary into a container image.
-example-multiple-secrets-bundle:
-	./hack/bundle.sh "example-multiple-secrets" \
-		$(VERSION) "dockerfiles/example/multiple-secrets.Dockerfile"
-# Pushes the “multiple secrets” use case container image to the public registry.
-example-multiple-secrets-push:
-	./hack/push.sh "example-multiple-secrets" \
-		$(VERSION) "aegishub/example-multiple-secrets"
-# Pushes the “multiple secrets” use case container image to the local registry.
-example-multiple-secrets-push-local:
-	./hack/push.sh "example-multiple-secrets" \
-		$(VERSION) "localhost:5000/example-multiple-secrets"
-# Deploys the “multiple secrets” use case app from the public registry into the cluster.
-example-multiple-secrets-deploy:
-	./hack/example-multiple-secrets-deploy.sh
-# Deploys the “multiple secrets” use case app from the local registry into the cluster.
-example-multiple-secrets-deploy-local:
-	./hack/example-multiple-secrets-deploy-local.sh
-
-#
-# ## Use Case: Init Container ##
-#
-
-# Packages the “Init Container” binary into a container image.
-example-init-container-bundle:
-	./hack/bundle.sh "example-using-init-container" \
-		$(VERSION) "dockerfiles/example/init-container.Dockerfile"
-# Pushes the “Init Container” container image to the public registry.
-example-init-container-push:
-	./hack/push.sh "example-using-init-container" \
-		$(VERSION) "aegishub/example-using-init-container"
-# Pushes the “Init Container” container image to the local registry.
-example-init-container-push-local:
-	./hack/push.sh "example-using-init-container" \
-		$(VERSION) "localhost:5000/example-using-init-container"
-# Deploys the “Init Container” app from the public registry into the cluster.
-example-init-container-deploy:
-	./hack/example-init-container-deploy.sh
-# Deploys the “Init Container” app from the local registry into the cluster.
-example-init-container-deploy-local:
-	./hack/example-init-container-deploy-local.sh
-
-#
-# ## Lifecycle ##
-#
-
-# Removes the former Aegis deployment without entirely destroying the cluster.
-clean:
-	./hack/uninstall.sh
-
-# Completely removes the Minikube cluster.
-k8s-delete:
-	./hack/minikube-delete.sh
-# Brings up a fresh Minikube cluster.
-k8s-start:
-	./hack/minikube-start.sh
-
-# Deploys Aegis to the cluster.
-deploy:
-	./hack/deploy.sh
-deploy-local:
-	./hack/deploy-local.sh
-
-#
-# ## Tests ##
-#
-
-# Integration tests.
-test:
-	./hack/test.sh "remote"
-test-local:
-	./hack/test.sh
-
-#
-# ## Build and Push ##
-#
-
-# Builds everything and pushes to registries.
-build: \
-	example-sidecar-bundle \
-	example-sidecar-push \
-	example-sdk-bundle \
-	example-sdk-push \
-	example-multiple-secrets-bundle \
-	example-multiple-secrets-push \
-	example-init-container-bundle \
-	example-init-container-push \
-	safe-bundle \
-	safe-photon-bundle \
-	safe-push \
-	sidecar-bundle \
-	sidecar-photon-bundle \
-	sidecar-push \
-	sentinel-bundle \
-	sentinel-photon-bundle \
-	sentinel-push \
-	init-container-bundle \
-	init-container-photon-bundle \
-	init-container-push
-build-local: \
-	example-sidecar-bundle \
-	example-sidecar-push-local \
-	example-sdk-bundle \
-	example-sdk-push-local \
-	example-multiple-secrets-bundle \
-	example-multiple-secrets-push-local \
-	example-init-container-bundle \
-	example-init-container-push-local \
-	safe-bundle \
-	safe-photon-bundle \
-	safe-push-local \
-	sidecar-bundle \
-	sidecar-photon-bundle \
-	sidecar-push-local \
-	sentinel-bundle \
-	sentinel-photon-bundle \
-	sentinel-push-local \
-	init-container-bundle \
-	init-container-photon-bundle \
-	init-container-push-local
-
-# Note that example images don’t have photon versions, but we’ll still build
-# them for consistency.
-build-photon: \
-	example-sidecar-bundle \
-	example-sidecar-push-local \
-	example-sdk-bundle \
-	example-sdk-push-local \
-	example-multiple-secrets-bundle \
-	example-multiple-secrets-push-local \
-	example-init-container-bundle \
-	example-init-container-push-local \
-	safe-bundle \
-	safe-photon-bundle \
-	safe-push-photon \
-	sidecar-bundle \
-	sidecar-photon-bundle \
-	sidecar-push-photon \
-	sentinel-bundle \
-	sentinel-photon-bundle \
-	sentinel-push-photon \
-	init-container-bundle \
-	init-container-photon-bundle \
-	init-container-push-photon
-
-#
-# ## Help ##
-#
-
-# TODO:
-# make build-local;make deploy-local;make test-local; (rename as build-ist-local; deploy-ist-local; make test-local)
-# make build-photon-local;make deploy-photon-local; make test-local
-# make build-photon-remote;make deploy-photon-remote; make test-remote
-# make build-ist-remote;make deploy-ist-remote; make test-remote
+## Build
+include ./AegisBuild.mk
 
 help:
+	@echo "--------------------------------------------------------------------"
+	@echo "          🛡️ Aegis: Keep your secrets… secret."
+	@echo "          🛡️ https://aegis.ist"
+	@echo "--------------------------------------------------------------------"
+	@echo "        ℹ️ This Makefile assumes you use Minikube and Docker"
+	@echo "        ℹ️ for most operations."
+	@echo "--------------------------------------------------------------------"
+
+	@if [ "`uname`" = "Darwin" ]; then \
+		if type docker > /dev/null 2>&1; then \
+			echo "  Using Docker for Mac?"; \
+			echo "        ➡ 'make mac-tunnel' to proxy to the internal registry."; \
+		else \
+			echo "  Docker is not installed on this Mac."; \
+		fi; \
+	fi
+
 	@echo ""
-	@echo "                         ---------------------------------------------------"
-	@echo "                         eval $$ (minikube -p minikube docker-env)"
-	@echo "            Docker Host: ${DOCKER_HOST}"
-	@echo "Minikube Active dockerd: ${MINIKUBE_ACTIVE_DOCKERD}"
-	@echo "                         ---------------------------------------------------"
-	@echo "                   PREP: make k8s-delete;make k8s-start;\n\
-                   TEST: make build-local;make deploy-local;make test-local;\n\
-                         ---------------------------------------------------\n\
-      EXAMPLE (SIDECAR): make example-sidecar-deploy-local |\n\
-                         make example-sidecar-deploy\n\
-                         ---------------------------------------------------\n\
-          EXAMPLE (SDK): make example-sdk-deploy-local |\n\
-                         make example-sdk-deploy\n\
-                         ---------------------------------------------------\n\
-    EXAMPLE (N SECRETS): make example-multiple-secrets-deploy-local |\n\
-                         make example-multiple-secrets-deploy\n\
-                         ---------------------------------------------------\n\
-       EXAMPLE (INIT C): make example-init-container-deploy-local |\n\
-                         make example-init-container-deploy\n\
-                         ---------------------------------------------------\n\
-                CLEANUP: make clean\n\
-                         ---------------------------------------------------\n\
-                RELEASE: make k8s-delete;make bump;make build;\n\
-         TEST (release): make k8s-start;make deploy;make test;\n\
-                    TAG: make tag\n\
-                         ---------------------------------------------------\n"
-	@echo ""
+
+	@if [ -z "$(DOCKER_HOST)" -o -z "$(MINIKUBE_ACTIVE_DOCKERD)" ]; then \
+		echo "  Using Minikube? If DOCKER_HOST and MINIKUBE_ACTIVE_DOCKERD are"; \
+		echo '  not set, then run: eval $$(minikube -p minikube docker-env)'; \
+		echo "        ➡ \$$DOCKER_HOST            : ${DOCKER_HOST}"; \
+		echo "        ➡ \$$MINIKUBE_ACTIVE_DOCKERD: ${MINIKUBE_ACTIVE_DOCKERD}"; \
+	else \
+	    echo "  Make sure DOCKER_HOST and MINIKUBE_ACTIVE_DOCKERD are current:"; \
+		echo '          eval $$(minikube -p minikube docker-env)'; \
+	    echo "          (they may change if you reinstall Minikube)"; \
+		echo "        ➡ \$$DOCKER_HOST            : ${DOCKER_HOST}"; \
+		echo "        ➡ \$$MINIKUBE_ACTIVE_DOCKERD: ${MINIKUBE_ACTIVE_DOCKERD}"; \
+	fi
+
+	@echo "--------------------------------------------------------------------"
+	@echo "  Prep/Cleanup:"
+	@echo "        ˃ make k8s-delete;make k8s-start;"
+	@echo "        ˃ make clean;"
+	@echo "--------------------------------------------------------------------"
+	@echo "  Testing:"
+	@echo "    ⦿ Istanbul images:"
+	@echo "        ˃ make build-local;make deploy-local;make test-local;"
+	@echo "    ⦿ Photon images:"
+	@echo "        ˃ make build-local;make deploy-photon-local;make test-local;"
+	@echo "    ⦿ Istanbul (remote) images:"
+	@echo "        ˃ make build;make deploy;make test-remote;"
+	@echo "    ⦿ Photon (remote) images:"
+	@echo "        ˃ make build;make deploy-photon;make test-remote"
+	@echo "--------------------------------------------------------------------"
+	@echo "  Tagging:"
+	@echo "        ˃ make tag;"
+	@echo "--------------------------------------------------------------------"
+	@echo "  Example Use Cases:"
+	@echo "        ˃ make example-sidecar-deploy(-local);"
+	@echo "        ˃ make example-sdk-deploy(-local);"
+	@echo "        ˃ make example-multiple-secrets-deploy(-local);"
+	@echo "--------------------------------------------------------------------"

@@ -16,4 +16,4 @@ spec:
     spec:
       containers:
       - name: main
-        image: localhost:5000/example-using-sdk:0.17.2
+        image: localhost:5000/example-using-sdk:0.17.3

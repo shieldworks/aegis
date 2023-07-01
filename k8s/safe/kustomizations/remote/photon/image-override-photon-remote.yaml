@@ -16,4 +16,4 @@ spec:
     spec:
       containers:
         - name: main
-          image: localhost:5000/aegis-photon-safe:0.17.2
+          image: aegishub/aegis-photon-safe:0.17.3
