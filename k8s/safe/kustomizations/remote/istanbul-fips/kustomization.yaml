@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-
 #
 # .-'_.---._'-.
 # ||####|(__)||   Protect your secrets, protect your business.
@@ -8,6 +6,11 @@
 #     .\_/.
 #
 
-kubectl apply -f ./k8s/sentinel/Namespace.yaml
-kubectl apply -f ./k8s/sentinel/ServiceAccount.yaml
-kubectl apply -k ./k8s/sentinel/
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - Deployment.yaml
+patches:
+  - path: image-override-ist-fips-remote.yaml
+generatorOptions:
+  disableNameSuffixHash: true

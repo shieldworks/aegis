@@ -24,12 +24,20 @@ k8s-start:
 # Deploys Aegis to the cluster.
 deploy:
 	./hack/deploy.sh
-deploy-local:
-	./hack/deploy-local.sh
+deploy-fips:
+	./hack/deploy-fips.sh
 deploy-photon:
 	./hack/deploy-photon.sh
+deploy-photon-fips:
+	./hack/deploy-photon-fips.sh
+deploy-local:
+	./hack/deploy-local.sh
+deploy-fips-local:
+	./hack/deploy-fips-local.sh
 deploy-photon-local:
 	./hack/deploy-photon-local.sh
+deploy-photon-fips-local:
+	./hack/deploy-photon-fips-local.sh
 
 #
 # ## Tests ##
