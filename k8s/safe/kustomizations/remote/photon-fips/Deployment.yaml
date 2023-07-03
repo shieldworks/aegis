@@ -29,7 +29,7 @@ spec:
       serviceAccountName: aegis-safe
       containers:
         - name: main
-          image: aegishub/aegis-ist-safe:0.17.4
+          image: aegishub/aegis-ist-safe:0.18.0
           ports:
             - containerPort: 8443
           volumeMounts:
@@ -67,8 +67,8 @@ spec:
               value: "aegis-safe-age-key"
             - name: AEGIS_CRYPTO_KEY_PATH
               value: "/key/key.txt"
-            - name: AEGIS_MANUAL_KEY_INPUT
-              value: "true"
+            - name: AEGIS_SAFE_MANUAL_KEY_INPUT
+              value: "false"
             - name: AEGIS_SAFE_SECRET_NAME_PREFIX
               value: "aegis-secret-"
             - name: AEGIS_PROBE_LIVENESS_PORT

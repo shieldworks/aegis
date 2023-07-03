@@ -192,7 +192,6 @@ func Post(workloadId, secret, namespace, backingStore string, useKubernetes bool
 		}
 
 		parts := strings.Split(inputKeys, "\n")
-
 		if len(parts) != 3 {
 			printPayloadError(errors.New("post: Bad data! Very bad data"))
 			return

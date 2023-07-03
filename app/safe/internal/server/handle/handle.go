@@ -49,7 +49,7 @@ func InitializeRoutes() {
 			return
 		}
 
-		// Route to define the master key when AEGIS_MANUAL_KEY_INPUT is set.
+		// Route to define the master key when AEGIS_SAFE_MANUAL_KEY_INPUT is set.
 		// Only Aegis Sentinel is allowed to call this API endpoint.
 		// This method works only once. Once a key is set, there is no way to
 		// update it. You will have to kill the Aegis Sentinel pod and restart it

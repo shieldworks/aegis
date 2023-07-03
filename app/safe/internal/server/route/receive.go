@@ -11,18 +11,16 @@ package route
 import (
 	"github.com/shieldworks/aegis/app/safe/internal/state"
 	"github.com/shieldworks/aegis/core/audit"
-	"github.com/shieldworks/aegis/core/env"
+	reqres "github.com/shieldworks/aegis/core/entity/reqres/safe/v1"
 	"github.com/shieldworks/aegis/core/log"
+	"io"
 	"net/http"
+	"strings"
 )
 
 func ReceiveKeys(cid string, w http.ResponseWriter, r *http.Request, svid string) {
-	if env.SafeManualKeyInput() && !state.MasterKeySet() {
-		log.InfoLn(&cid, "Receive: Master key not set")
-		return
-	}
-
 	j := createDefaultJournalEntry(cid, svid, r)
+	j.Entity = reqres.KeyInputRequest{}
 	audit.Log(j)
 
 	if !isSentinel(j, cid, w, svid) {
@@ -48,14 +46,27 @@ func ReceiveKeys(cid string, w http.ResponseWriter, r *http.Request, svid string
 	}
 
 	sr := *ur
-
 	j.Entity = sr
 
-	aesCipherKey := sr.AesCipherKey
-	agePrivateKey := sr.AgeSecretKey
-	agePublicKey := sr.AgePublicKey
+	aesCipherKey := strings.TrimSpace(sr.AesCipherKey)
+	agePrivateKey := strings.TrimSpace(sr.AgeSecretKey)
+	agePublicKey := strings.TrimSpace(sr.AgePublicKey)
+
+	if aesCipherKey == "" || agePrivateKey == "" || agePublicKey == "" {
+		j.Event = audit.EventBadPayload
+		audit.Log(j)
+		return
+	}
 
 	keysCombined := agePrivateKey + "\n" + agePublicKey + "\n" + aesCipherKey
-
 	state.SetMasterKey(keysCombined)
+
+	log.DebugLn(&cid, "ReceiveKeys: before response")
+
+	_, err := io.WriteString(w, "OK")
+	if err != nil {
+		log.InfoLn(&cid, "ReceiveKeys: Problem sending response", err.Error())
+	}
+
+	log.DebugLn(&cid, "ReceiveKeys: after response")
 }

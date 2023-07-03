@@ -16,4 +16,4 @@ spec:
     spec:
       containers:
         - name: main
-          image: localhost:5000/aegis-photon-sentinel:0.17.4
+          image: localhost:5000/aegis-photon-sentinel:0.18.0
