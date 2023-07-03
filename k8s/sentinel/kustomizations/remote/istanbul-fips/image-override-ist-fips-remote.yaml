@@ -1,0 +1,19 @@
+#
+# .-'_.---._'-.
+# ||####|(__)||   Protect your secrets, protect your business.
+#   \\()|##//       Secure your sensitive data with Aegis.
+#    \\ |#//                    <aegis.ist>
+#     .\_/.
+#
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aegis-sentinel
+  namespace: aegis-system
+spec:
+  template:
+    spec:
+      containers:
+        - name: main
+          image: aegishub/aegis-ist-fips-sentinel:0.17.3
