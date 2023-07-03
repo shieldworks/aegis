@@ -41,7 +41,7 @@ func saveSecretToDisk(secret entity.SecretStored, dataPath string) error {
 		}
 	}()
 
-	return encryptToWriter(file, string(data))
+	return encryptToWriterAge(file, string(data))
 }
 
 // Only one goroutine accesses this function at any given time.

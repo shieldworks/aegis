@@ -10,12 +10,16 @@ package state
 
 import "strings"
 
-func ageKeyPair() (string, string) {
+func ageKeyTriplet() (string, string, string) {
 	if ageKey == "" {
-		return "", ""
+		return "", "", ""
 	}
 
 	parts := strings.Split(ageKey, "\n")
 
-	return parts[0], parts[1]
+	if len(parts) != 3 {
+		return "", "", ""
+	}
+
+	return parts[0], parts[1], parts[2]
 }

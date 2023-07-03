@@ -107,6 +107,21 @@ func SafeK8sSecretDeleteBufferSize() int {
 	return l
 }
 
+// SafeFipsCompliant returns a boolean indicating whether Aegis Safe should run in
+// FIPS compliant mode. Note that this is not a guarantee that Aegis Safe will
+// run in FIPS compliant mode, as it depends on the underlying base image.
+// If you are using one of the official FIPS-complaint Aegis Docker images,
+// then it will be FIPS-compliant. Check https://aegis.ist/docs/configuration/
+// for more details.
+func SafeFipsCompliant() bool {
+	p := strings.ToLower(os.Getenv("AEGIS_SAFE_FIPS_COMPLIANT"))
+	if p == "" {
+		return false
+	}
+
+	return p == "true"
+}
+
 // SafeBackingStore returns the storage type for the data,
 // as specified in the AEGIS_SAFE_BACKING_STORE environment variable.
 // If the environment variable is not set, it defaults to "file".
