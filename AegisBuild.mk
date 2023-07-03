@@ -19,7 +19,7 @@ build: \
 	safe-bundle-ist \
 	safe-push-ist \
 	safe-bundle-ist-fips \
-    safe-push-ist-fips \
+	safe-push-ist-fips \
 	safe-bundle-photon \
 	safe-push-photon \
 	safe-bundle-photon-fips \
@@ -27,7 +27,7 @@ build: \
 	sidecar-bundle-ist \
 	sidecar-push-ist \
 	sidecar-bundle-ist-fips \
-    sidecar-push-ist-fips \
+	sidecar-push-ist-fips \
 	sidecar-bundle-photon \
 	sidecar-push-photon \
 	sidecar-bundle-photon-fips \
@@ -35,7 +35,7 @@ build: \
 	sentinel-bundle-ist \
 	sentinel-push-ist \
 	sentinel-bundle-ist-fips \
-    sentinel-push-ist-fips \
+	sentinel-push-ist-fips \
 	sentinel-bundle-photon \
 	sentinel-push-photon \
 	sentinel-bundle-photon-fips \
@@ -86,7 +86,7 @@ build-local: \
 	init-container-bundle-ist \
 	init-container-push-ist-local \
 	init-container-bundle-ist-fips \
-    init-container-push-ist-fips-local \
+	init-container-push-ist-fips-local \
 	init-container-bundle-photon \
 	init-container-push-photon-local \
 	init-container-bundle-photon-fips \
