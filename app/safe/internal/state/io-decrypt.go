@@ -60,7 +60,7 @@ func decryptBytesAes(data []byte) ([]byte, error) {
 		return nil, errors.Wrap(err, "decryptBytes: failed to create AES cipher block")
 	}
 
-	// The IV is included in the beginning of the ciphertext.'
+	// The IV is included in the beginning of the ciphertext.
 	if len(data) < aes.BlockSize {
 		return nil, errors.New("decryptBytes: ciphertext too short")
 	}
