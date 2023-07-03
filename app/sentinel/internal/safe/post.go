@@ -24,6 +24,7 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"strings"
 )
 
 func createAuthorizer() tlsconfig.Authorizer {
@@ -57,6 +58,15 @@ func decideSecretFormat(format string) data.SecretFormat {
 		return data.Yaml
 	default:
 		return data.Json
+	}
+}
+
+func newInputKeysRequest(ageSecretKey, agePublicKey, aesCipherKey string,
+) reqres.KeyInputRequest {
+	return reqres.KeyInputRequest{
+		AgeSecretKey: ageSecretKey,
+		AgePublicKey: agePublicKey,
+		AesCipherKey: aesCipherKey,
 	}
 }
 
@@ -146,6 +156,7 @@ func doPost(client *http.Client, p string, md []byte) {
 
 func Post(workloadId, secret, namespace, backingStore string, useKubernetes bool,
 	template string, format string, encrypt, deleteSecret, appendSecret bool,
+	inputKeys string,
 ) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -165,6 +176,38 @@ func Post(workloadId, secret, namespace, backingStore string, useKubernetes bool
 	}
 
 	authorizer := createAuthorizer()
+
+	if inputKeys != "" {
+		p, err := url.JoinPath(env.SafeEndpointUrl(), "/sentinel/v1/keys")
+		if err != nil {
+			printEndpointError(err)
+			return
+		}
+
+		tlsConfig := tlsconfig.MTLSClientConfig(source, source, authorizer)
+		client := &http.Client{
+			Transport: &http.Transport{
+				TLSClientConfig: tlsConfig,
+			},
+		}
+
+		parts := strings.Split(inputKeys, "\n")
+
+		if len(parts) != 3 {
+			printPayloadError(errors.New("post: Bad data! Very bad data"))
+			return
+		}
+
+		sr := newInputKeysRequest(parts[0], parts[1], parts[2])
+		md, err := json.Marshal(sr)
+		if err != nil {
+			printPayloadError(err)
+			return
+		}
+
+		doPost(client, p, md)
+		return
+	}
 
 	p, err := url.JoinPath(env.SafeEndpointUrl(), "/sentinel/v1/secrets")
 	if err != nil {

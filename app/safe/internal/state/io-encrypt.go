@@ -21,6 +21,11 @@ import (
 
 func encryptToWriterAge(out io.Writer, data string) error {
 	_, publicKey, _ := ageKeyTriplet()
+
+	if publicKey == "" {
+		return errors.New("encryptToWriterAge: no public key")
+	}
+
 	recipient, err := age.ParseX25519Recipient(publicKey)
 	if err != nil {
 		return errors.Wrap(err, "encryptToWriterAge: failed to parse public key")
@@ -48,6 +53,11 @@ func encryptToWriterAge(out io.Writer, data string) error {
 
 func encryptToWriterAes(out io.Writer, data string) error {
 	_, _, aesKey := ageKeyTriplet()
+
+	if aesKey == "" {
+		return errors.New("encryptToWriter: no AES key")
+	}
+
 	aesKeyDecoded, err := hex.DecodeString(aesKey)
 	if err != nil {
 		return errors.Wrap(err, "encryptToWriter: failed to decode AES key")

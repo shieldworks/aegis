@@ -14,6 +14,7 @@ import (
 	"github.com/shieldworks/aegis/core/audit"
 	entity "github.com/shieldworks/aegis/core/entity/data/v1"
 	reqres "github.com/shieldworks/aegis/core/entity/reqres/safe/v1"
+	"github.com/shieldworks/aegis/core/env"
 	"github.com/shieldworks/aegis/core/log"
 	"io"
 	"net/http"
@@ -62,6 +63,23 @@ func readBody(cid string, r *http.Request, w http.ResponseWriter,
 func unmarshalRequest(cid string, body []byte, j audit.JournalEntry,
 	w http.ResponseWriter) *reqres.SecretUpsertRequest {
 	var sr reqres.SecretUpsertRequest
+	err := json.Unmarshal(body, &sr)
+	if err != nil {
+		j.Event = audit.EventRequestTypeMismatch
+		audit.Log(j)
+		w.WriteHeader(http.StatusBadRequest)
+		_, err := io.WriteString(w, "")
+		if err != nil {
+			log.InfoLn(&cid, "Secret: Problem sending response", err.Error())
+		}
+		return nil
+	}
+	return &sr
+}
+
+func unmarshalKeyInputRequest(cid string, body []byte, j audit.JournalEntry,
+	w http.ResponseWriter) *reqres.KeyInputRequest {
+	var sr reqres.KeyInputRequest
 	err := json.Unmarshal(body, &sr)
 	if err != nil {
 		j.Event = audit.EventRequestTypeMismatch
@@ -145,6 +163,11 @@ func upsert(secretToStore entity.SecretStored,
 }
 
 func Secret(cid string, w http.ResponseWriter, r *http.Request, svid string) {
+	if env.SafeManualKeyInput() && !state.MasterKeySet() {
+		log.InfoLn(&cid, "Secret: Master key not set")
+		return
+	}
+
 	j := createDefaultJournalEntry(cid, svid, r)
 	audit.Log(j)
 

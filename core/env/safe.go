@@ -184,6 +184,21 @@ func SafeSecretBackupCount() int {
 	return l
 }
 
+// SafeManualKeyInput returns a boolean indicating whether to use manual
+// cryptographic key input for Aegis Safe, instead of letting it bootstrap
+// automatically. If the environment variable is not set or its value is
+// not "true", the function returns false. Otherwise, the function returns true.
+func SafeManualKeyInput() bool {
+	p := os.Getenv("AEGIS_SAFE_MANUAL_KEY_INPUT")
+	if p == "" {
+		return false
+	}
+	if strings.ToLower(p) == "true" {
+		return true
+	}
+	return false
+}
+
 // SafeDataPath returns the path to the safe data directory.
 // The path is determined by the AEGIS_SAFE_DATA_PATH environment variable.
 // If the environment variable is not set, the default path "/data" is returned.
@@ -196,11 +211,11 @@ func SafeDataPath() string {
 }
 
 // SafeAgeKeyPath returns the path to the safe age key directory.
-// The path is determined by the AEGIS_SAFE_AGE_KEY_PATH environment variable.
+// The path is determined by the AEGIS_CRYPTO_KEY_PATH environment variable.
 // If the environment variable is not set, the default path "/key/key.txt"
 // is returned.
 func SafeAgeKeyPath() string {
-	p := os.Getenv("AEGIS_SAFE_AGE_KEY_PATH")
+	p := os.Getenv("AEGIS_CRYPTO_KEY_PATH")
 	if p == "" {
 		p = "/key/key.txt"
 	}
@@ -226,10 +241,10 @@ func SafeBootstrapTimeout() time.Duration {
 
 // SafeAgeKeySecretName returns the name of the environment variable that holds
 // the Aegis Safe age key. The value is retrieved using the
-// "AEGIS_SAFE_AGE_KEY_SECRET_NAME" environment variable. If this variable is
+// "AEGIS_CRYPTO_KEY_NAME" environment variable. If this variable is
 // not set or is empty, the default value "aegis-safe-age-key" is returned.
 func SafeAgeKeySecretName() string {
-	p := os.Getenv("AEGIS_SAFE_AGE_KEY_SECRET_NAME")
+	p := os.Getenv("AEGIS_CRYPTO_KEY_NAME")
 	if p == "" {
 		p = "aegis-safe-age-key"
 	}

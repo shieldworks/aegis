@@ -24,6 +24,11 @@ import (
 )
 
 func Fetch(cid string, w http.ResponseWriter, r *http.Request, svid string) {
+	if env.SafeManualKeyInput() && !state.MasterKeySet() {
+		log.InfoLn(&cid, "Fetch: Master key not set")
+		return
+	}
+
 	j := audit.JournalEntry{
 		CorrelationId: cid,
 		Entity:        reqres.SecretFetchRequest{},

@@ -25,6 +25,12 @@ type SecretUpsertRequest struct {
 	Err           string            `json:"err,omitempty"`
 }
 
+type KeyInputRequest struct {
+	AgeSecretKey string `json:"ageSecretKey"`
+	AgePublicKey string `json:"agePublicKey"`
+	AesCipherKey string `json:"aesCipherKey"`
+}
+
 type SecretUpsertResponse struct {
 	Err string `json:"err,omitempty"`
 }

@@ -51,6 +51,13 @@ func parseNamespace(parser *argparse.Parser) *string {
 	})
 }
 
+func parseInputKeys(parser *argparse.Parser) *string {
+	return parser.String("i", "input-keys", &argparse.Options{
+		Required: false,
+		Help:     "A string containing the private and public Age keys and AES seed, each separated by '\\n'.",
+	})
+}
+
 func parseBackingStore(parser *argparse.Parser) *string {
 	return parser.String("b", "store", &argparse.Options{
 		Required: false,
@@ -119,7 +126,7 @@ func printSecretNeeded() {
 
 func doPost(workload *string, secret *string, namespace *string,
 	backingStore *string, useKubernetes *bool, template *string, format *string,
-	encrypt *bool, deleteSecret *bool, appendSecret *bool,
+	encrypt *bool, deleteSecret *bool, appendSecret *bool, inputKeys *string,
 ) {
 	workloadP := ""
 	if workload != nil {
@@ -171,9 +178,14 @@ func doPost(workload *string, secret *string, namespace *string,
 		appendP = *appendSecret
 	}
 
+	inputKeysP := ""
+	if inputKeys != nil {
+		inputKeysP = *inputKeys
+	}
+
 	safe.Post(
 		workloadP, secretP, namespaceP, backingStoreP, useK8sP,
-		templateP, formatP, encryptP, deleteP, appendP,
+		templateP, formatP, encryptP, deleteP, appendP, inputKeysP,
 	)
 }
 
@@ -185,6 +197,7 @@ func main() {
 	deleteSecret := parseDeleteSecret(parser)
 	appendSecret := parseAppendSecret(parser)
 	namespace := parseNamespace(parser)
+	inputKeys := parseInputKeys(parser)
 	backingStore := parseBackingStore(parser)
 	workload := parseWorkload(parser)
 	secret := parseSecret(parser)
@@ -218,6 +231,12 @@ func main() {
 		*namespace = "default"
 	}
 
+	if inputKeys == nil || *inputKeys == "" {
+		*inputKeys = ""
+	}
+
 	doPost(workload, secret, namespace, backingStore,
-		useKubernetes, template, format, encrypt, deleteSecret, appendSecret)
+		useKubernetes, template, format, encrypt, deleteSecret, appendSecret,
+		inputKeys,
+	)
 }

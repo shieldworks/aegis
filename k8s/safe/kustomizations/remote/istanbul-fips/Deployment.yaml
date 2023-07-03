@@ -63,10 +63,12 @@ spec:
               value: "spiffe://aegis.ist/workload/aegis-safe/ns/aegis-system/sa/aegis-safe/n/"
             - name: AEGIS_SAFE_DATA_PATH
               value: "/data"
-            - name:  AEGIS_SAFE_AGE_KEY_SECRET_NAME
+            - name:  AEGIS_CRYPTO_KEY_NAME
               value: "aegis-safe-age-key"
-            - name: AEGIS_SAFE_AGE_KEY_PATH
+            - name: AEGIS_CRYPTO_KEY_PATH
               value: "/key/key.txt"
+            - name: AEGIS_MANUAL_KEY_INPUT
+              value: "true"
             - name: AEGIS_SAFE_SECRET_NAME_PREFIX
               value: "aegis-secret-"
             - name: AEGIS_PROBE_LIVENESS_PORT

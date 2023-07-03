@@ -14,15 +14,16 @@ import (
 	entity "github.com/shieldworks/aegis/core/entity/data/v1"
 	"github.com/shieldworks/aegis/core/env"
 	"github.com/shieldworks/aegis/core/log"
+	"sync"
 	"time"
 )
 
 const InitialSecretValue = `{"empty":true}`
 const BlankAgeKeyValue = "{}"
 
-// ageKey is set only once during initialization; we don’t need to lock
+// masterKey is set only once during initialization; we don’t need to lock
 // access to it.
-var ageKey = ""
+var masterKey = ""
 
 // Initialize starts two goroutines: one to process the secret queue and
 // another to process the Kubernetes secret queue. These goroutines are
@@ -34,19 +35,28 @@ func Initialize() {
 	go processK8sSecretDeleteQueue()
 }
 
-// SetAgeKey sets the age key to be used for encryption and decryption.
-// This function is not thread-safe and should only be called once during
-// initialization.
-//
-// This function is called only once in the bootstrapping flow. Once the
-// age key is set, it cannot be changed.
-func SetAgeKey(k string) {
+var masterKeyLock sync.RWMutex
+
+// SetMasterKey sets the age key to be used for encryption and decryption.
+func SetMasterKey(k string) {
 	id := "AEGSAK"
-	if ageKey != "" {
-		log.WarnLn(&id, "age key already set")
+
+	masterKeyLock.Lock()
+	defer masterKeyLock.Unlock()
+
+	if masterKey != "" {
+		log.WarnLn(&id, "master key already set")
 		return
 	}
-	ageKey = k
+	masterKey = k
+}
+
+// MasterKeySet returns true if the master key has been set.
+func MasterKeySet() bool {
+	masterKeyLock.RLock()
+	defer masterKeyLock.RUnlock()
+
+	return masterKey != ""
 }
 
 // EncryptValue takes a string value and returns an encrypted and base64-encoded

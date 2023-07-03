@@ -11,11 +11,11 @@ package state
 import "strings"
 
 func ageKeyTriplet() (string, string, string) {
-	if ageKey == "" {
+	if masterKey == "" {
 		return "", "", ""
 	}
 
-	parts := strings.Split(ageKey, "\n")
+	parts := strings.Split(masterKey, "\n")
 
 	if len(parts) != 3 {
 		return "", "", ""
