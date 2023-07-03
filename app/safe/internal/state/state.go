@@ -37,7 +37,15 @@ func Initialize() {
 // SetAgeKey sets the age key to be used for encryption and decryption.
 // This function is not thread-safe and should only be called once during
 // initialization.
+//
+// This function is called only once in the bootstrapping flow. Once the
+// age key is set, it cannot be changed.
 func SetAgeKey(k string) {
+	id := "AEGSAK"
+	if ageKey != "" {
+		log.WarnLn(&id, "age key already set")
+		return
+	}
 	ageKey = k
 }
 
@@ -47,9 +55,18 @@ func SetAgeKey(k string) {
 func EncryptValue(value string) (string, error) {
 	var out bytes.Buffer
 
-	err := encryptToWriter(&out, value)
-	if err != nil {
-		return "", err
+	fipsMode := env.SafeFipsCompliant()
+
+	if fipsMode {
+		err := encryptToWriterAes(&out, value)
+		if err != nil {
+			return "", err
+		}
+	} else {
+		err := encryptToWriterAge(&out, value)
+		if err != nil {
+			return "", err
+		}
 	}
 
 	base64Str := base64.StdEncoding.EncodeToString(out.Bytes())
@@ -64,6 +81,14 @@ func DecryptValue(value string) (string, error) {
 	decoded, err := base64.StdEncoding.DecodeString(value)
 	if err != nil {
 		return "", err
+	}
+
+	if env.SafeFipsCompliant() {
+		decrypted, err := decryptBytesAes(decoded)
+		if err != nil {
+			return "", err
+		}
+		return string(decrypted), nil
 	}
 
 	decrypted, err := decryptBytes(decoded)

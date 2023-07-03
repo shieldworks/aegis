@@ -19,23 +19,23 @@ import (
 	"k8s.io/client-go/rest"
 )
 
-func persistKeys(privateKey, publicKey string) error {
+func persistKeys(privateKey, publicKey, aesSeed string) error {
 	config, err := rest.InClusterConfig()
 	if err != nil {
 		return errors.Wrap(err, "Error creating client config")
 	}
 
-	clientset, err := kubernetes.NewForConfig(config)
+	k8sApi, err := kubernetes.NewForConfig(config)
 	if err != nil {
-		return errors.Wrap(err, "Error creating clientset")
+		return errors.Wrap(err, "Error creating k8sApi")
 	}
 
 	data := make(map[string][]byte)
-	keysCombined := privateKey + "\n" + publicKey
+	keysCombined := privateKey + "\n" + publicKey + "\n" + aesSeed
 	data["KEY_TXT"] = ([]byte)(keysCombined)
 
 	// Update the Secret in the cluster
-	_, err = clientset.CoreV1().Secrets("aegis-system").Update(
+	_, err = k8sApi.CoreV1().Secrets("aegis-system").Update(
 		context.Background(),
 		&v1.Secret{
 			TypeMeta: metaV1.TypeMeta{

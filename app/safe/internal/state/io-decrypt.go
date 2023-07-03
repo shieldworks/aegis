@@ -10,6 +10,9 @@ package state
 
 import (
 	"bytes"
+	"crypto/aes"
+	"crypto/cipher"
+	"encoding/hex"
 	"filippo.io/age"
 	"github.com/pkg/errors"
 	"github.com/shieldworks/aegis/core/env"
@@ -19,7 +22,7 @@ import (
 )
 
 func decryptBytes(data []byte) ([]byte, error) {
-	privateKey, _ := ageKeyPair()
+	privateKey, _, _ := ageKeyTriplet()
 
 	identity, err := age.ParseX25519Identity(privateKey)
 	if err != nil {
@@ -45,6 +48,33 @@ func decryptBytes(data []byte) ([]byte, error) {
 	return out.Bytes(), nil
 }
 
+func decryptBytesAes(data []byte) ([]byte, error) {
+	_, _, aesKey := ageKeyTriplet()
+	aesKeyDecoded, err := hex.DecodeString(aesKey)
+	if err != nil {
+		return nil, errors.Wrap(err, "encryptToWriter: failed to decode AES key")
+	}
+
+	block, err := aes.NewCipher(aesKeyDecoded)
+	if err != nil {
+		return nil, errors.Wrap(err, "decryptBytes: failed to create AES cipher block")
+	}
+
+	// The IV is included in the beginning of the ciphertext.
+	if len(data) < aes.BlockSize {
+		return nil, errors.New("decryptBytes: ciphertext too short")
+	}
+	iv := data[:aes.BlockSize]
+	data = data[aes.BlockSize:]
+
+	stream := cipher.NewCFBDecrypter(block, iv)
+
+	// XORKeyStream can work in-place if the two arguments are the same.
+	stream.XORKeyStream(data, data)
+
+	return data, nil
+}
+
 func decryptDataFromDisk(key string) ([]byte, error) {
 	dataPath := path.Join(env.SafeDataPath(), key+".age")
 
@@ -55,6 +85,10 @@ func decryptDataFromDisk(key string) ([]byte, error) {
 	data, err := os.ReadFile(dataPath)
 	if err != nil {
 		return nil, errors.Wrap(err, "decryptDataFromDisk: Error reading file")
+	}
+
+	if env.SafeFipsCompliant() {
+		return decryptBytesAes(data)
 	}
 
 	return decryptBytes(data)

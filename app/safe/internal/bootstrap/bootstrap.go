@@ -10,7 +10,10 @@ package bootstrap
 
 import (
 	"context"
+	"crypto/rand"
+	"encoding/hex"
 	"filippo.io/age"
+	"github.com/pkg/errors"
 	"github.com/shieldworks/aegis/app/safe/internal/state"
 	"github.com/shieldworks/aegis/core/env"
 	"github.com/shieldworks/aegis/core/log"
@@ -126,6 +129,18 @@ func AcquireSource(
 	return source
 }
 
+func generateAesSeed() (string, error) {
+	// Generate a 256 bit key
+	key := make([]byte, 32)
+
+	_, err := rand.Read(key)
+	if err != nil {
+		return "", errors.Wrap(err, "generateAesSeed: failed to generate random key")
+	}
+
+	return hex.EncodeToString(key), nil
+}
+
 // CreateCryptoKey generates or reuses a cryptographic key pair for the
 // application, taking an id for logging purposes and a channel updatedSecret
 // to signal when the secret has been updated. If the secret key is not mounted
@@ -165,11 +180,16 @@ func CreateCryptoKey(id *string, updatedSecret chan<- bool) {
 
 	publicKey := identity.Recipient().String()
 	privateKey := identity.String()
+	aesSeed, err := generateAesSeed()
+
+	if err != nil {
+		log.FatalLn(id, "Failed to generate AES seed", err.Error())
+	}
 
 	log.TraceLn(id, "Public key: %s...  ", identity.Recipient().String()[:4])
 	log.TraceLn(id, "Private key: %s...  ", identity.String()[:16])
 
-	if err = persistKeys(privateKey, publicKey); err != nil {
+	if err = persistKeys(privateKey, publicKey, aesSeed); err != nil {
 		log.FatalLn(id, "Failed to persist keys", err.Error())
 	}
 
