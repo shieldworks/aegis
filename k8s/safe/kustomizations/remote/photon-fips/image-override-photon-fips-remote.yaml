@@ -16,4 +16,4 @@ spec:
     spec:
       containers:
         - name: main
-          image: aegishub/aegis-photon-fips-safe:0.17.3
+          image: aegishub/aegis-photon-fips-safe:0.17.4

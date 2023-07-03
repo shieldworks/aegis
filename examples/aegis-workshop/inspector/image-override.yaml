@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: main
-        image: localhost:5000/example-multiple-secrets:0.17.3
+        image: localhost:5000/example-multiple-secrets:0.17.4
         env:
           - name: AEGIS_LOG_LEVEL
             value: "0"

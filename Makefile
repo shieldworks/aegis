@@ -7,7 +7,7 @@
 #
 
 # The common version tag assigned to all the things.
-VERSION=0.17.3
+VERSION=0.17.4
 
 # Utils
 include ./AegisMacOs.mk

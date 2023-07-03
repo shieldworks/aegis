@@ -21,7 +21,7 @@ RUN CGO_ENABLED=0 GOOS=linux go build -mod vendor -a -o aegis-sidecar ./app/side
 FROM photon:5.0
 
 LABEL "maintainers"="Volkan Özçelik <volkan@aegis.ist>"
-LABEL "version"="0.17.3"
+LABEL "version"="0.17.4"
 LABEL "website"="https://aegis.ist/"
 LABEL "repo"="https://github.com/shieldworks/aegis"
 LABEL "documentation"="https://aegis.ist/docs/"
