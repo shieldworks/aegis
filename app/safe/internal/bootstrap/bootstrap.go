@@ -149,6 +149,13 @@ func generateAesSeed() (string, error) {
 // the cluster, the function generates a new key pair, persists them, and
 // signals the updatedSecret channel.
 func CreateCryptoKey(id *string, updatedSecret chan<- bool) {
+	if env.SafeManualKeyInput() {
+		log.InfoLn(id, "Manual key input enabled. Skipping automatic key generation.")
+		updatedSecret <- true
+		return
+	}
+
+	// This is a Kubernetes Secret, mounted as a file.
 	keyPath := env.SafeAgeKeyPath()
 
 	if _, err := os.Stat(keyPath); os.IsNotExist(err) {
@@ -166,7 +173,7 @@ func CreateCryptoKey(id *string, updatedSecret chan<- bool) {
 
 	if secret != state.BlankAgeKeyValue {
 		log.InfoLn(id, "Secret has been set in the cluster, will reuse it")
-		state.SetAgeKey(secret)
+		state.SetMasterKey(secret)
 		updatedSecret <- true
 		return
 	}

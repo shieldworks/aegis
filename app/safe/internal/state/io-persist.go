@@ -41,6 +41,10 @@ func saveSecretToDisk(secret entity.SecretStored, dataPath string) error {
 		}
 	}()
 
+	if env.SafeFipsCompliant() {
+		return encryptToWriterAes(file, string(data))
+	}
+
 	return encryptToWriterAge(file, string(data))
 }
 

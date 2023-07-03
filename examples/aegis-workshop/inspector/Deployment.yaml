@@ -26,7 +26,7 @@ spec:
       serviceAccountName: aegis-inspector
       containers:
       - name: main
-        image: aegishub/example-multiple-secrets:0.17.4
+        image: aegishub/example-multiple-secrets:0.18.0
         volumeMounts:
         # Volume mount for SPIRE unix domain socket.
         - name: spire-agent-socket

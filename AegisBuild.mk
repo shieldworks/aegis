@@ -91,3 +91,13 @@ build-local: \
 	init-container-push-photon-local \
 	init-container-bundle-photon-fips \
 	init-container-push-photon-fips-local
+
+build-essentials-local: \
+	safe-bundle-ist \
+	safe-push-ist-local \
+	sidecar-bundle-ist \
+	sidecar-push-ist-local \
+	sentinel-bundle-ist \
+	sentinel-push-ist-local \
+	init-container-bundle-ist \
+	init-container-push-ist-local \

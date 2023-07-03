@@ -14,6 +14,7 @@ import (
 	"github.com/shieldworks/aegis/core/audit"
 	entity "github.com/shieldworks/aegis/core/entity/data/v1"
 	reqres "github.com/shieldworks/aegis/core/entity/reqres/safe/v1"
+	"github.com/shieldworks/aegis/core/env"
 	"github.com/shieldworks/aegis/core/log"
 	"github.com/shieldworks/aegis/core/validation"
 	"io"
@@ -40,6 +41,11 @@ func isSentinel(j audit.JournalEntry, cid string, w http.ResponseWriter, svid st
 }
 
 func Delete(cid string, w http.ResponseWriter, r *http.Request, svid string) {
+	if env.SafeManualKeyInput() && !state.MasterKeySet() {
+		log.InfoLn(&cid, "Delete: Master key not set")
+		return
+	}
+
 	j := audit.JournalEntry{
 		CorrelationId: cid,
 		Entity:        reqres.SecretDeleteRequest{},
