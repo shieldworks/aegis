@@ -216,13 +216,20 @@ func main() {
 		return
 	}
 
-	if (workload == nil || *workload == "") && (encrypt == nil || !*encrypt) {
+	// You need to provide a workload name if you are not encrypting a secret,
+	// or if you are not providing input keys.
+	if (workload == nil || *workload == "") &&
+		(encrypt == nil || !*encrypt) &&
+		(inputKeys == nil || *inputKeys == "") {
 		printWorkloadNameNeeded()
 		return
 	}
 
-	// If secret is truthy and deleteSecret is falsy:
-	if (secret == nil || *secret == "") && (deleteSecret == nil || !*deleteSecret) {
+	// You need to provide a secret value if you are not deleting a secret,
+	// or if you are not providing input keys.
+	if (secret == nil || *secret == "") &&
+		(deleteSecret == nil || !*deleteSecret) &&
+		(inputKeys == nil || *inputKeys == "") {
 		printSecretNeeded()
 		return
 	}
