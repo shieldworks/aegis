@@ -16,4 +16,4 @@ spec:
     spec:
       containers:
         - name: main
-          image: aegishub/aegis-ist-sentinel:0.18.0
+          image: aegishub/aegis-ist-sentinel:0.18.1
