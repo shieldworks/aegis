@@ -25,7 +25,7 @@ RUN CGO_ENABLED=0 GOEXPERIMENT=boringcrypto GOOS=linux go build -mod vendor -a -
 FROM photon:5.0
 
 LABEL "maintainers"="Volkan Özçelik <volkan@aegis.ist>"
-LABEL "version"="0.18.0"
+LABEL "version"="0.18.1"
 LABEL "website"="https://aegis.ist/"
 LABEL "repo"="https://github.com/shieldworks/aegis"
 LABEL "documentation"="https://aegis.ist/docs/"
