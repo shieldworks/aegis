@@ -9,4 +9,4 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: spire-server
-    namespace: spire-system
+    namespace: {{ .Values.global.spire.namespace }}

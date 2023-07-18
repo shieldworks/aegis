@@ -10,21 +10,21 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: aegis-safe
-  namespace: aegis-system
+  namespace: {{ .Values.global.aegis.namespace }}
   labels:
     app.kubernetes.io/name: aegis-safe
-    app.kubernetes.io/part-of: aegis-system
+    app.kubernetes.io/part-of: {{ .Values.global.aegis.namespace }}
 spec:
   replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: aegis-safe
-      app.kubernetes.io/part-of: aegis-system
+      app.kubernetes.io/part-of: {{ .Values.global.aegis.namespace }}
   template:
     metadata:
       labels:
         app.kubernetes.io/name: aegis-safe
-        app.kubernetes.io/part-of: aegis-system
+        app.kubernetes.io/part-of: {{ .Values.global.aegis.namespace }}
     spec:
       serviceAccountName: aegis-safe
       containers:
@@ -58,9 +58,9 @@ spec:
             - name: AEGIS_WORKLOAD_SVID_PREFIX
               value: "spiffe://aegis.ist/workload/"
             - name: AEGIS_SENTINEL_SVID_PREFIX
-              value: "spiffe://aegis.ist/workload/aegis-sentinel/ns/aegis-system/sa/aegis-sentinel/n/"
+              value: "spiffe://aegis.ist/workload/aegis-sentinel/ns/{{ .Values.global.aegis.namespace }}/sa/aegis-sentinel/n/"
             - name: AEGIS_SAFE_SVID_PREFIX
-              value: "spiffe://aegis.ist/workload/aegis-safe/ns/aegis-system/sa/aegis-safe/n/"
+              value: "spiffe://aegis.ist/workload/aegis-safe/ns/{{ .Values.global.aegis.namespace }}/sa/aegis-safe/n/"
             - name: AEGIS_SAFE_DATA_PATH
               value: "/data"
             - name:  AEGIS_CRYPTO_KEY_NAME

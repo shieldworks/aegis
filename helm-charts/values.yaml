@@ -1,15 +1,15 @@
 deploySpire: false
 
+global:
+  aegis:
+    namespace: aegis-system
+  spire:
+    namespace: spire-system
+
 podAnnotations:
   "helm.sh/hook": pre-install
 
 replicaCount: 1
-
-aegis:
-  namespace: "aegis-system"
-
-spire:
-  namespace: "spire-system"
 
 image:
   repository: nginx

@@ -3,7 +3,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: spire-agent
-  namespace: spire-system
+  namespace: {{ .Values.global.spire.namespace }}
 
 ---
 
@@ -27,7 +27,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: spire-agent
-    namespace: spire-system
+    namespace: {{ .Values.global.spire.namespace }}
 roleRef:
   kind: ClusterRole
   name: spire-agent-cluster-role
@@ -43,7 +43,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: spire-agent
-  namespace: spire-system
+  namespace: {{ .Values.global.spire.namespace }}
 data:
   agent.conf: |
     agent {
@@ -81,7 +81,7 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: spire-agent
-  namespace: spire-system
+  namespace: {{ .Values.global.spire.namespace }}
   labels:
     app: spire-agent
 spec:
@@ -92,7 +92,7 @@ spec:
     type: RollingUpdate
   template:
     metadata:
-      namespace: spire-system
+      namespace: {{ .Values.global.spire.namespace }}
       labels:
         app: spire-agent
     spec:

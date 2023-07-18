@@ -24,7 +24,7 @@ metadata:
 #   kind: Role
 #   metadata:
 #     name: secret-readwriter
-#     namespace: aegis-system
+#     namespace: {{ .Values.global.aegis.namespace }}
 #
 ##
 

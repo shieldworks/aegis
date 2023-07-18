@@ -7,7 +7,7 @@ webhooks:
     clientConfig:
       service:
         name: spire-controller-manager-webhook-service
-        namespace: spire-system
+        namespace: {{ .Values.global.spire.namespace }}
         path: /validate-spire-spiffe-io-v1alpha1-clusterfederatedtrustdomain
     failurePolicy: Fail
     name: vclusterfederatedtrustdomain.kb.io
@@ -21,7 +21,7 @@ webhooks:
     clientConfig:
       service:
         name: spire-controller-manager-webhook-service
-        namespace: spire-system
+        namespace: {{ .Values.global.spire.namespace }}
         path: /validate-spire-spiffe-io-v1alpha1-clusterspiffeid
     failurePolicy: Fail
     name: vclusterspiffeid.kb.io
@@ -35,7 +35,7 @@ webhooks:
     clientConfig:
       service:
         name: spire-controller-manager-webhook-service
-        namespace: spire-system
+        namespace: {{ .Values.global.spire.namespace }}
         path: /validate-spire-spiffe-io-v1alpha1-clusterstaticentry
     failurePolicy: Fail
     name: clusterstaticentry.kb.io

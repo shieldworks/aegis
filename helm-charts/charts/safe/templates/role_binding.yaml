@@ -5,7 +5,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: aegis-safe
-    namespace: aegis-system
+    namespace: {{ .Values.global.aegis.namespace }}
 roleRef:
   kind: ClusterRole
   name: secret-readwriter
@@ -21,11 +21,11 @@ roleRef:
 #   kind: RoleBinding
 #   metadata:
 #     name: secret-readwriter-binding
-#     namespace: aegis-system
+#     namespace: {{ .Values.global.aegis.namespace }}
 #   subjects:
 #     - kind: ServiceAccount
 #       name: aegis-safe
-#       namespace: aegis-system
+#       namespace: {{ .Values.global.aegis.namespace }}
 #   roleRef:
 #     kind: Role
 #     name: secret-readwriter
