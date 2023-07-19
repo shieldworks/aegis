@@ -1,6 +1,16 @@
 deploySpire: false
 
 global:
+  logLevel: "7"
+  images:
+    safe:
+      repository: aegishub/aegis-ist-safe
+      tag: 0.18.0
+      pullPolicy: IfNotPresent
+    sentinel:
+      repository: aegishub/aegis-ist-sentinel
+      tag: 0.18.0
+      pullPolicy: IfNotPresent
   aegis:
     namespace: aegis-system
   spire:

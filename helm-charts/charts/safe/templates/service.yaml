@@ -1,24 +1,16 @@
-#
-# .-'_.---._'-.
-# ||####|(__)||   Protect your secrets, protect your business.
-#   \\()|##//       Secure your sensitive data with Aegis.
-#    \\ |#//                    <aegis.ist>
-#     .\_/.
-#
-
 apiVersion: v1
 kind: Service
 metadata:
-  name: aegis-safe
+  name: {{ include "safe.fullname" . }}
   namespace: {{ .Values.global.aegis.namespace }}
   labels:
-    app.kubernetes.io/name: aegis-safe
-    app.kubernetes.io/part-of: {{ .Values.global.aegis.namespace }}
+    {{- include "safe.labels" . | nindent 4 }}
 spec:
-  selector:
-    app.kubernetes.io/name: aegis-safe
-    app.kubernetes.io/part-of: {{ .Values.global.aegis.namespace }}
+  type: {{ .Values.service.type }}
   ports:
-    - protocol: TCP
-      port: 8443
-      targetPort: 8443
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "safe.selectorLabels" . | nindent 4 }}

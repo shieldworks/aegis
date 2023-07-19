@@ -1,17 +1,4 @@
-#
-# .-'_.---._'-.
-# ||####|(__)||   Protect your secrets, protect your business.
-#   \\()|##//       Secure your sensitive data with Aegis.
-#    \\ |#//                    <aegis.ist>
-#     .\_/.
-#
-
----
-
 apiVersion: rbac.authorization.k8s.io/v1
-
-##
-#
 kind: ClusterRole
 metadata:
   name: secret-readwriter
@@ -45,7 +32,7 @@ metadata:
 #    rules
 #    - apiGroups: [""]
 #      resources: ["secrets"]
-#      resourceNames: ["aegis-safe-age-key"]
+#      resourceNames: [{{ .Values.ageKeySecretName | quote }}]
 #      verbs: ["get", "watch", "list", "update"]
 #
 # When the above rule is defined and when AEGIS_SAFE_USE_KUBERNETES_SECRETS
@@ -69,7 +56,7 @@ rules:
 # rules:
 #   - apiGroups: [""]
 #     resources: ["secrets"]
-#     resourceNames: ["aegis-safe-age-key"]
+#     resourceNames: [{{ .Values.ageKeySecretName | quote }}]
 #     verbs: ["get", "watch", "list", "update"]
 #
 #
