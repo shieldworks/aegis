@@ -1,6 +1,6 @@
-deploySpire: false
 
 global:
+  deploySpire: false
   # possible options for platform (istanbul, istanbul-fips, photon, photon-fips)
   platform: photon
   registry: aegishub
