@@ -1,11 +1,6 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  {{- with .Values.podAnnotations }}
-  annotations:
-    {{- toYaml . | nindent 4 }}
-    "helm.sh/hook-weight": "1"
-  {{- end }}
   name: manager-role
 rules:
   - apiGroups: [""]
@@ -37,15 +32,6 @@ rules:
     verbs: ["update"]
   - apiGroups: ["spire.spiffe.io"]
     resources: ["clusterspiffeids/status"]
-    verbs: ["get", "patch", "update"]
-  - apiGroups: ["spire.spiffe.io"]
-    resources: ["clusterstaticentry"]
-    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
-  - apiGroups: ["spire.spiffe.io"]
-    resources: ["clusterstaticentry/finalizers"]
-    verbs: ["update"]
-  - apiGroups: ["spire.spiffe.io"]
-    resources: ["clusterstaticentry/status"]
     verbs: ["get", "patch", "update"]
   - apiGroups: ["spire.spiffe.io"]
     resources: ["clusterstaticentries"]

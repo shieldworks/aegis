@@ -48,9 +48,9 @@ data:
   agent.conf: |
     agent {
       data_dir = "/run/spire"
-      log_level = "DEBUG"
+      log_level = {{ .Values.global.spire.logLevel | quote }}
       server_address = "spire-server"
-      server_port = "8081"
+      server_port = {{ .Values.global.spire.serverPort | quote }}
       socket_path = "/run/spire/sockets/agent.sock"
       trust_bundle_path = "/run/spire/bundle/bundle.crt"
       trust_domain = "aegis.ist"
@@ -102,8 +102,8 @@ spec:
       serviceAccountName: spire-agent
       containers:
         - name: spire-agent
-          image: ghcr.io/spiffe/spire-agent:1.6.3
-          imagePullPolicy: IfNotPresent
+          image: {{ .Values.global.images.spireAgent.repository }}:{{ .Values.global.images.spireAgent.tag }}
+          imagePullPolicy: {{ .Values.global.images.spireAgent.pullPolicy }}
           args: ["-config", "/run/spire/config/agent.conf"]
           volumeMounts:
             - name: spire-config
@@ -118,8 +118,8 @@ spec:
               mountPath: /run/spire/sockets
         # This is the container which runs the SPIFFE CSI driver.
         - name: spiffe-csi-driver
-          image: ghcr.io/spiffe/spiffe-csi-driver:0.2.3
-          imagePullPolicy: IfNotPresent
+          image: {{ .Values.global.images.spiffeCsiDriver.repository }}:{{ .Values.global.images.spiffeCsiDriver.tag }}
+          imagePullPolicy: {{ .Values.global.images.spiffeCsiDriver.pullPolicy }}
           args: [
             "-workload-api-socket-dir", "/spire-agent-socket",
             "-csi-socket-path", "/spiffe-csi/csi.sock",
@@ -151,8 +151,8 @@ spec:
         # of all the little details required to register a CSI driver with
         # the kubelet.
         - name: node-driver-registrar
-          image: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.7.0
-          imagePullPolicy: IfNotPresent
+          image: {{ .Values.global.images.nodeDriverRegistrar.repository }}:{{ .Values.global.images.nodeDriverRegistrar.tag }}
+          imagePullPolicy: {{ .Values.global.images.nodeDriverRegistrar.pullPolicy }}
           args: [
             "-csi-address", "/spiffe-csi/csi.sock",
             "-kubelet-registration-path", "/var/lib/kubelet/plugins/csi.spiffe.io/csi.sock",

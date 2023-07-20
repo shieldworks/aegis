@@ -14,8 +14,3 @@ rules:
   - apiGroups: [""]
     resources: ["events"]
     verbs: ["create", "patch"]
-  {{- with .Values.podAnnotations }}
-  annotations:
-    {{- toYaml . | nindent 4 }}
-    "helm.sh/hook-weight": "2"
-  {{- end }}

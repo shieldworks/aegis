@@ -1,20 +1,52 @@
 deploySpire: false
 
 global:
+  # possible options for platform (istanbul, istanbul-fips, photon, photon-fips)
+  platform: photon
+  registry: aegishub
   logLevel: "7"
   images:
     safe:
-      repository: aegishub/aegis-ist-safe
+      istanbulRepository: aegis-ist-safe
+      istanbulFipsRepository: aegis-ist-fips-safe
+      photonRepository: aegis-photon-safe
+      photonFipsRepository: aegis-photon-fips-safe
       tag: 0.18.0
       pullPolicy: IfNotPresent
     sentinel:
-      repository: aegishub/aegis-ist-sentinel
+      istanbulRepository: aegis-ist-sentinel
+      istanbulFipsRepository: aegis-ist-fips-sentinel
+      photonRepository: aegis-photon-sentinel
+      photonFipsRepository: aegis-photon-fips-sentinel
       tag: 0.18.0
+      pullPolicy: IfNotPresent
+    spireAgent:
+      repository: ghcr.io/spiffe/spire-agent
+      tag: 1.6.3
+      pullPolicy: IfNotPresent
+    spiffeCsiDriver:
+      repository: ghcr.io/spiffe/spiffe-csi-driver
+      tag: 0.2.3
+      pullPolicy: IfNotPresent
+    nodeDriverRegistrar:
+      repository: registry.k8s.io/sig-storage/csi-node-driver-registrar
+      tag: v2.7.0
+      pullPolicy: IfNotPresent
+    spireServer:
+      repository: ghcr.io/spiffe/spire-server
+      tag: 1.6.3
+      pullPolicy: IfNotPresent
+    spireControllerManager:
+      repository: ghcr.io/spiffe/spire-controller-manager
+      tag: nightly
       pullPolicy: IfNotPresent
   aegis:
     namespace: aegis-system
   spire:
     namespace: spire-system
+    logLevel: DEBUG
+    serverPort: 8081
+
 
 podAnnotations:
   "helm.sh/hook": pre-install

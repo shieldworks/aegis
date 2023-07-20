@@ -61,3 +61,20 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/*
+Define image for aegis sentinel
+*/}}
+{{- define "sentinel.repository" -}}
+{{- if eq (lower $.Values.global.platform) "istanbul" }}
+{{- .Values.global.images.sentinel.istanbulRepository }}
+{{- else if eq (lower $.Values.global.platform) "istanbul-fips" }}
+{{- .Values.global.images.sentinel.istanbulFipsRepository }}
+{{- else if eq (lower $.Values.global.platform) "photon" }}
+{{- .Values.global.images.sentinel.photonRepository }}
+{{- else if eq (lower $.Values.global.platform) "photon-fips" }}
+{{- .Values.global.images.sentinel.photonFipsRepository }}
+{{- else }}
+{{- .Values.global.images.sentinel.istanbulRepository }}
+{{- end }}
+{{- end }}

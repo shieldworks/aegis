@@ -45,8 +45,8 @@ roleRef:
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  namespace: {{ .Values.global.spire.namespace }}
   name: spire-server-role
+  namespace: {{ .Values.global.spire.namespace }}
 rules:
   # allow "get" access to pods (to resolve selectors for PSAT attestation)
   - apiGroups: [""]
@@ -139,7 +139,7 @@ data:
 
       Notifier "k8sbundle" {
         plugin_data {
-          namespace = {{ .Values.global.spire.namespace | quote }}
+          namespace = "{{ .Values.global.spire.namespace }}"
         }
       }
     }
@@ -176,8 +176,8 @@ spec:
       shareProcessNamespace: true
       containers:
         - name: spire-server
-          image: ghcr.io/spiffe/spire-server:1.6.3
-          imagePullPolicy: IfNotPresent
+          image: {{ .Values.global.images.spireServer.repository }}:{{ .Values.global.images.spireServer.tag }}
+          imagePullPolicy: {{ .Values.global.images.spireServer.pullPolicy }}
           args: ["-config", "/run/spire/server/config/server.conf"]
           ports:
             - containerPort: 8081
@@ -188,8 +188,8 @@ spec:
             - name: spire-server-socket
               mountPath: /tmp/spire-server/private
         - name: spire-controller-manager
-          image: ghcr.io/spiffe/spire-controller-manager:nightly
-          imagePullPolicy: IfNotPresent
+          image: {{ .Values.global.images.spireControllerManager.repository }}:{{ .Values.global.images.spireControllerManager.tag }}
+          imagePullPolicy: {{ .Values.global.images.spireControllerManager.pullPolicy }}
           ports:
             - containerPort: 9443
           args:

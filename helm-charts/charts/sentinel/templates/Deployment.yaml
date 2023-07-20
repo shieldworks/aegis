@@ -30,7 +30,7 @@ spec:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: main
-          image: "{{ .Values.global.images.sentinel.repository}}:{{ .Values.global.images.sentinel.tag }}"
+          image: "{{ .Values.global.registry }}/{{- include "sentinel.repository" .}}:{{ .Values.global.images.sentinel.tag }}"
           imagePullPolicy: {{ .Values.global.images.sentinel.pullPolicy }}
           volumeMounts:
             - name: spire-agent-socket

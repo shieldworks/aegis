@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "safe.name" -}}
+{{- define "spire.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "safe.fullname" -}}
+{{- define "spire.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "safe.chart" -}}
+{{- define "spire.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "safe.labels" -}}
-helm.sh/chart: {{ include "safe.chart" . }}
-{{ include "safe.selectorLabels" . }}
+{{- define "spire.labels" -}}
+helm.sh/chart: {{ include "spire.chart" . }}
+{{ include "spire.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,36 +45,18 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "safe.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "safe.fullname" . }}
+{{- define "spire.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "spire.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
-app.kubernetes.io/part-of: {{ .Values.global.aegis.namespace }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "safe.serviceAccountName" -}}
+{{- define "spire.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "safe.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "spire.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
-{{- end }}
-{{- end }}
-
-{{/*
-Define image for aegis safe
-*/}}
-{{- define "safe.repository" -}}
-{{- if eq (lower $.Values.global.platform) "istanbul" }}
-{{- .Values.global.images.safe.istanbulRepository }}
-{{- else if eq (lower $.Values.global.platform) "istanbul-fips" }}
-{{- .Values.global.images.safe.istanbulFipsRepository }}
-{{- else if eq (lower $.Values.global.platform) "photon" }}
-{{- .Values.global.images.safe.photonRepository }}
-{{- else if eq (lower $.Values.global.platform) "photon-fips" }}
-{{- .Values.global.images.safe.photonFipsRepository }}
-{{- else }}
-{{- .Values.global.images.safe.istanbulRepository }}
 {{- end }}
 {{- end }}
