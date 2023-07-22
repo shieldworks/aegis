@@ -1,0 +1,31 @@
+apiVersion: v1
+entries:
+  aegis:
+  - apiVersion: v2
+    appVersion: 0.18.1
+    created: "2023-07-22T18:55:14.919855+05:30"
+    dependencies:
+    - condition: global.deploySpire
+      name: spire
+      repository: file://charts/spire
+      version: 0.1.0
+    - name: safe
+      repository: file://charts/safe
+      version: 0.18.1
+    - name: sentinel
+      repository: file://charts/sentinel
+      version: 0.18.1
+    description: Helm chart for aegis
+    digest: aeb9961438fc2b6e4e7cbd1bfd661e9137905cf39be4fea18877e2979bc4a490
+    home: https://aegis.ist/
+    icon: file://../assets/aegis-git-banner.png
+    keywords:
+    - secrets
+    name: aegis
+    sources:
+    - https://github.com/shieldworks/aegis
+    type: application
+    urls:
+    - aegis-0.1.0.tgz
+    version: 0.1.0
+generated: "2023-07-22T18:55:14.917625+05:30"
