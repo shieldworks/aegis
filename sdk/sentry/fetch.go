@@ -13,7 +13,6 @@ package sentry
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"github.com/pkg/errors"
 	"github.com/spiffe/go-spiffe/v2/spiffeid"
 	"github.com/spiffe/go-spiffe/v2/spiffetls/tlsconfig"
@@ -85,8 +84,6 @@ func Fetch() (reqres.SecretFetchResponse, error) {
 
 		return errors.New("Fetch: I don’t know you, and it’s crazy: '" + id.String() + "'")
 	})
-
-	fmt.Println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SIDECAR: will fetch secrets")
 
 	p, err := url.JoinPath(env.SafeEndpointUrl(), "/workload/v1/secrets")
 	if err != nil {
