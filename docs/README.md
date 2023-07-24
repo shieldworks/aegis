@@ -67,6 +67,11 @@ VMware Secrets Manager for Cloud-Native Apps
 
 Add your VMware user name to the list of accounts that can sign-off the commit.
 You need to sign off changes with that one.
+
+Test this on the build server before merging.
+
+Also add a notification to the README about the changes; and point to the
+latest release that has Aegis in it.
 ```
 
 [endorsements]: https://vsecm.com/endorsements/ "Endorsements"
