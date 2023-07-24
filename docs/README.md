@@ -65,6 +65,8 @@ always secure and protected.
 Add to docs that during the docs and source code you can see VSecM as an acronym for
 VMware Secrets Manager for Cloud-Native Apps
 
+Add your VMware user name to the list of accounts that can sign-off the commit.
+You need to sign off changes with that one.
 ```
 
 [endorsements]: https://vsecm.com/endorsements/ "Endorsements"
