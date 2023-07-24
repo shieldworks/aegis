@@ -1,16 +1,18 @@
 /*
- * .-'_.---._'-.
- * ||####|(__)||   Protect your secrets, protect your business.
- *   \\()|##//       Secure your sensitive data with Aegis.
- *    \\ |#//                    <aegis.ist>
- *     .\_/.
- */
+|    Protect your secrets, protect your sensitive data.
+:    Explore VMware Secrets Manager docs at https://vsecm.com/
+</
+<>/  keep your secrets… secret
+>/
+<>/' Copyright 2023–present VMware, Inc.
+>/'  SPDX-License-Identifier: BSD-2-Clause
+*/
 
 package main
 
-// Note that there is no Aegis-specific dependency in the app’s code:
-// That’s the benefit of using “Aegis Sidecar”: The application has zero idea
-// that `Aegis Safe` exists. From its perspective, it just knows that there
+// Note that there is no VSecM-specific dependency in the app’s code:
+// That’s the benefit of using “VMware Secrets Manager Sidecar”: The application has zero idea
+// that `VMware Secrets Manager Safe` exists. From its perspective, it just knows that there
 // are secrets in a predefined location that it can read and parse. And, that’s
 // a good way to separate cross-cutting concerns.
 
@@ -23,9 +25,9 @@ import (
 )
 
 func sidecarSecretsPath() string {
-	p := os.Getenv("AEGIS_SIDECAR_SECRETS_PATH")
+	p := os.Getenv("VSECM_SIDECAR_SECRETS_PATH")
 	if p == "" {
-		p = "/opt/aegis/secrets.json"
+		p = "/opt/vsecm/secrets.json"
 	}
 	return p
 }

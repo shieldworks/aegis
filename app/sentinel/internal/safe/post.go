@@ -1,10 +1,12 @@
 /*
- * .-'_.---._'-.
- * ||####|(__)||   Protect your secrets, protect your business.
- *   \\()|##//       Secure your sensitive data with Aegis.
- *    \\ |#//                    <aegis.ist>
- *     .\_/.
- */
+|    Protect your secrets, protect your sensitive data.
+:    Explore VMware Secrets Manager docs at https://vsecm.com/
+</
+<>/  keep your secrets… secret
+>/
+<>/' Copyright 2023–present VMware, Inc.
+>/'  SPDX-License-Identifier: BSD-2-Clause
+*/
 
 package safe
 
@@ -14,12 +16,12 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	data "github.com/shieldworks/aegis/core/entity/data/v1"
-	reqres "github.com/shieldworks/aegis/core/entity/reqres/safe/v1"
-	"github.com/shieldworks/aegis/core/env"
-	"github.com/shieldworks/aegis/core/validation"
 	"github.com/spiffe/go-spiffe/v2/spiffeid"
 	"github.com/spiffe/go-spiffe/v2/spiffetls/tlsconfig"
+	data "github.com/vmware-tanzu/secrets-manager/core/entity/data/v1"
+	reqres "github.com/vmware-tanzu/secrets-manager/core/entity/reqres/safe/v1"
+	"github.com/vmware-tanzu/secrets-manager/core/env"
+	"github.com/vmware-tanzu/secrets-manager/core/validation"
 	"io"
 	"log"
 	"net/http"
@@ -106,7 +108,7 @@ func respond(r *http.Response) {
 
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
-		fmt.Println("Post: Unable to read the response body from Aegis Safe.", err.Error())
+		fmt.Println("Post: Unable to read the response body from VMware Secrets Manager Safe.", err.Error())
 		fmt.Println("")
 		return
 	}
@@ -117,7 +119,7 @@ func respond(r *http.Response) {
 }
 
 func printEndpointError(err error) {
-	fmt.Println("Post: I am having problem generating Aegis Safe "+
+	fmt.Println("Post: I am having problem generating VMware Secrets Manager Safe "+
 		"secrets api endpoint URL.", err.Error())
 	fmt.Println("")
 }
@@ -130,14 +132,14 @@ func printPayloadError(err error) {
 func doDelete(client *http.Client, p string, md []byte) {
 	req, err := http.NewRequest(http.MethodDelete, p, bytes.NewBuffer(md))
 	if err != nil {
-		fmt.Println("Post:Delete: Problem connecting to Aegis Safe API endpoint URL.", err.Error())
+		fmt.Println("Post:Delete: Problem connecting to VMware Secrets Manager Safe API endpoint URL.", err.Error())
 		fmt.Println("")
 		return
 	}
 	req.Header.Set("Content-Type", "application/json")
 	r, err := client.Do(req)
 	if err != nil {
-		fmt.Println("Post:Delete: Problem connecting to Aegis Safe API endpoint URL.", err.Error())
+		fmt.Println("Post:Delete: Problem connecting to VMware Secrets Manager Safe API endpoint URL.", err.Error())
 		fmt.Println("")
 		return
 	}
@@ -147,7 +149,7 @@ func doDelete(client *http.Client, p string, md []byte) {
 func doPost(client *http.Client, p string, md []byte) {
 	r, err := client.Post(p, "application/json", bytes.NewBuffer(md))
 	if err != nil {
-		fmt.Println("Post: Problem connecting to Aegis Safe API endpoint URL.", err.Error())
+		fmt.Println("Post: Problem connecting to VMware Secrets Manager Safe API endpoint URL.", err.Error())
 		fmt.Println("")
 		return
 	}

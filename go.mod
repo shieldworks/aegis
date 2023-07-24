@@ -1,4 +1,4 @@
-module github.com/shieldworks/aegis
+module github.com/vmware-tanzu/secrets-manager
 
 go 1.20
 

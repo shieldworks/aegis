@@ -1,10 +1,12 @@
 /*
- * .-'_.---._'-.
- * ||####|(__)||   Protect your secrets, protect your business.
- *   \\()|##//       Secure your sensitive data with Aegis.
- *    \\ |#//                    <aegis.ist>
- *     .\_/.
- */
+|    Protect your secrets, protect your sensitive data.
+:    Explore VMware Secrets Manager docs at https://vsecm.com/
+</
+<>/  keep your secrets… secret
+>/
+<>/' Copyright 2023–present VMware, Inc.
+>/'  SPDX-License-Identifier: BSD-2-Clause
+*/
 
 package env
 
@@ -16,9 +18,9 @@ import (
 
 // SidecarMaxPollInterval returns the maximum interval for polling by the
 // sidecar process. The value is read from the environment variable
-// `AEGIS_SIDECAR_MAX_POLL_INTERVAL` or returns 300000 milliseconds as default.
+// `VSECM_SIDECAR_MAX_POLL_INTERVAL` or returns 300000 milliseconds as default.
 func SidecarMaxPollInterval() time.Duration {
-	p := os.Getenv("AEGIS_SIDECAR_MAX_POLL_INTERVAL")
+	p := os.Getenv("VSECM_SIDECAR_MAX_POLL_INTERVAL")
 	if p == "" {
 		p = "300000"
 	}
@@ -32,9 +34,9 @@ func SidecarMaxPollInterval() time.Duration {
 // SidecarExponentialBackoffMultiplier returns the multiplier for exponential
 // backoff by the sidecar process.
 // The value is read from the environment variable
-// `AEGIS_SIDECAR_EXPONENTIAL_BACKOFF_MULTIPLIER` or returns 2 as default.
+// `VSECM_SIDECAR_EXPONENTIAL_BACKOFF_MULTIPLIER` or returns 2 as default.
 func SidecarExponentialBackoffMultiplier() int64 {
-	p := os.Getenv("AEGIS_SIDECAR_EXPONENTIAL_BACKOFF_MULTIPLIER")
+	p := os.Getenv("VSECM_SIDECAR_EXPONENTIAL_BACKOFF_MULTIPLIER")
 	if p == "" {
 		p = "2"
 	}
@@ -47,9 +49,9 @@ func SidecarExponentialBackoffMultiplier() int64 {
 
 // SidecarSuccessThreshold returns the number of consecutive successful
 // polls before reducing the interval. The value is read from the environment
-// variable `AEGIS_SIDECAR_SUCCESS_THRESHOLD` or returns 3 as default.
+// variable `VSECM_SIDECAR_SUCCESS_THRESHOLD` or returns 3 as default.
 func SidecarSuccessThreshold() int64 {
-	p := os.Getenv("AEGIS_SIDECAR_SUCCESS_THRESHOLD")
+	p := os.Getenv("VSECM_SIDECAR_SUCCESS_THRESHOLD")
 	if p == "" {
 		p = "3"
 	}
@@ -62,9 +64,9 @@ func SidecarSuccessThreshold() int64 {
 
 // SidecarErrorThreshold returns the number of consecutive failed polls
 // before increasing the interval. The value is read from the environment
-// variable `AEGIS_SIDECAR_ERROR_THRESHOLD` or returns 2 as default.
+// variable `VSECM_SIDECAR_ERROR_THRESHOLD` or returns 2 as default.
 func SidecarErrorThreshold() int64 {
-	p := os.Getenv("AEGIS_SIDECAR_ERROR_THRESHOLD")
+	p := os.Getenv("VSECM_SIDECAR_ERROR_THRESHOLD")
 	if p == "" {
 		p = "2"
 	}
@@ -76,11 +78,11 @@ func SidecarErrorThreshold() int64 {
 }
 
 // SidecarPollInterval returns the polling interval for sentry in time.Duration
-// The interval is determined by the AEGIS_SIDECAR_POLL_INTERVAL environment
+// The interval is determined by the VSECM_SIDECAR_POLL_INTERVAL environment
 // variable, with a default value of 20000 milliseconds if the variable is not
 // set or if there is an error in parsing the value.
 func SidecarPollInterval() time.Duration {
-	p := os.Getenv("AEGIS_SIDECAR_POLL_INTERVAL")
+	p := os.Getenv("VSECM_SIDECAR_POLL_INTERVAL")
 	if p == "" {
 		p = "20000"
 	}

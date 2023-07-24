@@ -1,10 +1,12 @@
-# Aegis
+```text
+|   Protect your secrets, protect your sensitive data.
+:   Explore VMware Secrets Manager docs at https://vsecm.com/
+</
+<>/ keep your secrets… secret
+```
 
-![Aegis](../../assets/aegis-icon.png "Aegis")
+## VMware Secrets Manager (*VSecM*) Sidecar
 
-keep your secrets… secret
-
-## Aegis Sidecar
-
-**Aegis Sidecar** is a Kubernetes sidecar that periodically checks **Aegis Safe**
-and updates the secret that is bound to the workload.
+**VSecM Sidecar** is a Kubernetes sidecar that periodically 
+checks **VSecM Safe** and updates the secret that is bound 
+to the workload.

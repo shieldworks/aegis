@@ -1,28 +1,34 @@
-# Aegis
+```text
+|   Protect your secrets, protect your sensitive data.
+:   Explore VMware Secrets Manager docs at https://vsecm.com/
+</
+<>/ keep your secrets… secret
+```
 
-![Aegis](../../assets/aegis-icon.png "Aegis")
+## Use Case: Multiple Secrets
 
-## Use Case: Leveraging Aegis SDK
-
-This example demonstrates how to use **Aegis SDK** to register more than one
-secret to your workload.
+This example demonstrates how to use **VMware Secrets Manager** to register more 
+than one secret to your workload.
 
 This demo is a slight variation of the 
 [Registering Secrets Using Init Container](../using-init-container)
 example.
 
-## Video Tutorials Anyone?
+## A Video Is Worth a Lot of Words
 
-[Watch **Aegis Showcase** to learn how to use **Aegis** hands-on][videos].
+[You can watch these tutorial][videos] as to learn how to use **VMware
+Secrets Manager** hands-on.
 
-If any of the instructions provided here are unclear, the video tutorials will
-help explain them in much greater detail. Each video is designed around a
-particular topic to keep it concise and to-the-point.
+Note that the video is about the older version of VMware Secrets Manager,
+called ‘Äegis’, but the concepts are the same. Also note that in the meantime
+we have added a few more features to **VMware Secrets Manager**, so you will
+find differences between the video and the current version of **VMware Secrets
+Manager**.
 
-The container image is also used as the **inspector** workload to debug secret
-registration during showcasing various scenarios [in the workshop](../aegis-workshop).
+In the videos, we use all the scripts and resource manifests you see in this
+folder to demonstrate various **VMware Secrets Manager** use cases.
 
-[videos]: https://vimeo.com/showcase/10074951 "Aegis Showcase"
+[video]: https://vimeo.com/v0lkan/vsecm-use-cases "VSecM Use Cases"
 
 ## Deployment Options
 
@@ -35,13 +41,13 @@ The following sections describe both of these approaches respectively.
 
 ```bash
 # Switch to the project folder:
-cd $WORKSPACE/aegis 
+cd $WORKSPACE/vmware-secrets-manager
 # Build everything locally:
 make build-local
 # Deploy the use case:
 make example-multiple-secrets-deploy-local
 # Switch to this use case’s folder:
-cd $WORKSPACE/aegis/examples/multiple-secrets
+cd $WORKSPACE/vmware-secrets-manager/examples/multiple-secrets
 # Register a secret:
 ./register.sh
 # List the secrets.
@@ -55,11 +61,11 @@ pre-deployed container images.
 
 ```bash 
 # Switch to the project folder:
-cd $WORKSPACE/aegis 
+cd $WORKSPACE/vmware-secrets-manager
 # Deploy the use case from the pre-built image.
 make example-multiple-secrets-deploy
 # Switch to this use case’s folder:
-cd $WORKSPACE/aegis/examples/multiple-secrets
+cd $WORKSPACE/vmware-secrets-manager/examples/multiple-secrets
 # Register a secret:
 ./register.sh
 # List the secrets.

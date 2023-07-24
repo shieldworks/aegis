@@ -1,24 +1,26 @@
 #!/usr/bin/env bash
 
-#
-# .-'_.---._'-.
-# ||####|(__)||   Protect your secrets, protect your business.
-#   \\()|##//       Secure your sensitive data with Aegis.
-#    \\ |#//                    <aegis.ist>
-#     .\_/.
-#
+# /*
+# |    Protect your secrets, protect your sensitive data.
+# :    Explore VMware Secrets Manager docs at https://vsecm.com/
+# </
+# <>/  keep your secrets… secret
+# >/
+# <>/' Copyright 2023–present VMware, Inc.
+# >/'  SPDX-License-Identifier: BSD-2-Clause
+# */
 
-SENTINEL=$(kubectl get po -n aegis-system \
-  | grep "aegis-sentinel-" | awk '{print $1}')
+SENTINEL=$(kubectl get po -n vsecm-system \
+  | grep "vsecm-sentinel-" | awk '{print $1}')
 
-kubectl exec "$SENTINEL" -n aegis-system -- aegis \
+kubectl exec "$SENTINEL" -n vsecm-system -- safe \
   -w "example" \
   -n "default" \
   -s '{"name": "USERNAME", "value": "admin"}' \
   -a
 
-kubectl exec "$SENTINEL" -n aegis-system -- aegis \
+kubectl exec "$SENTINEL" -n vsecm-system -- safe \
   -w "example" \
   -n "default" \
-  -s '{"name": "PASSWORD", "value": "AegisRocks!"}' \
+  -s '{"name": "PASSWORD", "value": "VSecMRocks!"}' \
   -a

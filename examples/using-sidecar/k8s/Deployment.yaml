@@ -1,10 +1,12 @@
-#
-# .-'_.---._'-.
-# ||####|(__)||   Protect your secrets, protect your business.
-#   \\()|##//       Secure your sensitive data with Aegis.
-#    \\ |#//                    <aegis.ist>
-#     .\_/.
-#
+# /*
+# |    Protect your secrets, protect your sensitive data.
+# :    Explore VMware Secrets Manager docs at https://vsecm.com/
+# </
+# <>/  keep your secrets… secret
+# >/
+# <>/' Copyright 2023–present VMware, Inc.
+# >/'  SPDX-License-Identifier: BSD-2-Clause
+# */
 
 apiVersion: apps/v1
 kind: Deployment
@@ -26,17 +28,17 @@ spec:
       serviceAccountName: example
       containers:
       - name: main
-        image: aegishub/example-using-sidecar:0.18.1
+        image: vsecm/example-using-sidecar:0.20.0
         volumeMounts:
         # `main` shares this volume with `sidecar`.
-        - mountPath: /opt/aegis
-          name: aegis-secrets-volume
+        - mountPath: /opt/vsecm
+          name: vsecm-secrets-volume
       - name: sidecar
-        image: aegishub/aegis-ist-sidecar:0.18.1
+        image: vsecm/vsecm-ist-sidecar:0.20.0
         volumeMounts:
-        # /opt/aegis/secrets.json is the place the secrets will be at.
-        - mountPath: /opt/aegis
-          name: aegis-secrets-volume
+        # /opt/vsecm/secrets.json is the place the secrets will be at.
+        - mountPath: /opt/vsecm
+          name: vsecm-secrets-volume
         # Volume mount for SPIRE unix domain socket.
         - name: spire-agent-socket
           mountPath: /spire-agent-socket
@@ -44,35 +46,35 @@ spec:
         #
         # You can configure this workload by providing environment variables.
         #
-        # See https://aegis.ist/docs/configuration for more information about
+        # See https://vsecm.com/configuration for more information about
         # these environment variables.
         #
-        # When you don’t explicitly provide env vars here, Aegis Safe will assume
-        # the default values outlined in the given link above.
+        # When you don’t explicitly provide env vars here, VMware Secrets Manager
+        # Safe will assume the default values outlined in the given link above.
         #
         env:
         - name: SPIFFE_ENDPOINT_SOCKET
           value: "unix:///spire-agent-socket/agent.sock"
-        - name: AEGIS_LOG_LEVEL
+        - name: VSECM_LOG_LEVEL
           value: "7"
-        - name: AEGIS_WORKLOAD_SVID_PREFIX
-          value: "spiffe://aegis.ist/workload/"
-        - name: AEGIS_SAFE_SVID_PREFIX
-          value: "spiffe://aegis.ist/workload/aegis-safe/ns/aegis-system/sa/aegis-safe/n/"
-        - name: AEGIS_SIDECAR_POLL_INTERVAL
+        - name: VSECM_WORKLOAD_SVID_PREFIX
+          value: "spiffe://vsecm.com/workload/"
+        - name: VSECM_SAFE_SVID_PREFIX
+          value: "spiffe://vsecm.com/workload/vsecm-safe/ns/vsecm-system/sa/vsecm-safe/n/"
+        - name: VSECM_SIDECAR_POLL_INTERVAL
           value: "5000"
-        - name: AEGIS_SIDECAR_MAX_POLL_INTERVAL
+        - name: VSECM_SIDECAR_MAX_POLL_INTERVAL
           value: "300000"
-        - name: AEGIS_SIDECAR_EXPONENTIAL_BACKOFF_MULTIPLIER
+        - name: VSECM_SIDECAR_EXPONENTIAL_BACKOFF_MULTIPLIER
           value: "2"
-        - name: AEGIS_SIDECAR_SUCCESS_THRESHOLD
+        - name: VSECM_SIDECAR_SUCCESS_THRESHOLD
           value: "3"
-        - name: AEGIS_SIDECAR_ERROR_THRESHOLD
+        - name: VSECM_SIDECAR_ERROR_THRESHOLD
           value: "2"
       volumes:
       # A memory-backed volume is recommended (but not required) to keep
       # the secrets. The secrets can be stored in any kind of volume.
-      - name: aegis-secrets-volume
+      - name: vsecm-secrets-volume
         emptyDir:
           medium: Memory
       # Using SPIFFE CSI Driver to bind to the SPIRE Agent Socket

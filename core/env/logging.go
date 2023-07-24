@@ -1,10 +1,12 @@
 /*
- * .-'_.---._'-.
- * ||####|(__)||   Protect your secrets, protect your business.
- *   \\()|##//       Secure your sensitive data with Aegis.
- *    \\ |#//                    <aegis.ist>
- *     .\_/.
- */
+|    Protect your secrets, protect your sensitive data.
+:    Explore VMware Secrets Manager docs at https://vsecm.com/
+</
+<>/  keep your secrets… secret
+>/
+<>/' Copyright 2023–present VMware, Inc.
+>/'  SPDX-License-Identifier: BSD-2-Clause
+*/
 
 package env
 
@@ -13,13 +15,13 @@ import (
 	"strconv"
 )
 
-// LogLevel returns the value set by AEGIS_LOG_LEVEL environment
+// LogLevel returns the value set by VSECM_LOG_LEVEL environment
 // variable, or a default level.
 //
-// AEGIS_LOG_LEVEL determines the verbosity of the logs.
+// VSECM_LOG_LEVEL determines the verbosity of the logs.
 // 0: logs are off, 7: highest verbosity (TRACE).
 func LogLevel() int {
-	p := os.Getenv("AEGIS_LOG_LEVEL")
+	p := os.Getenv("VSECM_LOG_LEVEL")
 	if p == "" {
 		return 3 // WARN
 	}

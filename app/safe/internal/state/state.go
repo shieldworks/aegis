@@ -1,19 +1,21 @@
 /*
- * .-'_.---._'-.
- * ||####|(__)||   Protect your secrets, protect your business.
- *   \\()|##//       Secure your sensitive data with Aegis.
- *    \\ |#//                    <aegis.ist>
- *     .\_/.
- */
+|    Protect your secrets, protect your sensitive data.
+:    Explore VMware Secrets Manager docs at https://vsecm.com/
+</
+<>/  keep your secrets… secret
+>/
+<>/' Copyright 2023–present VMware, Inc.
+>/'  SPDX-License-Identifier: BSD-2-Clause
+*/
 
 package state
 
 import (
 	"bytes"
 	"encoding/base64"
-	entity "github.com/shieldworks/aegis/core/entity/data/v1"
-	"github.com/shieldworks/aegis/core/env"
-	"github.com/shieldworks/aegis/core/log"
+	entity "github.com/vmware-tanzu/secrets-manager/core/entity/data/v1"
+	"github.com/vmware-tanzu/secrets-manager/core/env"
+	"github.com/vmware-tanzu/secrets-manager/core/log"
 	"sync"
 	"time"
 )
@@ -116,7 +118,7 @@ func AllSecrets(cid string) []entity.Secret {
 	var result []entity.Secret
 
 	// Check existing stored secrets files.
-	// If Aegis pod is evicted and revived, it will not have knowledge about
+	// If VSecM pod is evicted and revived, it will not have knowledge about
 	// the secret it has. This loop helps it re-populate its cache.
 	if !secretsPopulated {
 		err := populateSecrets(cid)

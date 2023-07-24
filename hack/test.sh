@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
 
-#
-# .-'_.---._'-.
-# ||####|(__)||   Protect your secrets, protect your business.
-#   \\()|##//       Secure your sensitive data with Aegis.
-#    \\ |#//                    <aegis.ist>
-#     .\_/.
-#
+# /*
+# |    Protect your secrets, protect your sensitive data.
+# :    Explore VMware Secrets Manager docs at https://vsecm.com/
+# </
+# <>/  keep your secrets… secret
+# >/
+# <>/' Copyright 2023–present VMware, Inc.
+# >/'  SPDX-License-Identifier: BSD-2-Clause
+# */
 
 # Enable strict error checking.
 set -euo pipefail
@@ -18,7 +20,7 @@ fi
 
 printf "\n"
 printf "This script assumes that you have a local minikube cluster running,\n"
-printf "and you have already installed SPIRE and Aegis.\n"
+printf "and you have already installed SPIRE and VMware Secrets Manager.\n"
 printf "Also, make sure you have executed 'eval \$(minikube docker-env)\'\n"
 printf "before running this script.\n"
 printf "\n"
@@ -60,7 +62,7 @@ cleanup() {
   local sentinel
   readonly sentinel=$(define_sentinel)
 
-  kubectl exec "$sentinel" -n aegis-system -- aegis \
+  kubectl exec "$sentinel" -n vsecm-system -- safe \
     -w "example" \
     -d || sad_cuddle "Cleanup: Failed to delete secret."
 
@@ -83,7 +85,7 @@ delete_secret() {
   local sentinel
   readonly sentinel=$(define_sentinel)
 
-  kubectl exec "$sentinel" -n aegis-system -- aegis \
+  kubectl exec "$sentinel" -n vsecm-system -- safe \
     -w "example" \
     -n "default" \
     -d || sad_cuddle "delete_secret: Failed to delete secret."
@@ -105,11 +107,11 @@ define_example_workload() {
   printf "%s" "$workload"
 }
 
-# Retrieves the name of the 'aegis-sentinel' pod.
+# Retrieves the name of the 'vsecm-sentinel' pod.
 define_sentinel() {
   local sentinel
-  readonly sentinel=$(kubectl get po -n aegis-system \
-    | grep "aegis-sentinel-" | awk '{print $1}'; exit $?)
+  readonly sentinel=$(kubectl get po -n vsecm-system \
+    | grep "vsecm-sentinel-" | awk '{print $1}'; exit $?)
   if [ $? -ne 0 ]; then
     sad_cuddle "define_sentinel: Failed to define sentinel."
   fi
@@ -117,11 +119,11 @@ define_sentinel() {
   printf "%s" "$sentinel"
 }
 
-# Retrieves the name of the 'aegis-safe' pod.
+# Retrieves the name of the 'vsecm-safe' pod.
 define_safe() {
   local safe
-  readonly safe=$(kubectl get po -n aegis-system \
-    | grep "aegis-safe-" | awk '{print $1}'; exit $?)
+  readonly safe=$(kubectl get po -n vsecm-system \
+    | grep "vsecm-safe-" | awk '{print $1}'; exit $?)
   if [ $? -ne 0 ]; then
     sad_cuddle "define_safe: Failed to define safe."
   fi
@@ -230,7 +232,7 @@ assert_workload_secret_no_value() {
   fi
 }
 
-# Ensures if Aegis Sentinel can encrypt a secret.
+# Ensures if VMware Secrets Manager Sentinel can encrypt a secret.
 assert_encrypted_secret() {
   local sentinel
   local value
@@ -241,7 +243,7 @@ assert_encrypted_secret() {
     sad_cuddle "assert_encrypted_secret: Failed to define sentinel or value."
   fi
 
-  res=$(kubectl exec "$sentinel" -n aegis-system -- aegis \
+  res=$(kubectl exec "$sentinel" -n vsecm-system -- safe \
     -s "$value" \
     -e; exit $?)
   if [[ $? -ne 0 ]]; then
@@ -350,7 +352,7 @@ pause_just_in_case() {
 
 ### Mutations ### _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
 
-# Encrypts a secret and stores it in Aegis Safe.
+# Encrypts a secret and stores it in VMware Secrets Manager Safe.
 set_encrypted_secret() {
   printf "set_encrypted_secret()\n"
 
@@ -366,7 +368,7 @@ set_encrypted_secret() {
   printf "value: '%s'\n" "$value"
   printf "sentinel: '%s'\n" "$sentinel"
 
-  res=$(kubectl exec "$sentinel" -n aegis-system -- aegis \
+  res=$(kubectl exec "$sentinel" -n vsecm-system -- safe \
     -s "$value" \
     -e; exit $?)
 
@@ -379,7 +381,7 @@ set_encrypted_secret() {
     sad_cuddle "set_encrypted_secret: Empty res."
   fi
 
-  kubectl exec "$sentinel" -n aegis-system -- aegis \
+  kubectl exec "$sentinel" -n vsecm-system -- safe \
     -w "example" \
     -n "default" \
     -s "$res" \
@@ -388,7 +390,7 @@ set_encrypted_secret() {
   printf "done: set_encrypted_secret()\n"
 }
 
-# Registers a secret in Aegis Safe.
+# Registers a secret in VMware Secrets Manager Safe.
 set_secret() {
   printf "set_secret()\n"
 
@@ -401,7 +403,7 @@ set_secret() {
     sad_cuddle "set_secret: Failed to define sentinel or value."
   fi
 
-  kubectl exec "$sentinel" -n aegis-system -- aegis \
+  kubectl exec "$sentinel" -n vsecm-system -- safe \
     -w "example" \
     -n "default" \
     -s "$value" || sad_cuddle "set_secret: Failed to exec kubectl."
@@ -409,7 +411,7 @@ set_secret() {
   printf "done: set_secret()\n"
 }
 
-# Registers a secret in Aegis Safe and transforms it as JSON.
+# Registers a secret in VMware Secrets Manager Safe and transforms it as JSON.
 set_json_secret() {
   printf "set_json_secret()\n"
 
@@ -424,7 +426,7 @@ set_json_secret() {
     sad_cuddle "set_json_secret: Failed to define sentinel, value or transform."
   fi
 
-  kubectl exec "$sentinel" -n aegis-system -- aegis \
+  kubectl exec "$sentinel" -n vsecm-system -- safe \
     -w "example" \
     -n "default" \
     -s "$value" \
@@ -434,7 +436,7 @@ set_json_secret() {
   printf "done: set_json_secret()\n"
 }
 
-# Registers a secret in Aegis Safe and transforms it as YAML.
+# Registers a secret in VMware Secrets Manager Safe and transforms it as YAML.
 set_yaml_secret() {
   printf "set_yaml_secret()\n"
 
@@ -449,7 +451,7 @@ set_yaml_secret() {
     sad_cuddle "set_yaml_secret: Failed to define sentinel, value or transform."
   fi
 
-  kubectl exec "$sentinel" -n aegis-system -- aegis \
+  kubectl exec "$sentinel" -n vsecm-system -- safe \
     -w "example" \
     -n "default" \
     -s "$value" \
@@ -459,7 +461,7 @@ set_yaml_secret() {
   printf "done: set_yaml_secret()\n"
 }
 
-# Registers a secret in Aegis Safe and transforms it as a Kubernetes secret.
+# Registers a secret in VMware Secrets Manager Safe and transforms it as a Kubernetes secret.
 set_kubernetes_secret() {
   printf "set_kubernetes_secret()\n"
 
@@ -469,10 +471,10 @@ set_kubernetes_secret() {
     sad_cuddle "set_kubernetes_secret: Failed to define sentinel."
   fi
 
-  kubectl exec "$sentinel" -n aegis-system -- aegis \
+  kubectl exec "$sentinel" -n vsecm-system -- safe \
     -w "example" \
     -n "default" \
-    -s '{"username": "root", "password": "SuperSecret", "value": "AegisRocks"}' \
+    -s '{"username": "root", "password": "SuperSecret", "value": "VSecMRocks"}' \
     -t '{"USERNAME":"{{.username}}", "PASSWORD":"{{.password}}", "value": "{{.value}}"}' \
     -k || sad_cuddle "set_kubernetes_secret: Failed to exec kubectl."
 
@@ -496,7 +498,7 @@ append_secret() {
     sad_cuddle "append_secret: Failed to define sentinel or value."
   fi
 
-  kubectl exec "$sentinel" -n aegis-system -- aegis \
+  kubectl exec "$sentinel" -n vsecm-system -- safe \
     -w "example" \
     -n "default" \
     -a \
@@ -507,7 +509,7 @@ append_secret() {
 
 ### Deployments ### _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
 
-# Deploys a workload that uses Aegis SDK.
+# Deploys a workload that uses VMware Secrets Manager SDK.
 deploy_workload_using_sdk() {
   printf "Deploying workload that uses the SDK…\n"
 
@@ -524,7 +526,7 @@ deploy_workload_using_sdk() {
   printf "Deployed workload that uses the SDK.\n"
 }
 
-# Deploys a workload that uses Aegis Sidecar.
+# Deploys a workload that uses VMware Secrets Manager Sidecar.
 deploy_workload_using_sidecar() {
   printf "Deploying workload that uses the sidecar…\n"
 
@@ -541,7 +543,7 @@ deploy_workload_using_sidecar() {
   printf "Deployed workload that uses the sidecar.\n"
 }
 
-# Deploys a workload that uses Aegis Init Container.
+# Deploys a workload that uses VMware Secrets Manager Init Container.
 deploy_workload_using_init_container() {
   printf "Deploying workload that uses the init container…\n"
 
@@ -563,7 +565,7 @@ test_encrypting_secrets() {
   printf "Testing: Encrypting secrets…\n"
 
   local value
-  readonly value="!AegisRocks!"
+  readonly value="!VSecMRocks!"
 
   assert_encrypted_secret $value
 
@@ -584,7 +586,7 @@ test_encrypting_secrets
 cleanup
 printf "\n"
 printf "________________________________________\n"
-printf "Case: Workload using Aegis SDK…\n"
+printf "Case: Workload using VSecM SDK…\n"
 printf "\n"
 deploy_workload_using_sdk
 
@@ -595,7 +597,7 @@ test_secret_registration() {
   printf "Testing: Secret registration…\n"
 
   local value
-  readonly value="!AegisRocks!"
+  readonly value="!VSecMRocks!"
 
   set_secret $value
   assert_workload_secret_value $value
@@ -628,7 +630,7 @@ test_secret_registration_append() {
   local secret1
   local secret2
   local value
-  readonly secret1="!Aegis"
+  readonly secret1="!VSecM"
   readonly secret2="Rocks!"
   readonly value='["'"$secret2"'","'"$secret1"'"]'
 
@@ -700,7 +702,7 @@ test_secret_registration_yaml_format
 cleanup
 printf "\n"
 printf "________________________________________\n"
-printf "Case: Workload using Aegis Sidecar…\n"
+printf "Case: Workload using VMware Secrets Manager Sidecar…\n"
 printf "\n"
 deploy_workload_using_sidecar
 
@@ -709,12 +711,12 @@ deploy_workload_using_sidecar
 
 # ------------------------------------------------------------------------------
 
-# Tests the registration of secrets using Aegis Sidecar.
+# Tests the registration of secrets using VMware Secrets Manager Sidecar.
 test_secret_registration_sidecar() {
   printf "Testing: Secret registration…\n"
 
   local value
-  readonly value="!AegisRocks!"
+  readonly value="!VSecMRocks!"
 
   set_secret "$value"
   pause
@@ -727,7 +729,7 @@ test_secret_registration_sidecar
 
 # ------------------------------------------------------------------------------
 
-# Tests the deletion of secrets using Aegis Sidecar.
+# Tests the deletion of secrets using VMware Secrets Manager Sidecar.
 test_secret_deletion_sidecar() {
   printf "Testing: Secret deletion (sidecar)…\n"
 
@@ -742,14 +744,14 @@ test_secret_deletion_sidecar
 
 # ------------------------------------------------------------------------------
 
-# Tests the registration of secrets in append mode using Aegis Sidecar.
+# Tests the registration of secrets in append mode using VMware Secrets Manager Sidecar.
 test_secret_registration_append_sidecar() {
   printf "Testing Secret registration (append mode)…\n"
 
   local secret1
   local secret2
   local value
-  readonly secret1="!Aegis"
+  readonly secret1="!VSecM"
   readonly secret2="Rocks!"
   readonly value='["'"$secret2"'","'"$secret1"'"]'
 
@@ -767,7 +769,7 @@ test_secret_registration_append_sidecar
 
 # ------------------------------------------------------------------------------
 
-# Tests the registration of secrets in JSON format using Aegis Sidecar.
+# Tests the registration of secrets in JSON format using VMware Secrets Manager Sidecar.
 test_secret_registration_json_format_sidecar() {
   printf "Testing Secret registration (JSON transformation)…\n"
 
@@ -792,7 +794,7 @@ test_secret_registration_json_format_sidecar
 
 # ------------------------------------------------------------------------------
 
-# Tests the registration of secrets in YAML format using Aegis Sidecar.
+# Tests the registration of secrets in YAML format using VMware Secrets Manager Sidecar.
 test_secret_registration_yaml_format_sidecar() {
   printf "Testing Secret registration (YAML transformation)…\n"
 
@@ -823,10 +825,10 @@ test_secret_registration_yaml_format_sidecar
 cleanup
 printf "\n"
 printf "________________________________________\n"
-printf "Case: Workload using Aegis Init Container…\n"
+printf "Case: Workload using VMware Secrets Manager Init Container…\n"
 printf "\n"
 
-# Tests the registration of secrets using Aegis Init Container.
+# Tests the registration of secrets using VMware Secrets Manager Init Container.
 test_init_container() {
   printf "Testing: Init Container…\n"
 

@@ -1,32 +1,34 @@
 /*
- * .-'_.---._'-.
- * ||####|(__)||   Protect your secrets, protect your business.
- *   \\()|##//       Secure your sensitive data with Aegis.
- *    \\ |#//                    <aegis.ist>
- *     .\_/.
- */
+|    Protect your secrets, protect your sensitive data.
+:    Explore VMware Secrets Manager docs at https://vsecm.com/
+</
+<>/  keep your secrets… secret
+>/
+<>/' Copyright 2023–present VMware, Inc.
+>/'  SPDX-License-Identifier: BSD-2-Clause
+*/
 
 package audit
 
 import (
-	reqres "github.com/shieldworks/aegis/core/entity/reqres/safe/v1"
-	"github.com/shieldworks/aegis/core/log"
+	reqres "github.com/vmware-tanzu/secrets-manager/core/entity/reqres/safe/v1"
+	"github.com/vmware-tanzu/secrets-manager/core/log"
 )
 
 type Event string
 
-const EventEnter Event = "aegis-enter"
-const EventBadSvid Event = "aegis-bad-svid"
-const EventBrokenBody Event = "aegis-broken-body"
-const EventRequestTypeMismatch Event = "aegis-request-type-mismatch"
-const EventBadPeerSvid Event = "aegis-bad-peer-svid"
-const EventNoSecret Event = "aegis-no-secret"
-const EventOk Event = "aegis-ok"
-const EventNoWorkloadId Event = "aegis-no-wl-id"
-const EventNoValue Event = "aegis-no-value"
-const EventEncryptionFailed Event = "aegis-encryption-failed"
-const EventDecryptionFailed Event = "aegis-decryption-failed"
-const EventBadPayload Event = "aegis-bad-payload"
+const EventEnter Event = "vsecm-enter"
+const EventBadSvid Event = "vsecm-bad-svid"
+const EventBrokenBody Event = "vsecm-broken-body"
+const EventRequestTypeMismatch Event = "vsecm-request-type-mismatch"
+const EventBadPeerSvid Event = "vsecm-bad-peer-svid"
+const EventNoSecret Event = "vsecm-no-secret"
+const EventOk Event = "vsecm-ok"
+const EventNoWorkloadId Event = "vsecm-no-wl-id"
+const EventNoValue Event = "vsecm-no-value"
+const EventEncryptionFailed Event = "vsecm-encryption-failed"
+const EventDecryptionFailed Event = "vsecm-decryption-failed"
+const EventBadPayload Event = "vsecm-bad-payload"
 
 type JournalEntry struct {
 	CorrelationId string

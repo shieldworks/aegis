@@ -1,25 +1,27 @@
-#
-# .-'_.---._'-.
-# ||####|(__)||   Protect your secrets, protect your business.
-#   \\()|##//       Secure your sensitive data with Aegis.
-#    \\ |#//                    <aegis.ist>
-#     .\_/.
-#
+# /*
+# |    Protect your secrets, protect your sensitive data.
+# :    Explore VMware Secrets Manager docs at https://vsecm.com/
+# </
+# <>/  keep your secrets… secret
+# >/
+# <>/' Copyright 2023–present VMware, Inc.
+# >/'  SPDX-License-Identifier: BSD-2-Clause
+# */
 
 apiVersion: spire.spiffe.io/v1alpha1
 kind: ClusterSPIFFEID
 metadata:
-  name: aegis-sentinel
+  name: vsecm-sentinel
 spec:
-  spiffeIDTemplate: "spiffe://aegis.ist\
-    /workload/aegis-sentinel\
+  spiffeIDTemplate: "spiffe://vsecm.com\
+    /workload/vsecm-sentinel\
     /ns/{{ .PodMeta.Namespace }}\
     /sa/{{ .PodSpec.ServiceAccountName }}\
     /n/{{ .PodMeta.Name }}"
   podSelector:
     matchLabels:
-      app.kubernetes.io/name: aegis-sentinel
-      app.kubernetes.io/part-of: aegis-system
+      app.kubernetes.io/name: vsecm-sentinel
+      app.kubernetes.io/part-of: vsecm-system
   workloadSelectorTemplates:
     - "k8s:ns:{{ .PodMeta.Namespace }}"
     - "k8s:sa:{{ .PodSpec.ServiceAccountName }}"

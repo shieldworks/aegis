@@ -1,21 +1,23 @@
 /*
- * .-'_.---._'-.
- * ||####|(__)||   Protect your secrets, protect your business.
- *   \\()|##//       Secure your sensitive data with Aegis.
- *    \\ |#//                    <aegis.ist>
- *     .\_/.
- */
+|    Protect your secrets, protect your sensitive data.
+:    Explore VMware Secrets Manager docs at https://vsecm.com/
+</
+<>/  keep your secrets… secret
+>/
+<>/' Copyright 2023–present VMware, Inc.
+>/'  SPDX-License-Identifier: BSD-2-Clause
+*/
 
 package route
 
 import (
 	"encoding/json"
-	"github.com/shieldworks/aegis/app/safe/internal/state"
-	"github.com/shieldworks/aegis/core/audit"
-	entity "github.com/shieldworks/aegis/core/entity/data/v1"
-	reqres "github.com/shieldworks/aegis/core/entity/reqres/safe/v1"
-	"github.com/shieldworks/aegis/core/env"
-	"github.com/shieldworks/aegis/core/log"
+	"github.com/vmware-tanzu/secrets-manager/app/safe/internal/state"
+	"github.com/vmware-tanzu/secrets-manager/core/audit"
+	entity "github.com/vmware-tanzu/secrets-manager/core/entity/data/v1"
+	reqres "github.com/vmware-tanzu/secrets-manager/core/entity/reqres/safe/v1"
+	"github.com/vmware-tanzu/secrets-manager/core/env"
+	"github.com/vmware-tanzu/secrets-manager/core/log"
 	"io"
 	"net/http"
 )

@@ -1,17 +1,19 @@
 /*
- * .-'_.---._'-.
- * ||####|(__)||   Protect your secrets, protect your business.
- *   \\()|##//       Secure your sensitive data with Aegis.
- *    \\ |#//                    <aegis.ist>
- *     .\_/.
- */
+|    Protect your secrets, protect your sensitive data.
+:    Explore VMware Secrets Manager docs at https://vsecm.com/
+</
+<>/  keep your secrets… secret
+>/
+<>/' Copyright 2023–present VMware, Inc.
+>/'  SPDX-License-Identifier: BSD-2-Clause
+*/
 
 package main
 
 import (
 	"fmt"
 	"github.com/akamensky/argparse"
-	"github.com/shieldworks/aegis/app/sentinel/internal/safe"
+	"github.com/vmware-tanzu/secrets-manager/app/sentinel/internal/safe"
 	"os"
 )
 
@@ -25,7 +27,7 @@ func parseUseKubernetes(parser *argparse.Parser) *bool {
 	return parser.Flag("k", "use-k8s", &argparse.Options{
 		Required: false, Default: false,
 		Help: "update an associated Kubernetes secret upon save. " +
-			"Overrides AEGIS_SAFE_USE_KUBERNETES_SECRETS.",
+			"Overrides VSECM_SAFE_USE_KUBERNETES_SECRETS.",
 	})
 }
 
@@ -62,7 +64,7 @@ func parseBackingStore(parser *argparse.Parser) *string {
 	return parser.String("b", "store", &argparse.Options{
 		Required: false,
 		Help: "backing store type (file|memory) (default: file). " +
-			"Overrides AEGIS_SAFE_BACKING_STORE.",
+			"Overrides VSECM_SAFE_BACKING_STORE.",
 	})
 }
 
@@ -107,20 +109,20 @@ func parseEncrypt(parser *argparse.Parser) *bool {
 }
 
 func printUsage(parser *argparse.Parser) {
-	fmt.Print(parser.Usage("aegis"))
+	fmt.Print(parser.Usage("safe"))
 }
 
 func printWorkloadNameNeeded() {
 	fmt.Println("Please provide a workload name.")
 	fmt.Println("")
-	fmt.Println("type `aegis -h` (without backticks) and press return for help.")
+	fmt.Println("type `safe -h` (without backticks) and press return for help.")
 	fmt.Println("")
 }
 
 func printSecretNeeded() {
 	fmt.Println("Please provide a secret.")
 	fmt.Println("")
-	fmt.Println("type `aegis -h` (without backticks) and press return for help.")
+	fmt.Println("type `safe -h` (without backticks) and press return for help.")
 	fmt.Println("")
 }
 
@@ -190,7 +192,7 @@ func doPost(workload *string, secret *string, namespace *string,
 }
 
 func main() {
-	parser := argparse.NewParser("aegis", "Assigns secrets to workloads.")
+	parser := argparse.NewParser("safe", "Assigns secrets to workloads.")
 
 	list := parseList(parser)
 	useKubernetes := parseUseKubernetes(parser)

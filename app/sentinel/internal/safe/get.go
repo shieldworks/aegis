@@ -1,10 +1,12 @@
 /*
- * .-'_.---._'-.
- * ||####|(__)||   Protect your secrets, protect your business.
- *   \\()|##//       Secure your sensitive data with Aegis.
- *    \\ |#//                    <aegis.ist>
- *     .\_/.
- */
+|    Protect your secrets, protect your sensitive data.
+:    Explore VMware Secrets Manager docs at https://vsecm.com/
+</
+<>/  keep your secrets… secret
+>/
+<>/' Copyright 2023–present VMware, Inc.
+>/'  SPDX-License-Identifier: BSD-2-Clause
+*/
 
 package safe
 
@@ -12,11 +14,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/shieldworks/aegis/core/env"
-	"github.com/shieldworks/aegis/core/validation"
 	"github.com/spiffe/go-spiffe/v2/spiffeid"
 	"github.com/spiffe/go-spiffe/v2/spiffetls/tlsconfig"
 	"github.com/spiffe/go-spiffe/v2/workloadapi"
+	"github.com/vmware-tanzu/secrets-manager/core/env"
+	"github.com/vmware-tanzu/secrets-manager/core/validation"
 	"io"
 	"log"
 	"net/http"
@@ -45,7 +47,7 @@ func acquireSource(ctx context.Context) (*workloadapi.X509Source, bool) {
 	// Make sure that the binary is enclosed in a Pod that we trust.
 	if !validation.IsSentinel(svid.ID.String()) {
 		fmt.Println("I don’t know you, and it’s crazy: '" + svid.ID.String() + "'")
-		fmt.Println("`aegis` can only run from within the Sentinel container.")
+		fmt.Println("`safe` can only run from within the Sentinel container.")
 		fmt.Println("")
 		return source, false
 	}
@@ -81,7 +83,7 @@ func Get() {
 
 	p, err := url.JoinPath(env.SafeEndpointUrl(), "/sentinel/v1/secrets")
 	if err != nil {
-		fmt.Println("I am having problem generating Aegis Safe secrets api endpoint URL.")
+		fmt.Println("I am having problem generating VMware Secrets Manager Safe secrets api endpoint URL.")
 		fmt.Println("")
 		return
 	}
@@ -95,7 +97,7 @@ func Get() {
 
 	r, err := client.Get(p)
 	if err != nil {
-		fmt.Println("Get: Problem connecting to Aegis Safe API endpoint URL.", err.Error())
+		fmt.Println("Get: Problem connecting to VMware Secrets Manager Safe API endpoint URL.", err.Error())
 		fmt.Println("")
 		return
 	}
@@ -112,7 +114,7 @@ func Get() {
 
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
-		fmt.Println("Get: Unable to read the response body from Aegis Safe.")
+		fmt.Println("Get: Unable to read the response body from VMware Secrets Manager Safe.")
 		fmt.Println("")
 		return
 	}

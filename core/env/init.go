@@ -1,10 +1,12 @@
 /*
- * .-'_.---._'-.
- * ||####|(__)||   Protect your secrets, protect your business.
- *   \\()|##//       Secure your sensitive data with Aegis.
- *    \\ |#//                    <aegis.ist>
- *     .\_/.
- */
+|    Protect your secrets, protect your sensitive data.
+:    Explore VMware Secrets Manager docs at https://vsecm.com/
+</
+<>/  keep your secrets… secret
+>/
+<>/' Copyright 2023–present VMware, Inc.
+>/'  SPDX-License-Identifier: BSD-2-Clause
+*/
 
 package env
 
@@ -16,11 +18,11 @@ import (
 
 // InitContainerPollInterval returns the time interval between each poll in the
 // Watch function. The interval is specified in milliseconds as the
-// AEGIS_INIT_CONTAINER_POLL_INTERVAL environment variable.  If the environment
+// VSECM_INIT_CONTAINER_POLL_INTERVAL environment variable.  If the environment
 // variable is not set or is not a valid integer value, the function returns the
 // default interval of 5000 milliseconds.
 func InitContainerPollInterval() time.Duration {
-	p := os.Getenv("AEGIS_INIT_CONTAINER_POLL_INTERVAL")
+	p := os.Getenv("VSECM_INIT_CONTAINER_POLL_INTERVAL")
 	if p == "" {
 		p = "5000"
 	}

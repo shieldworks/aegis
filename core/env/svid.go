@@ -1,64 +1,66 @@
 /*
- * .-'_.---._'-.
- * ||####|(__)||   Protect your secrets, protect your business.
- *   \\()|##//       Secure your sensitive data with Aegis.
- *    \\ |#//                    <aegis.ist>
- *     .\_/.
- */
+|    Protect your secrets, protect your sensitive data.
+:    Explore VMware Secrets Manager docs at https://vsecm.com/
+</
+<>/  keep your secrets… secret
+>/
+<>/' Copyright 2023–present VMware, Inc.
+>/'  SPDX-License-Identifier: BSD-2-Clause
+*/
 
 package env
 
 import "os"
 
 // SentinelSvidPrefix returns the prefix for the Safe
-// SVID (Short-lived Verifiable Identity Document) used in the Aegis system.
+// SVID (Short-lived Verifiable Identity Document) used in the VSecM system.
 // The prefix is obtained from the environment variable
-// AEGIS_SENTINEL_SVID_PREFIX. If the variable is not set, the default prefix is
+// VSECM_SENTINEL_SVID_PREFIX. If the variable is not set, the default prefix is
 // used.
 func SentinelSvidPrefix() string {
-	p := os.Getenv("AEGIS_SENTINEL_SVID_PREFIX")
+	p := os.Getenv("VSECM_SENTINEL_SVID_PREFIX")
 	if p == "" {
-		p = "spiffe://aegis.ist/workload/aegis-sentinel/ns/aegis-system/sa/aegis-sentinel/n/"
+		p = "spiffe://vsecm.com/workload/vsecm-sentinel/ns/vsecm-system/sa/vsecm-sentinel/n/"
 	}
 	return p
 }
 
 // SafeSvidPrefix returns the prefix for the Safe
-// SVID (Short-lived Verifiable Identity Document) used in the Aegis system.
+// SVID (Short-lived Verifiable Identity Document) used in the VSecM system.
 // The prefix is obtained from the environment variable
-// AEGIS_SAFE_SVID_PREFIX. If the variable is not set, the default prefix is
+// VSECM_SAFE_SVID_PREFIX. If the variable is not set, the default prefix is
 // used.
 func SafeSvidPrefix() string {
-	p := os.Getenv("AEGIS_SAFE_SVID_PREFIX")
+	p := os.Getenv("VSECM_SAFE_SVID_PREFIX")
 	if p == "" {
-		p = "spiffe://aegis.ist/workload/aegis-safe/ns/aegis-system/sa/aegis-safe/n/"
+		p = "spiffe://vsecm.com/workload/vsecm-safe/ns/vsecm-system/sa/vsecm-safe/n/"
 	}
 	return p
 }
 
-// NotarySvidPrefix returns the prefix for the Aegis Notary SVID
-// (SPIFFE Verifiable Identity Document) used in the Aegis system.
-// The prefix is obtained from the environment variable AEGIS_NOTARY_SVID_PREFIX.
+// NotarySvidPrefix returns the prefix for the VSecM Notary SVID
+// (SPIFFE Verifiable Identity Document) used in the VSecM system.
+// The prefix is obtained from the environment variable VSECM_NOTARY_SVID_PREFIX.
 // If the variable is not set, the default prefix is used.
 //
 // THIS IS NOT USED AT THE MOMENT.
 // IT IS EXPERIMENTAL.
 func NotarySvidPrefix() string {
-	p := os.Getenv("AEGIS_NOTARY_SVID_PREFIX")
+	p := os.Getenv("VSECM_NOTARY_SVID_PREFIX")
 	if p == "" {
-		p = "spiffe://aegis.ist/workload/aegis-notary/ns/aegis-system/sa/aegis-notary/n/"
+		p = "spiffe://vsecm.com/workload/vsecm-notary/ns/vsecm-system/sa/vsecm-notary/n/"
 	}
 	return p
 }
 
 // WorkloadSvidPrefix returns the prefix for the Workload SVID
-// (SPIFFE Verifiable Identity Document) used in the Aegis system.
-// The prefix is obtained from the environment variable AEGIS_WORKLOAD_SVID_PREFIX.
+// (SPIFFE Verifiable Identity Document) used in the VSecM system.
+// The prefix is obtained from the environment variable VSECM_WORKLOAD_SVID_PREFIX.
 // If the variable is not set, the default prefix is used.
 func WorkloadSvidPrefix() string {
-	p := os.Getenv("AEGIS_WORKLOAD_SVID_PREFIX")
+	p := os.Getenv("VSECM_WORKLOAD_SVID_PREFIX")
 	if p == "" {
-		p = "spiffe://aegis.ist/workload/"
+		p = "spiffe://vsecm.com/workload/"
 	}
 	return p
 }

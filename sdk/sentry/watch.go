@@ -1,25 +1,27 @@
 /*
- * .-'_.---._'-.
- * ||####|(__)||   Protect your secrets, protect your business.
- *   \\()|##//       Secure your sensitive data with Aegis.
- *    \\ |#//                    <aegis.ist>
- *     .\_/.
- */
+|    Protect your secrets, protect your sensitive data.
+:    Explore VMware Secrets Manager docs at https://vsecm.com/
+</
+<>/  keep your secrets… secret
+>/
+<>/' Copyright 2023–present VMware, Inc.
+>/'  SPDX-License-Identifier: BSD-2-Clause
+*/
 
 package sentry
 
 import (
-	"github.com/shieldworks/aegis/core/crypto"
-	"github.com/shieldworks/aegis/core/log"
-	"github.com/shieldworks/aegis/sdk/internal/timer"
+	"github.com/vmware-tanzu/secrets-manager/core/crypto"
+	"github.com/vmware-tanzu/secrets-manager/core/log"
+	"github.com/vmware-tanzu/secrets-manager/sdk/internal/timer"
 	"time"
 )
 
 // Watch synchronizes the internal state of the sidecar by talking to
-// Aegis Safe regularly. It periodically calls Fetch behind-the-scenes to
+// VMware Secrets Manager Safe regularly. It periodically calls Fetch behind-the-scenes to
 // get its work done. Once it fetches the secrets, it saves it to
-// the location defined in the `AEGIS_SIDECAR_SECRETS_PATH` environment
-// variable (`/opt/aegis/secrets.json` by default).
+// the location defined in the `VSECM_SIDECAR_SECRETS_PATH` environment
+// variable (`/opt/vsecm/secrets.json` by default).
 func Watch() {
 	interval := timer.InitialInterval
 	successCount := int64(0)
@@ -27,7 +29,7 @@ func Watch() {
 
 	cid, _ := crypto.RandomString(8)
 	if cid == "" {
-		cid = "AEGISSDK"
+		cid = "VSECMSDK"
 	}
 
 	for {

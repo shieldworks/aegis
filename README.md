@@ -1,40 +1,44 @@
-# Aegis
-
-![Aegis](assets/aegis-git-banner.png "Aegis")
+```go 
+|   Protect your secrets, protect your sensitive data.
+:   Explore VMware Secrets Manager docs at https://vsecm.com/
+</
+<>/ keep your secrets… secret
+```
 
 [spire]: https://spiffe.io/ "SPIFFE: Secure Production Identity Framework for Everyone"
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/shieldworks/aegis)](https://goreportcard.com/report/github.com/shieldworks/aegis)
+[![Go Report Card](https://goreportcard.com/badge/github.com/vmware-tanzu/secrets-manager)](https://goreportcard.com/report/github.com/vmware-tanzu/secrets-manager)
 
 ## The Elevator Pitch
 
-[**Aegis**](https://aegis.ist) is a delightfully-secure Kubernetes-native 
-secrets store.
+[**VMware Secrets Manager for Cloud-Native Apps**](https://vsecm.com) (*VSecM*) 
+is a delightfully-secure Kubernetes-native secrets store.
 
-**Aegis** keeps your secrets secret.
+**VMware Secrets Manager** keeps your secrets secret.
 
-With **Aegis**, you can rest assured that your
+With **VMware Secrets Manager**, you can rest assured that your
 sensitive data is always **secure** and **protected**.
 
-**Aegis** is perfect for securely storing arbitrary configuration information at
-a central location and securely dispatching it to workloads.
+**VMware Secrets Manager** is perfect for securely storing arbitrary configuration 
+information at a central location and securely dispatching it to workloads.
 
 ## Tell Me More
 
-**Aegis** is a cloud-native secure store for secrets management. 
+**VMware Secrets Manager** is a cloud-native secure store for secrets management. 
 It provides a minimal and intuitive API, ensuring practical security without 
 compromising user experience. 
 
-Aegis is **resilient** and **secure** by default, storing sensitive data in memory 
-and encrypting any data saved to disk. 
+**VMare Secrets Manager** is resilient and **secure by default**, storing 
+sensitive data in memory and encrypting any data saved to disk. 
 
-Endorsed by industry experts, **Aegis** is a ground-up re-imagination of 
-secrets management, leveraging SPIFFE for authentication and providing 
-a cloud-native way to manage secrets end-to-end.
+[Endorsed by industry experts](https://vsecm.com/endorsements), 
+**VMware Secrets Manager** is a ground-up re-imagination of secrets management, 
+leveraging [**SPIFFE**](https://spiffe.io) for authentication and providing a 
+cloud-native way to manage secrets end-to-end.
 
 ## Getting Your Hands Dirty
 
-Before trying **Aegis**, you might want to learn about its 
+Before trying **VMware Secrets Manager**, you might want to learn about its 
 [architecture][architecture] and [design goals][design].
 
 Once you are ready to get started, [see the Quickstart guide][quickstart].
@@ -42,162 +46,163 @@ Once you are ready to get started, [see the Quickstart guide][quickstart].
 Or, if you one of those who “*learn by doing*”, you might want to dig into the 
 implementation details later. If that’s the case, you can directly jump to the 
 fun part and [follow the steps here][installation] to install 
-**Aegis** to your Kubernetes cluster.
+**VMware Secrets Manager** to your Kubernetes cluster.
 
 ## Dive Into Example Use Cases
 
-There are several examples demonstrating **Aegis** sample use cases 
-[inside the `./examples/` folder](./examples).
+There are several examples demonstrating **VMware Secrets Manager** sample use 
+cases [inside the `./examples/` folder](./examples).
 
 ## Container Images
 
-Pre-built container images of **Aegis** components can be found at:
-<https://hub.docker.com/u/aegishub>.
+Pre-built container images of **VMware Secrets Manager** components can be found 
+at: <https://hub.docker.com/u/vsecm>.
 
-## Build Aegis From the Source
+## Build VMware Secrets Manager From the Source
 
-[You can also build **Aegis** from the source][build].
+[You can also build **VMware Secrets Manager** from the source][build].
 
 ## The Roadmap
 
-[We publicly track all **Aegis** plans on a GitHub project][roadmap]. You can
-check it out to get a glimpse of the current planned features, and how the
-future of **Aegis** looks like.
+[We publicly track all **VMware Secrets Manager** plans on this roadmap page][roadmap]. 
 
-[roadmap]:https://github.com/orgs/shieldworks/projects/1  "The Roadmap"
-[installation]: https://aegis.ist/docs/#installation "Install Aegis"
-[build]: https://aegis.ist/docs/contributing/#building-deploying-and-testing
-[architecture]: https://aegis.ist/docs/architecture/ "Aegis Deep Dive"
-[design]: https://aegis.ist/docs/philosophy/ "Aegis Philosphy"
-[quickstart]: https://aegis.ist/docs/
+You can check it out to get a glimpse of the current planned features, and how 
+the future of **VMware Secrets Manager** looks like.
+
+[roadmap]: https://vsecm.com/roadmap  "The Roadmap"
+[installation]: https://vsecm.com/installation "Install VMware Secrets Manager"
+[build]: https://vsecm.com/use-the-source "Building, Deploying, and Testing"
+[architecture]: https://vsecm.com/architecture/ "VMware Secrets Manager Architecture"
+[design]: https://vsecm.com/philosophy/ "VMware Secrets Manager Design Philosphy"
+[quickstart]: https://vsecm.com/quickstart "Quickstart"
 
 ## Status of This Software
 
-**Aegis**, is under dynamic and progressive development.
+**VMware Secrets Manager** is under dynamic and progressive development.
 
 The code that we’ve officially signed and released maintains a 
 high standard of stability and dependability. However, we do encourage 
 it be used in a production environment (*at your own risk—[see LICENSE](LICENSE)*).
 
-It’s important to note that, technically speaking, **Aegis** currently holds the 
-status of an alpha software. This simply means that as we journey towards our milestone of 
-`v1.0.0`, it's possible for changes to occur—both major and minor. While this might mean 
-some aspects are not backward compatible, it's a testament to our unwavering commitment 
-to refining and enhancing **Aegis**.
+It’s important to note that, technically speaking, **VMware Secrets Manager** 
+currently holds the status of an *alpha software*. This simply means that as we 
+journey towards our milestone of `v1.0.0`, it's possible for changes to 
+occur—both major and minor. While this might mean some aspects are not backward 
+compatible, it's a testament to our unwavering commitment to refining and 
+enhancing **VMware Secrets Manager**.
 
 In a nutshell, we are ceaselessly pushing the boundaries of what’s possible, while 
 ensuring our software stays as dependable and effective for production use.
 
 ## 🦆🦆🦆 (*Docs*)
 
-[Official documentation available on **aegis.ist**](https://aegis.ist).
+[Official documentation available on **vsecm.com**](https://vsecm.com).
 
 ## A Note on Security
 
-We take **Aegis**’ security seriously. If you believe you have found a vulnerability,
-please responsibly disclose by contacting [security@aegis.ist](mailto:security@aegis.ist).
+We take **VMware Secrets Manager**’s security seriously. If you believe you have 
+found a vulnerability, please responsibly disclose by contacting 
+[security@vsecm.com](mailto:security@vsecm.com).
 
-## A Tour Of Aegis
+## A Tour Of VMware Secrets Manager
 
-[Check out this quickstart guide][quickstart] for an overview of **Aegis**.
+[Check out this quickstart guide][quickstart] for an overview of 
+**VMware Secrets Manager**.
 
-[quickstart]: https://aegis.ist/docs/
+[quickstart]: https://vsecm.com/quickstart
 
 ## Community
 
 Open Source is better together.
 
-If you are a security enthusiast, [**join Aegis’ Slack Workspace**][slack-invite]
+If you are a security enthusiast, 
+[**join VMware Secrets Manager’s Slack Workspace**][slack-invite]
 and let us change the world together 🤘.
 
 ## Links
 
 ### General Links
 
-* **Homepage**: <https://aegis.ist/>
-* **Documentation**: <https://aegis.ist/docs/>
-* **Changelog**: <https://aegis.ist/changelog/>
-* **Community**: [Join **Aegis**’ Slack Workspace][slack-invite]
-* **Contact**: <https://aegis.ist/contact/>
-* **Media Kit**: <https://aegis.ist/media/>
-* **Changelog**: <https://aegis.ist/changelog/>
+* **Homepage and Docs**: <https://vsecm.com/>
+* **Changelog**: <https://vsecm.com/changelog/>
+* **Community**: [Join **VSecM**’s Slack Workspace][slack-invite]
+* **Contact**: <https://vsecm.com/contact/>
+* **Media Kit**: <https://vsecm.com/media/>
+* **Changelog**: <https://vsecm.com/changelog/>
 
 ### Guides and Tutorials
 
-* **Installation and Quickstart**: <https://aegis.ist/docs/register/>
-* **Local Development Instructions**: <https://aegis.ist/docs/contributing/>
-* **Aegis Go SDK**: <https://aegis.ist/docs/sdk/>
-* **Aegis CLI**: <https://aegis.ist/docs/sentinel/>
-* **Architectural Deep Dive**: <https://aegis.ist/docs/architecture/>
-* **Configuration**: <https://aegis.ist/docs/configuration/>
-* **Design Philosophy**: <https://aegis.ist/docs/philosophy/>
-* **Production Deployment Tips**: <https://aegis.ist/production/>
+* **Installation and Quickstart**: <https://vsecm.com/quickstart/>
+* **Local Development Instructions**: <https://vsecm.com/use-the-source/>
+* **Developer SDK**: <https://vsecm.com/sdk/>
+* **CLI**: <https://vsecm.com/sentinel/>
+* **Architecture**: <https://vsecm.com/architecture/>
+* **Configuration**: <https://vsecm.com/configuration/>
+* **Design Philosophy**: <https://vsecm.com/philosophy/>
+* **Production Deployment Tips**: <https://vsecm.com/production/>
 
 ## Installation
 
-[Check out this quickstart guide][quickstart] for an overview of **Aegis**,
+[Check out this quickstart guide][quickstart] for an overview of **VMware Secrets Manager**,
 which also covers **installation** and **uninstallation** instructions.
 
-[quickstart]: https://aegis.ist/docs/
+[quickstart]: https://vsecm.com/docs/
 
 You need a **Kubernetes** cluster and sufficient admin rights on that cluster to
-install **Aegis**.
+install **VMware Secrets Manager**.
 
 ## Usage
 
-[This tutorial about “**Registering Secrets Using Aegis**”][register] covers
+[This tutorial about “**Registering Secrets Using VMware Secrets Manager**”][register] covers
 several usage scenarios.
 
-[register]: https://aegis.ist/docs/register/
+[register]: https://vsecm.com/quickstart/
 
 ## Architecture Details
 
-[Check out this **Aegis Deep Dive**][deep-dive] article for an overview
-of **Aegis** system design and how each component fits together.
+[Check out this **VMware Secrets Manager Deep Dive**][deep-dive] article for an overview
+of **VMware Secrets Manager** system design and how each component fits together.
 
-[deep-dive]: https://aegis.ist/docs/architecture/
+[deep-dive]: https://vsecm.com/architecture/
 
 ## Folder Structure
 
+> *VSecM* == “VMware Secrets Manager for Cloud-Native Apps”
+
 Here are the important folders and files in this repository:
 
-* `./app`: Contains core **Aegis** components’ source code.
-    * `./app/init-container`: Contains the source code for the **Aegis Init Container**.
-    * `./app/safe`: Contains the source code for the **Aegis Safe**.
-    * `./app/sentinel`: Contains the source code for the **Aegis Sentinel**.
-    * `./app/sidecar`: Contains the source code for the **Aegis Sidecar**.
-* `./core`: Contains core modules that are shared across **Aegis** components.
+* `./app`: Contains core **VSecM** components’ source code.
+    * `./app/init-container`: Contains the source code for the **VSecM Init Container**.
+    * `./app/safe`: Contains the source code for the **VSecM Safe**.
+    * `./app/sentinel`: Contains the source code for the **VSecM Sentinel**.
+    * `./app/sidecar`: Contains the source code for the **VSecM Sidecar**.
+* `./helm-charts`: Contains **VSecM** helm charts.
+* `./core`: Contains core modules that are shared across **VSecM** components.
 * `./examples`: Contains the source code of example use cases.
 * `./hack`: Contains scripts that are used for building, publishing, development
   and testing.
-* `./k8s`: Contains Kubernetes manifests that are used to deploy **Aegis** and
+* `./k8s`: Contains Kubernetes manifests that are used to deploy **VSecM** and
   its use cases.
-* `./sdk`: Contains the source code of the **Aegis SDK**.
-* `./CODE_OF_CONDUCT.md`: Contains **Aegis** Code of Conduct.
-* `./SECURITY.md`: Contains **Aegis** Security Policy.
-* `./LICENSE`: Contains **Aegis** License.
-* `./Makefile`: Contains **Aegis** Makefile that is used for building,
+* `./sdk`: Contains the source code of the **VSecM Developer SDK**.
+* `./CODE_OF_CONDUCT.md`: Contains **VSecM** Code of Conduct.
+* `./SECURITY.md`: Contains **VSecM** Security Policy.
+* `./LICENSE`: Contains **VSecM** License.
+* `./Makefile`: Contains the `Makefile` that is used for building,
   publishing, deploying, and testing the project.
-
-## One More Thing… How Do I Pronounce “Aegis”?
-
-[We have an article for that too 🙂][pronounce].
-
-[pronounce]: https://aegis.ist/pronunciation/
 
 ## Changelog
 
 You can find the changelog, and migration/upgrade instructions (*if any*)
-on [**Aegis**’ Changelog Page](https://aegis.ist/changelog/).
+on [**VMware Secrets Manager**’s Changelog Page](https://vsecm.com/changelog/).
 
 ## What’s Coming Up Next?
 
-You can see the project’s progress [in these **Aegis** boards][mdp].
+You can see the project’s progress [in this **VMware Secrets Manager** roadmap][mdp].
 
 The board outlines what are the current outstanding work items, and what is
 currently being worked on.
 
-[mdp]: https://github.com/orgs/shieldworks/projects/1/views/2
+[mdp]: https://vsecm.com/roadmap
 
 ## Code Of Conduct
 
@@ -205,7 +210,7 @@ currently being worked on.
 
 ## Contributing
 
-To contribute to **Aegis**, [follow the contributing guidelines](CONTRIBUTING.md)
+To contribute to **VMware Secrets Manager**, [follow the contributing guidelines](CONTRIBUTING.md)
 to get started.
 
 Use GitHub issues to request features or file bugs.
@@ -213,24 +218,20 @@ Use GitHub issues to request features or file bugs.
 ## Communications
 
 * [**Slack** is where the community hangs out][slack-invite].
-* [Send comments and suggestions to **feedback@aegis.ist**](mailto:feedback@aegis.ist).
+* [Send comments and suggestions to **feedback@vsecm.com**](mailto:feedback@vsecm.com).
 
 ## Maintainers
 
-As of now, I, [Volkan Özçelik][me], am the sole maintainer of **Aegis**.
-
-[me]: https://github.com/v0lkan "Volkan Özçelik"
+Check out the [CODEOWNERS](CODEOWNERS) for a list of maintainers of
+**VMware Secrets Manager**.
 
 Please send your feedback, suggestions, recommendations, and comments to
-[feedback@aegis.ist](mailto:feedback@aegis.ist).
+[feedback@vsecm.com](mailto:feedback@vsecm.com).
 
 We’d love to have them.
 
 ## License
 
-[MIT License](LICENSE).
+[BSD-2 Clause License](LICENSE).
 
-[slack-invite]: https://join.slack.com/t/aegis-6n41813/shared_invite/zt-1myzqdi6t-jTvuRd1zDLbHX0gN8VkCqg "Join aegis.slack.com"
-[aegis-web]: https://aegis.ist/
-[aegis-projects]: https://aegis.ist/docs/architecture/#projects
-[aegis-repo]: https://github.com/shieldworks/aegis
+[slack-invite]: https://join.slack.com/t/a-101-103-105-s/shared_invite/zt-1zrr2yepf-2P3EJhfoGNn05l5_4jvYSA "Join VSecM Slack"

@@ -1,28 +1,37 @@
-# Aegis
+```text
+|   Protect your secrets, protect your sensitive data.
+:   Explore VMware Secrets Manager docs at https://vsecm.com/
+</
+<>/ keep your secrets… secret
+```
 
-![Aegis](../../assets/aegis-icon.png "Aegis")
+## Use Case: Leveraging VMware Secrets Manager (*VSecM*) SDK
 
-## Use Case: Leveraging Aegis SDK
+This example demonstrates how to use **VSecM SDK** along with your workload.
 
-This example demonstrates how to use **Aegis SDK** along with your workload.
-
-When you use **Aegis SDK**, you can communicate with **Aegis Safe** directly
+When you use **VSecM SDK**, you can communicate with **VSecM Safe** directly
 and fetch the secrets to your workload whenever you need them.
 
 This approach provides a great deal of flexibility, enabling you to make 
-customizations to your code as needed. While adding the **Aegis SDK** as a 
+customizations to your code as needed. While adding the **VSecM SDK** as a 
 dependency may require some extra effort, it also opens up a range of
 features and capabilities that will benefit your project in the long run.
 
-## Video Tutorials Anyone?
+## A Video Is Worth a Lot of Words
 
-[Watch **Aegis Showcase** to learn how to use **Aegis** hands-on][videos].
+[You can watch these tutorial][videos] as to learn how to use **VMware
+Secrets Manager** hands-on.
 
-If any of the instructions provided here are unclear, the video tutorials will
-help explain them in much greater detail. Each video is designed around a
-particular topic to keep it concise and to-the-point.
+Note that the videos are about the older version of VMware Secrets Manager,
+called ‘Äegis’, but the concepts are the same. Also note that in the meantime
+we have added a few more features to **VMware Secrets Manager**, so you will
+find differences between the video and the current version of **VMware Secrets
+Manager**.
 
-[videos]: https://vimeo.com/showcase/10074951 "Aegis Showcase"
+In the videos, we use all the scripts and resource manifests you see in this
+folder to demonstrate various **VMware Secrets Manager** use cases.
+
+[videos]: https://vimeo.com/showcase/10074951 "VSecM Showcase"
 
 ## Deployment Options
 
@@ -35,13 +44,13 @@ The following sections describe both of these approaches respectively.
 
 ```bash
 # Switch to the project folder:
-cd $WORKSPACE/aegis 
+cd $WORKSPACE/vmware-secrets-manager
 # Build everything locally:
 make build-local
 # Deploy the use case:
 make example-sdk-deploy-local
 # Switch to this use case’s folder:
-cd $WORKSPACE/aegis/examples/using-sdk
+cd $WORKSPACE/vmware-secrets-manager/examples/using-sdk
 # Register a secret:
 ./register.sh
 # Tail the workload’s logs and verify that the secret is there:
@@ -55,11 +64,11 @@ pre-deployed container images.
 
 ```bash 
 # Switch to the project folder:
-cd $WORKSPACE/aegis 
+cd $WORKSPACE/vmware-secrets-manager 
 # Deploy the use case from the pre-built image.
 make example-sdk-deploy
 # Switch to this use case’s folder:
-cd $WORKSPACE/aegis/examples/using-sdk
+cd $WORKSPACE/vmware-secrets-manager/examples/using-sdk
 # Register a secret:
 ./register.sh
 # Tail the workload’s logs and verify that the secret is there:

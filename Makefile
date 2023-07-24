@@ -1,30 +1,34 @@
-#
-# .-'_.---._'-.
-# ||####|(__)||   Protect your secrets, protect your business.
-#   \\()|##//       Secure your sensitive data with Aegis.
-#    \\ |#//                    <aegis.ist>
-#     .\_/.
-#
+# /*
+# |    Protect your secrets, protect your sensitive data.
+# :    Explore VMware Secrets Manager docs at https://vsecm.com/
+# </
+# <>/  keep your secrets… secret
+# >/
+# <>/' Copyright 2023–present VMware, Inc.
+# >/'  SPDX-License-Identifier: BSD-2-Clause
+# */
 
 # The common version tag assigned to all the things.
-VERSION=0.18.1
+VERSION=0.20.0
 
 # Utils
-include ./AegisMacOs.mk
-include ./AegisDeploy.mk
-## Aegis
-include ./AegisSafe.mk
-include ./AegisSentinel.mk
-include ./AegisInitContainer.mk
-include ./AegisSidecar.mk
+include ./makefiles/VSecMMacOs.mk
+include ./makefiles/VSecMDeploy.mk
+
+## VMware Secrets Manager
+include ./makefiles/VSecMSafe.mk
+include ./makefiles/VSecMSentinel.mk
+include ./makefiles/VSecMInitContainer.mk
+include ./makefiles/VSecMSidecar.mk
+
 ## Examples
-include ./AegisExampleSidecar.mk
-include ./AegisExampleSdk.mk
-include ./AegisExampleMultipleSecrets.mk
-include ./AegisExampleInitContainer.mk
+include ./makefiles/VSecMExampleSidecar.mk
+include ./makefiles/VSecMExampleSdk.mk
+include ./makefiles/VSecMExampleMultipleSecrets.mk
+include ./makefiles/VSecMExampleInitContainer.mk
 
 ## Build
-include ./AegisBuild.mk
+include ./makefiles/VSecMBuild.mk
 
 ## Help
-include ./AegisHelp.mk
+include ./makefiles/VSecMHelp.mk

@@ -1,10 +1,12 @@
 /*
- * .-'_.---._'-.
- * ||####|(__)||   Protect your secrets, protect your business.
- *   \\()|##//       Secure your sensitive data with Aegis.
- *    \\ |#//                    <aegis.ist>
- *     .\_/.
- */
+|    Protect your secrets, protect your sensitive data.
+:    Explore VMware Secrets Manager docs at https://vsecm.com/
+</
+<>/  keep your secrets… secret
+>/
+<>/' Copyright 2023–present VMware, Inc.
+>/'  SPDX-License-Identifier: BSD-2-Clause
+*/
 
 package main
 
@@ -14,9 +16,9 @@ import (
 )
 
 func sidecarSecretsPath() string {
-	p := os.Getenv("AEGIS_SIDECAR_SECRETS_PATH")
+	p := os.Getenv("VSECM_SIDECAR_SECRETS_PATH")
 	if p == "" {
-		p = "/opt/aegis/secrets.json"
+		p = "/opt/vsecm/secrets.json"
 	}
 	return p
 }

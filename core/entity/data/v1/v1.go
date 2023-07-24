@@ -1,10 +1,12 @@
 /*
- * .-'_.---._'-.
- * ||####|(__)||   Protect your secrets, protect your business.
- *   \\()|##//       Secure your sensitive data with Aegis.
- *    \\ |#//                    <aegis.ist>
- *     .\_/.
- */
+|    Protect your secrets, protect your sensitive data.
+:    Explore VMware Secrets Manager docs at https://vsecm.com/
+</
+<>/  keep your secrets… secret
+>/
+<>/' Copyright 2023–present VMware, Inc.
+>/'  SPDX-License-Identifier: BSD-2-Clause
+*/
 
 package v1
 
@@ -12,7 +14,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	tpl "github.com/shieldworks/aegis/core/template"
+	tpl "github.com/vmware-tanzu/secrets-manager/core/template"
 	"strings"
 	"text/template"
 	"time"
@@ -50,7 +52,7 @@ type SecretMeta struct {
 	Namespace string `json:"namespace"`
 	// Go template used to transform the secret.
 	// Sample secret:
-	// '{"username":"admin","password":"AegisRocks"}'
+	// '{"username":"admin","password":"VSecMRocks"}'
 	// Sample template:
 	// '{"USER":"{{.username}}", "PASS":"{{.password}}"}"
 	Template string `json:"template"`

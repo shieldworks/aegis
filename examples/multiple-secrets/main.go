@@ -1,10 +1,12 @@
 /*
- * .-'_.---._'-.
- * ||####|(__)||   Protect your secrets, protect your business.
- *   \\()|##//       Secure your sensitive data with Aegis.
- *    \\ |#//                    <aegis.ist>
- *     .\_/.
- */
+|    Protect your secrets, protect your sensitive data.
+:    Explore VMware Secrets Manager docs at https://vsecm.com/
+</
+<>/  keep your secrets… secret
+>/
+<>/' Copyright 2023–present VMware, Inc.
+>/'  SPDX-License-Identifier: BSD-2-Clause
+*/
 
 package main
 
@@ -12,7 +14,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"github.com/shieldworks/aegis/sdk/sentry"
+	"github.com/vmware-tanzu/secrets-manager/sdk/sentry"
 	"os"
 	"os/signal"
 	"syscall"
@@ -31,7 +33,7 @@ func main() {
 		}
 	}()
 
-	// Fetch the secret from the Aegis Safe.
+	// Fetch the secret from the VMware Secrets Manager Safe.
 	d, err := sentry.Fetch()
 	if err != nil {
 		fmt.Println("Failed to fetch the secrets. Try again later.")
