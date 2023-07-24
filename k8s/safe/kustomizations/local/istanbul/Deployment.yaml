@@ -63,7 +63,7 @@ spec:
             - name: VSECM_SENTINEL_SVID_PREFIX
               value: "spiffe://vsecm.com/workload/vsecm-sentinel/ns/vsecm-system/sa/vsecm-sentinel/n/"
             - name: VSECM_SAFE_SVID_PREFIX
-              value: "spiffe://vsecm.ist/workload/vsecm-safe/ns/vsecm-system/sa/vsecm-safe/n/"
+              value: "spiffe://vsecm.com/workload/vsecm-safe/ns/vsecm-system/sa/vsecm-safe/n/"
             - name: VSECM_SAFE_DATA_PATH
               value: "/data"
             - name: VSECM_CRYPTO_KEY_NAME

@@ -43,7 +43,7 @@ always secure and protected.
 [build]: https://vsecm.com/use-the-source "Building, Deploying, and Testing"
 [architecture]: https://vsecm.com/architecture/ "VMware Secrets Manager Architecture"
 [design]: https://vsecm.com/philosophy/ "VMware Secrets Manager Design Philosphy"
-[quickstart]: https://aegis.ist/quickstart "Quickstart"
+[quickstart]: https://vsecm.com/quickstart "Quickstart"
 
 * **Homepage and Docs**: <https://vsecm.com/>
 * **Changelog**: <https://vsecm.com/changelog/>
@@ -72,6 +72,9 @@ Test this on the build server before merging.
 
 Also add a notification to the README about the changes; and point to the
 latest release that has Aegis in it.
+
+Also clean up the website template; there is a lot of junk I inherited due
+to copy/paste
 ```
 
 [endorsements]: https://vsecm.com/endorsements/ "Endorsements"
