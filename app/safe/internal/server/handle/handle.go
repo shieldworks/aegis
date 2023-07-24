@@ -11,7 +11,6 @@
 package handle
 
 import (
-	"fmt"
 	"github.com/vmware-tanzu/secrets-manager/app/safe/internal/server/route"
 	"github.com/vmware-tanzu/secrets-manager/core/crypto"
 	"github.com/vmware-tanzu/secrets-manager/core/log"
@@ -21,8 +20,6 @@ import (
 
 func InitializeRoutes() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Println(">>>>>>>>>>>>>>>>>>>>>>>>>> SAFE:HANDLEFUNC")
-
 		cid, _ := crypto.RandomString(8)
 		if cid == "" {
 			cid = "VSECMFHN"
