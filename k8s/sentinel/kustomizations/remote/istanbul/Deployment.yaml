@@ -1,56 +1,59 @@
-#
-# .-'_.---._'-.
-# ||####|(__)||   Protect your secrets, protect your business.
-#   \\()|##//       Secure your sensitive data with Aegis.
-#    \\ |#//                    <aegis.ist>
-#     .\_/.
-#
+# /*
+# |    Protect your secrets, protect your sensitive data.
+# :    Explore VMware Secrets Manager docs at https://vsecm.com/
+# </
+# <>/  keep your secrets… secret
+# >/
+# <>/' Copyright 2023–present VMware, Inc.
+# >/'  SPDX-License-Identifier: BSD-2-Clause
+# */
 
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: aegis-sentinel
-  namespace: aegis-system
+  name: vsecm-sentinel
+  namespace: vsecm-system
   labels:
-    app.kubernetes.io/name: aegis-sentinel
-    app.kubernetes.io/part-of: aegis-system
+    app.kubernetes.io/name: vsecm-sentinel
+    app.kubernetes.io/part-of: vsecm-system
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: aegis-sentinel
-      app.kubernetes.io/part-of: aegis-system
+      app.kubernetes.io/name: vsecm-sentinel
+      app.kubernetes.io/part-of: vsecm-system
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: aegis-sentinel
-        app.kubernetes.io/part-of: aegis-system
+        app.kubernetes.io/name: vsecm-sentinel
+        app.kubernetes.io/part-of: vsecm-system
     spec:
-      serviceAccountName: aegis-sentinel
+      serviceAccountName: vsecm-sentinel
       containers:
         - name: main
-          image: aegishub/aegis-ist-sentinel:0.18.0
+          image: vsecm/vsecm-ist-sentinel:0.18.0
           volumeMounts:
             - name: spire-agent-socket
               mountPath: /spire-agent-socket
               readOnly: true
           #
-          # You can configure Aegis Sentinel by providing environment variables.
+          # You can configure VMWare Secrets Manager
+          # Sentinel by providing environment variables.
           #
-          # See https://aegis.ist/docs/configuration for more information about
+          # See https://vsecm.com/configuration for more information about
           # these environment variables.
           #
-          # When you don’t explicitly provide env vars here, Aegis Sentinel will
-          # assume the default values outlined in the given link above.
+          # When you don’t explicitly provide env vars here, VMware Secrets Manager
+          # Sentinel will assume the default values outlined in the given link above.
           #
           env:
             - name: SPIFFE_ENDPOINT_SOCKET
               value: "unix:///spire-agent-socket/agent.sock"
-            - name: AEGIS_SENTINEL_SVID_PREFIX
-              value: "spiffe://aegis.ist/workload/aegis-sentinel/ns/aegis-system/sa/aegis-sentinel/n/"
-            - name: AEGIS_SAFE_SVID_PREFIX
-              value: "spiffe://aegis.ist/workload/aegis-safe/ns/aegis-system/sa/aegis-safe/n/"
-            - name: AEGIS_PROBE_LIVENESS_PORT
+            - name: VSECM_SENTINEL_SVID_PREFIX
+              value: "spiffe://vsecm.com/workload/vsecm-sentinel/ns/vsecm-system/sa/vsecm-sentinel/n/"
+            - name: VSECM_SAFE_SVID_PREFIX
+              value: "spiffe://vsecm.com/workload/vsecm-safe/ns/vsecm-system/sa/vsecm-safe/n/"
+            - name: VSECM_PROBE_LIVENESS_PORT
               value: ":8081"
           livenessProbe:
             httpGet:

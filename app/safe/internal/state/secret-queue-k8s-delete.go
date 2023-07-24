@@ -1,16 +1,18 @@
 /*
- * .-'_.---._'-.
- * ||####|(__)||   Protect your secrets, protect your business.
- *   \\()|##//       Secure your sensitive data with Aegis.
- *    \\ |#//                    <aegis.ist>
- *     .\_/.
- */
+|    Protect your secrets, protect your sensitive data.
+:    Explore VMware Secrets Manager docs at https://vsecm.com/
+</
+<>/  keep your secrets… secret
+>/
+<>/' Copyright 2023–present VMware, Inc.
+>/'  SPDX-License-Identifier: BSD-2-Clause
+*/
 
 package state
 
 import (
-	entity "github.com/shieldworks/aegis/core/entity/data/v1"
-	"github.com/shieldworks/aegis/core/env"
+	entity "github.com/vmware-tanzu/secrets-manager/core/entity/data/v1"
+	"github.com/vmware-tanzu/secrets-manager/core/env"
 )
 
 // The secrets put here are synced with their Kubernetes Secret counterparts.
@@ -22,5 +24,5 @@ func processK8sSecretDeleteQueue() {
 	// No need to implement this; but we’ll keep the placeholder here, in case
 	// we find a need for it in the future.
 	//
-	// @see https://github.com/shieldworks/aegis/issues/268
+	// @see https://github.com/vmware-tanzu/secrets-manager/issues/268
 }

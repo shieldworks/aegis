@@ -1,10 +1,12 @@
-#
-# .-'_.---._'-.
-# ||####|(__)||   Protect your secrets, protect your business.
-#   \\()|##//       Secure your sensitive data with Aegis.
-#    \\ |#//                    <aegis.ist>
-#     .\_/.
-#
+# /*
+# |    Protect your secrets, protect your sensitive data.
+# :    Explore VMware Secrets Manager docs at https://vsecm.com/
+# </
+# <>/  keep your secrets… secret
+# >/
+# <>/' Copyright 2023–present VMware, Inc.
+# >/'  SPDX-License-Identifier: BSD-2-Clause
+# */
 
 # Docs
 docs/_site
@@ -36,15 +38,15 @@ docs/.jekyll-cache
 vendor
 
 # Binaries
-/aegis-safe
-/aegis-init-container
-/aegis-sentinel
-/aegis-sidecar
+/vsecm-safe
+/vsecm-init-container
+/vsecm-sentinel
+/vsecm-sidecar
 /example-using-init-container
 /example-using-sidecar
 /example-using-sdk
 /example-multiple-secrets
-/aegis-ist-init-container
-/aegis-ist-safe
-/aegis-ist-sentinel
-/aegis-ist-sidecar
+/vsecm-ist-init-container
+/vsecm-ist-safe
+/vsecm-ist-sentinel
+/vsecm-ist-sidecar

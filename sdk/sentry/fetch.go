@@ -1,10 +1,12 @@
 /*
- * .-'_.---._'-.
- * ||####|(__)||   Protect your secrets, protect your business.
- *   \\()|##//       Secure your sensitive data with Aegis.
- *    \\ |#//                    <aegis.ist>
- *     .\_/.
- */
+|    Protect your secrets, protect your sensitive data.
+:    Explore VMware Secrets Manager docs at https://vsecm.com/
+</
+<>/  keep your secrets… secret
+>/
+<>/' Copyright 2023–present VMware, Inc.
+>/'  SPDX-License-Identifier: BSD-2-Clause
+*/
 
 package sentry
 
@@ -12,14 +14,14 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/pkg/errors"
-	"github.com/shieldworks/aegis/core/crypto"
-	reqres "github.com/shieldworks/aegis/core/entity/reqres/safe/v1"
-	"github.com/shieldworks/aegis/core/env"
-	"github.com/shieldworks/aegis/core/log"
-	"github.com/shieldworks/aegis/core/validation"
 	"github.com/spiffe/go-spiffe/v2/spiffeid"
 	"github.com/spiffe/go-spiffe/v2/spiffetls/tlsconfig"
 	"github.com/spiffe/go-spiffe/v2/workloadapi"
+	"github.com/vmware-tanzu/secrets-manager/core/crypto"
+	reqres "github.com/vmware-tanzu/secrets-manager/core/entity/reqres/safe/v1"
+	"github.com/vmware-tanzu/secrets-manager/core/env"
+	"github.com/vmware-tanzu/secrets-manager/core/log"
+	"github.com/vmware-tanzu/secrets-manager/core/validation"
 	"io"
 	"net/http"
 	"net/url"
@@ -42,7 +44,7 @@ func Fetch() (reqres.SecretFetchResponse, error) {
 
 	cid, _ := crypto.RandomString(8)
 	if cid == "" {
-		cid = "AEGISSDK"
+		cid = "VSECMSDK"
 	}
 
 	var source *workloadapi.X509Source
@@ -70,7 +72,7 @@ func Fetch() (reqres.SecretFetchResponse, error) {
 		return reqres.SecretFetchResponse{}, errors.Wrap(err, "Fetch: error getting SVID from source")
 	}
 
-	// Make sure that we are calling Safe from a workload that Aegis knows about.
+	// Make sure that we are calling Safe from a workload that VSecM knows about.
 	if !validation.IsWorkload(svid.ID.String()) {
 		return reqres.SecretFetchResponse{}, errors.New("Fetch: untrusted workload")
 	}
@@ -106,7 +108,7 @@ func Fetch() (reqres.SecretFetchResponse, error) {
 	r, err := client.Get(p)
 	if err != nil {
 		return reqres.SecretFetchResponse{}, errors.Wrap(
-			err, "Fetch: problem connecting to Aegis Safe API endpoint",
+			err, "Fetch: problem connecting to VMware Secrets Manager Safe API endpoint",
 		)
 	}
 
@@ -130,7 +132,7 @@ func Fetch() (reqres.SecretFetchResponse, error) {
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		return reqres.SecretFetchResponse{}, errors.Wrap(
-			err, "unable to read the response body from Aegis Safe API endpoint",
+			err, "unable to read the response body from VMware Secrets Manager Safe API endpoint",
 		)
 	}
 

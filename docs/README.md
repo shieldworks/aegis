@@ -1,20 +1,13 @@
 ---
-#                          🛡️
-#
-#    ️  Protect your secrets, protect your business.
-#
-#                Secure your sensitive data
-#                with VMware Secrets Manager
-#                  for Cloud-Native Apps.
-#
-#            Copyright 2023–present VMware, Inc.
-#          SPDX-License-Identifier: BSD-2-Clause
-#
-#             Documentation is available at:
-#                 https://aegis.ist/,
-#             distributed under CC-BY-4.0.
-#
-#                          🛡️
+# /*
+# |    Protect your secrets, protect your sensitive data.
+# :    Explore VMware Secrets Manager docs at https://vsecm.com/
+# </
+# <>/  keep your secrets… secret
+# >/
+# <>/' Copyright 2023–present VMware, Inc.
+# >/'  SPDX-License-Identifier: BSD-2-Clause
+# */
 
 title: VMWare Secrets Manager for Cloud Native Apps
 layout: home
@@ -39,6 +32,39 @@ always secure and protected.
 ```markdown
 * TODO: archive the current version before changing this landing page.
 * TODO: add some introductory text.
+
+[contributing]: https://vsecm.com/contributing/
+[release]: https://vsecm.com/release/
+
+[Endorsed by industry experts](https://vsecm.com/endorsements),
+
+[roadmap]: https://vsecm.com/roadmap  "The Roadmap"
+[installation]: https://vsecm.com/installation "Install Aegis"
+[build]: https://vsecm.com/use-the-source "Building, Deploying, and Testing"
+[architecture]: https://vsecm.com/architecture/ "VMware Secrets Manager Architecture"
+[design]: https://vsecm.com/philosophy/ "VMware Secrets Manager Design Philosphy"
+[quickstart]: https://aegis.ist/quickstart "Quickstart"
+
+* **Homepage and Docs**: <https://vsecm.com/>
+* **Changelog**: <https://vsecm.com/changelog/>
+* **Community**: <https://vsecm.com/community/>
+* **Community**: [Join **VSecM**’s Slack Workspace][slack-invite]
+* **Contact**: <https://vsecm.com/contact/>
+* **Media Kit**: <https://vsecm.com/media/>
+* **Changelog**: <https://vsecm.com/changelog/>
+
+* **Installation and Quickstart**: <https://vsecm.com/quickstart/>
+* **Local Development Instructions**: <https://vsecm.com/use-the-source/>
+* **VSecM Developer SDK**: <https://vsecm.com/sdk/>
+* **VSecM CLI**: <https://vsecm.com/sentinel/>
+* **VSecM Architecture**: <https://vsecm.com/architecture/>
+* **Configuring VSecM**: <https://vsecm.com/configuration/>
+* **Design Philosophy**: <https://vsecm.com/philosophy/>
+* **Production Deployment Tips**: <https://vsecm.com/production/>
+
+Add to docs that during the docs and source code you can see VSecM as an acronym for
+VMware Secrets Manager for Cloud-Native Apps
+
 ```
 
-[endorsements]: https://aegis.ist/endorsements/ "Endorsements"
+[endorsements]: https://vsecm.com/endorsements/ "Endorsements"

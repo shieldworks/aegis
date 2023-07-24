@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
 
-#
-# .-'_.---._'-.
-# ||####|(__)||   Protect your secrets, protect your business.
-#   \\()|##//       Secure your sensitive data with Aegis.
-#    \\ |#//                    <aegis.ist>
-#     .\_/.
-#
+# /*
+# |    Protect your secrets, protect your sensitive data.
+# :    Explore VMware Secrets Manager docs at https://vsecm.com/
+# </
+# <>/  keep your secrets… secret
+# >/
+# <>/' Copyright 2023–present VMware, Inc.
+# >/'  SPDX-License-Identifier: BSD-2-Clause
+# */
 
 cd ./k8s || exit
 
@@ -21,8 +23,8 @@ echo "next"
 cd safe || exit
 kubectl apply -f ./Namespace.yaml
 kubectl apply -f ./Role.yaml
-if kubectl get secret -n aegis-system | grep aegis-safe-age-key; then
-  echo "!!! The secret 'aegis-safe-age-key' already exists; not going to override it."
+if kubectl get secret -n vsecm-system | grep vsecm-safe-age-key; then
+  echo "!!! The secret 'vsecm-safe-age-key' already exists; not going to override it."
   echo "!!! If you want to modify it, make sure you back it up first."
 else
   kubectl apply -f ./Secret.yaml

@@ -1,18 +1,20 @@
 /*
- * .-'_.---._'-.
- * ||####|(__)||   Protect your secrets, protect your business.
- *   \\()|##//       Secure your sensitive data with Aegis.
- *    \\ |#//                    <aegis.ist>
- *     .\_/.
- */
+|    Protect your secrets, protect your sensitive data.
+:    Explore VMware Secrets Manager docs at https://vsecm.com/
+</
+<>/  keep your secrets… secret
+>/
+<>/' Copyright 2023–present VMware, Inc.
+>/'  SPDX-License-Identifier: BSD-2-Clause
+*/
 
 package startup
 
 import (
-	"github.com/shieldworks/aegis/core/crypto"
-	"github.com/shieldworks/aegis/core/env"
-	"github.com/shieldworks/aegis/core/log"
-	"github.com/shieldworks/aegis/sdk/sentry"
+	"github.com/vmware-tanzu/secrets-manager/core/crypto"
+	"github.com/vmware-tanzu/secrets-manager/core/env"
+	"github.com/vmware-tanzu/secrets-manager/core/log"
+	"github.com/vmware-tanzu/secrets-manager/sdk/sentry"
 	"os"
 	"time"
 )
@@ -32,7 +34,7 @@ func Watch() {
 
 	cid, _ := crypto.RandomString(8)
 	if cid == "" {
-		cid = "AEGISSDK"
+		cid = "VSECMSDK"
 	}
 
 	for {

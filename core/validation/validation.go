@@ -1,15 +1,17 @@
 /*
- * .-'_.---._'-.
- * ||####|(__)||   Protect your secrets, protect your business.
- *   \\()|##//       Secure your sensitive data with Aegis.
- *    \\ |#//                    <aegis.ist>
- *     .\_/.
- */
+|    Protect your secrets, protect your sensitive data.
+:    Explore VMware Secrets Manager docs at https://vsecm.com/
+</
+<>/  keep your secrets… secret
+>/
+<>/' Copyright 2023–present VMware, Inc.
+>/'  SPDX-License-Identifier: BSD-2-Clause
+*/
 
 package validation
 
 import (
-	"github.com/shieldworks/aegis/core/env"
+	"github.com/vmware-tanzu/secrets-manager/core/env"
 	"strings"
 )
 
@@ -28,7 +30,7 @@ func IsSafe(svid string) bool {
 }
 
 // IsNotary returns true if the given SVID (SPIFFE Verifiable Identity Document)
-// is an Aegis Notary SVID.
+// is a VSecM Notary SVID.
 // It does this by checking if the SVID has the notarySvidPrefix as its prefix.
 func IsNotary(svid string) bool {
 	return strings.HasPrefix(svid, env.NotarySvidPrefix())

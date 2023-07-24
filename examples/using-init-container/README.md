@@ -1,24 +1,30 @@
-# Aegis
-
-![Aegis](../../assets/aegis-icon.png "Aegis")
+```text
+|   Protect your secrets, protect your sensitive data.
+:   Explore VMware Secrets Manager docs at https://vsecm.com/
+</
+<>/ keep your secrets… secret
+```
 
 ## Use Case: Using an Init Container
 
-This example demonstrates how to use **Aegis Init Container** to wait for 
+This example demonstrates how to use **VSecM Init Container** to wait for 
 secrets to be allocated to a workload before bootstrapping the workload.
 
-## Video Tutorials Anyone?
+## A Video Is Worth a Lot of Words
 
-[Watch **Aegis Showcase** to learn how to use **Aegis** hands-on][videos].
+[You can watch these tutorial][videos] as to learn how to use **VMware
+Secrets Manager** hands-on.
 
-If any of the instructions provided here are unclear, the video tutorials will
-help explain them in much greater detail. Each video is designed around a
-particular topic to keep it concise and to-the-point.
+Note that the videos are about the older version of VMware Secrets Manager,
+called ‘Äegis’, but the concepts are the same. Also note that in the meantime
+we have added a few more features to **VMware Secrets Manager**, so you will
+find differences between the video and the current version of **VMware Secrets
+Manager**.
 
-The container image is also used as the **inspector** workload to debug secret
-registration during showcasing various scenarios [in the workshop](../aegis-workshop).
+In the videos, we use all the scripts and resource manifests you see in this
+folder to demonstrate various **VMware Secrets Manager** use cases.
 
-[videos]: https://vimeo.com/showcase/10074951 "Aegis Showcase"
+[videos]: https://vimeo.com/showcase/10074951 "VSecM Showcase"
 
 ## Deployment Options
 
@@ -30,13 +36,13 @@ next two sections describe both approaches respectively.
 
 ```bash
 # Switch to the project folder:
-cd $WORKSPACE/aegis 
+cd $WORKSPACE/vmware-secrets-manager
 # Build everything locally:
 make build-local
 # Deploy the use case:
 make example-init-container-deploy-local
 # Switch to this use case’s folder:
-cd $WORKSPACE/aegis/examples/using-init-container
+cd $WORKSPACE/vmware-secrets-manager/examples/using-init-container
 # Check and make sure that the workload pod is still initializing:
 kubectl get po -n default
 # Register a secret:
@@ -54,11 +60,11 @@ pre-deployed container images.
 
 ```bash 
 # Switch to the project folder:
-cd $WORKSPACE/aegis 
+cd $WORKSPACE/vmware-secrets-manager
 # Deploy the use case from the pre-built image.
 make example-sidecar-deploy
 # Switch to this use case’s folder:
-cd $WORKSPACE/aegis/examples/using-sidecar
+cd $WORKSPACE/vmware-secrets-manager/examples/using-sidecar
 # Check and make sure that the workload pod is still initializing:
 kubectl get po -n default
 # Register a secret:

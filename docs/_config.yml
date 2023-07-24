@@ -8,9 +8,9 @@ description: >
   for secrets management. It provides a minimal and intuitive API, ensuring 
   practical security without compromising user experience.
   
-  Endorsed by industry experts, Aegis is a ground-up re-imagination of secrets 
-  management, leveraging SPIRE for authentication and providing a cloud-native 
-  way to manage secrets end-to-end.
+  Endorsed by industry experts, VMware Secrets Manager is a ground-up re-imagination 
+  of secrets management, leveraging SPIRE for authentication and providing a 
+  cloud-native way to manage secrets end-to-end.
   
   VMware Secrets Manager is resilient and secure by default, storing sensitive 
   data in memory and encrypting any data saved to disk.
@@ -21,7 +21,7 @@ description: >
 version:          0.5.0
 gitbook_version:  3.2.3
 
-url:              'https://aegis.ist'
+url:              'https://vsecm.com'
 baseurl:          ''
 rss:              RSS
 

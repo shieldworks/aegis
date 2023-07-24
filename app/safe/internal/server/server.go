@@ -1,21 +1,23 @@
 /*
- * .-'_.---._'-.
- * ||####|(__)||   Protect your secrets, protect your business.
- *   \\()|##//       Secure your sensitive data with Aegis.
- *    \\ |#//                    <aegis.ist>
- *     .\_/.
- */
+|    Protect your secrets, protect your sensitive data.
+:    Explore VMware Secrets Manager docs at https://vsecm.com/
+</
+<>/  keep your secrets… secret
+>/
+<>/' Copyright 2023–present VMware, Inc.
+>/'  SPDX-License-Identifier: BSD-2-Clause
+*/
 
 package server
 
 import (
 	"github.com/pkg/errors"
-	"github.com/shieldworks/aegis/app/safe/internal/server/handle"
-	"github.com/shieldworks/aegis/core/env"
-	"github.com/shieldworks/aegis/core/validation"
 	"github.com/spiffe/go-spiffe/v2/spiffeid"
 	"github.com/spiffe/go-spiffe/v2/spiffetls/tlsconfig"
 	"github.com/spiffe/go-spiffe/v2/workloadapi"
+	"github.com/vmware-tanzu/secrets-manager/app/safe/internal/server/handle"
+	"github.com/vmware-tanzu/secrets-manager/core/env"
+	"github.com/vmware-tanzu/secrets-manager/core/validation"
 	"net/http"
 )
 

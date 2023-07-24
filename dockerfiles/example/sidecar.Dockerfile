@@ -1,10 +1,12 @@
-#
-# .-'_.---._'-.
-# ||####|(__)||   Protect your secrets, protect your business.
-#   \\()|##//       Secure your sensitive data with Aegis.
-#    \\ |#//                    <aegis.ist>
-#     .\_/.
-#
+# /*
+# |    Protect your secrets, protect your sensitive data.
+# :    Explore VMware Secrets Manager docs at https://vsecm.com/
+# </
+# <>/  keep your secrets… secret
+# >/
+# <>/' Copyright 2023–present VMware, Inc.
+# >/'  SPDX-License-Identifier: BSD-2-Clause
+# */
 
 # builder image
 FROM golang:1.20.1-alpine3.17 as builder
@@ -22,14 +24,14 @@ RUN CGO_ENABLED=0 GOOS=linux go build -mod vendor -a -o env \
 # generate clean, final image for end users
 FROM gcr.io/distroless/static-debian11
 
-LABEL "maintainers"="Volkan Özçelik <volkan@aegis.ist>"
+LABEL "maintainers"="Volkan Özçelik <volkan@vsecm.com>"
 LABEL "version"="0.18.0"
-LABEL "website"="https://aegis.ist/"
-LABEL "repo"="https://github.com/shieldworks/aegis"
-LABEL "documentation"="https://aegis.ist/docs/"
-LABEL "contact"="https://aegis.ist/contact/"
-LABEL "community"="https://aegis.ist/contact/#community"
-LABEL "changelog"="https://aegis.ist/changelog"
+LABEL "website"="https://vsecm.com/"
+LABEL "repo"="https://github.com/vmware-tanzu/secrets-manager"
+LABEL "documentation"="https://vsecm.com/"
+LABEL "contact"="https://vsecm.com/contact/"
+LABEL "community"="https://vsecm.com/community"
+LABEL "changelog"="https://vsecm.com/changelog"
 
 COPY --from=builder /build/example .
 COPY --from=builder /build/env .

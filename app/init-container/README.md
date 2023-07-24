@@ -1,11 +1,14 @@
-# Aegis
+```text
+|   Protect your secrets, protect your sensitive data.
+:   Explore VMware Secrets Manager docs at https://vsecm.com/
+</
+<>/ keep your secrets… secret
+```
 
-![Aegis](../../assets/aegis-icon.png "Aegis")
+## VMware Secrets Manager (*VSecM*) Init Container
 
-keep your secrets… secret
+**VSecM Init Container** is a Kubernetes init container that 
+waits for a secret that is assigned to the workload to be available before 
+starting the main container.
 
-## Aegis Init Container
-
-**Aegis Init Container** is a Kubernetes init container that waits for a 
-secret that is assigned to the workload to be available before starting the
-main container.
+Check out more details in the [official documentation](https://vsecm.com/).
