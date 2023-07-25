@@ -11,14 +11,14 @@ global:
       distrolessFipsRepository: aegis-ist-fips-safe
       photonRepository: aegis-photon-safe
       photonFipsRepository: aegis-photon-fips-safe
-      tag: 0.18.1
+      tag: 0.18.2
       pullPolicy: IfNotPresent
     sentinel:
       distrolessRepository: aegis-ist-sentinel
       distrolessFipsRepository: aegis-ist-fips-sentinel
       photonRepository: aegis-photon-sentinel
       photonFipsRepository: aegis-photon-fips-sentinel
-      tag: 0.18.1
+      tag: 0.18.2
       pullPolicy: IfNotPresent
     spireAgent:
       repository: ghcr.io/spiffe/spire-agent

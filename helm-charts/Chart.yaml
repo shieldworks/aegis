@@ -23,7 +23,7 @@ version: 0.1.0
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
-appVersion: "0.18.1"
+appVersion: "0.18.2"
 home: https://aegis.ist/
 icon: https://raw.githubusercontent.com/shieldworks/aegis/main/assets/aegis-banner.png
 keywords:
@@ -36,7 +36,7 @@ dependencies:
     condition: global.deploySpire
   - name: safe
     repository: file://charts/safe
-    version: 0.18.1
+    version: 0.18.2
   - name: sentinel
     repository: file://charts/sentinel
-    version: 0.18.1
+    version: 0.18.2
