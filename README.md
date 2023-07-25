@@ -25,7 +25,7 @@ will be carried out in the new repository.
 We appreciate your understanding and support as we continue to work towards
 providing the best secrets management solution for the known universe.
 
-[For all future activities, please follow the new repository][new-aegis]. 
+[**For all future activities, please follow the new repository**][new-aegis]. 
 
 We appreciate your understanding and support as we continue to work towards 
 providing the best secrets management solution for the known universe.
