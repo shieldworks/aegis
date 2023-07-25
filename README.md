@@ -1,4 +1,4 @@
-# Aegis Has a New Home
+# 💁‍♀️ Pssttt… Aegis Has a New Home
 
 We are excited to announce that [**Aegis** has moved to **VMware Tanzu**
 GitHub organization][new-aegis], where it will continue its journey under a
